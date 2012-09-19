@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en:us">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>IndieUI 1.0: User Context</title>
+		<link href="http://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet" type="text/css">
+		<link href="./csi/screen.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<div class="head">
+			<a href="http://www.w3.org/"><img alt="W3C" height="48" src="http://www.w3.org/Icons/w3c_home" width="72"/></a>
+			<h1>Independent User Interface (IndieUI) 1.0: User Context Module</h1>
+			<h2 class="maturity">Editor's Draft</h2>
+			<dl>
+				<dt>Editors</dt>
+				<dd>James Craig, Apple Inc.</dd>
+				<dd>Michael Cooper, W3C</dd>
+			</dl>
+			<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2012-<span id="copyright.year">…</span> <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+			<hr aria-label="Separator from Header"/>
+		</div>
+		
+		
+		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
+		<div class="section" id="intro">
+			<h2>Abstract</h2>
+			<p>This specification, in conjunction with the <a href="./Events.html">Events Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content. </p>
+		</div>
+		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
+		
+
+		
+		<!-- :::::::::::::::::::: window.navigator.accessibility :::::::::::::::::::: -->
+		<div class="section" id="identification">
+			<h2>Assistive Technology Identification and Notification</h2>
+			<p>In certain cases, it is beneficial for web authors to be aware of the assistive technology in use. This section defines a collection of attributes that can be used to determine, from script, the kind of assistive technology in use, in order to be aware of considerations for a particular assistive technology, including the need to support the <a href="#RequestEvents">UI Change Request Events</a> or <a href="#AXevents">Accessibility Events</a> defined in previous sections. Web authors <strong class="rfc2119">should</strong> always limit client detection to detecting known versions. Web authors <strong class="rfc2119">should</strong> always assume future versions and unknown versions to be fully compliant.</p>
+			<p>The <code>accessibility</code> attribute of the Navigator interface <strong class="rfc2119">must</strong> return an instance of the Accessibility interface, which represents the identity and state of the assistive technology, and allows web pages to optionally notify assistive technology of certain interface events that cannot be indicated through declarative markup such as WAI-ARIA roles, states, and properties.</p>
+			<h3><strong>Interface <em>Accessibility</em></strong></h3>
+			<div class="idl">
+				<pre><code>interface Accessibility {
+  readonly attribute InterfaceObject accessibility; <em class="ednote">// Editorial Note: Is it necessary to define this attribute in the IDL?</em>
+  <span class="comment">// objects implementing the Accessibility interface also implement the ScreenReader and AccessibilityNotifications interfaces</span>
+};
+Accessibility implements AccessibilityNotifications;
+Accessibility implements ScreenReader;
+Accessibility implements Magnifier;
+Accessibility implements Speech;
+
+[Supplemental, NoInterfaceObject]
+interface AccessibilityNotifications {
+  void elementsChanged();
+  void screenChanged();
+};</code></pre>
+			</div>
+			<h4>Methods for <strong>Interface <em>Accessibility</em></strong></h4>
+			<div class="method-list">
+				<dl>
+					<dt><code>window.navigator.accessibility.elementsChanged()</code></dt>
+					<dd>Returns void. Allows the web author to send a supplemental notification to the screen reader that certain aspects of relevant DOM elements have changed, informing the assistive technology to update its cache of the accessibility tree. For example, web authors might call this method after an animation has completed, allowing a screen reader to update its cursor location, if the focused element was moved.</dd>
+					<dt><code>window.navigator.accessibility.screenChanged()</code></dt>
+					<dd>Returns void. Allows the web author to send an explicit notification to the assistive technology that all aspects of a web application view have changed, informing the assistive technology to update its cache of the accessibility tree. Web authors <strong class="rfc2119">should</strong> call this method when a majority of the web view changes without triggering a full page refresh in the browser.</dd>
+				</dl>
+			</div>
+			
+			<h3><strong>Interface <em>ScreenReader</em></strong></h3>
+			<p>The <code>screenreader</code> attribute of the Accessibility interface <strong class="rfc2119">must</strong> return an instance of the ScreenReader interface:</p>
+			<div class="idl">
+				<pre><code>interface ScreenReader {
+  readonly attribute InterfaceObject screenreader; <em class="ednote">// Editorial Note: Is it necessary to define this attribute in the IDL?</em>
+  <span class="comment">// objects implementing the ScreenReader interface also implement the interfaces given below</span>
+};
+ScreenReader implements ScreenReaderID;
+ScreenReader implements ScreenReaderStatus;
+
+[Supplemental, NoInterfaceObject]
+interface ScreenReaderID {
+  readonly attribute DOMString name;
+  readonly attribute DOMString version;
+};
+
+[Supplemental, NoInterfaceObject]
+interface ScreenReaderStatus {
+  readonly attribute boolean active;
+};</code></pre>
+			</div>
+			<h4>Properties for <strong>Interface <em>ScreenReader</em></strong></h4>
+			<div class="property-list">
+				<dl>
+					<dt><code>window.navigator.accessibility.screenreader.active</code></dt>
+					<dd>Returns a boolean indicating whether or not a screen reader is in use. The user agent <strong class="rfc2119">must</strong> return <code>true</code> if a screen reader is running, or <code>false</code> otherwise. User agents <strong class="rfc2119">may</strong> return <code>false</code> if the user has chosen to disallow sharing this information with the requesting domain.</dd>
+					<dt class="ednote">window.navigator.accessibility.screenreader.activeElement</dt>
+					<dd class="ednote">@@</dd>
+					<dt><code>window.navigator.accessibility.screenreader.name</code></dt>
+					<dd>Returns the application name of the screen reader in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the name of the screen reader in detail, e.g. "<code>Apple VoiceOver</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
+					<dt><code>window.navigator.accessibility.screenreader.version</code></dt>
+					<dd>Returns the application version of the screen reader in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the version of the screen reader in detail, e.g. "<code>4.0 (220.2)</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
+				</dl>
+			</div>
+			
+			<p class="note" title="Informative">Note: The authors recommend that user agents adopt a domain-level security policy for the ScreenReader interface that is similar to the security policy for location data or cookies. A user should be able to explicitly disallow sharing of this information altogether, or on a per-domain basis.</p>
+			
+			<h3><strong>Interface <em>Magnifier</em></strong></h3>
+			<p>The <code>magnifier</code> attribute of the Accessibility interface <strong class="rfc2119">must</strong> return an instance of the Magnifier interface:</p>
+			<div class="idl">
+				<pre><code>interface Magnifier {
+  readonly attribute InterfaceObject magnifier; <em class="ednote">// Editorial Note: Is it necessary to define this attribute in the IDL?</em>
+  <span class="comment">// objects implementing the Magnifier interface also implement the interfaces given below</span>
+};
+Magnifier implements MagnifierID;
+Magnifier implements MagnifierStatus;
+Magnifier implements MagnifierNotifications;
+
+[Supplemental, NoInterfaceObject]
+interface MagnifierID {
+  readonly attribute DOMString name;
+  readonly attribute DOMString version;
+};
+
+[Supplemental, NoInterfaceObject]
+interface MagnifierStatus {
+  readonly attribute boolean active;
+<!--  readonly attribute float   zoom;
+-->};
+
+[Supplemental, NoInterfaceObject]
+interface MagnifierNotifications {
+  <em class="ednote">// Editorial Note: I'm not partial to the method name focusPosition. Any other suggestions?</em>
+  void focusPosition(
+         in DOMElement element,
+         in optional array cursorRect,
+         in optional array selectionPolygon
+       );
+};</code></pre>
+			</div>
+			<h4>Properties for <strong>Interface <em>Magnifier</em></strong></h4>
+			<div class="property-list">
+				<dl>
+					<dt><code>window.navigator.accessibility.magnifier.active</code></dt>
+					<dd>Returns a boolean indicating whether or not a screen magnifier is in use. The user agent <strong class="rfc2119">must</strong> return <code>true</code> if a screen magnifier is enabled (even if the current zoom level is 1.0), or <code>false</code> if a magnifier is not enabled. User agents <strong class="rfc2119">may</strong> return <code>false</code> if the user has chosen to disallow sharing this information with the requesting domain.</dd>
+					<dt><code>window.navigator.accessibility.magnifier.name</code></dt>
+					<dd>Returns the application name of the screen magnifier in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the name of the screen magnifier in detail, e.g. "<code>Apple Universal Access Zoom</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
+					<dt><code>window.navigator.accessibility.magnifier.version</code></dt>
+					<dd>Returns the application version of the screen magnifier in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the version of the screen magnifier in detail, e.g. "<code>4.0 (220.2)</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
+					<!--
+					<dt><code>window.navigator.accessibility.magnifier.zoom</code></dt>
+					<dd>Returns a floating point number indicating the current magnification level of the screen magnifier. The user agent <strong class="rfc2119">must</strong> return <code>1.0</code> or the current magnification level. User agents <strong class="rfc2119">may</strong> return <code>1.0</code> if the user has chosen to disallow sharing this information with the requesting domain.</dd>
+					-->
+				</dl>
+			</div>
+			<h4>Methods for <strong>Interface <em>Magnifier</em></strong></h4>
+			<div class="method-list">
+				<dl>
+					<dt><code>window.navigator.accessibility.magnifier.focusPosition ( element, cursorRect, selectionPolygon )</code></dt>
+					<dd><p>Returns void. Allows the web author to send an explicit notification informing the screen magnifier to update its cache of the cursor location. Web authors <strong class="rfc2119">should</strong> call this method when updating the display or cursor position of custom views.</p>
+						<h5>Parameters for Magnifier.focusPosition</h5>
+						<div class="parameter-list">
+							<dl>
+								<dt>1. <code>DOMElement <strong>element</strong></code></dt>
+								<dd>Required reference to the element (e.g. <code>canvas</code>) that has focus.</dd>
+								<dt>2. <code>optional array <strong>cursorRect</strong></code></dt>
+								<dd>Optional array representing the rectangular cursor location relative to the <code>[0,0]</code> position of focused element. <code>[ x<sup>1</sup>, y<sup>1</sup>, x<sup>2</sup>, y<sup>2</sup> ]</code></dd>
+								<dt>3. <code>optional array <strong>selectionPolygon</strong></code></dt>
+								<dd>Optional array representing the selection polygon relative to the <code>[0,0]</code> position of focused element. <code>[ x<sup>1</sup>, y<sup>1</sup>, x<sup>2</sup>, y<sup>2</sup>, ... x<sup><i>n</i></sup>, y<sup><i>n</i></sup> ]</code></dd>
+							</dl>
+							<p class="ednote">Editorial Note: It may be better if the optional params are shape objects with a coords array and a type string like 'rect' or 'poly'. That would allow the author to decide if they wanted to provide the extra polygon coords, or just use a simple shape.</p>
+						</div>
+					</dd>
+					<p class="note">Note: The <code>focusPosition()</code> method would be necessary for screen magnifiers to work with canvas-based web apps like <a href="https://bespin.mozillalabs.com/">Bespin</a> or the <a href="http://280north.com/">280 North</a> projects. This method is not necessary for text views managed by the user agent, including <code>contentEditable</code> views.</p>
+				</dl>
+			</div>
+			
+			<h3><strong>Interface <em>Speech</em></strong></h3>
+			<p>The <code>speech</code> attribute of the Accessibility interface <strong class="rfc2119">must</strong> return an instance of the Speech interface:</p>
+			<div class="idl">
+				<pre><code>interface Speech {
+  <span class="comment">// TBD, placeholder for speech-controlled user agents or assistive technology</span>
+  <span class="comment">// may need speech.synthesis and speech.recognition; each could have name/version/engine, etc. </span>
+  <span class="comment">// potential method: speech.synthesis.speak() to trigger TTS from web app</span>
+  <span class="comment">// potential method: speech.recognition.updateDictionary() to capture correct pronunciation of uncommon or app-specific words</span>
+};</code></pre>
+			</div>
+		</div>
+		<!-- :::::::::::::::::::: END window.navigator.accessibility :::::::::::::::::::: -->
+		
+		<div class="placeholder">
+			<p>Placeholder for footer content (acknowledgements, terms, etc.)</p>
+		</div>
+		
+	</body>
+</html>

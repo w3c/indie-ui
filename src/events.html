@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en:us">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>IndieUI 1.0: Events</title>
+		<link href="http://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet" type="text/css">
+		<link href="./csi/screen.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<div class="head">
+			<a href="http://www.w3.org/"><img alt="W3C" height="48" src="http://www.w3.org/Icons/w3c_home" width="72"/></a>
+			<h1>Independent User Interface (IndieUI) 1.0: Events Module</h1>
+			<h2 class="maturity">Editor's Draft</h2>
+			<dl>
+				<dt>Editors</dt>
+				<dd>James Craig, Apple Inc.</dd>
+				<dd>Michael Cooper, W3C</dd>
+			</dl>
+			<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2012-<span id="copyright.year">…</span> <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+			<hr aria-label="Separator from Header"/>
+		</div>
+		
+		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
+		<div class="section" id="intro">
+			<h2>Abstract</h2>
+			<p>This specification, in conjunction with the <a href="./user_context.html">User Context Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content. </p>
+			
+			<p class="placeholder">placeholder for remaining intro</p>
+			
+		</div>
+		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
+		<div class="section" id="RequestEvents">
+			<h2><abbr title="User Interface">UI</abbr> Change Request Events</h2>
+			<p>The core principle behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agent and assistive technology behave as they normally would.</p>
+			<p><strong>Change request events do not cause any direct manipulation or mutation of the DOM.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user agent or assistive technology. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent or assistive technology that the event has been captured and understood. If a web application does not cancel any change request event, the user agent or assistive technology can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
+			<p class="note" title="Informative">Note: The UIRequestEvent interface does not inherit from <a href="#AccessibilityEvent">AccessibilityEvent</a> (proposed in the following section), because we believe it will ultimately be useful outside the context of assistive technology. This may prove to be a lightweight, performant alternative to mutation events. For example, <code>DOMAttrChangeRequest</code> instead of <code>DOMAttrModified</code>.</p>
+			<p class="ednote">Event fires on document.activeElement (or AT equivalent) if applicable, or otherwise document.body.</p>
+			<p class="ednote">These events should be asynchronous, but when used in conjunction with keyboard events, should fire after keydown, but before both keyup and keypress.</p>
+
+			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
+			<div class="section" id="UIRequestEvent">
+				<h3><strong>Interface <em>UIRequestEvent</em></strong></h3>
+
+				<div class="idl">
+					<pre><code>interface UIRequestEvent : UIEvent {
+  
+  <span class="comment">// UA or AT notifies web app of a change request</span>
+  const unsigned short    UNDO     =  1;
+  const unsigned short    REDO     =  2;
+  const unsigned short    DISMISS  =  3;
+  const unsigned short    DELETE   =  4;
+  <span class="comment">// expect more type constants will be added for other event types…</span>
+  <span class="comment">// ZOOM_IN / ZOOM_OUT ? perhaps that should just be slider widget, covered under ValueChangeRequest</span>
+  
+  readonly attribute unsigned short    eventType;
+  
+  void initUIRequestEvent(
+         in DOMString typeArg,
+         in boolean canBubbleArg,
+         in boolean cancelableArg,
+         in views::AbstractView viewArg,
+         in long detailArg,
+         in unsigned short eventTypeArg
+       );
+};</code></pre>
+				</div>
+				<h4>The different types of UIRequestEvents that can occur are:</h4>
+				<dl>
+					<dt><code class="event">UndoRequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent or assistive technology sends an 'undo' request to the web application.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>eventType</code></li>
+						</ul>
+					</dd>
+					<dt><code class="event">RedoRequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent or assistive technology sends a 'redo' request to the web application.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>eventType</code></li>
+						</ul>
+					</dd>
+					<dt><code class="event">DismissRequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent or assistive technology sends a 'dismiss' request to the web application.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>eventType</code></li>
+						</ul>
+					</dd>
+					<dt><code class="event">DeleteRequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent or assistive technology sends a 'delete' request to the web application.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>eventType</code></li>
+						</ul>
+					</dd>
+				</dl> 
+				<div class="example" title="Informative">
+					<h4>Examples</h4>
+					<ol>
+						<li>Users, wanting to 'undo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices. User agents understanding this intent should initiate an <code>UndoRequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'undo' action is understood in the context of the web application, web authors should undo the user's change, and cancel the event using the event object's <code>preventDefault()</code> method.</li>
+						<li>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, including pressing <kbd>Escape</kbd> on most keyboard-controlled operating systems, or by using a two-finger <a href="http://www.apple.com/voiceover/info/guide/_1133.html">scrub gesture</a> in VoiceOver on iOS or Mac OS X. User agents understanding this intent should initiate an <code>DismissRequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</li>
+					</ul>
+				</div>
+				<div class="todo note">
+					<h4>To-do: Explanation needed about event order precedence.</h4>
+					<p>An area where this is notably lacking is in regards to the precedence of event order in mainstream user agents, especially in regards to continuous input events. For example, user interactions with starting and ending events (touchstart/touchend, shakestart/shakeend, etc.) should probably take precendence over UIRequestEvents in mainstream user agents. UIRequestEvents are only intended to be used in mainstream user agents where appropriate, but the definition of "where appropriate" is not something we would attempt to define at the time of this proposal. Instead, we offer the previous examples for the sake of discussion.</p>
+					<ol>
+						<li>Note that the 'shake' interaction mentioned in the first example could be sent to the web app as a shakestart event which, if not captured, could then be sent as an UndoRequest. If the the web app does not capture either event, the shake interaction would be ignored by the web application.</li>
+						<li>Also note that the 'scrub gesture' interaction mentioned in the second example is specific to assistive technology (VoiceOver on iOS, which intercepts all touch events), so it's appropriate for the UIRequestEvent to take precedence, and never send a touchstart event.</li>
+					</ol>
+				</div>
+			</div>
+			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
+			<div class="section" id="UIScrollRequestEvent">
+				<h3><strong>Interface <em>UIScrollRequestEvent</em></strong></h3>
+				<div class="idl">
+					<pre><code>interface UIScrollRequestEvent : UIRequestEvent {
+  
+  <span class="comment">// for custom scroll views or widgets (e.g. carousels, lists, grids)</span>
+  const unsigned short    LEFT          =  1;
+  const unsigned short    UP            =  2;
+  const unsigned short    RIGHT         =  3;
+  const unsigned short    DOWN          =  4;
+  const unsigned short    LEFT_LIMIT    =  5;
+  const unsigned short    TOP_LIMIT     =  6;
+  const unsigned short    RIGHT_LIMIT   =  7;
+  const unsigned short    BOTTOM_LIMIT  =  8;
+  
+  readonly attribute unsigned short   scrollType;
+  
+  void initUIScrollRequestEvent(
+         in DOMString typeArg,
+         in boolean canBubbleArg,
+         in boolean cancelableArg,
+         in views::AbstractView viewArg,
+         in long detailArg,
+         in unsigned short eventTypeArg
+         in unsigned short scrollTypeArg
+       );
+};</code></pre>
+				</div>
+				<h4>The single type of UIScrollRequestEvent that can occur is:</h4>
+				<dl>
+					<dt><code class="event">ScrollRequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent or assistive technology sends a scroll request to the web application. Scroll events need only be used on custom scroll views (lists and grids showing data subsets, carousels, etc.), as user agents and assistive technologies already manage scrolling of native scroll views.</p>
+						<p class="note" title="Informative">Note: The scroll type constants are more or less equivalent to expected behavior for <kbd>PageUp</kbd>/<kbd>PageDown</kbd> and <kbd>Home</kbd>/<kbd>End</kbd> keys on native scroll views, but also allow horizontal scrolling.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>scrollType</code></li>
+						</ul>
+					</dd>
+				</dl>
+			</div>
+			<!-- :::::::::::::::::::: END UIScrollRequestEvent :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
+			<div class="section" id="UIValueChangeRequestEvent">
+				<h3><strong>Interface <em>UIValueChangeRequestEvent</em></strong></h3>
+				<div class="idl">
+					<pre><code>interface UIValueChangeRequestEvent : UIRequestEvent {
+  
+  <span class="comment">// value changes (e.g. ranges)</span>
+  const unsigned short    INCREMENT        =  1;
+  const unsigned short    INCREMENT_SMALL  =  2;
+  const unsigned short    INCREMENT_LARGE  =  3;
+  const unsigned short    INCREMENT_MAX    =  4;
+  const unsigned short    DECREMENT        =  5;
+  const unsigned short    DECREMENT_SMALL  =  6;
+  const unsigned short    DECREMENT_LARGE  =  7;
+  const unsigned short    DECREMENT_MIN    =  8;
+  
+  readonly attribute unsigned short   changeType;
+  
+  void initUIValueChangeRequestEvent(
+         in DOMString typeArg,
+         in boolean canBubbleArg,
+         in boolean cancelableArg,
+         in views::AbstractView viewArg,
+         in long detailArg,
+         in unsigned short eventTypeArg,
+         in unsigned short changeTypeArg
+       );
+};</code></pre>
+				</div>
+				<h4>The single type of UIValueChangeRequestEvent that can occur is:</h4>
+				<dl>
+					<dt><code class="event">ValueChangeRequest</code class="event"></dt>
+					<dd>
+						<p>Initiated when the user agent or assistive technology sends a value change request to the web application.</p>
+						<p>Web authors <strong class="rfc2119">should</strong> code applications to accept all values of the <code>changeType</code> argument. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>eventType</code></li>
+						</ul>
+					</dd>
+					
+					<div class="example" title="Informative">
+						<h4>Example</h4>
+						<p>Users, wanting to change the value of a custom range widget (slider, media progressbar, etc.) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces, and through gestures on many touch-enabled interfaces. User agents understanding this intent should initiate a <code>ValueChangeRequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method. If the event is not cancelled by the web author, user agents may pass the literal interaction event to the web application; in this case, in the form of a keypress or touch event.</p>
+					</div>
+					
+				</dl>
+			</div>
+			<!-- :::::::::::::::::::: END UIValueChangeRequestEvent :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: DOMAttributeChangeRequestEvent :::::::::::::::::::: -->
+			<div class="section" id="DOMAttributeChangeRequestEvent">
+				<h3><strong>Interface <em>DOMAttributeChangeRequestEvent</em></strong></h3>
+				<div class="idl">
+					<pre><code>interface DOMAttributeChangeRequestEvent : UIRequestEvent {
+  
+  readonly attribute DOMString    attrName;
+  readonly attribute DOMString    newValue;
+  
+  void initDOMAttributeChangeRequestEvent(
+         in DOMString typeArg,
+         in boolean canBubbleArg,
+         in boolean cancelableArg,
+         in views::AbstractView viewArg,
+         in long detailArg,
+         in unsigned short eventTypeArg,
+         in DOMString attrNameArg,
+         in DOMString newValueArg
+       );
+};</code></pre>
+				</div>
+				<h4>The single type of DOMAttributeChangeRequestEvent that can occur is:</h4>
+				<dl>
+					<dt><code class="event">DOMAttrChangeRequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent or assistive technology sends an attribute change request to the web application. In order for web applications to understand the intent of change request events from the user agent or assistive technology, these change requests should be limited to attributes for which a change in value indicates a discrete, defined action for known types of widgets and UI elements.</p>
+						<p class="note" title="Informative">Note: Currently, this limitation indicates that <code>DOMAttrChangeRequest</code> only applies to WAI-ARIA widgets, but it has the potential to be used with future iterations of HTML5 or <abbr title="Scalable Vector Graphics">SVG</abbr>.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>attrName</code>, <code>newValue</code></li>
+						</ul>
+					</dd>
+				</dl>
+				<div class="example" title="Informative">
+					<h4>Examples</h4>
+					<ol>
+						<li>If a user wanted to expand or collapse the current node of an ARIA tree, the assistive technology would initiate a <code>DOMAttrChangeRequest</code> event on the tree item element, with the <code>attrName</code> equal to <code>aria-expanded</code>, and the <code>newValue</code> equal to <code>true</code> or <code>false</code>.</li>
+						<li>If a user wanted to sort an ARIA grid on a particular column, the assistive technology would initiate a <code>DOMAttrChangeRequest</code> event on the column header element, with the <code>attrName</code> equal to <code>aria-sort</code>, and the <code>newValue</code> equal to <code>ascending</code> or <code>descending</code>.</li>
+					</ol>
+				</div>
+			</div>
+			<!-- :::::::::::::::::::: END DOMAttributeChangeRequestEvent :::::::::::::::::::: -->
+
+		</div>
+		<!-- :::::::::::::::::::: END UI Request Event Interfaces :::::::::::::::::::: -->
+
+		<!-- :::::::::::::::::::: Accessibility Event Interfaces :::::::::::::::::::: -->
+		<div class="section" id="AXevents">
+			<h2>Accessibility Events</h2>
+			<p>The following events are only initiated by assistive technologies, as opposed to mainstream user agents.</p>
+			
+			<!-- :::::::::::::::::::: AccessibilityEvent :::::::::::::::::::: -->
+			<div class="section" id="AccessibilityEvent">
+				<h3><strong>Interface <em>AccessibilityEvent</em></strong></h3>
+				<div class="idl">
+					<pre><code>interface AccessibilityEvent : UIEvent {
+  void initAccessibilityEvent(
+         in DOMString typeArg,
+         in boolean canBubbleArg,
+         in boolean cancelableArg,
+         in views::AbstractView viewArg,
+         in long detailArg
+       );
+};</code></pre>
+				</div>
+				<h4>The different types of AccessibilityEvents that can occur are:</h4>
+				<dl>
+					<dt><code class="event">AXFocus</code> <em class="ednote">(Editorial Note: possibly renamed <code class="event">AXFocusIn</code>)</em></dt>
+					<dd>
+						<p>Initiated when the assistive technology cursor moves to a particular DOM node.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: No</li>
+							<li>Context Info: None</li>
+						</ul>
+					</dd>
+					<dt><code class="event">AXBlur</code> <em class="ednote">(Editorial Note: possibly renamed <code class="event">AXFocusOut</code>)</em></dt>
+					<dd>
+						<p>Initiated when the assistive technology cursor leaves a particular DOM node.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: No</li>
+							<li>Context Info: None</li>
+						</ul>
+					</dd>
+					<dt class="deferred" title="Deferred"><code class="event">AXDragSelect</code></dt>
+					<dd class="deferred" title="Deferred">
+						<p>Initiated by the assistive technology in order to inform the web application than a draggable element (e.g. an element with an explicit <code>aria-grabbed</code> value) should be marked for dragging.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: None</li>
+						</ul>
+					</dd>
+					<dt class="deferred" title="Deferred"><code class="event">AXDragCancel</code></dt>
+					<dd class="deferred" title="Deferred">
+						<p class="ednote">Editorial Note: This event may not be necessary; could use general DismissRequest instead.</p>
+						<p>Initiated by the assistive technology in order to inform the web application than the current drag operation should be cancelled.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: No <em class="ednote">… Editorial Note: Does this need to be cancelable?</em></li>
+							<li>Context Info: None</li>
+						</ul>
+					</dd>
+					<dt class="deferred" title="Deferred"><code class="event">AXDragDrop</code></dt>
+					<dd class="deferred" title="Deferred">
+						<p>Initiated by the assistive technology in order to inform the web application than a specific drop target (e.g. an element with an explicit <code>aria-dropeffect</code> value) should receive the drop event of the current drag operation.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: None</li>
+						</ul>
+					</dd>
+				</dl>
+			</div>
+			<!-- :::::::::::::::::::: END AccessibilityEvent :::::::::::::::::::: -->
+			
+		</div>
+		<!-- :::::::::::::::::::: END Accessibility Event Interfaces :::::::::::::::::::: -->
+
+		<div class="placeholder">
+			<p>Placeholder for footer content (acknowledgements, terms, etc.)</p>
+		</div>
+
+		
+	</body>
+</html>

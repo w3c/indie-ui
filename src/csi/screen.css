@@ -1,0 +1,160 @@
+
+h4 {
+	font-weight:normal;
+}
+h5 {
+	margin-bottom:0.1em;
+	font-weight:normal;
+	font-style:normal;
+}
+dd{
+	margin-left: 0;
+}
+.section dd {
+	margin-left: 2em;
+	margin-bottom:1em;
+}
+
+.rfc2119 {
+	text-transform: lowercase;
+	font-variant: small-caps;
+	font-style: normal;
+}
+
+body {
+	line-height: 1.4;
+}
+.idl { 
+	margin: 1em 0 0;
+	padding: 0.3em;
+	border: solid 1px #999;
+	color: #000; 
+	background-color: #eee;
+}
+
+.section {
+	margin: 20px 0 40px;
+	padding: 10px 0 0;
+	border: solid 1px #999;
+	border-width: 1px 0 0 0;
+}
+.section .section {
+	border-width: 0;
+	padding: 0;
+	margin-bottom:20px;
+}
+
+.note {
+	margin: 1em 0 0;
+	padding: 1.2em 1.5em;
+	border: solid 1px #585;
+	color: #555;
+	position:relative;
+}
+.note:before{
+	content:attr(title);
+	position:absolute;
+	top:0;
+	right:0;
+	font-size:11px;
+	padding:0.2em 0.5em;
+	margin:0;
+	border:solid 1px #585;
+	border-width: 0 0 1px 1px;
+}
+
+.ednote {
+	color:#c00 !important;
+	font-style:italic;
+	position:relative;
+}
+div.ednote, p.ednote{
+	padding-right:150px;
+}
+div.ednote:before, p.ednote:before{
+	content: 'Editorial note';
+	position:absolute;
+	top:0;
+	right:0;
+	font-size:11px;
+	padding:0.2em 0.5em;
+	margin:0;
+	border:solid 1px #c00;
+}
+
+.todo, .todo:before {
+	color:#c00 !important;
+	border-color:#c00 !important;
+}
+.todo:before{
+	content: 'To-do';
+	position:absolute;
+	top:0;
+	right:0;
+	font-size:11px;
+	padding:0.2em 0.5em;
+	margin:0;
+	border:solid 1px #c00;
+	border-width: 0 0 1px 1px;
+}
+
+.example {
+	margin: 1em 0 0;
+	padding: 0.7em 1em 0.7em;
+	border: solid 1px #999;
+	position:relative;
+}
+.example:before{
+	content:attr(title);
+	position:absolute;
+	top:0;
+	right:0;
+	font-size:11px;
+	padding:0.2em 0.5em;
+	margin:0;
+	border:solid 1px #999;
+	border-width: 0 0 1px 1px;
+}
+.example h4, .note h4{
+	margin:0.5em 0;
+}
+.example ol li, .note ol li{
+	margin:0 0 0.5em;
+}
+
+.deferred {
+	display:none;
+}
+
+html code, html pre, html kbd{ /* more specific selector than the default W3C style sheet */
+	/* Most browsers default 'monospace' to Courier, which has an ex-height of about 60% normal size. */
+	/* Monaco has a normal ex-height so font sizes appear more consistent with surrounding non-monospaced text. */
+	font-family: "Monaco", "Courier New", "Courier", monospace;
+	font-family: "Monaco", "Courier New", "Courier"; /* declare as separate rule to account for browser font-size inconsistencies, monospace fallback from previous rule should still work in the [almost non-existant] case that a user system does not have Courier */
+	font-size:0.9em;
+}
+html kbd {
+	text-transform: lowercase;
+	font-variant: small-caps;
+	font-style: bold;
+	font-size:1em; 
+}
+html pre { /* more specific selector than the default W3C style sheet */
+	font-size:0.75em; /* text in blocks code blocks looked too big now that font is back to normal size */
+	line-height:1.4; /* [sic] unitless multiplier, not EM size */
+}
+code .comment {
+	color:#585;
+}
+code sup {
+	font-size:0.73em;
+}
+
+.parameter-list dt {
+	font-weight: normal;
+}
+
+.placeholder {
+	color:#999;
+	font-style:italic;
+}
