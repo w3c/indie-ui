@@ -51,6 +51,8 @@
   const unsigned short    REDO     =  2;
   const unsigned short    DISMISS  =  3;
   const unsigned short    DELETE   =  4;
+  const unsigned short    EXPAND   =  5;
+  const unsigned short    COLLAPSE =  6;
   <span class="comment">// expect more type constants will be added for other event types…</span>
   <span class="comment">// ZOOM_IN / ZOOM_OUT ? perhaps that should just be slider widget, covered under ValueChangeRequest</span>
   
@@ -98,6 +100,24 @@
 					<dt><code class="event">DeleteRequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent or assistive technology sends a 'delete' request to the web application.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>eventType</code></li>
+						</ul>
+					</dd>
+					<dt><code class="event">ExpandRequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent or assistive technology conveys intent to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>eventType</code></li>
+						</ul>
+					</dd>
+					<dt><code class="event">CollapseRequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent or assistive technology conveys intent to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
