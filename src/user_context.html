@@ -48,17 +48,21 @@ Accessibility implements Speech;
 
 [Supplemental, NoInterfaceObject]
 interface AccessibilityNotifications {
-  void elementsChanged();
-  void screenChanged();
+	
+	const unsigned short    screenChanged   = 1;
+	const unsigned short    elementChanged  = 2;
+	
+  void postNotification(required String notification, optional HTMLElement element);
 };</code></pre>
 			</div>
 			<h4>Methods for <strong>Interface <em>Accessibility</em></strong></h4>
 			<div class="method-list">
 				<dl>
-					<dt><code>window.navigator.accessibility.elementsChanged()</code></dt>
-					<dd>Returns void. Allows the web author to send a supplemental notification to the screen reader that certain aspects of relevant DOM elements have changed, informing the assistive technology to update its cache of the accessibility tree. For example, web authors might call this method after an animation has completed, allowing a screen reader to update its cursor location, if the focused element was moved.</dd>
-					<dt><code>window.navigator.accessibility.screenChanged()</code></dt>
-					<dd>Returns void. Allows the web author to send an explicit notification to the assistive technology that all aspects of a web application view have changed, informing the assistive technology to update its cache of the accessibility tree. Web authors <strong class="rfc2119">should</strong> call this method when a majority of the web view changes without triggering a full page refresh in the browser.</dd>
+					<dt><code>window.navigator.accessibility.postNotification()</code></dt>
+					<dd>
+						<p>Returns void. Allows the web author to send a required or supplemental notification, usually to inform the assistive technology to update its cache of the accessibility tree. For example, web authors might call this method after an animation has completed, allowing a screen reader to update its cursor location, if the focused element was moved.</p>
+						<p class="note">Note: screenChanged should be fired for full screen DOM-based refreshes. elementChanged is sufficient for significant branch node changes.</p>
+					</dd>
 				</dl>
 			</div>
 			
@@ -169,6 +173,7 @@ interface MagnifierNotifications {
 				</dl>
 			</div>
 			
+			<!--
 			<h3><strong>Interface <em>Speech</em></strong></h3>
 			<p>The <code>speech</code> attribute of the Accessibility interface <strong class="rfc2119">must</strong> return an instance of the Speech interface:</p>
 			<div class="idl">
@@ -180,6 +185,7 @@ interface MagnifierNotifications {
 };</code></pre>
 			</div>
 		</div>
+		-->
 		<!-- :::::::::::::::::::: END window.navigator.accessibility :::::::::::::::::::: -->
 		
 		<div class="placeholder">
