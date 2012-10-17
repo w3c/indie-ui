@@ -112,14 +112,6 @@
 						<li>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, including pressing <kbd>Escape</kbd> on most keyboard-controlled operating systems, or by using a two-finger <a href="http://www.apple.com/voiceover/info/guide/_1133.html">scrub gesture</a> in VoiceOver on iOS or Mac OS X. User agents understanding this intent should initiate an <code>DismissRequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</li>
 					</ul>
 				</div>
-				<div class="todo note">
-					<h4>To-do: Explanation needed about event order precedence.</h4>
-					<p>An area where this is notably lacking is in regards to the precedence of event order in mainstream user agents, especially in regards to continuous input events. For example, user interactions with starting and ending events (touchstart/touchend, shakestart/shakeend, etc.) should probably take precendence over UIRequestEvents in mainstream user agents. UIRequestEvents are only intended to be used in mainstream user agents where appropriate, but the definition of "where appropriate" is not something we would attempt to define at the time of this proposal. Instead, we offer the previous examples for the sake of discussion.</p>
-					<ol>
-						<li>Note that the 'shake' interaction mentioned in the first example could be sent to the web app as a shakestart event which, if not captured, could then be sent as an UndoRequest. If the the web app does not capture either event, the shake interaction would be ignored by the web application.</li>
-						<li>Also note that the 'scrub gesture' interaction mentioned in the second example is specific to assistive technology (VoiceOver on iOS, which intercepts all touch events), so it's appropriate for the UIRequestEvent to take precedence, and never send a touchstart event.</li>
-					</ol>
-				</div>
 			</div>
 			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
 
@@ -287,18 +279,18 @@
 				</div>
 				<h4>The different types of AccessibilityEvents that can occur are:</h4>
 				<dl>
-					<dt><code class="event">AXFocus</code> <em class="ednote">(Editorial Note: possibly renamed <code class="event">AXFocusIn</code>)</em></dt>
+					<dt><code class="event">ATFocusIn</code></dt>
 					<dd>
-						<p>Initiated when the assistive technology cursor moves to a particular DOM node.</p>
+						<p>Initiated when the assistive technology cursor or point of regard moves to a particular DOM node.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: No</li>
 							<li>Context Info: None</li>
 						</ul>
 					</dd>
-					<dt><code class="event">AXBlur</code> <em class="ednote">(Editorial Note: possibly renamed <code class="event">AXFocusOut</code>)</em></dt>
+					<dt><code class="event">ATFocusOut</code></dt>
 					<dd>
-						<p>Initiated when the assistive technology cursor leaves a particular DOM node.</p>
+						<p>Initiated when the assistive technology cursor or point of regard leaves a particular DOM node.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: No</li>
