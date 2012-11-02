@@ -5,33 +5,104 @@
 		<title>IndieUI 1.0: Events</title>
 		<link href="http://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet" type="text/css">
 		<link href="./csi/screen.css" rel="stylesheet" type="text/css">
+		
+		<!-- 
+      === NOTA BENE ===
+      For the three scripts below, if your spec resides on dev.w3 you can check them
+      out in the same tree and use relative links so that they'll work offline,
+     -->
+		<script src="http://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
+		<script class="remove">
+      var respecConfig = {
+          // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
+          specStatus:           "ED",
+          
+          // the specification's short name, as in http://www.w3.org/TR/short-name/
+          shortName:            "indie-ui-events",
+
+          // if your specification has a subtitle that goes below the main
+          // formal title, define it here
+          // subtitle   :  "an excellent document",
+
+          // if you wish the publication date to be other than today, set this
+          // publishDate:  "2009-08-06",
+
+          // if the specification's copyright date is a range of years, specify
+          // the start date here:
+          // copyrightStart: "2012",
+
+          // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
+          // and its maturity status
+          // previousPublishDate:  "1977-03-15",
+          // previousMaturity:  "WD",
+
+          // if there a publicly available Editor's Draft, this is the link
+          edDraftURI:           "http://dvcs.w3.org/hg/IndieUI/raw-file/tip/events/indie-ui-events.html",
+
+          // if this is a LCWD, uncomment and set the end of its review period
+          // lcEnd: "2009-08-05",
+
+          // if you want to have extra CSS, append them to this list
+          // it is recommended that the respec.css stylesheet be kept
+          extraCSS:             ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
+
+          // editors, add as many as you like
+          // only "name" is required, also can have url, company, companyURL in comma separated list
+          editors:  [
+              { name: "James Craig", company: "Apple Inc.", companyURL: "http://www.apple.com/" },
+              { name: "Michael Cooper", company: "W3C", companyURL: "http://www.w3.org/" },
+          ],
+
+          // authors, add as many as you like. 
+          // This is optional, uncomment if you have authors as well as editors.
+          // only "name" is required. Same format as editors.
+
+          authors:  [
+            { name: "James Craig", company: "Apple, Inc.", companyURL: "http://apple.com/" },
+          ],
+          
+          // name of the WG
+          wg:           "Independent User Interface (Indie UI) and Web Events Working Groups",
+          
+          // URI of the public WG page
+          wgURI:        "http://www.w3.org/WAI/IndieUI/",
+          
+          // name (without the @w3c.org) of the public mailing to which comments are due
+          wgPublicList: "public-indie-ui-comments",
+          
+          // URI of the patent status for this WG, for Rec-track documents
+          // !!!! IMPORTANT !!!!
+          // This is important for Rec-track documents, do not copy a patent URI from a random
+          // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
+          // Team Contact.
+          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/54953/status",
+      };
+    </script>
+		
+		
 	</head>
 	<body>
-		<div class="head">
-			<a href="http://www.w3.org/"><img alt="W3C" height="48" src="http://www.w3.org/Icons/w3c_home" width="72"/></a>
-			<h1>Independent User Interface (IndieUI) 1.0: Events Module</h1>
-			<h2 class="maturity">Editor's Draft</h2>
-			<dl>
-				<dt>Editors</dt>
-				<dd>James Craig, Apple Inc.</dd>
-				<dd>Michael Cooper, W3C</dd>
-			</dl>
-			<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2012-<span id="copyright.year">…</span> <a href="http://www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="http://www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
-			<hr aria-label="Separator from Header"/>
-		</div>
+
+		<section id="abstract">
+			<p>This is the abstract for your specification.</p>
+		</section>
+
+		<section id="sotd">
+			<p>Custom status paragraph</p>
+		</section>
 		
 		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
-		<div class="section" id="intro">
+		<section id="intro">
 			<h2>Abstract</h2>
 			<p>This specification, in conjunction with the <a href="./user_context.html">User Context Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content. </p>
 			
 			<p class="placeholder">placeholder for remaining intro</p>
 			
-		</div>
+		</section>
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 		
 		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
-		<div class="section" id="RequestEvents">
+		<section id="RequestEvents">
 			<h2><abbr title="User Interface">UI</abbr> Change Request Events</h2>
 			<p>The core principle behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agent and assistive technology behave as they normally would.</p>
 			<p><strong>Change request events do not cause any direct manipulation or mutation of the DOM.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user agent or assistive technology. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent or assistive technology that the event has been captured and understood. If a web application does not cancel any change request event, the user agent or assistive technology can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
@@ -40,7 +111,7 @@
 			<p class="ednote">These events should be asynchronous, but when used in conjunction with keyboard events, should fire after keydown, but before both keyup and keypress.</p>
 
 			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
-			<div class="section" id="UIRequestEvent">
+			<section id="UIRequestEvent">
 				<h3><strong>Interface <em>UIRequestEvent</em></strong></h3>
 
 				<div class="idl">
@@ -132,11 +203,11 @@
 						<li>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, including pressing <kbd>Escape</kbd> on most keyboard-controlled operating systems, or by using a two-finger <a href="http://www.apple.com/voiceover/info/guide/_1133.html">scrub gesture</a> in VoiceOver on iOS or Mac OS X. User agents understanding this intent should initiate an <code>DismissRequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</li>
 					</ul>
 				</div>
-			</div>
+			</section>
 			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
 
 			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
-			<div class="section" id="UIScrollRequestEvent">
+			<section id="UIScrollRequestEvent">
 				<h3><strong>Interface <em>UIScrollRequestEvent</em></strong></h3>
 				<div class="idl">
 					<pre><code>interface UIScrollRequestEvent : UIRequestEvent {
@@ -177,11 +248,11 @@
 						</ul>
 					</dd>
 				</dl>
-			</div>
+			</section>
 			<!-- :::::::::::::::::::: END UIScrollRequestEvent :::::::::::::::::::: -->
 
 			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
-			<div class="section" id="UIValueChangeRequestEvent">
+			<section id="UIValueChangeRequestEvent">
 				<h3><strong>Interface <em>UIValueChangeRequestEvent</em></strong></h3>
 				<div class="idl">
 					<pre><code>interface UIValueChangeRequestEvent : UIRequestEvent {
@@ -228,11 +299,11 @@
 					</div>
 					
 				</dl>
-			</div>
+			</section>
 			<!-- :::::::::::::::::::: END UIValueChangeRequestEvent :::::::::::::::::::: -->
 
 			<!-- :::::::::::::::::::: DOMAttributeChangeRequestEvent :::::::::::::::::::: -->
-			<div class="section" id="DOMAttributeChangeRequestEvent">
+			<section id="DOMAttributeChangeRequestEvent">
 				<h3><strong>Interface <em>DOMAttributeChangeRequestEvent</em></strong></h3>
 				<div class="idl">
 					<pre><code>interface DOMAttributeChangeRequestEvent : UIRequestEvent {
@@ -272,19 +343,19 @@
 						<li>If a user wanted to sort an ARIA grid on a particular column, the assistive technology would initiate a <code>DOMAttrChangeRequest</code> event on the column header element, with the <code>attrName</code> equal to <code>aria-sort</code>, and the <code>newValue</code> equal to <code>ascending</code> or <code>descending</code>.</li>
 					</ol>
 				</div>
-			</div>
+			</section>
 			<!-- :::::::::::::::::::: END DOMAttributeChangeRequestEvent :::::::::::::::::::: -->
 
-		</div>
+		</section>
 		<!-- :::::::::::::::::::: END UI Request Event Interfaces :::::::::::::::::::: -->
 
 		<!-- :::::::::::::::::::: Accessibility Event Interfaces :::::::::::::::::::: -->
-		<div class="section" id="AXevents">
+		<section id="AXevents">
 			<h2>Accessibility Events</h2>
 			<p>The following events are only initiated by assistive technologies, as opposed to mainstream user agents.</p>
 			
 			<!-- :::::::::::::::::::: AccessibilityEvent :::::::::::::::::::: -->
-			<div class="section" id="AccessibilityEvent">
+			<section id="AccessibilityEvent">
 				<h3><strong>Interface <em>AccessibilityEvent</em></strong></h3>
 				<div class="idl">
 					<pre><code>interface AccessibilityEvent : UIEvent {
@@ -346,16 +417,16 @@
 						</ul>
 					</dd>
 				</dl>
-			</div>
+			</section>
 			<!-- :::::::::::::::::::: END AccessibilityEvent :::::::::::::::::::: -->
 			
-		</div>
+		</section>
 		<!-- :::::::::::::::::::: END Accessibility Event Interfaces :::::::::::::::::::: -->
-
+		<!--
 		<div class="placeholder">
 			<p>Placeholder for footer content (acknowledgements, terms, etc.)</p>
 		</div>
-
+		-->
 		
 	</body>
 </html>
