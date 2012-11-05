@@ -118,16 +118,19 @@
 					<pre><code>interface UIRequestEvent : UIEvent {
   
   <span class="comment">// UA or AT notifies web app of a change request</span>
+<!-- removed from IDL 
   const unsigned short    UNDO     =  1;
   const unsigned short    REDO     =  2;
   const unsigned short    DISMISS  =  3;
   const unsigned short    DELETE   =  4;
   const unsigned short    EXPAND   =  5;
   const unsigned short    COLLAPSE =  6;
+
   <span class="comment">// expect more type constants will be added for other event types…</span>
   <span class="comment">// ZOOM_IN / ZOOM_OUT ? perhaps that should just be slider widget, covered under ValueChangeRequest</span>
   
   readonly attribute unsigned short    eventType;
+-->
   
   void initUIRequestEvent(
          in DOMString typeArg,
@@ -221,6 +224,7 @@
   const unsigned short    TOP_LIMIT     =  6;
   const unsigned short    RIGHT_LIMIT   =  7;
   const unsigned short    BOTTOM_LIMIT  =  8;
+  <span class="comment">// Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face. </span>
   
   readonly attribute unsigned short   scrollType;
   
@@ -266,6 +270,7 @@
   const unsigned short    DECREMENT_SMALL  =  6;
   const unsigned short    DECREMENT_LARGE  =  7;
   const unsigned short    DECREMENT_MIN    =  8;
+  <span class="comment">// Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face. </span>
   
   readonly attribute unsigned short   changeType;
   
