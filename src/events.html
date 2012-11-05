@@ -2,8 +2,8 @@
 <html lang="en:us">
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>IndieUI 1.0: Events</title>
-		<link href="http://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet" type="text/css">
+		<title>IndieUI: Events 1.0</title>
+		<!--<link href="http://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet" type="text/css">-->
 		<link href="./csi/screen.css" rel="stylesheet" type="text/css">
 		
 		<!-- 
@@ -44,7 +44,10 @@
 
           // if you want to have extra CSS, append them to this list
           // it is recommended that the respec.css stylesheet be kept
-          extraCSS:             ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
+          extraCSS:             [
+            "http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css",
+            "./csi/screen.css"
+          ],
 
           // editors, add as many as you like
           // only "name" is required, also can have url, company, companyURL in comma separated list
@@ -58,7 +61,7 @@
           // only "name" is required. Same format as editors.
 
           authors:  [
-            { name: "James Craig", company: "Apple, Inc.", companyURL: "http://apple.com/" },
+            { name: "James Craig", company: "Apple Inc.", companyURL: "http://www.apple.com/" },
           ],
           
           // name of the WG
@@ -114,8 +117,8 @@
 			<section id="UIRequestEvent">
 				<h3><strong>Interface <em>UIRequestEvent</em></strong></h3>
 
-				<div class="idl">
-					<pre><code>interface UIRequestEvent : UIEvent {
+				<div class="idlwrapper">
+					<pre class="idl">interface UIRequestEvent : UIEvent {
   
   <span class="comment">// UA or AT notifies web app of a change request</span>
 <!-- removed from IDL 
@@ -138,9 +141,9 @@
          in boolean cancelableArg,
          in views::AbstractView viewArg,
          in long detailArg,
-         in unsigned short eventTypeArg
+         <!--in unsigned short eventTypeArg-->
        );
-};</code></pre>
+};</pre>
 				</div>
 				<h4>The different types of UIRequestEvents that can occur are:</h4>
 				<dl>
@@ -203,7 +206,7 @@
 					<h4>Examples</h4>
 					<ol>
 						<li>Users, wanting to 'undo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices. User agents understanding this intent should initiate an <code>UndoRequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'undo' action is understood in the context of the web application, web authors should undo the user's change, and cancel the event using the event object's <code>preventDefault()</code> method.</li>
-						<li>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, including pressing <kbd>Escape</kbd> on most keyboard-controlled operating systems, or by using a two-finger <a href="http://www.apple.com/voiceover/info/guide/_1133.html">scrub gesture</a> in VoiceOver on iOS or Mac OS X. User agents understanding this intent should initiate an <code>DismissRequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</li>
+						<li>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, most commonly by pressing <kbd>Escape</kbd> on keyboard-controlled operating systems<!--, or by using a two-finger <a href="http://www.apple.com/voiceover/info/guide/_1133.html">scrub gesture</a> in VoiceOver on iOS or Mac OS X-->. User agents understanding this intent should initiate an <code>DismissRequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</li>
 					</ul>
 				</div>
 			</section>
@@ -212,8 +215,8 @@
 			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
 			<section id="UIScrollRequestEvent">
 				<h3><strong>Interface <em>UIScrollRequestEvent</em></strong></h3>
-				<div class="idl">
-					<pre><code>interface UIScrollRequestEvent : UIRequestEvent {
+				<div class="idlwrapper">
+					<pre class="idl">interface UIScrollRequestEvent : UIRequestEvent {
   
   <span class="comment">// for custom scroll views or widgets (e.g. carousels, lists, grids)</span>
   const unsigned short    LEFT          =  1;
@@ -237,7 +240,7 @@
          in unsigned short eventTypeArg
          in unsigned short scrollTypeArg
        );
-};</code></pre>
+};</pre>
 				</div>
 				<h4>The single type of UIScrollRequestEvent that can occur is:</h4>
 				<dl>
@@ -258,8 +261,8 @@
 			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
 			<section id="UIValueChangeRequestEvent">
 				<h3><strong>Interface <em>UIValueChangeRequestEvent</em></strong></h3>
-				<div class="idl">
-					<pre><code>interface UIValueChangeRequestEvent : UIRequestEvent {
+				<div class="idlwrapper">
+					<pre class="idl">interface UIValueChangeRequestEvent : UIRequestEvent {
   
   <span class="comment">// value changes (e.g. ranges)</span>
   const unsigned short    INCREMENT        =  1;
@@ -283,7 +286,7 @@
          in unsigned short eventTypeArg,
          in unsigned short changeTypeArg
        );
-};</code></pre>
+};</pre>
 				</div>
 				<h4>The single type of UIValueChangeRequestEvent that can occur is:</h4>
 				<dl>
@@ -310,8 +313,8 @@
 			<!-- :::::::::::::::::::: DOMAttributeChangeRequestEvent :::::::::::::::::::: -->
 			<section id="DOMAttributeChangeRequestEvent">
 				<h3><strong>Interface <em>DOMAttributeChangeRequestEvent</em></strong></h3>
-				<div class="idl">
-					<pre><code>interface DOMAttributeChangeRequestEvent : UIRequestEvent {
+				<div class="idlwrapper">
+					<pre class="idl">interface DOMAttributeChangeRequestEvent : UIRequestEvent {
   
   readonly attribute DOMString    attrName;
   readonly attribute DOMString    newValue;
@@ -326,7 +329,7 @@
          in DOMString attrNameArg,
          in DOMString newValueArg
        );
-};</code></pre>
+};</pre>
 				</div>
 				<h4>The single type of DOMAttributeChangeRequestEvent that can occur is:</h4>
 				<dl>
@@ -362,8 +365,8 @@
 			<!-- :::::::::::::::::::: AccessibilityEvent :::::::::::::::::::: -->
 			<section id="AccessibilityEvent">
 				<h3><strong>Interface <em>AccessibilityEvent</em></strong></h3>
-				<div class="idl">
-					<pre><code>interface AccessibilityEvent : UIEvent {
+				<div class="idlwrapper">
+					<pre class="idl">interface AccessibilityEvent : UIEvent {
   void initAccessibilityEvent(
          in DOMString typeArg,
          in boolean canBubbleArg,
@@ -371,7 +374,7 @@
          in views::AbstractView viewArg,
          in long detailArg
        );
-};</code></pre>
+};</pre>
 				</div>
 				<h4>The different types of AccessibilityEvents that can occur are:</h4>
 				<dl>

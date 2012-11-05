@@ -24,25 +24,6 @@ dd{
 body {
 	line-height: 1.4;
 }
-.idl { 
-	margin: 1em 0 0;
-	padding: 0.3em;
-	border: solid 1px #999;
-	color: #000; 
-	background-color: #eee;
-}
-
-.section {
-	margin: 20px 0 40px;
-	padding: 10px 0 0;
-	border: solid 1px #999;
-	border-width: 1px 0 0 0;
-}
-.section .section {
-	border-width: 0;
-	padding: 0;
-	margin-bottom:20px;
-}
 
 .note {
 	margin: 1em 0 0;
@@ -51,7 +32,7 @@ body {
 	color: #555;
 	position:relative;
 }
-.note:before{
+.note[title]:before{
 	content:attr(title);
 	position:absolute;
 	top:0;
@@ -86,7 +67,7 @@ div.ednote:before, p.ednote:before{
 	color:#c00 !important;
 	border-color:#c00 !important;
 }
-.todo:before{
+.todo[title]:before{
 	content: 'To-do';
 	position:absolute;
 	top:0;
@@ -104,7 +85,7 @@ div.ednote:before, p.ednote:before{
 	border: solid 1px #999;
 	position:relative;
 }
-.example:before{
+.example[title]:before{
 	content:attr(title);
 	position:absolute;
 	top:0;
