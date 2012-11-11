@@ -95,7 +95,7 @@
 		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
 		<section id="intro" class="introductory informative">
 			<h2>Introduction</h2>
-			<p>This specification, in conjunction with the <a href="./user_context.html">User Context Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content. </p>
+			<p>This specification, in conjunction with the <a href="./user_context.html">User Context Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content.</p>
 			<p class="placeholder">placeholder for remaining intro</p>
 		</section>
 		
@@ -104,8 +104,7 @@
 			<h2><abbr title="User Interface">UI</abbr> Change Request Events</h2>
 			<p>The core principle behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agent and assistive technology behave as they normally would.</p>
 			<p><strong>Change request events do not cause any direct manipulation or mutation of the DOM.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user agent or assistive technology. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent or assistive technology that the event has been captured and understood. If a web application does not cancel any change request event, the user agent or assistive technology can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
-			<p class="note" title="Informative">Note: The UIRequestEvent interface does not inherit from <a href="#AccessibilityEvent">AccessibilityEvent</a> (proposed in the following section), because we believe it will ultimately be useful outside the context of assistive technology. This may prove to be a lightweight, performant alternative to mutation events. For example, <code>DOMAttrChangeRequest</code> instead of <code>DOMAttrModified</code>.</p>
-			<p class="ednote">Event fires on document.activeElement (or AT equivalent) if applicable, or otherwise document.body.</p>
+			<p class="ednote">Event fires on point of regard (document.activeElement, clicked element, or AT equivalent) if applicable, or otherwise document.body.</p>
 			<p class="ednote">These events should be asynchronous, but when used in conjunction with keyboard events, should fire after keydown, but before both keyup and keypress.</p>
 
 			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
@@ -114,86 +113,63 @@
 
 				<div class="idlwrapper">
 					<pre class="idl">interface UIRequestEvent : UIEvent {
-  
-  <span class="comment">// UA or AT notifies web app of a change request</span>
-<!-- removed from IDL 
-  const unsigned short    UNDO     =  1;
-  const unsigned short    REDO     =  2;
-  const unsigned short    DISMISS  =  3;
-  const unsigned short    DELETE   =  4;
-  const unsigned short    EXPAND   =  5;
-  const unsigned short    COLLAPSE =  6;
-
-  <span class="comment">// expect more type constants will be added for other event types…</span>
-  <span class="comment">// ZOOM_IN / ZOOM_OUT ? perhaps that should just be slider widget, covered under ValueChangeRequest</span>
-  
-  readonly attribute unsigned short    eventType;
--->
-  
   void initUIRequestEvent(
          in DOMString typeArg,
          in boolean canBubbleArg,
          in boolean cancelableArg,
          in views::AbstractView viewArg,
          in long detailArg,
-         <!--in unsigned short eventTypeArg-->
        );
 };</pre>
 				</div>
 				<h4>The different types of UIRequestEvents that can occur are:</h4>
 				<dl>
-					<dt><code class="event">UndoRequest</code></dt>
+					<dt id="undorequest">Undo Request <code class="event">undorequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent or assistive technology sends an 'undo' request to the web application.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>eventType</code></li>
 						</ul>
 					</dd>
-					<dt><code class="event">RedoRequest</code></dt>
+					<dt id="redorequest">Redo Request <code class="event">redorequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent or assistive technology sends a 'redo' request to the web application.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>eventType</code></li>
 						</ul>
 					</dd>
-					<dt><code class="event">DismissRequest</code></dt>
+					<dt id="dismissrequest">Dismiss Request <code class="event">dismissrequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent or assistive technology sends a 'dismiss' request to the web application.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>eventType</code></li>
 						</ul>
 					</dd>
-					<dt><code class="event">DeleteRequest</code></dt>
+					<dt id="deleterequest">Delete Request <code class="event">deleterequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent or assistive technology sends a 'delete' request to the web application.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>eventType</code></li>
 						</ul>
 					</dd>
-					<dt><code class="event">ExpandRequest</code></dt>
+					<dt id="expandrequest">Expand Request <code class="event">expandrequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent or assistive technology conveys intent to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>eventType</code></li>
 						</ul>
 					</dd>
-					<dt><code class="event">CollapseRequest</code></dt>
+					<dt id="collapserequest">Collapse Request <code class="event">collapserequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent or assistive technology conveys intent to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>eventType</code></li>
 						</ul>
 					</dd>
 				</dl> 
@@ -210,18 +186,19 @@
 			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
 			<section id="UIScrollRequestEvent">
 				<h3><strong>Interface <em>UIScrollRequestEvent</em></strong></h3>
+				<div class="ednote">Editorial Note: </div>
 				<div class="idlwrapper">
 					<pre class="idl">interface UIScrollRequestEvent : UIRequestEvent {
   
   <span class="comment">// for custom scroll views or widgets (e.g. carousels, lists, grids)</span>
-  const unsigned short    LEFT          =  1;
-  const unsigned short    UP            =  2;
-  const unsigned short    RIGHT         =  3;
-  const unsigned short    DOWN          =  4;
-  const unsigned short    LEFT_LIMIT    =  5;
-  const unsigned short    TOP_LIMIT     =  6;
-  const unsigned short    RIGHT_LIMIT   =  7;
-  const unsigned short    BOTTOM_LIMIT  =  8;
+  const unsigned short    LEFT          =  TBD;
+  const unsigned short    UP            =  TBD;
+  const unsigned short    RIGHT         =  TBD;
+  const unsigned short    DOWN          =  TBD;
+  const unsigned short    LEFT_LIMIT    =  TBD;
+  const unsigned short    TOP_LIMIT     =  TBD;
+  const unsigned short    RIGHT_LIMIT   =  TBD;
+  const unsigned short    BOTTOM_LIMIT  =  TBD;
   <span class="comment">// Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face. </span>
   
   readonly attribute unsigned short   scrollType;
@@ -239,7 +216,7 @@
 				</div>
 				<h4>The single type of UIScrollRequestEvent that can occur is:</h4>
 				<dl>
-					<dt><code class="event">ScrollRequest</code></dt>
+					<dt id="scrollrequest">Scroll Request <code class="event">scrollrequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent or assistive technology sends a scroll request to the web application. Scroll events need only be used on custom scroll views (lists and grids showing data subsets, carousels, etc.), as user agents and assistive technologies already manage scrolling of native scroll views.</p>
 						<p class="note" title="Informative">Note: The scroll type constants are more or less equivalent to expected behavior for <kbd>PageUp</kbd>/<kbd>PageDown</kbd> and <kbd>Home</kbd>/<kbd>End</kbd> keys on native scroll views, but also allow horizontal scrolling.</p>
@@ -260,14 +237,14 @@
 					<pre class="idl">interface UIValueChangeRequestEvent : UIRequestEvent {
   
   <span class="comment">// value changes (e.g. ranges)</span>
-  const unsigned short    INCREMENT        =  1;
-  const unsigned short    INCREMENT_SMALL  =  2;
-  const unsigned short    INCREMENT_LARGE  =  3;
-  const unsigned short    INCREMENT_MAX    =  4;
-  const unsigned short    DECREMENT        =  5;
-  const unsigned short    DECREMENT_SMALL  =  6;
-  const unsigned short    DECREMENT_LARGE  =  7;
-  const unsigned short    DECREMENT_MIN    =  8;
+  const unsigned short    INCREMENT        =  TBD;
+  const unsigned short    INCREMENT_SMALL  =  TBD;
+  const unsigned short    INCREMENT_LARGE  =  TBD;
+  const unsigned short    INCREMENT_MAX    =  TBD;
+  const unsigned short    DECREMENT        =  TBD;
+  const unsigned short    DECREMENT_SMALL  =  TBD;
+  const unsigned short    DECREMENT_LARGE  =  TBD;
+  const unsigned short    DECREMENT_MIN    =  TBD;
   <span class="comment">// Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face. </span>
   
   readonly attribute unsigned short   changeType;
@@ -285,7 +262,7 @@
 				</div>
 				<h4>The single type of UIValueChangeRequestEvent that can occur is:</h4>
 				<dl>
-					<dt><code class="event">ValueChangeRequest</code></dt>
+					<dt id="valuechangerequest">Value Change Request <code class="event">valuechangerequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent or assistive technology sends a value change request to the web application.</p>
 						<p>Web authors <strong class="rfc2119">should</strong> code applications to accept all values of the <code>changeType</code> argument. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
