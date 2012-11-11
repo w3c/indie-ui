@@ -282,50 +282,6 @@
 			</section>
 			<!-- :::::::::::::::::::: END UIValueChangeRequestEvent :::::::::::::::::::: -->
 
-			<!-- :::::::::::::::::::: DOMAttributeChangeRequestEvent :::::::::::::::::::: -->
-			<section id="DOMAttributeChangeRequestEvent">
-				<h3><strong>Interface <em>DOMAttributeChangeRequestEvent</em></strong></h3>
-				<div class="idlwrapper">
-					<pre class="idl">interface DOMAttributeChangeRequestEvent : UIRequestEvent {
-  
-  readonly attribute DOMString    attrName;
-  readonly attribute DOMString    newValue;
-  
-  void initDOMAttributeChangeRequestEvent(
-         in DOMString typeArg,
-         in boolean canBubbleArg,
-         in boolean cancelableArg,
-         in views::AbstractView viewArg,
-         in long detailArg,
-         in unsigned short eventTypeArg,
-         in DOMString attrNameArg,
-         in DOMString newValueArg
-       );
-};</pre>
-				</div>
-				<h4>The single type of DOMAttributeChangeRequestEvent that can occur is:</h4>
-				<dl>
-					<dt><code class="event">DOMAttrChangeRequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent or assistive technology sends an attribute change request to the web application. In order for web applications to understand the intent of change request events from the user agent or assistive technology, these change requests should be limited to attributes for which a change in value indicates a discrete, defined action for known types of widgets and UI elements.</p>
-						<p class="note" title="Informative">Note: Currently, this limitation indicates that <code>DOMAttrChangeRequest</code> only applies to WAI-ARIA widgets, but it has the potential to be used with future iterations of HTML5 or <abbr title="Scalable Vector Graphics">SVG</abbr>.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>attrName</code>, <code>newValue</code></li>
-						</ul>
-					</dd>
-				</dl>
-				<div class="example" title="Informative">
-					<h4>Examples</h4>
-					<ol>
-						<li>If a user wanted to expand or collapse the current node of an ARIA tree, the assistive technology would initiate a <code>DOMAttrChangeRequest</code> event on the tree item element, with the <code>attrName</code> equal to <code>aria-expanded</code>, and the <code>newValue</code> equal to <code>true</code> or <code>false</code>.</li>
-						<li>If a user wanted to sort an ARIA grid on a particular column, the assistive technology would initiate a <code>DOMAttrChangeRequest</code> event on the column header element, with the <code>attrName</code> equal to <code>aria-sort</code>, and the <code>newValue</code> equal to <code>ascending</code> or <code>descending</code>.</li>
-					</ol>
-				</div>
-			</section>
-			<!-- :::::::::::::::::::: END DOMAttributeChangeRequestEvent :::::::::::::::::::: -->
-
 		</section>
 		<!-- :::::::::::::::::::: END UI Request Event Interfaces :::::::::::::::::::: -->
 
