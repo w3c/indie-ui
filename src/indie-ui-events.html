@@ -128,66 +128,68 @@
   );
 };</pre>
 				</div>
-				<h4>The different types of UIRequestEvents that can occur are:</h4>
-				<dl>
-					<dt id="undorequest">Undo Request <code class="event">undorequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent sends an 'undo' request to the web application.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-						</ul>
-						<div class="example" title="Informative Example">
-							<p>Users, wanting to 'undo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices.</p>
-						</div>
-					</dd>
-					<dt id="redorequest">Redo Request <code class="event">redorequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent sends a 'redo' request to the web application.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-						</ul>
-						<div class="example" title="Informative Example">
-							<p>Users, wanting to 'redo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Shift+Z</kbd> on Windows or Linux, <kbd>Command+Shift+Z</kbd> on Mac OS X.</p>
-						</div>
-					</dd>
-					<dt id="dismissrequest">Dismiss Request <code class="event">dismissrequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent sends a 'dismiss' request to the web application.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-						</ul>
-						<div class="example" title="Informative Example">
-							<p>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, most commonly by pressing <kbd>Escape</kbd> on keyboard-controlled operating systems. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</p>
-						</div>
-					</dd>
-					<dt id="deleterequest">Delete Request <code class="event">deleterequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent sends a 'delete' request to the web application.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-						</ul>
-					</dd>
-					<dt id="expandrequest">Expand Request <code class="event">expandrequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent conveys intent to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-						</ul>
-					</dd>
-					<dt id="collapserequest">Collapse Request <code class="event">collapserequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent conveys intent to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-						</ul>
-					</dd>
-				</dl>
+				<section id="UIRequestEvents">
+					<h4>The different types of UIRequestEvents that can occur are:</h4>
+					<dl>
+						<dt id="undorequest">Undo Request <code class="event">undorequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends an 'undo' request to the web application.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+							<div class="example" title="Informative Example">
+								<p>Users, wanting to 'undo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices.</p>
+							</div>
+						</dd>
+						<dt id="redorequest">Redo Request <code class="event">redorequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a 'redo' request to the web application.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+							<div class="example" title="Informative Example">
+								<p>Users, wanting to 'redo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Shift+Z</kbd> on Windows or Linux, <kbd>Command+Shift+Z</kbd> on Mac OS X.</p>
+							</div>
+						</dd>
+						<dt id="dismissrequest">Dismiss Request <code class="event">dismissrequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a 'dismiss' request to the web application.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+							<div class="example" title="Informative Example">
+								<p>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, most commonly by pressing <kbd>Escape</kbd> on keyboard-controlled operating systems. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</p>
+							</div>
+						</dd>
+						<dt id="deleterequest">Delete Request <code class="event">deleterequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a 'delete' request to the web application.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="expandrequest">Expand Request <code class="event">expandrequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent conveys intent to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="collapserequest">Collapse Request <code class="event">collapserequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent conveys intent to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
 			</section>
 			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
 
@@ -213,19 +215,21 @@
   );
 };</pre>
 				</div>
-				<h4>The single type of UIScrollRequestEvent that can occur is:</h4>
-				<dl>
-					<dt id="panrequest">Pan Request <code class="event">panrequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent sends a pan request to the web application with accompanying x/y delta values.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
-						</ul>
-						<p class="ednote">Yet to be determined if this event should remain as a discrete event, or be split into start, move, and end request events for panning.</p>
-					</dd>
-				</dl>
+				<section id="UIPanRequestEvents">
+					<h4>The single type of UIPanRequestEvent that can occur is:</h4>
+					<dl>
+						<dt id="panrequest">Pan Request <code class="event">panrequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a pan request to the web application with accompanying x/y delta values.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+							<p class="ednote">Yet to be determined if this event should remain as a discrete event, or be split into start, move, and end request events for panning.</p>
+						</dd>
+					</dl>
+				</section>
 			</section>
 			<!-- :::::::::::::::::::: END UIPanRequestEvent :::::::::::::::::::: -->
 
@@ -258,19 +262,21 @@
   );
 };</pre>
 				</div>
-				<h4>The single type of UIScrollRequestEvent that can occur is:</h4>
-				<dl>
-					<dt id="scrollrequest">Scroll Request <code class="event">scrollrequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent sends a scroll request to the web application. Scroll events need only be used on custom scroll views (lists and grids showing data subsets, carousels, etc.), as user agents and assistive technologies already manage scrolling of native scroll views.</p>
-						<p class="note">The scroll type constants are more or less equivalent to expected behavior for <kbd>PageUp</kbd>/<kbd>PageDown</kbd> and <kbd>Home</kbd>/<kbd>End</kbd> keys on native scroll views, but also allow horizontal scrolling.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>scrollType</code></li>
-						</ul>
-					</dd>
-				</dl>
+				<section id="UIScrollRequestEvents">
+					<h4>The single type of UIScrollRequestEvent that can occur is:</h4>
+					<dl>
+						<dt id="scrollrequest">Scroll Request <code class="event">scrollrequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a scroll request to the web application. Scroll events need only be used on custom scroll views (lists and grids showing data subsets, carousels, etc.), as user agents and assistive technologies already manage scrolling of native scroll views.</p>
+							<p class="note">The scroll type constants are more or less equivalent to expected behavior for <kbd>PageUp</kbd>/<kbd>PageDown</kbd> and <kbd>Home</kbd>/<kbd>End</kbd> keys on native scroll views, but also allow horizontal scrolling.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>scrollType</code></li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
 			</section>
 			<!-- :::::::::::::::::::: END UIScrollRequestEvent :::::::::::::::::::: -->
 
@@ -303,22 +309,24 @@
   );
 };</pre>
 				</div>
-				<h4>The single type of UIValueChangeRequestEvent that can occur is:</h4>
-				<dl>
-					<dt id="valuechangerequest">Value Change Request <code class="event">valuechangerequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent sends a value change request to the web application.</p>
-						<p>Web authors <strong class="rfc2119">should</strong> code applications to accept all values of the <code>changeType</code> argument. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>changeType</code></li>
-						</ul>
-						<div class="example" title="Informative Example">
-							<p>Users, wanting to change the value of a custom range widget (slider, spin buttons, etc.) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method.</p>
-						</div>
-					</dd>
-				</dl>
+				<section id="UIValueChangeRequestEvents">
+					<h4>The single type of UIValueChangeRequestEvent that can occur is:</h4>
+					<dl>
+						<dt id="valuechangerequest">Value Change Request <code class="event">valuechangerequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a value change request to the web application.</p>
+							<p>Web authors <strong class="rfc2119">should</strong> code applications to accept all values of the <code>changeType</code> argument. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>changeType</code></li>
+							</ul>
+							<div class="example" title="Informative Example">
+								<p>Users, wanting to change the value of a custom range widget (slider, spin buttons, etc.) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method.</p>
+							</div>
+						</dd>
+					</dl>
+				</section>
 			</section>
 			<!-- :::::::::::::::::::: END UIValueChangeRequestEvent :::::::::::::::::::: -->
 
@@ -353,19 +361,21 @@
   );
 };</pre>
 				</div>
-				<h4>The single type of UIZoomRequestEvent that can occur is:</h4>
-				<dl>
-					<dt id="zoomrequest">Zoom Request <code class="event">zoomrequest</code></dt>
-					<dd>
-						<p>Initiated when the user agent sends a zoom request to the web application.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>zoomType</code>, <code>originX</code>, and <code>originY</code></li>
-						</ul>
-						<p class="ednote">This may need to be split into zoomstartrequest, zoomchangerequest, and zoomendrequest events.</p>
-					</dd>
-				</dl>
+				<section id="UIZoomRequestEvents">
+					<h4>The single type of UIZoomRequestEvent that can occur is:</h4>
+					<dl>
+						<dt id="zoomrequest">Zoom Request <code class="event">zoomrequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a zoom request to the web application.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>zoomType</code>, <code>originX</code>, and <code>originY</code></li>
+							</ul>
+							<p class="ednote">This may need to be split into zoomstartrequest, zoomchangerequest, and zoomendrequest events.</p>
+						</dd>
+					</dl>
+				</section>
 			</section>
 			<!-- :::::::::::::::::::: END UIZoomRequestEvent :::::::::::::::::::: -->
 
@@ -391,27 +401,29 @@
   );
 };</pre>
 				</div>
-				<h4>The different types of AccessibilityEvents that can occur are:</h4>
-				<dl>
-					<dt>Assistive Technology Focus <code class="event">ATFocus</code></dt>
-					<dd>
-						<p>Initiated when the assistive technology cursor or point-of-regard moves to a particular DOM node.</p>
-						<p class="ednote">Probably need a normative author requirement here stating authors MUST NOT update the visible view based on these events, unless the focused element is entirely out of view. Include example of where this is harmful.</p>
-						<p class="ednote">We might also need an AT equivalent of <code>document.activeElement</code>.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: No</li>
-						</ul>
-					</dd>
-					<dt>Assistive Technology Blur <code class="event">ATBlur</code></dt>
-					<dd>
-						<p>Initiated when the assistive technology cursor or point-of-regard leaves a particular DOM node.</p>
-						<ul>
-							<li>Bubbles: Yes</li>
-							<li>Cancelable: No</li>
-						</ul>
-					</dd>
-				</dl>
+				<section id="AccessibilityEvents">
+					<h4>The different types of AccessibilityEvents that can occur are:</h4>
+					<dl>
+						<dt>Assistive Technology Focus <code class="event">ATFocus</code></dt>
+						<dd>
+							<p>Initiated when the assistive technology cursor or point-of-regard moves to a particular DOM node.</p>
+							<p class="ednote">Probably need a normative author requirement here stating authors MUST NOT update the visible view based on these events, unless the focused element is entirely out of view. Include example of where this is harmful.</p>
+							<p class="ednote">We might also need an AT equivalent of <code>document.activeElement</code>.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: No</li>
+							</ul>
+						</dd>
+						<dt>Assistive Technology Blur <code class="event">ATBlur</code></dt>
+						<dd>
+							<p>Initiated when the assistive technology cursor or point-of-regard leaves a particular DOM node.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: No</li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
 			</section>
 			<!-- :::::::::::::::::::: END AccessibilityEvent :::::::::::::::::::: -->
 			
