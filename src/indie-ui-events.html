@@ -312,7 +312,7 @@
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
-							<li>Context Info: <code>eventType</code></li>
+							<li>Context Info: <code>changeType</code></li>
 						</ul>
 						<div class="example" title="Informative Example">
 							<p>Users, wanting to change the value of a custom range widget (slider, spin buttons, etc.) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method.</p>
@@ -354,7 +354,6 @@
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: No</li>
-							<li>Context Info: None</li>
 						</ul>
 					</dd>
 					<dt>Assistive Technology Blur <code class="event">ATBlur</code></dt>
@@ -363,7 +362,6 @@
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: No</li>
-							<li>Context Info: None</li>
 						</ul>
 					</dd>
 				</dl>
