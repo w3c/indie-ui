@@ -105,8 +105,8 @@
 			<p>The core principle behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agent and assistive technology behave as they normally would.</p>
 			<p><strong>Change request events do not cause any direct manipulation or mutation of the DOM.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user agent or assistive technology. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent or assistive technology that the event has been captured and understood. If a web application does not cancel any change request event, the user agent or assistive technology can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
 			<p class="ednote">There is purposefully no request event for activating the default action. Authors are encouraged to use a standard <code>click</code> event for default actions.</p>
-			<p class="ednote">Event fires on point of regard (document.activeElement, clicked element, or AT equivalent) if applicable, or otherwise document.body.</p>
-			<p class="ednote">These events should be asynchronous, but when used in conjunction with keyboard events, should fire after keydown, but before both keyup and keypress.</p>
+			<p class="ednote">Event fires on point-of-regard (<code>document.activeElement</code>, clicked element, or AT equivalent) if applicable, or otherwise <code>document.body</code>.</p>
+			<p class="ednote">These events should be asynchronous, but when used in conjunction with keyboard events, should fire after <code>keydown</code>, but before both <code>keyup</code> and <code>keypress</code>.</p>
 
 			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
 			<section id="UIRequestEvent">
@@ -115,12 +115,12 @@
 				<div class="idlwrapper">
 					<pre class="idl">interface UIRequestEvent : UIEvent {
   void initUIRequestEvent(
-         in DOMString typeArg,
-         in boolean canBubbleArg,
-         in boolean cancelableArg,
-         in views::AbstractView viewArg,
-         in long detailArg,
-       );
+    in DOMString typeArg,
+    in boolean canBubbleArg,
+    in boolean cancelableArg,
+    in views::AbstractView viewArg,
+    in long detailArg,
+  );
 };</pre>
 				</div>
 				<h4>The different types of UIRequestEvents that can occur are:</h4>
@@ -177,8 +177,8 @@
 				<div class="example" title="Informative">
 					<h4>Examples</h4>
 					<ol>
-						<li>Users, wanting to 'undo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices. User agents understanding this intent should initiate an <code>UndoRequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'undo' action is understood in the context of the web application, web authors should undo the user's change, and cancel the event using the event object's <code>preventDefault()</code> method.</li>
-						<li>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, most commonly by pressing <kbd>Escape</kbd> on keyboard-controlled operating systems<!--, or by using a two-finger <a href="http://www.apple.com/voiceover/info/guide/_1133.html">scrub gesture</a> in VoiceOver on iOS or Mac OS X-->. User agents understanding this intent should initiate an <code>DismissRequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</li>
+						<li>Users, wanting to 'undo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices. User agents understanding this intent should initiate an <code>undorequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'undo' action is understood in the context of the web application, web authors should undo the user's change, and cancel the event using the event object's <code>preventDefault()</code> method.</li>
+						<li>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, most commonly by pressing <kbd>Escape</kbd> on keyboard-controlled operating systems<!--, or by using a two-finger <a href="http://www.apple.com/voiceover/info/guide/_1133.html">scrub gesture</a> in VoiceOver on iOS or Mac OS X-->. User agents understanding this intent should initiate an <code>dismissrequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</li>
 					</ol>
 				</div>
 			</section>
@@ -187,7 +187,7 @@
 			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
 			<section id="UIScrollRequestEvent">
 				<h3><strong>Interface <em>UIScrollRequestEvent</em></strong></h3>
-				<div class="ednote">Editorial Note: </div>
+				<div class="ednote">Editorial Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face.</div>
 				<div class="idlwrapper">
 					<pre class="idl">interface UIScrollRequestEvent : UIRequestEvent {
   
@@ -200,19 +200,18 @@
   const unsigned short    TOP_LIMIT     =  TBD;
   const unsigned short    RIGHT_LIMIT   =  TBD;
   const unsigned short    BOTTOM_LIMIT  =  TBD;
-  <span class="comment">// Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face. </span>
   
   readonly attribute unsigned short   scrollType;
   
   void initUIScrollRequestEvent(
-         in DOMString typeArg,
-         in boolean canBubbleArg,
-         in boolean cancelableArg,
-         in views::AbstractView viewArg,
-         in long detailArg,
-         in unsigned short eventTypeArg
-         in unsigned short scrollTypeArg
-       );
+    in DOMString typeArg,
+    in boolean canBubbleArg,
+    in boolean cancelableArg,
+    in views::AbstractView viewArg,
+    in long detailArg,
+    in unsigned short eventTypeArg
+    in unsigned short scrollTypeArg
+  );
 };</pre>
 				</div>
 				<h4>The single type of UIScrollRequestEvent that can occur is:</h4>
@@ -234,6 +233,7 @@
 			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
 			<section id="UIValueChangeRequestEvent">
 				<h3><strong>Interface <em>UIValueChangeRequestEvent</em></strong></h3>
+				<div class="ednote">Editorial Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face.</div>
 				<div class="idlwrapper">
 					<pre class="idl">interface UIValueChangeRequestEvent : UIRequestEvent {
   
@@ -246,19 +246,18 @@
   const unsigned short    DECREMENT_SMALL  =  TBD;
   const unsigned short    DECREMENT_LARGE  =  TBD;
   const unsigned short    DECREMENT_MIN    =  TBD;
-  <span class="comment">// Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face. </span>
   
   readonly attribute unsigned short   changeType;
   
   void initUIValueChangeRequestEvent(
-         in DOMString typeArg,
-         in boolean canBubbleArg,
-         in boolean cancelableArg,
-         in views::AbstractView viewArg,
-         in long detailArg,
-         in unsigned short eventTypeArg,
-         in unsigned short changeTypeArg
-       );
+    in DOMString typeArg,
+    in boolean canBubbleArg,
+    in boolean cancelableArg,
+    in views::AbstractView viewArg,
+    in long detailArg,
+    in unsigned short eventTypeArg,
+    in unsigned short changeTypeArg
+  );
 };</pre>
 				</div>
 				<h4>The single type of UIValueChangeRequestEvent that can occur is:</h4>
@@ -277,7 +276,7 @@
 				
 				<div class="example" title="Informative">
 					<h4>Example</h4>
-					<p>Users, wanting to change the value of a custom range widget (slider, media progressbar, etc.) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces, and through gestures on many touch-enabled interfaces. User agents understanding this intent should initiate a <code>ValueChangeRequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method. If the event is not cancelled by the web author, user agents may pass the literal interaction event to the web application; in this case, in the form of a keypress or touch event.</p>
+					<p>Users, wanting to change the value of a custom range widget (slider, media progressbar, etc.) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces, and through gestures on many touch-enabled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method. If the event is not cancelled by the web author, user agents may pass the literal interaction event to the web application; in this case, in the form of a keypress or touch event.</p>
 				</div>
 					
 			</section>
@@ -297,28 +296,30 @@
 				<div class="idlwrapper">
 					<pre class="idl">interface AccessibilityEvent : UIEvent {
   void initAccessibilityEvent(
-         in DOMString typeArg,
-         in boolean canBubbleArg,
-         in boolean cancelableArg,
-         in views::AbstractView viewArg,
-         in long detailArg
-       );
+    in DOMString typeArg,
+    in boolean canBubbleArg,
+    in boolean cancelableArg,
+    in views::AbstractView viewArg,
+    in long detailArg
+  );
 };</pre>
 				</div>
 				<h4>The different types of AccessibilityEvents that can occur are:</h4>
 				<dl>
-					<dt><code class="event">ATFocusIn</code></dt>
+					<dt>Assistive Technology Focus <code class="event">ATFocus</code></dt>
 					<dd>
-						<p>Initiated when the assistive technology cursor or point of regard moves to a particular DOM node.</p>
+						<p>Initiated when the assistive technology cursor or point-of-regard moves to a particular DOM node.</p>
+						<p class="ednote">Probably need a normative author requirement here stating authors MUST NOT update the visible view based on these events, unless the focused element is entirely out of view. Include example of where this is harmful.</p>
+						<p class="ednote">We might also need an AT equivalent of <code>document.activeElement</code>.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: No</li>
 							<li>Context Info: None</li>
 						</ul>
 					</dd>
-					<dt><code class="event">ATFocusOut</code></dt>
+					<dt>Assistive Technology Blur <code class="event">ATBlur</code></dt>
 					<dd>
-						<p>Initiated when the assistive technology cursor or point of regard leaves a particular DOM node.</p>
+						<p>Initiated when the assistive technology cursor or point-of-regard leaves a particular DOM node.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: No</li>
