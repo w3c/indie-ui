@@ -103,7 +103,7 @@
 		<section id="RequestEvents">
 			<h2><abbr title="User Interface">UI</abbr> Change Request Events</h2>
 			<p>The core principle behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agent and assistive technology behave as they normally would.</p>
-			<p><strong>Change request events do not cause any direct manipulation or mutation of the DOM.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user agent or assistive technology. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent or assistive technology that the event has been captured and understood. If a web application does not cancel any change request event, the user agent or assistive technology can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
+			<p><strong>Change request events do not cause any direct manipulation or mutation of the DOM.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user agent. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent that the event has been captured and understood. If a web application does not cancel any change request event, the user agent can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
 			<p class="ednote">There is purposefully no request event for activating the default action. Authors are encouraged to use a standard <code>click</code> event for default actions.</p>
 			<p class="ednote">Event fires on point-of-regard (<code>document.activeElement</code>, clicked element, or AT equivalent) if applicable, or otherwise <code>document.body</code>.</p>
 			<p class="ednote">These events should be asynchronous, but when used in conjunction with keyboard events, should fire after <code>keydown</code>, but before both <code>keyup</code> and <code>keypress</code>.</p>
@@ -119,7 +119,7 @@
     in boolean canBubbleArg,
     in boolean cancelableArg,
     in views::AbstractView viewArg,
-    in long detailArg,
+    in long detailArg
   );
 };</pre>
 				</div>
@@ -127,7 +127,7 @@
 				<dl>
 					<dt id="undorequest">Undo Request <code class="event">undorequest</code></dt>
 					<dd>
-						<p>Initiated when the user agent or assistive technology sends an 'undo' request to the web application.</p>
+						<p>Initiated when the user agent sends an 'undo' request to the web application.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
@@ -135,7 +135,7 @@
 					</dd>
 					<dt id="redorequest">Redo Request <code class="event">redorequest</code></dt>
 					<dd>
-						<p>Initiated when the user agent or assistive technology sends a 'redo' request to the web application.</p>
+						<p>Initiated when the user agent sends a 'redo' request to the web application.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
@@ -143,7 +143,7 @@
 					</dd>
 					<dt id="dismissrequest">Dismiss Request <code class="event">dismissrequest</code></dt>
 					<dd>
-						<p>Initiated when the user agent or assistive technology sends a 'dismiss' request to the web application.</p>
+						<p>Initiated when the user agent sends a 'dismiss' request to the web application.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
@@ -151,7 +151,7 @@
 					</dd>
 					<dt id="deleterequest">Delete Request <code class="event">deleterequest</code></dt>
 					<dd>
-						<p>Initiated when the user agent or assistive technology sends a 'delete' request to the web application.</p>
+						<p>Initiated when the user agent sends a 'delete' request to the web application.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
@@ -159,7 +159,7 @@
 					</dd>
 					<dt id="expandrequest">Expand Request <code class="event">expandrequest</code></dt>
 					<dd>
-						<p>Initiated when the user agent or assistive technology conveys intent to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+						<p>Initiated when the user agent conveys intent to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
@@ -167,7 +167,7 @@
 					</dd>
 					<dt id="collapserequest">Collapse Request <code class="event">collapserequest</code></dt>
 					<dd>
-						<p>Initiated when the user agent or assistive technology conveys intent to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+						<p>Initiated when the user agent conveys intent to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
@@ -209,7 +209,6 @@
     in boolean cancelableArg,
     in views::AbstractView viewArg,
     in long detailArg,
-    in unsigned short eventTypeArg
     in unsigned short scrollTypeArg
   );
 };</pre>
@@ -218,7 +217,7 @@
 				<dl>
 					<dt id="scrollrequest">Scroll Request <code class="event">scrollrequest</code></dt>
 					<dd>
-						<p>Initiated when the user agent or assistive technology sends a scroll request to the web application. Scroll events need only be used on custom scroll views (lists and grids showing data subsets, carousels, etc.), as user agents and assistive technologies already manage scrolling of native scroll views.</p>
+						<p>Initiated when the user agent sends a scroll request to the web application. Scroll events need only be used on custom scroll views (lists and grids showing data subsets, carousels, etc.), as user agents and assistive technologies already manage scrolling of native scroll views.</p>
 						<p class="note" title="Informative">Note: The scroll type constants are more or less equivalent to expected behavior for <kbd>PageUp</kbd>/<kbd>PageDown</kbd> and <kbd>Home</kbd>/<kbd>End</kbd> keys on native scroll views, but also allow horizontal scrolling.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
@@ -255,7 +254,6 @@
     in boolean cancelableArg,
     in views::AbstractView viewArg,
     in long detailArg,
-    in unsigned short eventTypeArg,
     in unsigned short changeTypeArg
   );
 };</pre>
@@ -264,7 +262,7 @@
 				<dl>
 					<dt id="valuechangerequest">Value Change Request <code class="event">valuechangerequest</code></dt>
 					<dd>
-						<p>Initiated when the user agent or assistive technology sends a value change request to the web application.</p>
+						<p>Initiated when the user agent sends a value change request to the web application.</p>
 						<p>Web authors <strong class="rfc2119">should</strong> code applications to accept all values of the <code>changeType</code> argument. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
