@@ -199,8 +199,8 @@
 
   <span class="comment">// for panning views (e.g. maps or zoomed graphical views... not intended for standard scroll views)</span>
 
-  readonly attribute unsigned short   deltaX;
-  readonly attribute unsigned short   deltaY;
+  readonly attribute unsigned long   deltaX;
+  readonly attribute unsigned long   deltaY;
 
   void initUIScrollRequestEvent(
     in DOMString typeArg,
@@ -208,8 +208,8 @@
     in boolean cancelableArg,
     in views::AbstractView viewArg,
     in long detailArg,
-    in unsigned short deltaX,
-    in unsigned short deltaY
+    in unsigned long deltaX,
+    in unsigned long deltaY
   );
 };</pre>
 				</div>
