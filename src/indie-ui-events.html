@@ -322,6 +322,53 @@
 			</section>
 			<!-- :::::::::::::::::::: END UIValueChangeRequestEvent :::::::::::::::::::: -->
 
+			<!-- :::::::::::::::::::: UIZoomRequestEvent :::::::::::::::::::: -->
+			<section id="UIZoomRequestEvent">
+				<h3><strong>Interface <em>UIZoomRequestEvent</em></strong></h3>
+
+				<div class="idlwrapper">
+					<pre class="idl">interface UIZoomRequestEvent : UIRequestEvent {
+  
+  <span class="comment">// zoom changes (e.g. maps or custom layout views)</span>
+  const unsigned short    IN   =  TBD;
+  const unsigned short    MIN  =  TBD;
+  const unsigned short    MAX  =  TBD;
+  const unsigned short    OUT  =  TBD;
+  
+  <span class="comment">// may need specific zoomRatio in addition to discrete in/out requests</span>
+  
+  readonly attribute unsigned short   zoomType;
+  readonly attribute unsigned long    originX;
+  readonly attribute unsigned long    originY;
+  
+  void initUIZoomRequestEvent(
+    in DOMString typeArg,
+    in boolean canBubbleArg,
+    in boolean cancelableArg,
+    in views::AbstractView viewArg,
+    in long detailArg,
+    in unsigned short zoomTypeArg,
+    in unsigned long originX,
+    in unsigned long originY
+  );
+};</pre>
+				</div>
+				<h4>The single type of UIZoomRequestEvent that can occur is:</h4>
+				<dl>
+					<dt id="zoomrequest">Zoom Request <code class="event">zoomrequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent sends a zoom request to the web application.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>zoomType</code>, <code>originX</code>, and <code>originY</code></li>
+						</ul>
+						<p class="ednote">This may need to be split into zoomstartrequest, zoomchangerequest, and zoomendrequest events.</p>
+					</dd>
+				</dl>
+			</section>
+			<!-- :::::::::::::::::::: END UIZoomRequestEvent :::::::::::::::::::: -->
+
 		</section>
 		<!-- :::::::::::::::::::: END UI Request Event Interfaces :::::::::::::::::::: -->
 
