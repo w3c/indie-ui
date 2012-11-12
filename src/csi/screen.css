@@ -81,7 +81,7 @@ div.ednote:before, p.ednote:before{
 
 .example {
 	margin: 1em 0;
-	padding: 0.7em 1em 0.7em;
+	padding: 0.7em 1em 0.2em;
 	border: solid 1px #999;
 	position:relative;
 }
@@ -89,12 +89,12 @@ div.ednote:before, p.ednote:before{
 	content:attr(title);
 	position:absolute;
 	top:0;
-	right:0;
+	left:0;
 	font-size:11px;
 	padding:0.2em 0.5em;
 	margin:0;
 	border:solid 1px #999;
-	border-width: 0 0 1px 1px;
+	border-width: 0 1px 1px 0;
 }
 .example h4, .note h4{
 	margin:0.5em 0;
