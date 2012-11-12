@@ -117,8 +117,20 @@
 			<section id="UIRequestEvent">
 				<h3>Interface UIRequestEvent</h3>
 
-				<div class="idlwrapper">
-					<pre>interface UIRequestEvent : UIEvent {
+				<dl title="[Constructor] interface UIRequestEvent : UIEvent" class="idl">
+
+					<dt>readonly attribute DOMString typeArg</dt>
+					<dd>The type of event (e.g., <code>undorequest</code>, <code>redorequest</code>).</dd>
+
+					<dt>readonly attribute boolean canBubbleArg</dt>
+					<dd></dd>
+
+					<dt>readonly attribute boolean cancelableArg</dt>
+					<dd></dd>
+
+				</dl>
+<!--
+<pre>interface UIRequestEvent : UIEvent {
   void initUIRequestEvent(
     in DOMString typeArg,
     in boolean canBubbleArg,
@@ -127,7 +139,7 @@
     in long detailArg
   );
 };</pre>
-				</div>
+-->
 				<section id="UIRequestEvents">
 					<h4>UIRequestEvent Types</h4>
 					<p>The different types of UIRequestEvents that can occur are:</p>
@@ -197,8 +209,26 @@
 			<!-- :::::::::::::::::::: UIPanRequestEvent :::::::::::::::::::: -->
 			<section id="UIPanRequestEvent">
 				<h3>Interface UIPanRequestEvent</h3>
-				<div class="idlwrapper">
-					<pre>interface UIPanRequestEvent : UIRequestEvent {
+				<dl title="[Constructor] interface UIPanRequestEvent : UIRequestEvent" class="idl">
+
+					<dt>attribute unsigned long deltaX</dt>
+					<dd>The cartesian X coordinate delta, in CSS pixels.</dd>
+
+					<dt>attribute unsigned long deltaY</dt>
+					<dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
+
+					<dt>readonly attribute DOMString typeArg</dt>
+					<dd>The type of event (<code>panrequest</code>).</dd>
+
+					<dt>readonly attribute boolean canBubbleArg</dt>
+					<dd></dd>
+
+					<dt>readonly attribute boolean cancelableArg</dt>
+					<dd></dd>
+
+				</dl>
+<!--
+<pre>interface UIPanRequestEvent : UIRequestEvent {
 
   <span class="comment">// for panning views (e.g. maps or zoomed graphical views... not intended for standard scroll views)</span>
 
@@ -215,7 +245,7 @@
     in unsigned long deltaY
   );
 };</pre>
-				</div>
+-->
 				<section id="UIPanRequestEvents">
 					<h4>UIPanRequestEvent Types</h4>
 					<p>The single type of UIPanRequestEvent that can occur is:</p>
@@ -238,9 +268,33 @@
 			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
 			<section id="UIScrollRequestEvent">
 				<h3>Interface UIScrollRequestEvent</h3>
-				<div class="ednote">Editorial Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face.</div>
-				<div class="idlwrapper">
-					<pre>interface UIScrollRequestEvent : UIRequestEvent {
+				<div class="ednote">Editorial Note: these constants will likely change based on discussion from the IndieUI Face-to-Face.</div>
+				<dl title="[Constructor] interface UIScrollRequestEvent : UIRequestEvent" class="idl">
+
+					<dt>const unsigned short LEFT         = TBD</dt><dd></dd>
+					<dt>const unsigned short UP           = TBD</dt><dd></dd>
+					<dt>const unsigned short RIGHT        = TBD</dt><dd></dd>
+					<dt>const unsigned short DOWN         = TBD</dt><dd></dd>
+					<dt>const unsigned short LEFT_LIMIT   = TBD</dt><dd></dd>
+					<dt>const unsigned short TOP_LIMIT    = TBD</dt><dd></dd>
+					<dt>const unsigned short RIGHT_LIMIT  = TBD</dt><dd></dd>
+					<dt>const unsigned short BOTTOM_LIMIT = TBD</dt><dd></dd>
+					
+					<dt>readonly attribute DOMString typeArg</dt>
+					<dd>The type of event (<code>scrollrequest</code>).</dd>
+					
+					<dt>readonly attribute boolean canBubbleArg</dt>
+					<dd></dd>
+					
+					<dt>readonly attribute boolean cancelableArg</dt>
+					<dd></dd>
+					
+					<dt>readonly attribute unsigned short scrollType</dt>
+					<dd>Type of scroll requested, as defined in the interface constants.</dd>
+					
+				</dl>
+<!--
+<pre>interface UIScrollRequestEvent : UIRequestEvent {
   
   <span class="comment">// for custom scroll views or widgets (e.g. carousels, lists, grids)</span>
   const unsigned short    LEFT          =  TBD;
@@ -263,7 +317,7 @@
     in unsigned short scrollTypeArg
   );
 };</pre>
-				</div>
+-->
 				<section id="UIScrollRequestEvents">
 					<h4>UIScrollRequestEvent Types</h4>
 					<p>The single type of UIScrollRequestEvent that can occur is:</p>
@@ -286,9 +340,34 @@
 			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
 			<section id="UIValueChangeRequestEvent">
 				<h3>Interface UIValueChangeRequestEvent</h3>
-				<div class="ednote">Editorial Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face.</div>
-				<div class="idlwrapper">
-					<pre>interface UIValueChangeRequestEvent : UIRequestEvent {
+				<div class="ednote">Editorial Note: these constants will likely change based on discussion from the IndieUI Face-to-Face.</div>
+				<dl title="[Constructor] interface UIValueChangeRequestEvent : UIRequestEvent" class="idl">
+
+					<dt>const unsigned short INCREMENT       = TBD</dt><dd></dd>
+					<dt>const unsigned short INCREMENT_SMALL = TBD</dt><dd></dd>
+					<dt>const unsigned short INCREMENT_LARGE = TBD</dt><dd></dd>
+					<dt>const unsigned short INCREMENT_MAX   = TBD</dt><dd></dd>
+					<dt>const unsigned short DECREMENT       = TBD</dt><dd></dd>
+					<dt>const unsigned short DECREMENT_SMALL = TBD</dt><dd></dd>
+					<dt>const unsigned short DECREMENT_LARGE = TBD</dt><dd></dd>
+					<dt>const unsigned short DECREMENT_MIN   = TBD</dt><dd></dd>
+					
+					<dt>readonly attribute DOMString typeArg</dt>
+					<dd>The type of event (<code>valuechangerequest</code>).</dd>
+					
+					<dt>readonly attribute boolean canBubbleArg</dt>
+					<dd></dd>
+					
+					<dt>readonly attribute boolean cancelableArg</dt>
+					<dd></dd>
+					
+					<dt>readonly attribute unsigned short changeType</dt>
+					<dd>Type of change requested, as defined in the interface constants.</dd>
+					
+				</dl>
+
+<!--
+<pre>interface UIValueChangeRequestEvent : UIRequestEvent {
   
   <span class="comment">// value changes (e.g. ranges)</span>
   const unsigned short    INCREMENT        =  TBD;
@@ -311,7 +390,7 @@
     in unsigned short changeTypeArg
   );
 };</pre>
-				</div>
+-->
 				<section id="UIValueChangeRequestEvents">
 					<h4>UIValueChangeRequestEvent Types</h4>
 					<p>The single type of UIValueChangeRequestEvent that can occur is:</p>
@@ -337,9 +416,38 @@
 			<!-- :::::::::::::::::::: UIZoomRequestEvent :::::::::::::::::::: -->
 			<section id="UIZoomRequestEvent">
 				<h3>Interface UIZoomRequestEvent</h3>
-
-				<div class="idlwrapper">
-					<pre>interface UIZoomRequestEvent : UIRequestEvent {
+				<p>Zoom changes to a map or custom image viewer.</p>
+				<p class="ednote">This may need to be split into zoomstartrequest, zoomchangerequest, and zoomendrequest events.</p>
+				
+				<dl title="[Constructor] interface UIZoomRequestEvent : UIRequestEvent" class="idl">
+					
+					<dt>const unsigned short IN  = TBD</dt><dd></dd>
+					<dt>const unsigned short OUT = TBD</dt><dd></dd>
+					<dt>const unsigned short MIN = TBD</dt><dd></dd>
+					<dt>const unsigned short MAX = TBD</dt><dd></dd>
+					
+					<dt>readonly attribute DOMString typeArg</dt>
+					<dd>The type of event (<code>zoomrequest</code>).</dd>
+					
+					<dt>readonly attribute boolean canBubbleArg</dt>
+					<dd></dd>
+					
+					<dt>readonly attribute boolean cancelableArg</dt>
+					<dd></dd>
+					
+					<dt>readonly attribute unsigned short zoomType</dt>
+					<dd>Type of zoom requested, as defined in the interface constants.</dd>
+					
+					<dt>readonly attribute unsigned long originX</dt>
+					<dd></dd>
+					
+					<dt>readonly attribute unsigned long originY</dt>
+					<dd></dd>
+					
+				</dl>
+				
+<!--
+<pre>interface UIZoomRequestEvent : UIRequestEvent {
   
   <span class="comment">// zoom changes (e.g. maps or custom layout views)</span>
   const unsigned short    IN   =  TBD;
@@ -364,7 +472,7 @@
     in unsigned long originY
   );
 };</pre>
-				</div>
+-->
 				<section id="UIZoomRequestEvents">
 					<h4>UIZoomRequestEvent Types</h4>
 					<p>The single type of UIZoomRequestEvent that can occur is:</p>
@@ -377,7 +485,6 @@
 								<li>Cancelable: Yes</li>
 								<li>Context Info: <code>zoomType</code>, <code>originX</code>, and <code>originY</code></li>
 							</ul>
-							<p class="ednote">This may need to be split into zoomstartrequest, zoomchangerequest, and zoomendrequest events.</p>
 						</dd>
 					</dl>
 				</section>
@@ -395,8 +502,24 @@
 			<!-- :::::::::::::::::::: AccessibilityEvent :::::::::::::::::::: -->
 			<section id="AccessibilityEvent">
 				<h3>Interface AccessibilityEvent</h3>
-				<div class="idlwrapper">
-					<pre>interface AccessibilityEvent : UIEvent {
+				
+				<p class="ednote">Probably need a normative author requirement here stating authors MUST NOT update the visible view based on these events, unless the focused element is entirely out of view. Include example of where this is harmful.</p>
+				<p class="ednote">We might also need an AT equivalent of <code>document.activeElement</code>.</p>
+				
+				<dl title="[Constructor] interface AccessibilityEvent : UIEvent" class="idl">
+					
+					<dt>readonly attribute DOMString typeArg</dt>
+					<dd>The type of event (e.g., <code>ATFocus</code>, <code>ATBlur</code>).</dd>
+					
+					<dt>readonly attribute boolean canBubbleArg</dt>
+					<dd></dd>
+					
+					<dt>readonly attribute boolean cancelableArg</dt>
+					<dd></dd>
+					
+				</dl>
+<!--
+<pre>interface AccessibilityEvent : UIEvent {
   void initAccessibilityEvent(
     in DOMString typeArg,
     in boolean canBubbleArg,
@@ -405,7 +528,7 @@
     in long detailArg
   );
 };</pre>
-				</div>
+-->
 				<section id="AccessibilityEvents">
 					<h4>AccessibilityEvent Types</h4>
 					<p>The different types of AccessibilityEvents that can occur are:</p>
@@ -413,8 +536,6 @@
 						<dt>Assistive Technology Focus <code class="event">ATFocus</code></dt>
 						<dd>
 							<p>Initiated when the assistive technology cursor or point-of-regard moves to a particular DOM node.</p>
-							<p class="ednote">Probably need a normative author requirement here stating authors MUST NOT update the visible view based on these events, unless the focused element is entirely out of view. Include example of where this is harmful.</p>
-							<p class="ednote">We might also need an AT equivalent of <code>document.activeElement</code>.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: No</li>
