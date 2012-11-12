@@ -96,7 +96,12 @@
 		<section id="intro" class="introductory informative">
 			<h2>Introduction</h2>
 			<p>This specification, in conjunction with the <a href="./user_context.html">User Context Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content.</p>
-			<p class="placeholder">placeholder for remaining intro</p>
+			<p class="placeholder">placeholder for remaining intro explaining background, event registration (addEventListener) versus origination (event.target defined via ~@ui-actions)</p>
+		</section>
+		
+		<section id="eventslist">
+			<h2>Events List (alphabetical)</h2>
+			<p class="placeholder">placeholder for alphabetical list of event types with short descriptions</p>
 		</section>
 		
 		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
@@ -132,6 +137,9 @@
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
 						</ul>
+						<div class="example" title="Informative Example">
+							<p>Users, wanting to 'undo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices.</p>
+						</div>
 					</dd>
 					<dt id="redorequest">Redo Request <code class="event">redorequest</code></dt>
 					<dd>
@@ -140,6 +148,9 @@
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
 						</ul>
+						<div class="example" title="Informative Example">
+							<p>Users, wanting to 'redo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Shift+Z</kbd> on Windows or Linux, <kbd>Command+Shift+Z</kbd> on Mac OS X.</p>
+						</div>
 					</dd>
 					<dt id="dismissrequest">Dismiss Request <code class="event">dismissrequest</code></dt>
 					<dd>
@@ -148,6 +159,9 @@
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
 						</ul>
+						<div class="example" title="Informative Example">
+							<p>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, most commonly by pressing <kbd>Escape</kbd> on keyboard-controlled operating systems. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</p>
+						</div>
 					</dd>
 					<dt id="deleterequest">Delete Request <code class="event">deleterequest</code></dt>
 					<dd>
@@ -173,14 +187,7 @@
 							<li>Cancelable: Yes</li>
 						</ul>
 					</dd>
-				</dl> 
-				<div class="example" title="Informative">
-					<h4>Examples</h4>
-					<ol>
-						<li>Users, wanting to 'undo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices. User agents understanding this intent should initiate an <code>undorequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'undo' action is understood in the context of the web application, web authors should undo the user's change, and cancel the event using the event object's <code>preventDefault()</code> method.</li>
-						<li>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, most commonly by pressing <kbd>Escape</kbd> on keyboard-controlled operating systems<!--, or by using a two-finger <a href="http://www.apple.com/voiceover/info/guide/_1133.html">scrub gesture</a> in VoiceOver on iOS or Mac OS X-->. User agents understanding this intent should initiate an <code>dismissrequest</code> event. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</li>
-					</ol>
-				</div>
+				</dl>
 			</section>
 			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
 
@@ -256,7 +263,7 @@
 					<dt id="scrollrequest">Scroll Request <code class="event">scrollrequest</code></dt>
 					<dd>
 						<p>Initiated when the user agent sends a scroll request to the web application. Scroll events need only be used on custom scroll views (lists and grids showing data subsets, carousels, etc.), as user agents and assistive technologies already manage scrolling of native scroll views.</p>
-						<p class="note" title="Informative">Note: The scroll type constants are more or less equivalent to expected behavior for <kbd>PageUp</kbd>/<kbd>PageDown</kbd> and <kbd>Home</kbd>/<kbd>End</kbd> keys on native scroll views, but also allow horizontal scrolling.</p>
+						<p class="note">The scroll type constants are more or less equivalent to expected behavior for <kbd>PageUp</kbd>/<kbd>PageDown</kbd> and <kbd>Home</kbd>/<kbd>End</kbd> keys on native scroll views, but also allow horizontal scrolling.</p>
 						<ul>
 							<li>Bubbles: Yes</li>
 							<li>Cancelable: Yes</li>
@@ -369,9 +376,30 @@
 		</section>
 		<!-- :::::::::::::::::::: END Accessibility Event Interfaces :::::::::::::::::::: -->
 
-		<section class="placeholder appendix">
-			<h2>Acknowledgements</h2>
-			<p>Placeholder for footer content (acknowledgements, terms, etc.)</p>
+		<section class="appendix">
+			<h2>Appendices</h2>
+			
+			<section id="terms">
+				<h3>Important Terms</h3>
+				<dl>
+					
+					<dt id="def_assistivetechnology">Assistive Technology</dt>
+					<dd class="placeholder">TBD</dd>
+					
+					<dt id="def_pointofregard">Point-of-Regard</dt>
+					<dd class="placeholder">TBD</dd>
+					
+					<dt id="def_useragent">User Agent</dt>
+					<dd class="placeholder">TBD</dd>
+					
+				</dl>
+			</section>
+			
+			<section id="acknowledgements">
+				<h3>Acknowledgements</h3>
+				<p class="placeholder">Placeholder for footer content (acknowledgements, terms, etc.)</p>
+			</section>
+			
 		</section>
 		
 	</body>
