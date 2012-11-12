@@ -184,6 +184,44 @@
 			</section>
 			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
 
+			<!-- :::::::::::::::::::: UIPanRequestEvent :::::::::::::::::::: -->
+			<section id="UIPanRequestEvent">
+				<h3><strong>Interface <em>UIPanRequestEvent</em></strong></h3>
+				<div class="idlwrapper">
+					<pre class="idl">interface UIPanRequestEvent : UIRequestEvent {
+
+  <span class="comment">// for panning views (e.g. maps or zoomed graphical views... not intended for standard scroll views)</span>
+
+  readonly attribute unsigned short   deltaX;
+  readonly attribute unsigned short   deltaY;
+
+  void initUIScrollRequestEvent(
+    in DOMString typeArg,
+    in boolean canBubbleArg,
+    in boolean cancelableArg,
+    in views::AbstractView viewArg,
+    in long detailArg,
+    in unsigned short deltaX,
+    in unsigned short deltaY
+  );
+};</pre>
+				</div>
+				<h4>The single type of UIScrollRequestEvent that can occur is:</h4>
+				<dl>
+					<dt id="panrequest">Pan Request <code class="event">panrequest</code></dt>
+					<dd>
+						<p>Initiated when the user agent sends a pan request to the web application with accompanying x/y delta values.</p>
+						<ul>
+							<li>Bubbles: Yes</li>
+							<li>Cancelable: Yes</li>
+							<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
+						</ul>
+						<p class="ednote">Yet to be determined if this event should remain as a discrete event, or be split into start, move, and end request events for panning.</p>
+					</dd>
+				</dl>
+			</section>
+			<!-- :::::::::::::::::::: END UIPanRequestEvent :::::::::::::::::::: -->
+
 			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
 			<section id="UIScrollRequestEvent">
 				<h3><strong>Interface <em>UIScrollRequestEvent</em></strong></h3>
