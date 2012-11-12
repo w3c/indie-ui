@@ -80,7 +80,7 @@ div.ednote:before, p.ednote:before{
 }
 
 .example {
-	margin: 1em 0 0;
+	margin: 1em 0;
 	padding: 0.7em 1em 0.7em;
 	border: solid 1px #999;
 	position:relative;

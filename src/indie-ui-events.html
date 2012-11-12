@@ -314,14 +314,11 @@
 							<li>Cancelable: Yes</li>
 							<li>Context Info: <code>eventType</code></li>
 						</ul>
+						<div class="example" title="Informative Example">
+							<p>Users, wanting to change the value of a custom range widget (slider, media progressbar, etc.) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces, and through gestures on many touch-enabled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method.</p>
+						</div>
 					</dd>
 				</dl>
-				
-				<div class="example" title="Informative">
-					<h4>Example</h4>
-					<p>Users, wanting to change the value of a custom range widget (slider, media progressbar, etc.) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces, and through gestures on many touch-enabled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method. If the event is not cancelled by the web author, user agents may pass the literal interaction event to the web application; in this case, in the form of a keypress or touch event.</p>
-				</div>
-					
 			</section>
 			<!-- :::::::::::::::::::: END UIValueChangeRequestEvent :::::::::::::::::::: -->
 
