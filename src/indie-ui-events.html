@@ -21,7 +21,7 @@
 
           // if your specification has a subtitle that goes below the main
           // formal title, define it here
-          // subtitle   :  "an excellent document",
+          subtitle   :  "Events for User Interface Independence",
 
           // if you wish the publication date to be other than today, set this
           // publishDate:  "2009-08-06",
@@ -115,10 +115,10 @@
 
 			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
 			<section id="UIRequestEvent">
-				<h3><strong>Interface <em>UIRequestEvent</em></strong></h3>
+				<h3>Interface UIRequestEvent</h3>
 
 				<div class="idlwrapper">
-					<pre class="idl">interface UIRequestEvent : UIEvent {
+					<pre>interface UIRequestEvent : UIEvent {
   void initUIRequestEvent(
     in DOMString typeArg,
     in boolean canBubbleArg,
@@ -129,7 +129,8 @@
 };</pre>
 				</div>
 				<section id="UIRequestEvents">
-					<h4>The different types of UIRequestEvents that can occur are:</h4>
+					<h4>UIRequestEvent Types</h4>
+					<p>The different types of UIRequestEvents that can occur are:</p>
 					<dl>
 						<dt id="undorequest">Undo Request <code class="event">undorequest</code></dt>
 						<dd>
@@ -195,9 +196,9 @@
 
 			<!-- :::::::::::::::::::: UIPanRequestEvent :::::::::::::::::::: -->
 			<section id="UIPanRequestEvent">
-				<h3><strong>Interface <em>UIPanRequestEvent</em></strong></h3>
+				<h3>Interface UIPanRequestEvent</h3>
 				<div class="idlwrapper">
-					<pre class="idl">interface UIPanRequestEvent : UIRequestEvent {
+					<pre>interface UIPanRequestEvent : UIRequestEvent {
 
   <span class="comment">// for panning views (e.g. maps or zoomed graphical views... not intended for standard scroll views)</span>
 
@@ -216,7 +217,8 @@
 };</pre>
 				</div>
 				<section id="UIPanRequestEvents">
-					<h4>The single type of UIPanRequestEvent that can occur is:</h4>
+					<h4>UIPanRequestEvent Types</h4>
+					<p>The single type of UIPanRequestEvent that can occur is:</p>
 					<dl>
 						<dt id="panrequest">Pan Request <code class="event">panrequest</code></dt>
 						<dd>
@@ -235,10 +237,10 @@
 
 			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
 			<section id="UIScrollRequestEvent">
-				<h3><strong>Interface <em>UIScrollRequestEvent</em></strong></h3>
+				<h3>Interface UIScrollRequestEvent</h3>
 				<div class="ednote">Editorial Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face.</div>
 				<div class="idlwrapper">
-					<pre class="idl">interface UIScrollRequestEvent : UIRequestEvent {
+					<pre>interface UIScrollRequestEvent : UIRequestEvent {
   
   <span class="comment">// for custom scroll views or widgets (e.g. carousels, lists, grids)</span>
   const unsigned short    LEFT          =  TBD;
@@ -263,7 +265,8 @@
 };</pre>
 				</div>
 				<section id="UIScrollRequestEvents">
-					<h4>The single type of UIScrollRequestEvent that can occur is:</h4>
+					<h4>UIScrollRequestEvent Types</h4>
+					<p>The single type of UIScrollRequestEvent that can occur is:</p>
 					<dl>
 						<dt id="scrollrequest">Scroll Request <code class="event">scrollrequest</code></dt>
 						<dd>
@@ -282,10 +285,10 @@
 
 			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
 			<section id="UIValueChangeRequestEvent">
-				<h3><strong>Interface <em>UIValueChangeRequestEvent</em></strong></h3>
+				<h3>Interface UIValueChangeRequestEvent</h3>
 				<div class="ednote">Editorial Note: these constants will likely change dramatically based on discussion from the IndieUI Face-to-Face.</div>
 				<div class="idlwrapper">
-					<pre class="idl">interface UIValueChangeRequestEvent : UIRequestEvent {
+					<pre>interface UIValueChangeRequestEvent : UIRequestEvent {
   
   <span class="comment">// value changes (e.g. ranges)</span>
   const unsigned short    INCREMENT        =  TBD;
@@ -310,7 +313,8 @@
 };</pre>
 				</div>
 				<section id="UIValueChangeRequestEvents">
-					<h4>The single type of UIValueChangeRequestEvent that can occur is:</h4>
+					<h4>UIValueChangeRequestEvent Types</h4>
+					<p>The single type of UIValueChangeRequestEvent that can occur is:</p>
 					<dl>
 						<dt id="valuechangerequest">Value Change Request <code class="event">valuechangerequest</code></dt>
 						<dd>
@@ -332,10 +336,10 @@
 
 			<!-- :::::::::::::::::::: UIZoomRequestEvent :::::::::::::::::::: -->
 			<section id="UIZoomRequestEvent">
-				<h3><strong>Interface <em>UIZoomRequestEvent</em></strong></h3>
+				<h3>Interface UIZoomRequestEvent</h3>
 
 				<div class="idlwrapper">
-					<pre class="idl">interface UIZoomRequestEvent : UIRequestEvent {
+					<pre>interface UIZoomRequestEvent : UIRequestEvent {
   
   <span class="comment">// zoom changes (e.g. maps or custom layout views)</span>
   const unsigned short    IN   =  TBD;
@@ -362,7 +366,8 @@
 };</pre>
 				</div>
 				<section id="UIZoomRequestEvents">
-					<h4>The single type of UIZoomRequestEvent that can occur is:</h4>
+					<h4>UIZoomRequestEvent Types</h4>
+					<p>The single type of UIZoomRequestEvent that can occur is:</p>
 					<dl>
 						<dt id="zoomrequest">Zoom Request <code class="event">zoomrequest</code></dt>
 						<dd>
@@ -389,9 +394,9 @@
 			
 			<!-- :::::::::::::::::::: AccessibilityEvent :::::::::::::::::::: -->
 			<section id="AccessibilityEvent">
-				<h3><strong>Interface <em>AccessibilityEvent</em></strong></h3>
+				<h3>Interface AccessibilityEvent</h3>
 				<div class="idlwrapper">
-					<pre class="idl">interface AccessibilityEvent : UIEvent {
+					<pre>interface AccessibilityEvent : UIEvent {
   void initAccessibilityEvent(
     in DOMString typeArg,
     in boolean canBubbleArg,
@@ -402,7 +407,8 @@
 };</pre>
 				</div>
 				<section id="AccessibilityEvents">
-					<h4>The different types of AccessibilityEvents that can occur are:</h4>
+					<h4>AccessibilityEvent Types</h4>
+					<p>The different types of AccessibilityEvents that can occur are:</p>
 					<dl>
 						<dt>Assistive Technology Focus <code class="event">ATFocus</code></dt>
 						<dd>

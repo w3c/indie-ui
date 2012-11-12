@@ -17,11 +17,11 @@
           specStatus:           "ED",
           
           // the specification's short name, as in http://www.w3.org/TR/short-name/
-          shortName:            "indie-ui-events",
+          shortName:            "indie-ui-context",
 
           // if your specification has a subtitle that goes below the main
           // formal title, define it here
-          // subtitle   :  "an excellent document",
+          subtitle   :  "Contextual Information for User Interface Independence",
 
           // if you wish the publication date to be other than today, set this
           // publishDate:  "2009-08-06",
@@ -106,7 +106,7 @@
 			<p>In certain cases, it is beneficial for web authors to be aware of the assistive technology in use. This section defines a collection of attributes that can be used to determine, from script, the kind of assistive technology in use, in order to be aware of considerations for a particular assistive technology, including the need to support the <a href="#RequestEvents">UI Change Request Events</a> or <a href="#AXevents">Accessibility Events</a> defined in previous sections. Web authors <strong class="rfc2119">should</strong> always limit client detection to detecting known versions. Web authors <strong class="rfc2119">should</strong> always assume future versions and unknown versions to be fully compliant.</p>
 			<p>The <code>accessibility</code> attribute of the Navigator interface <strong class="rfc2119">must</strong> return an instance of the Accessibility interface, which represents the identity and state of the assistive technology, and allows web pages to optionally notify assistive technology of certain interface events that cannot be indicated through declarative markup such as WAI-ARIA roles, states, and properties.</p>
 			<h3><strong>Interface <em>Accessibility</em></strong></h3>
-			<div class="idl">
+			<div class="idlwrapper">
 				<pre><code>interface Accessibility {
   readonly attribute InterfaceObject accessibility; <em class="ednote">// Editorial Note: Is it necessary to define this attribute in the IDL?</em>
   <span class="comment">// objects implementing the Accessibility interface also implement the ScreenReader and AccessibilityNotifications interfaces</span>
@@ -138,7 +138,7 @@ interface AccessibilityNotifications {
 			
 			<h3><strong>Interface <em>ScreenReader</em></strong></h3>
 			<p>The <code>screenreader</code> attribute of the Accessibility interface <strong class="rfc2119">must</strong> return an instance of the ScreenReader interface:</p>
-			<div class="idl">
+			<div class="idlwrapper">
 				<pre><code>interface ScreenReader {
   readonly attribute InterfaceObject screenreader; <em class="ednote">// Editorial Note: Is it necessary to define this attribute in the IDL?</em>
   <span class="comment">// objects implementing the ScreenReader interface also implement the interfaces given below</span>
@@ -175,7 +175,7 @@ interface ScreenReaderStatus {
 			
 			<h3><strong>Interface <em>Magnifier</em></strong></h3>
 			<p>The <code>magnifier</code> attribute of the Accessibility interface <strong class="rfc2119">must</strong> return an instance of the Magnifier interface:</p>
-			<div class="idl">
+			<div class="idlwrapper">
 				<pre><code>interface Magnifier {
   readonly attribute InterfaceObject magnifier; <em class="ednote">// Editorial Note: Is it necessary to define this attribute in the IDL?</em>
   <span class="comment">// objects implementing the Magnifier interface also implement the interfaces given below</span>
@@ -246,7 +246,7 @@ interface MagnifierNotifications {
 			<!--
 			<h3><strong>Interface <em>Speech</em></strong></h3>
 			<p>The <code>speech</code> attribute of the Accessibility interface <strong class="rfc2119">must</strong> return an instance of the Speech interface:</p>
-			<div class="idl">
+			<div class="idlwrapper">
 				<pre><code>interface Speech {
   <span class="comment">// TBD, placeholder for speech-controlled user agents or assistive technology</span>
   <span class="comment">// may need speech.synthesis and speech.recognition; each could have name/version/engine, etc. </span>
