@@ -52,7 +52,8 @@
           // only "name" is required, also can have url, company, companyURL in comma separated list
           editors:  [
               { name: "James Craig", company: "Apple Inc.", companyURL: "http://www.apple.com/" },
-              { name: "Michael Cooper", company: "W3C", companyURL: "http://www.w3.org/" },
+              // Commenting Michael's name for now, since this document is in need of serious work, and that's no fault of his.
+              // { name: "Michael Cooper", company: "W3C", companyURL: "http://www.w3.org/" },
           ],
 
           // authors, add as many as you like. 
@@ -93,19 +94,55 @@
 		
 		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
 		<section id="intro" class="introductory informative">
-			<h2>Abstract</h2>
+			<h2>Introduction</h2>
 			<p>This specification, in conjunction with the <a href="./indie-ui-events.html">Events Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content. </p>
+			<p class="placeholder">Placeholder for remaining intro and background.</p>
 		</section>
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 		
 
+		<!-- :::::::::::::::::::: window.preferences :::::::::::::::::::: -->
+		<section id="the-preferences-interface">
+			<h3>Interface <em>Preferences</em></h3>
+			<p>The <code>preferences</code> attribute of the Window interface MUST return an instance of the Preferences interface. The same object must be returned each time.</p>
+
+			<dl title="interface Preferences" class="idl">
+
+				<dt>getter DOMstring valueForKey(in DOMString key, in optional DOMString externalTaxonony)</dt>
+				<dd>
+					<p class="ednote">Description TBD (esp re: privacy and fingerprinting ): example <code>window.preferences.valueForKey('defaultFontSize');</code> for default system font size of root element.</p>
+					<p class="ednote">Also not sure how to get ReSpec to fill out the Description column below, so the parameter descriptions are inline below.</p>
+					<dl class="arguments">
+						<dt><code>key</code></dt><dd>Identifying key for the preference value to be returned.</dd>
+						<dt><code>externalTaxonomy</code></dt><dd>A unique string identifier for external taxonomy in which the key is defined, such as a vendor-prefix ('webkit') for implementation-specific and vendor-proposed keys, or another external taxonomy. An undefined or empty string indicates the key matches a preference defined in <a href="#preference-keys">Preference Keys</a> section of this document.</dd>
+					</dl>
+				</dd>
+
+			</dl>
+
+			<section id="preference-keys">
+				<h4>Preference Keys</h4>
+				<p class="ednote">TBD whether this is the best way to define these in IDL, or if the IDL is even necessary here.</p>
+
+				<dl title="dictionary preferenceKeys" class="idl">
+					<dt>DOMString defaultFontSize</dt><dd>Default system font size of root element, returned in a CSS pixel units, e.g. '14px'</dd>
+					<dt>DOMString foo</dt><dd>lorem ipsum</dd>
+					<dt>DOMString bar</dt><dd>lorem ipsum</dd>
+				</dl>
+
+			</section>
+		</section>
+		<!-- :::::::::::::::::::: window.preferences :::::::::::::::::::: -->
+
+
 		
-		<!-- :::::::::::::::::::: window.navigator.accessibility :::::::::::::::::::: -->
+		<!-- :::::::::::::::::::: window.accessibility :::::::::::::::::::: -->
 		<section id="identification">
 			<h2>Assistive Technology Identification and Notification</h2>
+			<p class="ednote">Most of this section is out-of-date. Please don't put too much effort into change requests yet.</p>
 			<p>In certain cases, it is beneficial for web authors to be aware of the assistive technology in use. This section defines a collection of attributes that can be used to determine, from script, the kind of assistive technology in use, in order to be aware of considerations for a particular assistive technology, including the need to support the <a href="#RequestEvents">UI Change Request Events</a> or <a href="#AXevents">Accessibility Events</a> defined in previous sections. Web authors <strong class="rfc2119">should</strong> always limit client detection to detecting known versions. Web authors <strong class="rfc2119">should</strong> always assume future versions and unknown versions to be fully compliant.</p>
 			<p>The <code>accessibility</code> attribute of the Navigator interface <strong class="rfc2119">must</strong> return an instance of the Accessibility interface, which represents the identity and state of the assistive technology, and allows web pages to optionally notify assistive technology of certain interface events that cannot be indicated through declarative markup such as WAI-ARIA roles, states, and properties.</p>
-			<h3><strong>Interface <em>Accessibility</em></strong></h3>
+			
 			<div class="idlwrapper">
 				<pre><code>interface Accessibility {
   readonly attribute InterfaceObject accessibility; <em class="ednote">// Editorial Note: Is it necessary to define this attribute in the IDL?</em>
@@ -128,7 +165,7 @@ interface AccessibilityNotifications {
 			<h4>Methods for <strong>Interface <em>Accessibility</em></strong></h4>
 			<div class="method-list">
 				<dl>
-					<dt><code>window.navigator.accessibility.postNotification()</code></dt>
+					<dt><code>window.accessibility.postNotification()</code></dt>
 					<dd>
 						<p>Returns void. Allows the web author to send a required or supplemental notification, usually to inform the assistive technology to update its cache of the accessibility tree. For example, web authors might call this method after an animation has completed, allowing a screen reader to update its cursor location, if the focused element was moved.</p>
 						<p class="note">Note: screenChanged should be fired for full screen DOM-based refreshes. elementChanged is sufficient for significant branch node changes.</p>
@@ -160,13 +197,13 @@ interface ScreenReaderStatus {
 			<h4>Properties for <strong>Interface <em>ScreenReader</em></strong></h4>
 			<div class="property-list">
 				<dl>
-					<dt><code>window.navigator.accessibility.screenreader.active</code></dt>
+					<dt><code>window.accessibility.screenreader.active</code></dt>
 					<dd>Returns a boolean indicating whether or not a screen reader is in use. The user agent <strong class="rfc2119">must</strong> return <code>true</code> if a screen reader is running, or <code>false</code> otherwise. User agents <strong class="rfc2119">may</strong> return <code>false</code> if the user has chosen to disallow sharing this information with the requesting domain.</dd>
-					<dt class="ednote">window.navigator.accessibility.screenreader.activeElement</dt>
+					<dt class="ednote">window.accessibility.screenreader.activeElement</dt>
 					<dd class="ednote">@@</dd>
-					<dt><code>window.navigator.accessibility.screenreader.name</code></dt>
+					<dt><code>window.accessibility.screenreader.name</code></dt>
 					<dd>Returns the application name of the screen reader in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the name of the screen reader in detail, e.g. "<code>Apple VoiceOver</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
-					<dt><code>window.navigator.accessibility.screenreader.version</code></dt>
+					<dt><code>window.accessibility.screenreader.version</code></dt>
 					<dd>Returns the application version of the screen reader in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the version of the screen reader in detail, e.g. "<code>4.0 (220.2)</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
 				</dl>
 			</div>
@@ -209,14 +246,14 @@ interface MagnifierNotifications {
 			<h4>Properties for <strong>Interface <em>Magnifier</em></strong></h4>
 			<div class="property-list">
 				<dl>
-					<dt><code>window.navigator.accessibility.magnifier.active</code></dt>
+					<dt><code>window.accessibility.magnifier.active</code></dt>
 					<dd>Returns a boolean indicating whether or not a screen magnifier is in use. The user agent <strong class="rfc2119">must</strong> return <code>true</code> if a screen magnifier is enabled (even if the current zoom level is 1.0), or <code>false</code> if a magnifier is not enabled. User agents <strong class="rfc2119">may</strong> return <code>false</code> if the user has chosen to disallow sharing this information with the requesting domain.</dd>
-					<dt><code>window.navigator.accessibility.magnifier.name</code></dt>
+					<dt><code>window.accessibility.magnifier.name</code></dt>
 					<dd>Returns the application name of the screen magnifier in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the name of the screen magnifier in detail, e.g. "<code>Apple Universal Access Zoom</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
-					<dt><code>window.navigator.accessibility.magnifier.version</code></dt>
+					<dt><code>window.accessibility.magnifier.version</code></dt>
 					<dd>Returns the application version of the screen magnifier in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the version of the screen magnifier in detail, e.g. "<code>4.0 (220.2)</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
 					<!--
-					<dt><code>window.navigator.accessibility.magnifier.zoom</code></dt>
+					<dt><code>window.accessibility.magnifier.zoom</code></dt>
 					<dd>Returns a floating point number indicating the current magnification level of the screen magnifier. The user agent <strong class="rfc2119">must</strong> return <code>1.0</code> or the current magnification level. User agents <strong class="rfc2119">may</strong> return <code>1.0</code> if the user has chosen to disallow sharing this information with the requesting domain.</dd>
 					-->
 				</dl>
@@ -224,7 +261,7 @@ interface MagnifierNotifications {
 			<h4>Methods for <strong>Interface <em>Magnifier</em></strong></h4>
 			<div class="method-list">
 				<dl>
-					<dt><code>window.navigator.accessibility.magnifier.focusPosition ( element, cursorRect, selectionPolygon )</code></dt>
+					<dt><code>window.accessibility.magnifier.focusPosition ( element, cursorRect, selectionPolygon )</code></dt>
 					<dd><p>Returns void. Allows the web author to send an explicit notification informing the screen magnifier to update its cache of the cursor location. Web authors <strong class="rfc2119">should</strong> call this method when updating the display or cursor position of custom views.</p>
 						<h5>Parameters for Magnifier.focusPosition</h5>
 						<div class="parameter-list">
@@ -256,7 +293,7 @@ interface MagnifierNotifications {
 			</div>
 			-->
 		</section>
-		<!-- :::::::::::::::::::: END window.navigator.accessibility :::::::::::::::::::: -->
+		<!-- :::::::::::::::::::: END window.accessibility :::::::::::::::::::: -->
 		
 		
 		<section class="placeholder appendix">
