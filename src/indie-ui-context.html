@@ -108,26 +108,26 @@
 
 			<dl title="interface Preferences" class="idl">
 
-				<dt>DOMstring? valueForKey(in DOMString key, in optional DOMString? externalTaxonony)</dt>
+				<dt>DOMstring? valueForKey(<!-- params defined in dl below -->)</dt>
 				<dd>
-					<p class="ednote">Description TBD (esp re: privacy and fingerprinting ): example <code>window.preferences.valueForKey('font-size');</code></p>
-					<p class="ednote">Also not sure how to get ReSpec to fill out the Description column below, so the parameter descriptions are inline below.</p>
-					<dl class="arguments">
-						<dt><code>key</code></dt><dd>Identifying key for the preference value to be returned.</dd>
-						<dt><code>externalTaxonomy</code></dt><dd>A unique string identifier for external taxonomy in which the key is defined, such as a vendor-prefix ('webkit') for implementation-specific and vendor-proposed keys, or another external taxonomy. An undefined or empty string indicates the key matches a preference defined in <a href="#preference-keys">Preference Keys</a> section of this document.</dd>
+					<p class="ednote">Description TBD (esp re: privacy and fingerprinting )</p>
+					<pre class="example">window.preferences.valueForKey('fontSize');</pre>
+					<dl class="parameters">
+						<dt>DOMString key</dt><dd>Identifying key for the preference value to be returned.</dd>
+						<dt>optional DOMString? taxonony</dt><dd>A unique string identifier for external taxonomy in which the key is defined, such as a vendor-prefix ('webkit') for implementation-specific and vendor-proposed keys, or another external taxonomy. An undefined or empty string indicates the key matches a preference defined in <a href="#preference-keys">Preference Keys</a> section of this document.</dd>
 					</dl>
 				</dd>
 
 			</dl>
-
+			
 			<section id="preference-keys">
 				<h4>Preference Keys</h4>
 				<p class="ednote">TBD whether this is the best way to define these in IDL, or if the IDL is even necessary here.</p>
 
 				<dl title="dictionary PreferenceKeys" class="idl">
-					<dt>DOMString? 'font-size'</dt><dd>user's current default font size of root element, prior to applying page styles, returned in a CSS pixel units, e.g. '14px'</dd>
-					<dt>DOMString? 'foo'</dt><dd>lorem ipsum</dd>
-					<dt>DOMString? 'bar'</dt><dd>lorem ipsum</dd>
+					<dt>DOMString? fontSize = null</dt><dd>User's current default font size of root element, prior to applying page styles, returned in a CSS pixel units, e.g. '14px'</dd>
+					<dt>DOMString? foo = null</dt><dd>lorem ipsum</dd>
+					<dt>DOMString? bar = false</dt><dd>lorem ipsum</dd>
 				</dl>
 
 			</section>
