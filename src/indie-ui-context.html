@@ -108,9 +108,9 @@
 
 			<dl title="interface Preferences" class="idl">
 
-				<dt>getter DOMstring valueForKey(in DOMString key, in optional DOMString externalTaxonony)</dt>
+				<dt>DOMstring? valueForKey(in DOMString key, in optional DOMString? externalTaxonony)</dt>
 				<dd>
-					<p class="ednote">Description TBD (esp re: privacy and fingerprinting ): example <code>window.preferences.valueForKey('defaultFontSize');</code> for default system font size of root element.</p>
+					<p class="ednote">Description TBD (esp re: privacy and fingerprinting ): example <code>window.preferences.valueForKey('font-size');</code> for user's current default font size of root element, prior to applying page styles.</p>
 					<p class="ednote">Also not sure how to get ReSpec to fill out the Description column below, so the parameter descriptions are inline below.</p>
 					<dl class="arguments">
 						<dt><code>key</code></dt><dd>Identifying key for the preference value to be returned.</dd>
@@ -124,10 +124,10 @@
 				<h4>Preference Keys</h4>
 				<p class="ednote">TBD whether this is the best way to define these in IDL, or if the IDL is even necessary here.</p>
 
-				<dl title="dictionary preferenceKeys" class="idl">
-					<dt>DOMString defaultFontSize</dt><dd>Default system font size of root element, returned in a CSS pixel units, e.g. '14px'</dd>
-					<dt>DOMString foo</dt><dd>lorem ipsum</dd>
-					<dt>DOMString bar</dt><dd>lorem ipsum</dd>
+				<dl title="dictionary PreferenceKeys" class="idl">
+					<dt>DOMString? 'font-size'</dt><dd>Default system font size of root element, returned in a CSS pixel units, e.g. '14px'</dd>
+					<dt>DOMString? 'foo'</dt><dd>lorem ipsum</dd>
+					<dt>DOMString? 'bar'</dt><dd>lorem ipsum</dd>
 				</dl>
 
 			</section>
