@@ -86,7 +86,7 @@
 	<body>
 
 		<section id="abstract">
-			<p class="placeholder">Placeholder abstract.</p>
+			<p>This specification, in conjunction with the <a href="./indie-ui-context.html">User Context Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content. See the <a href="#intro">introduction</a> for background and usage examples.</p>
 		</section>
 
 		<section id="sotd">
@@ -95,7 +95,6 @@
 		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
 		<section id="intro" class="introductory informative">
 			<h2>Introduction</h2>
-			<p>This specification, in conjunction with the <a href="./indie-ui-context.html">User Context Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content.</p>
 			<p class="placeholder">placeholder for remaining intro explaining background, event registration (addEventListener) versus origination (event.target defined via ~@ui-actions)</p>
 		</section>
 		
@@ -106,7 +105,7 @@
 		
 		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
 		<section id="RequestEvents">
-			<h2><abbr title="User Interface">UI</abbr> Change Request Events</h2>
+			<h2><abbr title="User Interface">UI</abbr> Request Events</h2>
 			<p>The core principle behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agent and assistive technology behave as they normally would.</p>
 			<p><strong>Change request events do not cause any direct manipulation or mutation of the DOM.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user agent. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent that the event has been captured and understood. If a web application does not cancel any change request event, the user agent can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
 			<p class="ednote">There is purposefully no request event for activating the default action. Authors are encouraged to use a standard <code>click</code> event for default actions.</p>
@@ -204,21 +203,14 @@
 			</section>
 			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
 
-			<!-- :::::::::::::::::::: UIPanRequestEvent :::::::::::::::::::: -->
-			<section id="UIPanRequestEvent">
-				<h3>Interface UIPanRequestEvent</h3>
-				<dl title="[Constructor] interface UIPanRequestEvent : UIRequestEvent" class="idl">
+			<!-- :::::::::::::::::::: UIManipulationRequestEvent :::::::::::::::::::: -->
+			<section id="UIManipulationRequestEvent">
+				<h3>Interface UIManipulationRequestEvent</h3>
 
-					<!-- for panning views (e.g. maps or zoomed graphical views... not intended for standard scroll views) -->
-
-					<dt>attribute unsigned long deltaX</dt>
-					<dd>The cartesian X coordinate delta, in CSS pixels.</dd>
-
-					<dt>attribute unsigned long deltaY</dt>
-					<dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
+				<dl title="[Constructor] interface UIManipulationRequestEvent : UIRequestEvent" class="idl">
 
 					<dt>readonly attribute DOMString typeArg</dt>
-					<dd>The type of event (<code>panrequest</code>).</dd>
+					<dd>The type of event. Either one of the simple, discrete types (<code>panrequest</code>, <code>zoomrequest</code>, etc) or the superset, continuous manipulation events (<code>manipulationrequest</code>) which may need to be split into start, change, end, and cancel events to allow applications to respond.</dd>
 
 					<dt>readonly attribute boolean canBubbleArg</dt>
 					<dd></dd>
@@ -226,36 +218,124 @@
 					<dt>readonly attribute boolean cancelableArg</dt>
 					<dd></dd>
 
-					<dt>void initUIPanRequestEvent(
-						DOMString typeArg,
-						boolean canBubbleArg,
-						boolean cancelableArg,
-						views::AbstractView viewArg,
-						long detailArg,
-						unsigned long deltaX,
-						unsigned long deltaY)</dt>
-					<dd></dd>
+					<dt>void initUIManipulationRequestEvent()</dt>
+					<dd>
+						
+						<dl class="parameters">
+							
+							<dt>DOMString typeArg</dt><dd></dd>
+							<dt>boolean canBubbleArg</dt><dd></dd>
+							<dt>boolean cancelableArg</dt><dd></dd>
+							<dt>views::AbstractView viewArg</dt><dd></dd>
+							<dt>long detailArg</dt><dd></dd>
+							
+							<dt>optional float originX</dt>
+							<dd>The cartesian X coordinate origin point, measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+							<dt>optional float originY</dt>
+							<dd>The cartesian Y coordinate origin point, measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+
+							<dt>optional float deltaX</dt>
+							<dd>The cartesian X coordinate delta, in CSS pixels.</dd>
+							<dt>optional float deltaY</dt>
+							<dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
+
+							<dt>optional float scaleFactor</dt>
+							<dd>Scale factor, used in zoom manipulations, where 1.0 is the original scale factor. For example, a value of 2.0 or 3.0 indicates the element should enlarge to 2 or 3 times its original scale, respectively. A value of 0.5 indicates the element should decrease to one-half its original scale.</dd>
+
+							<dt>optional float rotation</dt>
+							<dd>Rotation value, in degrees from 0. Positive values indicate a counter-clockwise rotation. Negative values indicate a clockwise rotation.</dd>
+							
+						</dl>
+					</dd>
 
 				</dl>
 
-				<section id="UIPanRequestEvents">
-					<h4>UIPanRequestEvent Types</h4>
-					<p>The single type of UIPanRequestEvent that can occur is:</p>
+				<section id="DiscreteUIManipulationRequestEvents">
+					<h4>Discrete UIManipulationRequestEvent Types</h4>
+					<p>The <em>discrete</em> types of UIManipulationRequestEvents that can occur are:</p>
 					<dl>
-						<dt id="panrequest">Pan Request <code class="event">panrequest</code></dt>
+						<dt id="moverequest">Move Request <code class="event">moverequest</code></dt>
 						<dd>
-							<p>Initiated when the user agent sends a pan request to the web application with accompanying x/y delta values.</p>
+							<p>Initiated when the user agent sends a move request to the web application with accompanying x/y delta values. This is used, for example, when moving an object to a new location on a layout canvas.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
 								<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
 							</ul>
-							<p class="ednote">Yet to be determined if this event should remain as a discrete event, or be split into start, move, and end request events for panning.</p>
+						</dd>
+						<dt id="panrequest">Pan Request <code class="event">panrequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a pan request to the web application with accompanying x/y delta values. This is used, for example, when changing the center point while panning a map or another custom image viewer.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+						<dt id="rotationrequest">Rotation Request <code class="event">rotationrequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a rotation request to the web application with accompanying origin x/y values and a rotation value in degrees.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, and <code>rotation</code></li>
+							</ul>
+						</dd>
+						<!-- zoom changes (e.g. maps or custom layout views) -->
+						<dt id="zoomrequest">Zoom Request <code class="event">zoomrequest</code></dt>
+						<dd>
+							<p>Initiated when the user agent sends a zoom request to the web application with accompanying origin x/y values and the zoom scale factor.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, and <code>scaleFactor</code></li>
+							</ul>
 						</dd>
 					</dl>
 				</section>
+
+				<section id="ContinuousUIManipulationRequestEvents">
+					<h4>Continuous UIManipulationRequestEvent Types</h4>
+					<p>The <em>continuous</em> types of UIManipulationRequestEvents that can occur are:</p>
+					<dl>
+						<dt id="manipulationstartrequest">Manipulation Start Request <code class="event">manipulationstartrequest</code></dt>
+						<dd>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: TBD</li>
+							</ul>
+						</dd>
+						<dt id="manipulationchangerequest">Manipulation Start Request <code class="event">manipulationchangerequest</code></dt>
+						<dd>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: TBD</li>
+							</ul>
+						</dd>
+						<dt id="manipulationendrequest">Manipulation Start Request <code class="event">manipulationendrequest</code></dt>
+						<dd>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: TBD</li>
+							</ul>
+						</dd>
+						<dt id="manipulationcancelrequest">Manipulation Start Request <code class="event">manipulationcancelrequest</code></dt>
+						<dd>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: TBD</li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
+				
+				
 			</section>
-			<!-- :::::::::::::::::::: END UIPanRequestEvent :::::::::::::::::::: -->
+			<!-- :::::::::::::::::::: END UIManipulationRequestEvent :::::::::::::::::::: -->
 
 			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
 			<section id="UIScrollRequestEvent">
@@ -376,72 +456,6 @@
 			</section>
 			<!-- :::::::::::::::::::: END UIValueChangeRequestEvent :::::::::::::::::::: -->
 
-			<!-- :::::::::::::::::::: UIZoomRequestEvent :::::::::::::::::::: -->
-			<section id="UIZoomRequestEvent">
-				<h3>Interface UIZoomRequestEvent</h3>
-				<p>Zoom changes to a map or custom image viewer.</p>
-				<p class="ednote">This may need to be split into zoomstartrequest, zoomchangerequest, and zoomendrequest events, with an optional scale attribute.</p>
-				<p class="ednote">Definitely needs specific an [optional] zoomRatio in addition to discrete in/out requests.</p>
-				
-				<dl title="[Constructor] interface UIZoomRequestEvent : UIRequestEvent" class="idl">
-					
-					<!-- zoom changes (e.g. maps or custom layout views) -->
-					<!-- Definitely needs specific an [optional] zoomRatio in addition to discrete in/out requests. -->
-					
-					<dt>const unsigned short IN  = TBD</dt><dd></dd>
-					<dt>const unsigned short OUT = TBD</dt><dd></dd>
-					<dt>const unsigned short MIN = TBD</dt><dd></dd>
-					<dt>const unsigned short MAX = TBD</dt><dd></dd>
-					
-					<dt>readonly attribute DOMString typeArg</dt>
-					<dd>The type of event (<code>zoomrequest</code>).</dd>
-					
-					<dt>readonly attribute boolean canBubbleArg</dt>
-					<dd></dd>
-					
-					<dt>readonly attribute boolean cancelableArg</dt>
-					<dd></dd>
-					
-					<dt>readonly attribute unsigned short zoomType</dt>
-					<dd>Type of zoom requested, as defined in the interface constants.</dd>
-					
-					<dt>readonly attribute unsigned long originX</dt>
-					<dd></dd>
-					
-					<dt>readonly attribute unsigned long originY</dt>
-					<dd></dd>
-					
-					<dt>void initUIZoomRequestEvent(
-						DOMString typeArg,
-						boolean canBubbleArg,
-						boolean cancelableArg,
-						views::AbstractView viewArg, 
-						long detailArg, 
-						unsigned short zoomTypeArg, 
-						unsigned long originX, 
-						unsigned long originY)</dt>
-					<dd></dd>
-					
-				</dl>
-
-				<section id="UIZoomRequestEvents">
-					<h4>UIZoomRequestEvent Types</h4>
-					<p>The single type of UIZoomRequestEvent that can occur is:</p>
-					<dl>
-						<dt id="zoomrequest">Zoom Request <code class="event">zoomrequest</code></dt>
-						<dd>
-							<p>Initiated when the user agent sends a zoom request to the web application.</p>
-							<ul>
-								<li>Bubbles: Yes</li>
-								<li>Cancelable: Yes</li>
-								<li>Context Info: <code>zoomType</code>, <code>originX</code>, and <code>originY</code></li>
-							</ul>
-						</dd>
-					</dl>
-				</section>
-			</section>
-			<!-- :::::::::::::::::::: END UIZoomRequestEvent :::::::::::::::::::: -->
-
 		</section>
 		<!-- :::::::::::::::::::: END UI Request Event Interfaces :::::::::::::::::::: -->
 
@@ -482,7 +496,7 @@
 					<h4>AccessibilityEvent Types</h4>
 					<p>The different types of AccessibilityEvents that can occur are:</p>
 					<dl>
-						<dt>Assistive Technology Focus <code class="event">ATFocus</code></dt>
+						<dt id="ATFocus">Assistive Technology Focus <code class="event">ATFocus</code></dt>
 						<dd>
 							<p>Initiated when the assistive technology cursor or point-of-regard moves to a particular DOM node.</p>
 							<ul>
@@ -490,7 +504,7 @@
 								<li>Cancelable: No</li>
 							</ul>
 						</dd>
-						<dt>Assistive Technology Blur <code class="event">ATBlur</code></dt>
+						<dt id="ATBlur">Assistive Technology Blur <code class="event">ATBlur</code></dt>
 						<dd>
 							<p>Initiated when the assistive technology cursor or point-of-regard leaves a particular DOM node.</p>
 							<ul>
@@ -513,13 +527,18 @@
 				<h3>Important Terms</h3>
 				<dl>
 					
-					<dt id="def_assistivetechnology">Assistive Technology</dt>
+					<dt id="def_assistive_technology">Assistive Technology</dt>
 					<dd class="placeholder">TBD</dd>
 					
-					<dt id="def_pointofregard">Point-of-Regard</dt>
+					<dt id="def_point_of_regard">Point-of-Regard</dt>
 					<dd class="placeholder">TBD</dd>
 					
-					<dt id="def_useragent">User Agent</dt>
+					<dt id="def_request_event_receiver">Request Event Receiver</dt>
+					<dd>
+						<p class="ednote">TBD: need to explain difference between the event.target, the element handler the event (addEventListener), and the "receiver" of the UIRequestEvent. The event "receiver" will be author-defined with an attribute (potentially @actions or @ui-actions) that describe the type of UI actions that can be performed on the element (the UIRequestEvent "receiver") as is a contract declaration of the types of UIRequestEvents that will be received and handled by the web application.</p>
+					</dd>
+					
+					<dt id="def_user_agent">User Agent</dt>
 					<dd class="placeholder">TBD</dd>
 					
 				</dl>
