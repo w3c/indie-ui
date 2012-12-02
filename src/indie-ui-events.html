@@ -128,18 +128,16 @@
 					<dt>readonly attribute boolean cancelableArg</dt>
 					<dd></dd>
 
+					<dt>void initUIRequestEvent(
+						DOMString typeArg,
+						boolean canBubbleArg,
+						boolean cancelableArg,
+						views::AbstractView viewArg,
+						long detailArg)</dt>
+					<dd></dd>
+
 				</dl>
-<!--
-<pre>interface UIRequestEvent : UIEvent {
-  void initUIRequestEvent(
-    in DOMString typeArg,
-    in boolean canBubbleArg,
-    in boolean cancelableArg,
-    in views::AbstractView viewArg,
-    in long detailArg
-  );
-};</pre>
--->
+
 				<section id="UIRequestEvents">
 					<h4>UIRequestEvent Types</h4>
 					<p>The different types of UIRequestEvents that can occur are:</p>
@@ -211,6 +209,8 @@
 				<h3>Interface UIPanRequestEvent</h3>
 				<dl title="[Constructor] interface UIPanRequestEvent : UIRequestEvent" class="idl">
 
+					<!-- for panning views (e.g. maps or zoomed graphical views... not intended for standard scroll views) -->
+
 					<dt>attribute unsigned long deltaX</dt>
 					<dd>The cartesian X coordinate delta, in CSS pixels.</dd>
 
@@ -226,26 +226,18 @@
 					<dt>readonly attribute boolean cancelableArg</dt>
 					<dd></dd>
 
+					<dt>void initUIPanRequestEvent(
+						DOMString typeArg,
+						boolean canBubbleArg,
+						boolean cancelableArg,
+						views::AbstractView viewArg,
+						long detailArg,
+						unsigned long deltaX,
+						unsigned long deltaY)</dt>
+					<dd></dd>
+
 				</dl>
-<!--
-<pre>interface UIPanRequestEvent : UIRequestEvent {
 
-  <span class="comment">// for panning views (e.g. maps or zoomed graphical views... not intended for standard scroll views)</span>
-
-  readonly attribute unsigned long   deltaX;
-  readonly attribute unsigned long   deltaY;
-
-  void initUIScrollRequestEvent(
-    in DOMString typeArg,
-    in boolean canBubbleArg,
-    in boolean cancelableArg,
-    in views::AbstractView viewArg,
-    in long detailArg,
-    in unsigned long deltaX,
-    in unsigned long deltaY
-  );
-};</pre>
--->
 				<section id="UIPanRequestEvents">
 					<h4>UIPanRequestEvent Types</h4>
 					<p>The single type of UIPanRequestEvent that can occur is:</p>
@@ -270,7 +262,9 @@
 				<h3>Interface UIScrollRequestEvent</h3>
 				<div class="ednote">Editorial Note: these constants will likely change based on discussion from the IndieUI Face-to-Face.</div>
 				<dl title="[Constructor] interface UIScrollRequestEvent : UIRequestEvent" class="idl">
-
+					
+					<!-- for custom scroll views or widgets (e.g. carousels, lists, grids)... not intended for native scroll views -->
+					
 					<dt>const unsigned short LEFT         = TBD</dt><dd></dd>
 					<dt>const unsigned short UP           = TBD</dt><dd></dd>
 					<dt>const unsigned short RIGHT        = TBD</dt><dd></dd>
@@ -291,33 +285,18 @@
 					
 					<dt>readonly attribute unsigned short scrollType</dt>
 					<dd>Type of scroll requested, as defined in the interface constants.</dd>
+				
+					<dt>void initUIScrollRequestEvent(
+						DOMString typeArg,
+						boolean canBubbleArg,
+						boolean cancelableArg,
+						views::AbstractView viewArg,
+						long detailArg,
+						unsigned short scrollTypeArg)</dt>
+					<dd></dd>
 					
 				</dl>
-<!--
-<pre>interface UIScrollRequestEvent : UIRequestEvent {
-  
-  <span class="comment">// for custom scroll views or widgets (e.g. carousels, lists, grids)</span>
-  const unsigned short    LEFT          =  TBD;
-  const unsigned short    UP            =  TBD;
-  const unsigned short    RIGHT         =  TBD;
-  const unsigned short    DOWN          =  TBD;
-  const unsigned short    LEFT_LIMIT    =  TBD;
-  const unsigned short    TOP_LIMIT     =  TBD;
-  const unsigned short    RIGHT_LIMIT   =  TBD;
-  const unsigned short    BOTTOM_LIMIT  =  TBD;
-  
-  readonly attribute unsigned short   scrollType;
-  
-  void initUIScrollRequestEvent(
-    in DOMString typeArg,
-    in boolean canBubbleArg,
-    in boolean cancelableArg,
-    in views::AbstractView viewArg,
-    in long detailArg,
-    in unsigned short scrollTypeArg
-  );
-};</pre>
--->
+				
 				<section id="UIScrollRequestEvents">
 					<h4>UIScrollRequestEvent Types</h4>
 					<p>The single type of UIScrollRequestEvent that can occur is:</p>
@@ -364,33 +343,17 @@
 					<dt>readonly attribute unsigned short changeType</dt>
 					<dd>Type of change requested, as defined in the interface constants.</dd>
 					
+					<dt>void initUIValueChangeRequestEvent(
+						DOMString typeArg,
+						boolean canBubbleArg,
+						boolean cancelableArg,
+						views::AbstractView viewArg,
+						long detailArg,
+						unsigned short changeTypeArg)</dt>
+					<dd></dd>
+					
 				</dl>
 
-<!--
-<pre>interface UIValueChangeRequestEvent : UIRequestEvent {
-  
-  <span class="comment">// value changes (e.g. ranges)</span>
-  const unsigned short    INCREMENT        =  TBD;
-  const unsigned short    INCREMENT_SMALL  =  TBD;
-  const unsigned short    INCREMENT_LARGE  =  TBD;
-  const unsigned short    INCREMENT_MAX    =  TBD;
-  const unsigned short    DECREMENT        =  TBD;
-  const unsigned short    DECREMENT_SMALL  =  TBD;
-  const unsigned short    DECREMENT_LARGE  =  TBD;
-  const unsigned short    DECREMENT_MIN    =  TBD;
-  
-  readonly attribute unsigned short   changeType;
-  
-  void initUIValueChangeRequestEvent(
-    in DOMString typeArg,
-    in boolean canBubbleArg,
-    in boolean cancelableArg,
-    in views::AbstractView viewArg,
-    in long detailArg,
-    in unsigned short changeTypeArg
-  );
-};</pre>
--->
 				<section id="UIValueChangeRequestEvents">
 					<h4>UIValueChangeRequestEvent Types</h4>
 					<p>The single type of UIValueChangeRequestEvent that can occur is:</p>
@@ -418,8 +381,12 @@
 				<h3>Interface UIZoomRequestEvent</h3>
 				<p>Zoom changes to a map or custom image viewer.</p>
 				<p class="ednote">This may need to be split into zoomstartrequest, zoomchangerequest, and zoomendrequest events, with an optional scale attribute.</p>
+				<p class="ednote">Definitely needs specific an [optional] zoomRatio in addition to discrete in/out requests.</p>
 				
 				<dl title="[Constructor] interface UIZoomRequestEvent : UIRequestEvent" class="idl">
+					
+					<!-- zoom changes (e.g. maps or custom layout views) -->
+					<!-- Definitely needs specific an [optional] zoomRatio in addition to discrete in/out requests. -->
 					
 					<dt>const unsigned short IN  = TBD</dt><dd></dd>
 					<dt>const unsigned short OUT = TBD</dt><dd></dd>
@@ -444,35 +411,19 @@
 					<dt>readonly attribute unsigned long originY</dt>
 					<dd></dd>
 					
+					<dt>void initUIZoomRequestEvent(
+						DOMString typeArg,
+						boolean canBubbleArg,
+						boolean cancelableArg,
+						views::AbstractView viewArg, 
+						long detailArg, 
+						unsigned short zoomTypeArg, 
+						unsigned long originX, 
+						unsigned long originY)</dt>
+					<dd></dd>
+					
 				</dl>
-				
-<!--
-<pre>interface UIZoomRequestEvent : UIRequestEvent {
-  
-  <span class="comment">// zoom changes (e.g. maps or custom layout views)</span>
-  const unsigned short    IN   =  TBD;
-  const unsigned short    MIN  =  TBD;
-  const unsigned short    MAX  =  TBD;
-  const unsigned short    OUT  =  TBD;
-  
-  <span class="comment">// may need specific zoomRatio in addition to discrete in/out requests</span>
-  
-  readonly attribute unsigned short   zoomType;
-  readonly attribute unsigned long    originX;
-  readonly attribute unsigned long    originY;
-  
-  void initUIZoomRequestEvent(
-    in DOMString typeArg,
-    in boolean canBubbleArg,
-    in boolean cancelableArg,
-    in views::AbstractView viewArg,
-    in long detailArg,
-    in unsigned short zoomTypeArg,
-    in unsigned long originX,
-    in unsigned long originY
-  );
-};</pre>
--->
+
 				<section id="UIZoomRequestEvents">
 					<h4>UIZoomRequestEvent Types</h4>
 					<p>The single type of UIZoomRequestEvent that can occur is:</p>
@@ -517,18 +468,16 @@
 					<dt>readonly attribute boolean cancelableArg</dt>
 					<dd></dd>
 					
+					<dt>void initAccessibilityEvent(
+						DOMString typeArg,
+						boolean canBubbleArg,
+						boolean cancelableArg,
+						views::AbstractView viewArg,
+						long detailArg)</dt>
+					<dd></dd>
+					
 				</dl>
-<!--
-<pre>interface AccessibilityEvent : UIEvent {
-  void initAccessibilityEvent(
-    in DOMString typeArg,
-    in boolean canBubbleArg,
-    in boolean cancelableArg,
-    in views::AbstractView viewArg,
-    in long detailArg
-  );
-};</pre>
--->
+
 				<section id="AccessibilityEvents">
 					<h4>AccessibilityEvent Types</h4>
 					<p>The different types of AccessibilityEvents that can occur are:</p>
