@@ -101,7 +101,7 @@
 		
 
 		<!-- :::::::::::::::::::: window.preferences :::::::::::::::::::: -->
-		<section id="Preferences">
+		<section id="UserPreferences">
 			<h3>Interface UserPreferences</h3>
 			<p>The <code>preferences</code> attribute of the Window interface MUST return an instance of the UserPreferences interface. The same object must be returned each time.</p>
 
@@ -109,7 +109,8 @@
 
 				<dt>DOMstring? valueForKey(<!-- params defined in dl below -->)</dt>
 				<dd>
-					<p class="ednote">Description TBD (esp re: privacy and fingerprinting )</p>
+					<p class="ednote">Description TBD (esp re: privacy and fingerprinting, and prompt access for certain parameters on a per-domain basis, similar to location sharing)</p>
+					<p class="ednote">Need an additional "silent fail" parameter when keys are nice-to-have but not important enough to prompt if the user or platform specifies "prompt for access" to a particular key.</p>
 					<p class="note">An undefined or empty value for the <var>taxonomy</var> parameter indicates the <var>key</var> matches a preference defined in <a href="#preference-keys">Preference Keys</a> section of this document. Standard vendor prefixes (<code>ie</code>, <code>moz</code>, <code>o</code>, <code>webkit</code>) are reserved for the <var>taxonomy</var> parameter, and any additional implementation or external taxonomy identifiers will be defined in a supplemental, informative document.</p>
 					<pre class="example">
 						// example of a preference defined within the IndieUI User Context specification.
