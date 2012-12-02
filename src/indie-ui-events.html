@@ -210,7 +210,7 @@
 				<dl title="[Constructor] interface UIManipulationRequestEvent : UIRequestEvent" class="idl">
 
 					<dt>readonly attribute DOMString typeArg</dt>
-					<dd>The type of event. Either one of the simple, discrete types (<code>panrequest</code>, <code>zoomrequest</code>, etc) or the superset, continuous manipulation events (<code>manipulationrequest</code>) which may need to be split into start, change, end, and cancel events to allow applications to respond.</dd>
+					<dd>The type of event. Either one of the simple, discrete types (e.g. <code>panrequest</code>, <code>zoomrequest</code>) or the superset, continuous manipulation events.</dd>
 
 					<dt>readonly attribute boolean canBubbleArg</dt>
 					<dd></dd>
@@ -384,7 +384,7 @@
 					<dl>
 						<dt id="scrollrequest">Scroll Request <code class="event">scrollrequest</code></dt>
 						<dd>
-							<p>Initiated when the user agent sends a scroll request to the web application. Scroll events need only be used on custom scroll views (lists and grids showing data subsets, carousels, etc.), as user agents and assistive technologies already manage scrolling of native scroll views.</p>
+							<p>Initiated when the user agent sends a scroll request to the web application. Scroll events need only be used on custom scroll views (e.g. lists and grids showing data subsets or carousels), as user agents and assistive technologies already manage scrolling of native scroll views.</p>
 							<p class="note">The scroll type constants are more or less equivalent to expected behavior for <kbd>PageUp</kbd>/<kbd>PageDown</kbd> and <kbd>Home</kbd>/<kbd>End</kbd> keys on native scroll views, but also allow horizontal scrolling.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
@@ -449,7 +449,7 @@
 								<li>Context Info: <code>changeType</code></li>
 							</ul>
 							<div class="example" title="Informative Example">
-								<p>Users, wanting to change the value of a custom range widget (slider, spin buttons, etc.) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method.</p>
+								<p>Users, wanting to change the value of a custom range widget (e.g. sliders or spin buttons) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method.</p>
 							</div>
 						</dd>
 					</dl>
