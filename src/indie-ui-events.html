@@ -278,7 +278,7 @@
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
-								<li>Context Info: <code>originX</code>, <code>originY</code>, and <code>rotation</code></li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>rotation</code></li>
 							</ul>
 						</dd>
 						<!-- zoom changes (e.g. maps or custom layout views) -->
@@ -288,7 +288,7 @@
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
-								<li>Context Info: <code>originX</code>, <code>originY</code>, and <code>scaleFactor</code></li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>scaleFactor</code></li>
 							</ul>
 						</dd>
 					</dl>
@@ -296,6 +296,7 @@
 
 				<section id="ContinuousUIManipulationRequestEvents">
 					<h4>Continuous UIManipulationRequestEvent Types</h4>
+					<p class="ednote">These continuous events may need an identifier per manipulation, for example, to associate a manipulationcancelrequest with the originating manipulationstartrequest that needs to be canceled.</p>
 					<p>The <em>continuous</em> types of UIManipulationRequestEvents that can occur are:</p>
 					<dl>
 						<dt id="manipulationstartrequest">Manipulation Start Request <code class="event">manipulationstartrequest</code></dt>
@@ -303,31 +304,31 @@
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
-								<li>Context Info: TBD</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
 							</ul>
 						</dd>
-						<dt id="manipulationchangerequest">Manipulation Start Request <code class="event">manipulationchangerequest</code></dt>
+						<dt id="manipulationchangerequest">Manipulation Change Request <code class="event">manipulationchangerequest</code></dt>
 						<dd>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
-								<li>Context Info: TBD</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
 							</ul>
 						</dd>
-						<dt id="manipulationendrequest">Manipulation Start Request <code class="event">manipulationendrequest</code></dt>
+						<dt id="manipulationendrequest">Manipulation End Request <code class="event">manipulationendrequest</code></dt>
 						<dd>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
-								<li>Context Info: TBD</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
 							</ul>
 						</dd>
-						<dt id="manipulationcancelrequest">Manipulation Start Request <code class="event">manipulationcancelrequest</code></dt>
+						<dt id="manipulationcancelrequest">Manipulation Cancel Request <code class="event">manipulationcancelrequest</code></dt>
 						<dd>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
-								<li>Context Info: TBD</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
 							</ul>
 						</dd>
 					</dl>
