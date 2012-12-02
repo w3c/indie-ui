@@ -101,7 +101,7 @@
 		
 
 		<!-- :::::::::::::::::::: window.preferences :::::::::::::::::::: -->
-		<section id="the-preferences-interface">
+		<section id="Preferences">
 			<h3>Interface <em>Preferences</em></h3>
 			<p>The <code>preferences</code> attribute of the Window interface MUST return an instance of the Preferences interface. The same object must be returned each time.</p>
 
@@ -119,12 +119,12 @@
 
 			</dl>
 			
-			<section id="preference-keys">
+			<section id="PreferenceKeys">
 				<h4>Preference Keys</h4>
 				<p class="ednote">TBD whether this is the best way to define these in IDL, or if the IDL is even necessary here.</p>
 
 				<dl title="dictionary PreferenceKeys" class="idl">
-					<dt>DOMString? fontSize = null</dt><dd>User's current default font size of root element, prior to applying page styles, returned in a CSS pixel units, e.g. '14px'</dd>
+					<dt>DOMString? fontSize = null</dt><dd>User's current default font size of root element, prior to applying page styles, returned in a CSS pixel unit formatted string, e.g. '14px'</dd>
 					<dt>DOMString? foo = null</dt><dd>lorem ipsum</dd>
 					<dt>DOMString? bar = false</dt><dd>lorem ipsum</dd>
 				</dl>
