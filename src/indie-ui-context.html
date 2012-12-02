@@ -110,10 +110,24 @@
 				<dt>DOMstring? valueForKey(<!-- params defined in dl below -->)</dt>
 				<dd>
 					<p class="ednote">Description TBD (esp re: privacy and fingerprinting )</p>
-					<pre class="example">window.preferences.valueForKey('fontSize');</pre>
+					<p class="note">An undefined or empty value for the <var>taxonomy</var> parameter indicates the <var>key</var> matches a preference defined in <a href="#preference-keys">Preference Keys</a> section of this document. Standard vendor prefixes (<code>ie</code>, <code>moz</code>, <code>o</code>, <code>webkit</code>) are reserved for the <var>taxonomy</var> parameter, and any additional implementation or external taxonomy identifiers will be defined in a supplemental, informative document.</p>
+					<pre class="example">
+						// example of a preference defined within the IndieUI User Context specification.
+						window.preferences.valueForKey('fontSize');
+						
+						// example of an vendor-proposed preference, intended for standardization.
+						window.preferences.valueForKey('foo', 'moz');
+						
+						// example of an implementation-specific preference that does not apply to other user agents.
+						window.preferences.valueForKey('focusAllControls', 'webkit');
+					</pre>
 					<dl class="parameters">
-						<dt>DOMString key</dt><dd>Identifying key for the preference value to be returned.</dd>
-						<dt>optional DOMString? taxonony</dt><dd>A unique string identifier for external taxonomy in which the key is defined, such as a vendor-prefix ('webkit') for implementation-specific and vendor-proposed keys, or another external taxonomy. An undefined or empty string indicates the key matches a preference defined in <a href="#preference-keys">Preference Keys</a> section of this document.</dd>
+						
+						<dt>DOMString key</dt>
+						<dd>Identifying key for the preference value to be returned.</dd>
+						
+						<dt>optional DOMString? taxonony</dt>
+						<dd>A unique string identifier for external taxonomy in which the key is defined, such as a vendor-prefix ('webkit') for vendor-proposed or implementation-specific keys, or another external taxonomy.</dd>
 					</dl>
 				</dd>
 
@@ -126,7 +140,7 @@
 				<dl title="dictionary PreferenceKeys" class="idl">
 					<dt>DOMString? fontSize = null</dt><dd>User's current default font size of root element, prior to applying page styles, returned in a CSS pixel unit formatted string, e.g. '14px'</dd>
 					<dt>DOMString? foo = null</dt><dd>lorem ipsum</dd>
-					<dt>DOMString? bar = false</dt><dd>lorem ipsum</dd>
+					<dt>boolean? bar = false</dt><dd>lorem ipsum</dd>
 				</dl>
 
 			</section>
