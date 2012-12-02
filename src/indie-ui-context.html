@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>IndieUI 1.0: User Context</title>
-		<link href="./csi/screen.css" rel="stylesheet" type="text/css">
+		<link href="./css/screen.css" rel="stylesheet" type="text/css">
 		
 		<!-- 
       === NOTA BENE ===
@@ -45,7 +45,7 @@
           // it is recommended that the respec.css stylesheet be kept
           extraCSS:             [
             "http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css",
-            "./csi/screen.css"
+            "./css/screen.css"
           ],
 
           // editors, add as many as you like
@@ -308,11 +308,13 @@ interface MagnifierNotifications {
 		</section>
 		<!-- :::::::::::::::::::: END window.accessibility :::::::::::::::::::: -->
 		
-		
-		<section class="placeholder appendix">
-			<h2>Acknowledgements</h2>
-			<p>Placeholder for footer content (acknowledgements, terms, etc.)</p>
-		</section>
+		<!--
+		ReSpec example: Use @data-transform to reuse a content transformer, and @data-oninclude to transform external content prior to inclusion.
+		<script type="text/javascript">function xmp(r, content) { return content.replace(/</g,'&lt;').replace(/>/g,'&gt;'); } </script>
+		<pre data-transform='xmp'>This markup is <b>escaped</b> like an <code>xmp</code>.</pre>
+		-->
+		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
+		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>
 		
 	</body>
 </html>

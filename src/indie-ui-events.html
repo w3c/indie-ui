@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>IndieUI: Events 1.0</title>
-		<link href="./csi/screen.css" rel="stylesheet" type="text/css">
+		<link href="./css/screen.css" rel="stylesheet" type="text/css">
 		
 		<!-- 
       === NOTA BENE ===
@@ -45,7 +45,7 @@
           // it is recommended that the respec.css stylesheet be kept
           extraCSS:             [
             "http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css",
-            "./csi/screen.css"
+            "./css/screen.css"
           ],
 
           // editors, add as many as you like
@@ -520,36 +520,13 @@
 		</section>
 		<!-- :::::::::::::::::::: END Accessibility Event Interfaces :::::::::::::::::::: -->
 
-		<section class="appendix">
-			<h2>Appendices</h2>
-			
-			<section id="terms">
-				<h3>Important Terms</h3>
-				<dl>
-					
-					<dt id="def_assistive_technology">Assistive Technology</dt>
-					<dd class="placeholder">TBD</dd>
-					
-					<dt id="def_point_of_regard">Point-of-Regard</dt>
-					<dd class="placeholder">TBD</dd>
-					
-					<dt id="def_request_event_receiver">Request Event Receiver</dt>
-					<dd>
-						<p class="ednote">TBD: need to explain difference between the event.target, the element handler the event (addEventListener), and the "receiver" of the UIRequestEvent. The event "receiver" will be author-defined with an attribute (potentially @actions or @ui-actions) that describe the type of UI actions that can be performed on the element (the UIRequestEvent "receiver") as is a contract declaration of the types of UIRequestEvents that will be received and handled by the web application.</p>
-					</dd>
-					
-					<dt id="def_user_agent">User Agent</dt>
-					<dd class="placeholder">TBD</dd>
-					
-				</dl>
-			</section>
-			
-			<section id="acknowledgements">
-				<h3>Acknowledgements</h3>
-				<p class="placeholder">Placeholder for footer content (acknowledgements, terms, etc.)</p>
-			</section>
-			
-		</section>
+		<!--
+		ReSpec: Use @data-transform to reuse a JavaScript content formatter, and @data-oninclude to transform external content before inclusion.
+		<script type="text/javascript">function xmp(r, content) { return content.replace(/</g,'&lt;').replace(/>/g,'&gt;'); } </script>
+		<pre data-transform='xmp'>This markup is <b>escaped</b> like an <code>xmp</code>.</pre>
+		-->
+		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
+		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>
 		
 	</body>
 </html>
