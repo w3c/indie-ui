@@ -4,6 +4,7 @@
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>IndieUI: Events 1.0</title>
 		<link href="./css/screen.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="./js/utils.js"></script>
 		
 		<!-- 
       === NOTA BENE ===
@@ -96,11 +97,6 @@
 		<section id="intro" class="introductory informative">
 			<h2>Introduction</h2>
 			<p class="placeholder">placeholder for remaining intro explaining background, event registration (addEventListener) versus origination (event.target defined via ~@ui-actions)</p>
-		</section>
-		
-		<section id="eventslist">
-			<h2>Events List (alphabetical)</h2>
-			<p class="placeholder">placeholder for alphabetical list of event types with short descriptions</p>
 		</section>
 		
 		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
@@ -520,6 +516,12 @@
 			
 		</section>
 		<!-- :::::::::::::::::::: END Accessibility Event Interfaces :::::::::::::::::::: -->
+
+		<section id="eventslist">
+			<h2>Events List (alphabetical)</h2>
+			<div data-transform="listEvents"><!-- dynamically generates event list --></div>
+		</section>
+
 
 		<!--
 		ReSpec: Use @data-transform to reuse a JavaScript content formatter, and @data-oninclude to transform external content before inclusion.

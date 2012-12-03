@@ -90,3 +90,7 @@ code sup {
 	color:#999;
 	font-style:italic;
 }
+
+#eventslist li {
+	margin-bottom:0.6em;
+}
