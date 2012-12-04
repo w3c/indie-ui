@@ -4,7 +4,9 @@
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>IndieUI: Events 1.0</title>
 		<link href="./css/screen.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="./loc/en/strings.js"></script>
 		<script type="text/javascript" src="./js/utils.js"></script>
+		<script type="text/javascript" src="./js/respec-transformers.js" class="remove"></script>
 		
 		<!-- 
       === NOTA BENE ===
@@ -139,7 +141,7 @@
 					<dl>
 						<dt id="undorequest">Undo Request <code class="event">undorequest</code></dt>
 						<dd>
-							<p>Initiated when the user agent sends an 'undo' request to the web application.</p>
+							<p>Indicates the user desires to 'undo' the previous action.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -150,7 +152,7 @@
 						</dd>
 						<dt id="redorequest">Redo Request <code class="event">redorequest</code></dt>
 						<dd>
-							<p>Initiated when the user agent sends a 'redo' request to the web application.</p>
+							<p>Indicates the user desires to 'redo' the previously 'undone' action.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -159,9 +161,25 @@
 								<p>Users, wanting to 'redo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Shift+Z</kbd> on Windows or Linux, <kbd>Command+Shift+Z</kbd> on Mac OS X.</p>
 							</div>
 						</dd>
+						<dt id="expandrequest">Expand Request <code class="event">expandrequest</code></dt>
+						<dd>
+							<p>Indicates the user desires to to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="collapserequest">Collapse Request <code class="event">collapserequest</code></dt>
+						<dd>
+							<p>Indicates the user desires to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
 						<dt id="dismissrequest">Dismiss Request <code class="event">dismissrequest</code></dt>
 						<dd>
-							<p>Initiated when the user agent sends a 'dismiss' request to the web application.</p>
+							<p>Indicates the user desires 'dismiss' the current view (e.g. canceling a dialog, or closing a popup menu).</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -172,23 +190,35 @@
 						</dd>
 						<dt id="deleterequest">Delete Request <code class="event">deleterequest</code></dt>
 						<dd>
-							<p>Initiated when the user agent sends a 'delete' request to the web application.</p>
+							<p>Indicates the user wants to initiate a 'delete' action on the <a href="#def_marked_element">marked element</a> or current view.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
 							</ul>
 						</dd>
-						<dt id="expandrequest">Expand Request <code class="event">expandrequest</code></dt>
+						<dt id="captionsoffrequest" data-transform="markRestricted">Captions Off Request <code class="event">captionsoffrequest</code></dt>
 						<dd>
-							<p>Initiated when the user agent conveys intent to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+							<p>Indicates the user desires to have video captions hidden.</p>
+							<p>Initiated when the user agent sends a 'captionsoffrequest' request to the web application.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
 							</ul>
 						</dd>
-						<dt id="collapserequest">Collapse Request <code class="event">collapserequest</code></dt>
+						<dt id="captionsonrequest" data-transform="markRestricted">Captions On Request <code class="event">captionsonrequest</code></dt>
 						<dd>
-							<p>Initiated when the user agent conveys intent to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+							<p>Indicates the user desires to have video captions enabled where available.</p>
+							<p>Initiated when the user agent sends a 'captionsonrequest' request to the web application.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="captionstogglerequest" data-transform="markRestricted">Captions Toggle Request <code class="event">captionstogglerequest</code></dt>
+						<dd>
+							<p>Indicates the user desires to have video captions toggled between the 'on' and 'off' states.</p>
+							<p>Initiated when the user agent sends a 'captionstogglerequest' request to the web application.</p>
+							<p class="ednote">Actively seeking comments on whether the caption 'toggle' event is necessary. It may be that the caption 'enable' and 'disable' events are enough.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -297,6 +327,7 @@
 					<dl>
 						<dt id="manipulationstartrequest">Manipulation Start Request <code class="event">manipulationstartrequest</code></dt>
 						<dd>
+							<p class="todo">TDB</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -305,6 +336,7 @@
 						</dd>
 						<dt id="manipulationchangerequest">Manipulation Change Request <code class="event">manipulationchangerequest</code></dt>
 						<dd>
+							<p class="todo">TDB</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -313,6 +345,7 @@
 						</dd>
 						<dt id="manipulationendrequest">Manipulation End Request <code class="event">manipulationendrequest</code></dt>
 						<dd>
+							<p class="todo">TDB</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -321,6 +354,7 @@
 						</dd>
 						<dt id="manipulationcancelrequest">Manipulation Cancel Request <code class="event">manipulationcancelrequest</code></dt>
 						<dd>
+							<p class="todo">TDB</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -457,13 +491,14 @@
 		<!-- :::::::::::::::::::: END UI Request Event Interfaces :::::::::::::::::::: -->
 
 		<!-- :::::::::::::::::::: Accessibility Event Interfaces :::::::::::::::::::: -->
-		<section id="AXevents">
+		<section id="AccessibilityEvents">
 			<h2>Accessibility Events</h2>
-			<p>The following events are only initiated by assistive technologies, as opposed to mainstream user agents.</p>
+			
 			
 			<!-- :::::::::::::::::::: AccessibilityEvent :::::::::::::::::::: -->
 			<section id="AccessibilityEvent">
 				<h3>Interface AccessibilityEvent</h3>
+				<p>The following events are usually initiated by assistive technologies or system , as opposed to mainstream user agents. These events are standard notification events and inherit from UIEvent, not UIRequestEvent.</p>
 				
 				<p class="ednote">Probably need a normative author requirement here stating authors MUST NOT update the visible view based on these events, unless the focused element is entirely out of view. Include example of where this is harmful.</p>
 				<p class="ednote">We might also need an AT equivalent of <code>document.activeElement</code>.</p>
@@ -471,7 +506,7 @@
 				<dl title="[Constructor] interface AccessibilityEvent : UIEvent" class="idl">
 					
 					<dt>readonly attribute DOMString typeArg</dt>
-					<dd>The type of event (e.g., <code>ATFocus</code>, <code>ATBlur</code>).</dd>
+					<dd>The type of event (e.g., <code>atfocus</code>, <code>atblur</code>).</dd>
 					
 					<dt>readonly attribute boolean canBubbleArg</dt>
 					<dd></dd>
@@ -489,11 +524,11 @@
 					
 				</dl>
 
-				<section id="AccessibilityEvents">
+				<section id="AccessibilityEventTypes">
 					<h4>AccessibilityEvent Types</h4>
 					<p>The different types of AccessibilityEvents that can occur are:</p>
 					<dl>
-						<dt id="ATFocus">Assistive Technology Focus <code class="event">ATFocus</code></dt>
+						<dt id="atfocus" data-transform="markRestricted">Assistive Technology Focus <code class="event">atfocus</code></dt>
 						<dd>
 							<p>Initiated when the assistive technology cursor or point-of-regard moves to a particular DOM node.</p>
 							<ul>
@@ -501,7 +536,7 @@
 								<li>Cancelable: No</li>
 							</ul>
 						</dd>
-						<dt id="ATBlur">Assistive Technology Blur <code class="event">ATBlur</code></dt>
+						<dt id="atblur" data-transform="markRestricted">Assistive Technology Blur <code class="event">atblur</code></dt>
 						<dd>
 							<p>Initiated when the assistive technology cursor or point-of-regard leaves a particular DOM node.</p>
 							<ul>
@@ -517,18 +552,16 @@
 		</section>
 		<!-- :::::::::::::::::::: END Accessibility Event Interfaces :::::::::::::::::::: -->
 
-		<section id="eventslist">
-			<h2>Events List (alphabetical)</h2>
-			<div data-transform="listEvents"><!-- dynamically generates event list --></div>
-		</section>
-
-
 		<!--
 		ReSpec: Use @data-transform to reuse a JavaScript content formatter, and @data-oninclude to transform external content before inclusion.
 		<script type="text/javascript">function xmp(r, content) { return content.replace(/</g,'&lt;').replace(/>/g,'&gt;'); } </script>
 		<pre data-transform='xmp'>This markup is <b>escaped</b> like an <code>xmp</code>.</pre>
 		-->
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
+		<section id="eventslist" class="">
+			<h2>Events List (alphabetical)</h2>
+			<div data-transform="listEvents"><!-- dynamically generates event list --></div>
+		</section>
 		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>
 		
 	</body>
