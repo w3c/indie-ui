@@ -16,8 +16,3 @@ function listEvents(r, content) {
 	s += '</ul>'
 	return content + s;
 }
-
-/* markRestricted: appends a link to the definition of restricted events */
-function markRestricted(r, content){
-	return content + ' (<a href="#def_restricted_event">' +loc('_restricted event')+ '</a>)';
-}
