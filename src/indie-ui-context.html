@@ -311,6 +311,73 @@ interface MagnifierNotifications {
 		</section>
 		<!-- :::::::::::::::::::: END window.accessibility :::::::::::::::::::: -->
 		
+		
+		<!-- :::::::::::::::::::: Accessibility Event Interfaces :::::::::::::::::::: -->
+		<section id="AccessibilityEvents">
+			<h2>Accessibility Events</h2>
+			
+			
+			<!-- :::::::::::::::::::: AccessibilityEvent :::::::::::::::::::: -->
+			<section id="AccessibilityEvent">
+				<h3>Interface AccessibilityEvent</h3>
+				<p class="ednote">It's possible this will not need an AccessibilityEvent interface, as this is more-or-less equivalent to UIEvent at the moment.<>/p>
+				<p>The following events are usually initiated by assistive technologies or system , as opposed to mainstream user agents. These events are standard notification events and inherit from UIEvent, not UIRequestEvent.</p>
+				
+				<p class="ednote">Probably need a normative author requirement here stating authors MUST NOT update the visible view based on these events, unless the focused element is entirely out of view. Include example of where this is harmful.</p>
+				<p class="ednote">We might also need an AT equivalent of <code>document.activeElement</code>.</p>
+				
+				<dl title="[Constructor] interface AccessibilityEvent : UIEvent" class="idl">
+					
+					<dt>readonly attribute DOMString typeArg</dt>
+					<dd>The type of event (e.g., <code>atfocus</code>, <code>atblur</code>).</dd>
+					
+					<dt>readonly attribute boolean canBubbleArg</dt>
+					<dd></dd>
+					
+					<dt>readonly attribute boolean cancelableArg</dt>
+					<dd></dd>
+					
+					<dt>void initAccessibilityEvent(
+						DOMString typeArg,
+						boolean canBubbleArg,
+						boolean cancelableArg,
+						views::AbstractView viewArg,
+						long detailArg)</dt>
+					<dd></dd>
+					
+				</dl>
+
+				<section id="AccessibilityEventTypes">
+					<h4>AccessibilityEvent Types</h4>
+					<p>The different types of AccessibilityEvents that can occur are:</p>
+					<dl>
+						<dt id="atfocus">Assistive Technology Focus <code class="event">atfocus</code></dt>
+						<dd>
+							<p>Initiated when the assistive technology cursor or point-of-regard moves to a particular DOM node.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: No</li>
+							</ul>
+						</dd>
+						<dt id="atblur">Assistive Technology Blur <code class="event">atblur</code></dt>
+						<dd>
+							<p>Initiated when the assistive technology cursor or point-of-regard leaves a particular DOM node.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: No</li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
+			</section>
+			<!-- :::::::::::::::::::: END AccessibilityEvent :::::::::::::::::::: -->
+			
+		</section>
+		<!-- :::::::::::::::::::: END Accessibility Event Interfaces :::::::::::::::::::: -->
+		
+		
+		
+		
 		<!--
 		ReSpec example: Use @data-transform to reuse a content transformer, and @data-oninclude to transform external content prior to inclusion.
 		<script type="text/javascript">function xmp(r, content) { return content.replace(/</g,'&lt;').replace(/>/g,'&gt;'); } </script>
