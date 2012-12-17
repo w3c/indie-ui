@@ -104,13 +104,24 @@
 		</section>
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 		
-		<!-- :::::::::::::::::::: Actions Attribute :::::::::::::::::::: -->
+		<!-- :::::::::::::::::::: UI Actions :::::::::::::::::::: -->
 		<section id="actions">
 			<h2><abbr title="User Interface">UI</abbr> Actions</h2>
-			<p>User interface actions are declared as enumerated attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using  <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents MUST NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
+			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using  <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents MUST NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
+			
+			<section id="uiActions">
+				<h2>The <code>uiActions</code> IDL Attribute</h2>
+				<p>The <code>uiActions</code> attribute of the Element interface MUST return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#ui-actions"><code>ui-actions</code></a> content attribute.</p>
+				<dl title="partial interface Element" class="idl">
+					<dt>attribute DOMString uiActions</dt>
+					<dd>A attribute whose string value <a href="#def_reflected_attribute">reflects</a> the <a href="#ui-actions"><code>ui-actions</code></a> content attribute.</dd>
+				</dl>
+			</section>
+			
 			<section id="ui-actions">
-				<h3>The <code>ui-actions</code> attribute</h3>
-				<p>The <code>ui-actions</code> content attribute is an <a href="http://www.w3.org/TR/2011/WD-html5-20110405/common-microsyntaxes.html#enumerated-attribute" class="todo">enumerated attribute</a> accepting zero or more of the following values, separated by whitespace:</p>
+				<h3>The <code>ui-actions</code> Content Attribute</h3>
+				<p>Every element may have a <code>ui-actions</code> attribute specified. The attribute, if specified, must have a value that is a set of whitespace-separated tokens representing the various actions to which the web application responds on behalf of this element. The actions that an element has assigned to it consists of all the tokens returned when the value of the <code>ui-actions</code> attribute is split on whitespace. (Duplicates are ignored.)</p>
+				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>ui-actions</code> content attribute in the <a href="#uiActions"><code>uiActions</code></a> IDL attribute.</p>
 				<div data-transform="listActions"><!-- dynamically generates event list --></div>
 				<p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p>
 				<pre class="example">
@@ -129,10 +140,11 @@
 					  document.body.addEventListener(<strong>'zoomrequest'</strong>, handleZoom);
 					&lt;/script&gt;
 				</pre>
-				<p class="note">In the previous example, 'undorequest' and 'redorequest' events could be fired any time the user's point-of-regard was inside the document. However, the 'dismissrequest' would only be fired when the user's point-of-regard was inside the dialog. Likewise, the 'panrequest' and 'zoomrequest' would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.
+				<p class="note">In the previous example, 'undorequest' and 'redorequest' events could be fired any time the user's point-of-regard was inside the document. However, the 'dismissrequest' would only be fired when the user's point-of-regard was inside the dialog. Likewise, the 'panrequest' and 'zoomrequest' would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.</p>
 			</section>
+
 		</section>
-		<!-- :::::::::::::::::::: End Actions Attribute :::::::::::::::::::: -->
+		<!-- :::::::::::::::::::: End UI Actions :::::::::::::::::::: -->
 		
 		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
 		<section id="RequestEvents">
@@ -150,6 +162,9 @@
 
 					<dt>readonly attribute DOMString typeArg</dt>
 					<dd>The type of event (e.g., <code>undorequest</code>, <code>redorequest</code>).</dd>
+
+					<dt>readonly attribute EventTarget receiver</dt>
+					<dd>In addition to the target and currentTarget, each UI Request Event has a receiver element, which is declared via the <a href="#ui-actions"><code>ui-actions</code></a> content attribute on an ancestor node of the event target.</dd>
 
 					<dt>readonly attribute boolean canBubbleArg</dt>
 					<dd></dd>
