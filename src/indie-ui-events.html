@@ -112,7 +112,7 @@
 				<h3>The <code>ui-actions</code> attribute</h3>
 				<p>The <code>ui-actions</code> content attribute is an <a href="http://www.w3.org/TR/2011/WD-html5-20110405/common-microsyntaxes.html#enumerated-attribute" class="todo">enumerated attribute</a> accepting zero or more of the following values, separated by whitespace:</p>
 				<div data-transform="listActions"><!-- dynamically generates event list --></div>
-				<p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author just not listen for those specific events.</p>
+				<p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p>
 				<pre class="example">
 					&lt;body <strong>ui-actions="undo redo"</strong>&gt;
 					  &lt;div id="mapview" <strong>ui-actions="pan zoom"</strong>&gt; ... &lt;/div&gt;
