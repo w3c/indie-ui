@@ -98,14 +98,46 @@
 		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
 		<section id="intro" class="introductory informative">
 			<h2>Introduction</h2>
-			<p class="placeholder">placeholder for remaining intro explaining background, event registration (addEventListener) versus origination (event.target defined via ~@ui-actions)</p>
+			<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agents behave as they normally would.</p>
+			<p><strong>Change request events do not cause any direct manipulation or mutation of the <abbr title="Document Object Model">DOM</abbr>.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent that the event has been captured and understood. If a web application does not cancel any change request event, the user agent can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
+			<p class="placeholder">placeholder for remaining intro explaining background, event registration (addEventListener) versus origination (event.target) and receiver (event.receiver defined via @actions or @ui-actions)</p>
 		</section>
+		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: Actions Attribute :::::::::::::::::::: -->
+		<section id="actions">
+			<h2><abbr title="User Interface">UI</abbr> Actions</h2>
+			<p>User interface actions are declared as enumerated attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using  <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents MUST NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
+			<section id="ui-actions">
+				<h3>The <code>ui-actions</code> attribute</h3>
+				<p>The <code>ui-actions</code> content attribute is an <a href="http://www.w3.org/TR/2011/WD-html5-20110405/common-microsyntaxes.html#enumerated-attribute" class="todo">enumerated attribute</a> accepting zero or more of the following values, separated by whitespace:</p>
+				<div data-transform="listActions"><!-- dynamically generates event list --></div>
+				<p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author just not listen for those specific events.</p>
+				<pre class="example">
+					&lt;body <strong>ui-actions="undo redo"</strong>&gt;
+					  &lt;div id="mapview" <strong>ui-actions="pan zoom"</strong>&gt; ... &lt;/div&gt;
+					  &lt;dialog <strong>ui-actions="dismiss"</strong>&gt; ... &lt;/dialog&gt;
+					&lt;/body&gt;
+					
+					&lt;script type="text/javascript"&gt;
+					  // registered on body as an example of event delegation to help illustrate the difference between
+					  // event target (document.activeElement or point-of-regard), receiver (element with defined actions), and listener (body)
+					  document.body.addEventListener(<strong>'dismissrequest'</strong>, handleDismiss);
+					  document.body.addEventListener(<strong>'panrequest'</strong>, handlePan);
+					  document.body.addEventListener(<strong>'redorequest'</strong>, handleRedo);
+					  document.body.addEventListener(<strong>'undorequest'</strong>, handleUndo);
+					  document.body.addEventListener(<strong>'zoomrequest'</strong>, handleZoom);
+					&lt;/script&gt;
+				</pre>
+				<p class="note">In the previous example, 'undorequest' and 'redorequest' events could be fired any time the user's point-of-regard was inside the document. However, the 'dismissrequest' would only be fired when the user's point-of-regard was inside the dialog. Likewise, the 'panrequest' and 'zoomrequest' would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.
+			</section>
+		</section>
+		<!-- :::::::::::::::::::: End Actions Attribute :::::::::::::::::::: -->
 		
 		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
 		<section id="RequestEvents">
 			<h2><abbr title="User Interface">UI</abbr> Request Events</h2>
-			<p>The core principle behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agent and assistive technology behave as they normally would.</p>
-			<p><strong>Change request events do not cause any direct manipulation or mutation of the DOM.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user agent. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent that the event has been captured and understood. If a web application does not cancel any change request event, the user agent can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
+			
 			<p class="ednote">There is purposefully no request event for activating the default action. Authors are encouraged to use a standard <code>click</code> event for default actions.</p>
 			<p class="ednote">Event fires on point-of-regard (<code>document.activeElement</code>, clicked element, or AT equivalent) if applicable, or otherwise <code>document.body</code>.</p>
 			<p class="ednote">These events should be asynchronous, but when used in conjunction with keyboard events, should fire after <code>keydown</code>, but before both <code>keyup</code> and <code>keypress</code>.</p>
@@ -113,7 +145,7 @@
 			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
 			<section id="UIRequestEvent">
 				<h3>Interface UIRequestEvent</h3>
-
+				<p class="ednote">Separate interface from UIEvent because the @ui-actions attribute will 1) affect when and where these events are fired, and 2) adds the distinction of an event "receiver" element (element declaring the ui-actions attribute) in addition to the "target" element where the event initiates and the "listener" element where the event is registered for and handled.</p>
 				<dl title="[Constructor] interface UIRequestEvent : UIEvent" class="idl">
 
 					<dt>readonly attribute DOMString typeArg</dt>
@@ -343,7 +375,7 @@
 			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
 			<section id="UIScrollRequestEvent">
 				<h3>Interface UIScrollRequestEvent</h3>
-				<div class="ednote">Editorial Note: these constants will likely change based on discussion from the IndieUI Face-to-Face.</div>
+				<div class="ednote">Editorial Note: these constants may change, or they may be replaced with x/y deltas.</div>
 				<dl title="[Constructor] interface UIScrollRequestEvent : UIRequestEvent" class="idl">
 					
 					<!-- for custom scroll views or widgets (e.g. carousels, lists, grids)... not intended for native scroll views -->
