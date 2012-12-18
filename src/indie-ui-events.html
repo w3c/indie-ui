@@ -108,6 +108,7 @@
 		<section id="actions">
 			<h2><abbr title="User Interface">UI</abbr> Actions</h2>
 			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using  <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents MUST NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
+			<p class="ednote">Perhaps the previous user agent requirement should be a SHOULD NOT rather than a MUST NOT.</p>
 			
 			<section id="uiActions">
 				<h2>The <code>uiActions</code> IDL Attribute</h2>
@@ -158,29 +159,25 @@
 			<section id="UIRequestEvent">
 				<h3>Interface UIRequestEvent</h3>
 				<p class="ednote">Separate interface from UIEvent because the @ui-actions attribute will 1) affect when and where these events are fired, and 2) adds the distinction of an event "receiver" element (element declaring the ui-actions attribute) in addition to the "target" element where the event initiates and the "listener" element where the event is registered for and handled.</p>
-				<dl title="[Constructor] interface UIRequestEvent : UIEvent" class="idl">
-
+				<dl title="[Constructor(DOMString typeArg, optional UIRequestEventInit dictUIRequestEventInit)] interface UIRequestEvent : UIEvent" class="idl">
+					<!--
 					<dt>readonly attribute DOMString typeArg</dt>
 					<dd>The type of event (e.g., <code>undorequest</code>, <code>redorequest</code>).</dd>
-
+					-->
 					<dt>readonly attribute EventTarget receiver</dt>
-					<dd>In addition to the target and currentTarget, each UI Request Event has a receiver element, which is declared via the <a href="#ui-actions"><code>ui-actions</code></a> content attribute on an ancestor node of the event target.</dd>
-
-					<dt>readonly attribute boolean canBubbleArg</dt>
-					<dd></dd>
-
-					<dt>readonly attribute boolean cancelableArg</dt>
-					<dd></dd>
-
-					<dt>void initUIRequestEvent(
-						DOMString typeArg,
-						boolean canBubbleArg,
-						boolean cancelableArg,
-						views::AbstractView viewArg,
-						long detailArg)</dt>
-					<dd></dd>
-
+					<dd>In addition to the target and currentTarget, each UI Request Event has a receiver element, which is declared via the <a href="#ui-actions"><code>ui-actions</code></a> content attribute on an ancestor node of the event target. <p class="ednote">Note: This may need to be defined as a partial interface on AbstractView, rather than in this interface.</p></dd>
 				</dl>
+				
+				<section id="UIRequestEventInit">
+					<h4>UIRequestEventInit</h4>
+					<dl title="dictionary UIRequestEventInit" class="idl">
+						<dt>boolean bubbles = true</dt><dd></dd>
+						<dt>boolean cancelable = true</dt><dd></dd>
+						<dt>AbstractView? view = null</dt><dd></dd>
+						<dt>long detail = 0</dt><dd></dd>
+						<!-- todo: Incorporate receiver into initializer -->
+					</dl>
+				</section>
 
 				<section id="UIRequestEvents">
 					<h4>UIRequestEvent Types</h4>
@@ -252,48 +249,44 @@
 			<section id="UIManipulationRequestEvent">
 				<h3>Interface UIManipulationRequestEvent</h3>
 
-				<dl title="[Constructor] interface UIManipulationRequestEvent : UIRequestEvent" class="idl">
-
-					<dt>readonly attribute DOMString typeArg</dt>
-					<dd>The type of event. Either one of the simple, discrete types (e.g. <code>panrequest</code>, <code>zoomrequest</code>) or the superset, continuous manipulation events.</dd>
-
-					<dt>readonly attribute boolean canBubbleArg</dt>
-					<dd></dd>
-
-					<dt>readonly attribute boolean cancelableArg</dt>
-					<dd></dd>
-
-					<dt>void initUIManipulationRequestEvent()</dt>
-					<dd>
-						
-						<dl class="parameters">
-							
-							<dt>DOMString typeArg</dt><dd></dd>
-							<dt>boolean canBubbleArg</dt><dd></dd>
-							<dt>boolean cancelableArg</dt><dd></dd>
-							<dt>views::AbstractView viewArg</dt><dd></dd>
-							<dt>long detailArg</dt><dd></dd>
-							
-							<dt>optional float originX</dt>
-							<dd>The cartesian X coordinate origin point, measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
-							<dt>optional float originY</dt>
-							<dd>The cartesian Y coordinate origin point, measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
-
-							<dt>optional float deltaX</dt>
-							<dd>The cartesian X coordinate delta, in CSS pixels.</dd>
-							<dt>optional float deltaY</dt>
-							<dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
-
-							<dt>optional float scaleFactor</dt>
-							<dd>Scale factor, used in zoom manipulations, where 1.0 is the original scale factor. For example, a value of 2.0 or 3.0 indicates the element should enlarge to 2 or 3 times its original scale, respectively. A value of 0.5 indicates the element should decrease to one-half its original scale.</dd>
-
-							<dt>optional float rotation</dt>
-							<dd>Rotation value, in degrees from 0. Positive values indicate a counter-clockwise rotation. Negative values indicate a clockwise rotation.</dd>
-							
-						</dl>
-					</dd>
-
+				<dl title="[Constructor(DOMString typeArg, optional UIManipulationRequestEventInit dictUIManipulationRequestEventInit)] interface UIManipulationRequestEvent : UIRequestEvent" class="idl">
+					<!--
+					<dt>readonly attribute DOMString typeArg</dt><dd>The type of event. Either one of the simple, discrete types (e.g. <code>panrequest</code>, <code>zoomrequest</code>) or the superset, continuous manipulation events.</dd>
+					<dt>readonly attribute boolean canBubbleArg</dt><dd></dd>
+					<dt>readonly attribute boolean cancelableArg</dt><dd></dd>
+					-->
 				</dl>
+				
+				<section id="UIManipulationRequestEventInit">
+					<h4>UIManipulationRequestEventInit</h4>
+					<dl title="dictionary UIManipulationRequestEventInit" class="idl">
+						
+						<!-- todo: Incorporate receiver into initializer -->
+						
+						<dt>boolean bubbles = false</dt><dd></dd>
+						<dt>boolean cancelable = false</dt><dd></dd>
+						<dt>AbstractView? view = null</dt><dd></dd>
+						<dt>long detail = 0</dt><dd></dd>
+						
+						<dt>optional double originX = 0.0</dt>
+						<dd>The cartesian X coordinate origin point, measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+						<dt>optional double originY = 0.0</dt>
+						<dd>The cartesian Y coordinate origin point, measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+
+						<dt>optional double deltaX = 0.0</dt>
+						<dd>The cartesian X coordinate delta, in CSS pixels.</dd>
+						<dt>optional double deltaY = 0.0</dt>
+						<dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
+
+						<dt>optional double scaleFactor = 0.0</dt>
+						<dd>Scale factor, used in zoom manipulations, where 1.0 is the original scale factor. For example, a value of 2.0 or 3.0 indicates the element should enlarge to 2 or 3 times its original scale, respectively. A value of 0.5 indicates the element should decrease to one-half its original scale.</dd>
+
+						<dt>optional double rotation = 0.0</dt>
+						<dd>Rotation value, in degrees from 0. Positive values indicate a counter-clockwise rotation. Negative values indicate a clockwise rotation.</dd>
+						
+					</dl>
+				</section>
+				
 
 				<section id="DiscreteUIManipulationRequestEvents">
 					<h4>Discrete UIManipulationRequestEvent Types</h4>
@@ -391,10 +384,8 @@
 			<section id="UIScrollRequestEvent">
 				<h3>Interface UIScrollRequestEvent</h3>
 				<div class="ednote">Editorial Note: these constants may change, or they may be replaced with x/y deltas.</div>
-				<dl title="[Constructor] interface UIScrollRequestEvent : UIRequestEvent" class="idl">
-					
+				<dl title="[Constructor(DOMString typeArg, optional UIScrollRequestEventInit dictUIScrollRequestEventInit)] interface UIScrollRequestEvent : UIRequestEvent" class="idl">
 					<!-- for custom scroll views or widgets (e.g. carousels, lists, grids)... not intended for native scroll views -->
-					
 					<dt>const unsigned short LEFT         = TBD</dt><dd></dd>
 					<dt>const unsigned short UP           = TBD</dt><dd></dd>
 					<dt>const unsigned short RIGHT        = TBD</dt><dd></dd>
@@ -403,29 +394,19 @@
 					<dt>const unsigned short TOP_LIMIT    = TBD</dt><dd></dd>
 					<dt>const unsigned short RIGHT_LIMIT  = TBD</dt><dd></dd>
 					<dt>const unsigned short BOTTOM_LIMIT = TBD</dt><dd></dd>
-					
-					<dt>readonly attribute DOMString typeArg</dt>
-					<dd>The type of event (<code>scrollrequest</code>).</dd>
-					
-					<dt>readonly attribute boolean canBubbleArg</dt>
-					<dd></dd>
-					
-					<dt>readonly attribute boolean cancelableArg</dt>
-					<dd></dd>
-					
-					<dt>readonly attribute unsigned short scrollType</dt>
-					<dd>Type of scroll requested, as defined in the interface constants.</dd>
-				
-					<dt>void initUIScrollRequestEvent(
-						DOMString typeArg,
-						boolean canBubbleArg,
-						boolean cancelableArg,
-						views::AbstractView viewArg,
-						long detailArg,
-						unsigned short scrollTypeArg)</dt>
-					<dd></dd>
-					
 				</dl>
+				
+				<section id="UIScrollRequestEventInit">
+					<h4>UIScrollRequestEventInit</h4>
+					<dl title="dictionary UIScrollRequestEventInit" class="idl">
+						<!-- todo: Incorporate receiver into initializer -->
+						<dt>boolean bubbles = false</dt><dd></dd>
+						<dt>boolean cancelable = false</dt><dd></dd>
+						<dt>AbstractView? view = null</dt><dd></dd>
+						<dt>long detail = 0</dt><dd></dd>
+						<dt>unsigned short? scrollType = null</dt><dd>Type of scroll requested, as defined in the interface constants.</dd>
+					</dl>
+				</section>
 				
 				<section id="UIScrollRequestEvents">
 					<h4>UIScrollRequestEvent Types</h4>
@@ -449,9 +430,7 @@
 			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
 			<section id="UIValueChangeRequestEvent">
 				<h3>Interface UIValueChangeRequestEvent</h3>
-				<div class="ednote">Editorial Note: these constants will likely change based on discussion from the IndieUI Face-to-Face.</div>
-				<dl title="[Constructor] interface UIValueChangeRequestEvent : UIRequestEvent" class="idl">
-
+				<dl title="[Constructor(DOMString typeArg, optional UIValueChangeRequestEventInit dictUIValueChangeRequestEventInit)] interface UIValueChangeRequestEvent : UIRequestEvent" class="idl">
 					<dt>const unsigned short INCREMENT       = TBD</dt><dd></dd>
 					<dt>const unsigned short INCREMENT_SMALL = TBD</dt><dd></dd>
 					<dt>const unsigned short INCREMENT_LARGE = TBD</dt><dd></dd>
@@ -460,29 +439,19 @@
 					<dt>const unsigned short DECREMENT_SMALL = TBD</dt><dd></dd>
 					<dt>const unsigned short DECREMENT_LARGE = TBD</dt><dd></dd>
 					<dt>const unsigned short DECREMENT_MIN   = TBD</dt><dd></dd>
-					
-					<dt>readonly attribute DOMString typeArg</dt>
-					<dd>The type of event (<code>valuechangerequest</code>).</dd>
-					
-					<dt>readonly attribute boolean canBubbleArg</dt>
-					<dd></dd>
-					
-					<dt>readonly attribute boolean cancelableArg</dt>
-					<dd></dd>
-					
-					<dt>readonly attribute unsigned short changeType</dt>
-					<dd>Type of change requested, as defined in the interface constants.</dd>
-					
-					<dt>void initUIValueChangeRequestEvent(
-						DOMString typeArg,
-						boolean canBubbleArg,
-						boolean cancelableArg,
-						views::AbstractView viewArg,
-						long detailArg,
-						unsigned short changeTypeArg)</dt>
-					<dd></dd>
-					
 				</dl>
+				
+				<section id="UIValueChangeRequestEventInit">
+					<h4>UIValueChangeRequestEventInit</h4>
+					<dl title="dictionary UIValueChangeRequestEventInit" class="idl">
+						<!-- todo: Incorporate receiver into initializer -->
+						<dt>boolean bubbles = false</dt><dd></dd>
+						<dt>boolean cancelable = false</dt><dd></dd>
+						<dt>AbstractView? view = null</dt><dd></dd>
+						<dt>long detail = 0</dt><dd></dd>
+						<dt>unsigned short? changeType = null</dt><dd>Type of change requested, as defined in the interface constants.</dd>
+					</dl>
+				</section>
 
 				<section id="UIValueChangeRequestEvents">
 					<h4>UIValueChangeRequestEvent Types</h4>

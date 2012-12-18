@@ -326,25 +326,7 @@ interface MagnifierNotifications {
 				<p class="ednote">Probably need a normative author requirement here stating authors MUST NOT update the visible view based on these events, unless the focused element is entirely out of view. Include example of where this is harmful.</p>
 				<p class="ednote">We might also need an AT equivalent of <code>document.activeElement</code>.</p>
 				
-				<dl title="[Constructor] interface AccessibilityEvent : UIEvent" class="idl">
-					
-					<dt>readonly attribute DOMString typeArg</dt>
-					<dd>The type of event (e.g., <code>atfocus</code>, <code>atblur</code>).</dd>
-					
-					<dt>readonly attribute boolean canBubbleArg</dt>
-					<dd></dd>
-					
-					<dt>readonly attribute boolean cancelableArg</dt>
-					<dd></dd>
-					
-					<dt>void initAccessibilityEvent(
-						DOMString typeArg,
-						boolean canBubbleArg,
-						boolean cancelableArg,
-						views::AbstractView viewArg,
-						long detailArg)</dt>
-					<dd></dd>
-					
+				<dl title="[Constructor(DOMString typeArg, optional UIEventInit dictUIEventInit)] interface AccessibilityEvent : UIEvent" class="idl">
 				</dl>
 
 				<section id="AccessibilityEventTypes">
