@@ -89,18 +89,26 @@
 	<body>
 
 		<section id="abstract">
-			<p>This specification, in conjunction with the <a href="./indie-ui-context.html">User Context Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content. See the <a href="#intro">introduction</a> for background and usage examples.</p>
+			<p>This specification, in conjunction with the <a href="./indie-ui-context.html">User Context Module</a>, is intended address the problem of device-, <abbr title="operating system">OS</abbr>-, and localization-independent control of web content, including custom widgets. See the <a href="#intro">introduction</a> for background and usage examples.</p>
 		</section>
 
 		<section id="sotd">
 		</section>
 		
 		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
-		<section id="intro" class="introductory informative">
+		<section id="intro" class="informative">
 			<h2>Introduction</h2>
-			<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agents behave as they normally would.</p>
-			<p><strong>Change request events do not cause any direct manipulation or mutation of the <abbr title="Document Object Model">DOM</abbr>.</strong> Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent that the event has been captured and understood. If a web application does not cancel any change request event, the user agent can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
-			<p class="placeholder">placeholder for remaining intro explaining background, event registration (addEventListener) versus origination (event.target) and receiver (event.receiver defined via @actions or @ui-actions)</p>
+			
+			<section id="background" class="informative">
+				<h3>Problem Description and Background</h3>
+			</section>
+			
+			<section id="intro-backwards-compatibility" class="informative">
+				<h3>Backwards-compatibility</h3>
+				<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agents behave as they normally would.</p>
+				<p>Change request events do not cause any direct manipulation or mutation of the <abbr title="Document Object Model">DOM</abbr>. Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent that the event has been captured and understood. If a web application does not cancel any change request event, the user agent can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
+				<p class="placeholder">placeholder for remaining intro explaining background, event registration (addEventListener) versus origination (event.target) and receiver (event.receiver defined via @actions or @ui-actions)</p>
+			</section>
 		</section>
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 		
