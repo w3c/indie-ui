@@ -99,15 +99,46 @@
 		<section id="intro" class="informative">
 			<h2>Introduction</h2>
 			
-			<section id="background" class="informative">
+			<section id="intro-background" class="informative">
 				<h3>Problem Description and Background</h3>
+				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be customized based on personal preferences. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's interface.</p>
+				<p>For example, web application authors, wishing to intercept a user's intent to 'undo' the last action, need to listen for all of the following events:</p>
+				<ul>
+					<li><kbd>Control+Z</kbd> on Windows and Linux.</li>
+					<li><kbd>Command+Z</kbd> on Mac OS X.</li>
+					<li><em>Shake</em> events on some mobile devices.</li>
+				</ul>
+				<p>It would be simpler to listen for a single, normalized request to 'undo' the previous action.</p>
+				<p>In addition to the general user interface challenges, custom interfaces often don't take into account users who access the Web via alternate assistive technologies including screen readers, switch interfaces, or speech-based command and control interfaces.</p>
+				<p>For example, a web page author may script a custom interface to look like a slider (e.g. an <abbr title="Hypertext Markup Language">HTML</abbr> 'range' input) and behave like a slider when using standard mouse input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse.</p>
+			</section>
+			
+			<section id="intro-goals" class="informative">
+				<h3>Goals</h3>
+				<p>The primary goals of this specification are declared as the following:</p>
+				<ol>
+					<li>Make it easier for web developers to author consistently usable interfaces that are agnostic and independent of a user's particular platform, hardware, locale, and preferences.</li>
+					<li>Enable every control in these interfaces to be programmatically determinable and controllable by both mainstream and alternate forms of user input, including assistive technologies.</li>
+					<li>Provide a clear path for web developers to smoothly transition from currently existing physical events to IndieUI events, during the period when implementations of IndieUI are incomplete.</li>
+				</ul>
+			</section>
+
+			<section id="intro-out-of-scope" class="informative">
+				<h3>Out-of-Scope</h3>
+				<p>Decisions regarding which specific physical user interactions (keyboard combinations, gestures, speech, etc.) trigger IndieUI events are explicitly listed as out-of-scope in the working group charter. User interface is and should be defined and controlled by each operating system, and not defined as part of any technical specification.</p>
+				<p>Throughout this document are listed informative examples of certain keyboard and mouse events that <em>may</em> trigger each IndieUI event. There is no requirement for a user agent to implement these examples, and listing them is purely to aid in clarifying the conceptual understanding of each event, as well as illustrating some UI differences between platforms. These informative examples will be limited to keyboard and mouse events, because those physical modalities have been common in software interaction for decades, and their use is familiar to most readers.</p>
+				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a 'dismissrequest' event to close a dialog, but the decision to do so by physically pressing the <kbd>ESC</kbd> key is left as an implementation detail. It is left up to each platform to determine whether to use <kbd>ESC</kbd>, or some other interaction, triggers the 'dismissrequest' event. As long as there is some way to trigger an event, the user agent will be considered a conforming implementation.</p>
+			</section>
+
+			<section id="intro-out-of-scope" class="informative">
+				<h3>Usage Examples</h3>
+				<p class="placeholder">placeholder content</p>
 			</section>
 			
 			<section id="intro-backwards-compatibility" class="informative">
 				<h3>Backwards-compatibility</h3>
-				<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to be aware of these events and register event listeners, or the user agents behave as they normally would.</p>
-				<p>Change request events do not cause any direct manipulation or mutation of the <abbr title="Document Object Model">DOM</abbr>. Instead, the event object conveys the user's intent to the web application, and allows the web application to make the appropriate changes to the DOM, on behalf of the user. If a web application is authored to understand the change request event, it can cancel the event using <code>preventDefault()</code>, which informs the user agent that the event has been captured and understood. If a web application does not cancel any change request event, the user agent can then attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
-				<p class="placeholder">placeholder for remaining intro explaining background, event registration (addEventListener) versus origination (event.target) and receiver (event.receiver defined via @actions or @ui-actions)</p>
+				<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to first be aware of these events, then explicitly declare each event receiver and register an event listener, or user agents behave as they normally would.</p>
+				<p>Change request events do not cause any direct manipulation or mutation of the <abbr title="Document Object Model">DOM</abbr>, and do not have any 'default action' in the context of a web view. Instead, the event conveys the user's intent to the web application, and allows the web application to perform the appropriate action on behalf of the user, including making potential changes to the DOM. If a web application is authored to understand the change request event, it can cancel the event, which informs the user agent that the event has been captured and understood. If a web application does not cancel the event, the user agent may attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
 			</section>
 		</section>
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
