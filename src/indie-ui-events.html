@@ -366,7 +366,7 @@ partial interface UIEvent {
 						<dt id="scrollrequest">Scroll Request <code class="event">scrollrequest</code></dt>
 						<dd>
 							<p>Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values.</p>
-							<p class="ednote">Need to specify algorithm for determining x/y deltas for events like pagedown/pageup. Should probably be max of receiver element width/height, or user agent viewport width/height (delta if overlapped inexactly), with potential for a smaller assistive technology viewport (e.g. if screen zoom does not show entirely of previous calculation's width/height).</p>
+							<p class="ednote">Need to specify algorithm for determining x/y deltas for events like pagedown/pageup. Should probably be max of receiver element width/height, or user agent viewport width/height (delta if overlapped inexactly), with potential for a smaller assistive technology viewport (e.g. if screen zoom does not show entirety of previous calculation's width/height).</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -439,14 +439,14 @@ partial interface UIEvent {
 			<section id="UIValueChangeRequestEvent">
 				<h3>Interface UIValueChangeRequestEvent</h3>
 				<dl title="[Constructor(DOMString typeArg, optional UIValueChangeRequestEventInit dictUIValueChangeRequestEventInit)] interface UIValueChangeRequestEvent : UIRequestEvent" class="idl">
-					<dt>const unsigned short INCREMENT       = TBD</dt><dd></dd>
-					<dt>const unsigned short INCREMENT_SMALL = TBD</dt><dd></dd>
-					<dt>const unsigned short INCREMENT_LARGE = TBD</dt><dd></dd>
-					<dt>const unsigned short INCREMENT_MAX   = TBD</dt><dd></dd>
-					<dt>const unsigned short DECREMENT       = TBD</dt><dd></dd>
-					<dt>const unsigned short DECREMENT_SMALL = TBD</dt><dd></dd>
-					<dt>const unsigned short DECREMENT_LARGE = TBD</dt><dd></dd>
-					<dt>const unsigned short DECREMENT_MIN   = TBD</dt><dd></dd>
+					<dt>const unsigned short INCREMENT       = 1</dt><dd></dd>
+					<dt>const unsigned short INCREMENT_SMALL = 2</dt><dd></dd>
+					<dt>const unsigned short INCREMENT_LARGE = 3</dt><dd></dd>
+					<dt>const unsigned short INCREMENT_MAX   = 4</dt><dd></dd>
+					<dt>const unsigned short DECREMENT       = 5</dt><dd></dd>
+					<dt>const unsigned short DECREMENT_SMALL = 6</dt><dd></dd>
+					<dt>const unsigned short DECREMENT_LARGE = 7</dt><dd></dd>
+					<dt>const unsigned short DECREMENT_MIN   = 8</dt><dd></dd>
 				</dl>
 				
 				<section id="UIValueChangeRequestEventInit">
@@ -468,7 +468,7 @@ partial interface UIEvent {
 						<dt id="valuechangerequest">Value Change Request <code class="event">valuechangerequest</code></dt>
 						<dd>
 							<p>Initiated when the user agent sends a value change request to the web application.</p>
-							<p>Web authors <strong class="rfc2119">should</strong> code applications to accept all values of the <code>changeType</code> argument. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
+							<p>Web authors <strong class="rfc2119">should</strong> code applications to accept <em>all</em> values of the <code>changeType</code> attribute. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
