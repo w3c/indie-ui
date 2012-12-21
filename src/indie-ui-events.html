@@ -126,7 +126,7 @@
 			<section id="intro-scope" class="informative">
 				<h3>Document Scope</h3>
 				<p>Decisions regarding which specific physical user interactions (keyboard combinations, gestures, speech, etc.) trigger IndieUI events are explicitly listed as out-of-scope in the Working Group charter. User interface is—and should be—defined and controlled by each operating system, rather than defined as part of any technical specification.</p>
-				<p>Throughout this document are listed informative examples of certain keyboard and mouse events that <em>may</em> trigger each IndieUI event. There is no requirement for a user agent to implement these examples, and listing them is purely to aid in clarifying the conceptual understanding of each event, as well as illustrating some UI differences between platforms. These informative examples will be limited to keyboard and mouse events, because those physical modalities have been common in software interaction for decades, and their use is familiar to most readers.</p>
+				<p>However, throughout this document are listed informative examples of certain keyboard and mouse events that <em>may</em> trigger each IndieUI event. There is no requirement for a user agent to implement these examples, and they are listed here purely to aid in clarifying the reader's conceptual understanding of each event, as well as illustrating certain UI differences between platforms. These informative examples will be limited to keyboard and mouse events, because those physical modalities have been common in software interaction for decades, and their use is familiar to most readers.</p>
 				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a 'dismissrequest' event to close a dialog, but the decision to do so by physically pressing the <kbd>ESC</kbd> key is left as an implementation detail. It is up to each platform to determine whether <kbd>ESC</kbd> or some other interaction triggers the 'dismissrequest' event. As long as there is some way to initiate an event, the user agent will be considered a conforming implementation.</p>
 			</section>
 
@@ -153,7 +153,7 @@
 						  <strong>myDialog.addEventListener('dismissrequest', dismissHandler);</strong>
 						
 						  // at some point during runtime, the handler will be called
-						  // (e.g. if the user presses ESC key while focus is inside the dialog)
+						  // (e.g. if, for example, the user presses ESC key while focus is inside the dialog)
 						  function dismissHandler(e) {
 						  
 						    // cancel and close the dialog (don't forget to move focus before closing)
