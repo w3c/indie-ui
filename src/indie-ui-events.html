@@ -100,8 +100,8 @@
 			<h2>Introduction</h2>
 			
 			<section id="intro-background" class="informative">
-				<h3>Problem Description and Background</h3>
-				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be customized based on personal preferences. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's interface.</p>
+				<h3>Background</h3>
+				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be further customized based on personal preferences. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's interface.</p>
 				<p>For example, web application authors, wishing to intercept a user's intent to 'undo' the last action, need to listen for all of the following events:</p>
 				<ul>
 					<li><kbd>Control+Z</kbd> on Windows and Linux.</li>
@@ -109,8 +109,8 @@
 					<li><em>Shake</em> events on some mobile devices.</li>
 				</ul>
 				<p>It would be simpler to listen for a single, normalized request to 'undo' the previous action.</p>
-				<p>In addition to the general user interface challenges, custom interfaces often don't take into account users who access the Web via alternate assistive technologies including screen readers, switch interfaces, or speech-based command and control interfaces.</p>
-				<p>For example, a web page author may script a custom interface to look like a slider (e.g. an <abbr title="Hypertext Markup Language">HTML</abbr> 'range' input) and behave like a slider when using standard mouse input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse.</p>
+				<p>In addition to the general user interface challenges, custom interfaces often don't take into account users who access web content via alternate assistive technologies including screen readers, switch interfaces, or speech-based command and control interfaces.</p>
+				<p>For example, a web page author may script a custom interface to look like a slider (e.g. an <abbr title="Hypertext Markup Language">HTML</abbr> 'range' input) and behave like a slider when using standard mouse input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
 			</section>
 			
 			<section id="intro-goals" class="informative">
@@ -118,16 +118,16 @@
 				<p>The primary goals of this specification are declared as the following:</p>
 				<ol>
 					<li>Make it easier for web developers to author consistently usable interfaces that are agnostic and independent of a user's particular platform, hardware, locale, and preferences.</li>
-					<li>Enable every control in these interfaces to be programmatically determinable and controllable by both mainstream and alternate forms of user input, including assistive technologies.</li>
+					<li>Enable every type of control in these interfaces to be programmatically determinable and controllable by both mainstream and alternate forms of user input, including assistive technologies.</li>
 					<li>Provide a clear path for web developers to smoothly transition from currently existing physical events to IndieUI events, during the period when implementations of IndieUI are incomplete.</li>
 				</ul>
 			</section>
 
-			<section id="intro-out-of-scope" class="informative">
-				<h3>Out-of-Scope</h3>
-				<p>Decisions regarding which specific physical user interactions (keyboard combinations, gestures, speech, etc.) trigger IndieUI events are explicitly listed as out-of-scope in the working group charter. User interface is and should be defined and controlled by each operating system, and not defined as part of any technical specification.</p>
+			<section id="intro-scope" class="informative">
+				<h3>Document Scope</h3>
+				<p>Decisions regarding which specific physical user interactions (keyboard combinations, gestures, speech, etc.) trigger IndieUI events are explicitly listed as out-of-scope in the Working Group charter. User interface is—and should be—defined and controlled by each operating system, rather than defined as part of any technical specification.</p>
 				<p>Throughout this document are listed informative examples of certain keyboard and mouse events that <em>may</em> trigger each IndieUI event. There is no requirement for a user agent to implement these examples, and listing them is purely to aid in clarifying the conceptual understanding of each event, as well as illustrating some UI differences between platforms. These informative examples will be limited to keyboard and mouse events, because those physical modalities have been common in software interaction for decades, and their use is familiar to most readers.</p>
-				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a 'dismissrequest' event to close a dialog, but the decision to do so by physically pressing the <kbd>ESC</kbd> key is left as an implementation detail. It is left up to each platform to determine whether to use <kbd>ESC</kbd>, or some other interaction, triggers the 'dismissrequest' event. As long as there is some way to trigger an event, the user agent will be considered a conforming implementation.</p>
+				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a 'dismissrequest' event to close a dialog, but the decision to do so by physically pressing the <kbd>ESC</kbd> key is left as an implementation detail. It is up to each platform to determine whether <kbd>ESC</kbd> or some other interaction triggers the 'dismissrequest' event. As long as there is some way to initiate an event, the user agent will be considered a conforming implementation.</p>
 			</section>
 
 			<section id="intro-out-of-scope" class="informative">
@@ -154,7 +154,7 @@
 				<p>The <code>uiActions</code> attribute of each instance of the Element interface MUST return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#ui-actions"><code>ui-actions</code></a> content attribute.</p>
 				<dl title="partial interface Element" class="idl">
 					<dt>attribute DOMString uiActions</dt>
-					<dd>A attribute whose string value <a href="#def_reflected_attribute">reflects</a> the <a href="#ui-actions"><code>ui-actions</code></a> content attribute.</dd>
+					<dd>A attribute whose string value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#ui-actions"><code>ui-actions</code></a> content attribute.</dd>
 				</dl>
 			</section>
 			

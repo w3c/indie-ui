@@ -94,3 +94,6 @@ code sup {
 #eventslist li {
 	margin-bottom:0.6em;
 }
+ol li {
+	margin-bottom:1em;
+}
