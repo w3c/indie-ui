@@ -136,8 +136,8 @@
 			</section>
 			
 			<section id="intro-backwards-compatibility" class="informative">
-				<h3>Backwards-compatibility</h3>
-				<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a completely backwards-compatible, opt-in basis. In other words, the web application author has to first be aware of these events, then explicitly declare each event receiver and register an event listener, or user agents behave as they normally would.</p>
+				<h3>Backwards-Compatibility</h3>
+				<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a backwards-compatible, opt-in basis. In other words, the web application author has to first be aware of these events, then explicitly declare each event receiver and register an event listener, or user agents behave as they normally would.</p>
 				<p>Change request events do not cause any direct manipulation or mutation of the <abbr title="Document Object Model">DOM</abbr>, and do not have any 'default action' in the context of a web view. Instead, the event conveys the user's intent to the web application, and allows the web application to perform the appropriate action on behalf of the user, including making potential changes to the DOM. If a web application is authored to understand the change request event, it can cancel the event, which informs the user agent that the event has been captured and understood. If a web application does not cancel the event, the user agent may attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
 			</section>
 		</section>
@@ -165,17 +165,16 @@
 				<div data-transform="listActions"><!-- dynamically generates event list --></div>
 				<p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p>
 				<pre class="example">
-					&lt;body <strong>ui-actions="undo redo"</strong>&gt;
+					&lt;body <strong>ui-actions="undo"</strong>&gt;
 					  &lt;div id="mapview" <strong>ui-actions="pan zoom"</strong>&gt; ... &lt;/div&gt;
 					  &lt;dialog <strong>ui-actions="dismiss"</strong>&gt; ... &lt;/dialog&gt;
 					&lt;/body&gt;
 					
 					&lt;script type="text/javascript"&gt;
 					  // registered on body as an example of event delegation to help illustrate the difference between
-					  // event target (document.activeElement or point-of-regard), receiver (element with defined actions), and listener (body)
+					  // event target (document.activeElement or other point-of-regard), receiver (element with defined actions), and listener (body)
 					  document.body.addEventListener(<strong>'dismissrequest'</strong>, handleDismiss);
 					  document.body.addEventListener(<strong>'panrequest'</strong>, handlePan);
-					  document.body.addEventListener(<strong>'redorequest'</strong>, handleRedo);
 					  document.body.addEventListener(<strong>'undorequest'</strong>, handleUndo);
 					  document.body.addEventListener(<strong>'zoomrequest'</strong>, handleZoom);
 					&lt;/script&gt;
@@ -199,13 +198,19 @@
 				<h3>Interface UIRequestEvent</h3>
 				<p class="ednote">Separate interface from UIEvent because the @ui-actions attribute will 1) affect when and where these events are fired, and 2) adds the distinction of an event "receiver" element (element declaring the ui-actions attribute) in addition to the "target" element where the event initiates and the "listener" element where the event is registered for and handled.</p>
 				<dl title="[Constructor(DOMString typeArg, optional UIRequestEventInit dictUIRequestEventInit)] interface UIRequestEvent : UIEvent" class="idl">
-					<!--
-					<dt>readonly attribute DOMString typeArg</dt>
-					<dd>The type of event (e.g., <code>undorequest</code>, <code>redorequest</code>).</dd>
-					-->
 					<dt>readonly attribute EventTarget receiver</dt>
 					<dd>In addition to the target and currentTarget, each UI Request Event has a receiver element, which is declared via the <a href="#ui-actions"><code>ui-actions</code></a> content attribute on an ancestor node of the event target. <p class="ednote">Note: This may need to be defined as a partial interface on AbstractView, rather than in this interface.</p></dd>
 				</dl>
+				
+				<div class="ednote">
+					<p>May also need a way to associate IndieUI events with their physical event counterparts.</p>
+					<pre>[Example]
+partial interface UIEvent {
+  readonly attribute EventID id; // UID of current event
+  readonly attribute EventList relatedEvents; // List of related events, with ID and potentially type of each event. 
+  // e.g. This 'dismissrequest' event is associated with the previous 'keydown' and 'keyup' events.
+}</pre>
+				</div>
 				
 				<section id="UIRequestEventInit">
 					<h4>UIRequestEventInit</h4>
