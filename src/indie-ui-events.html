@@ -120,7 +120,7 @@
 					<li>Make it easier for web developers to author consistently usable interfaces that are agnostic and independent of a user's particular platform, hardware, locale, and preferences.</li>
 					<li>Enable every type of control in these interfaces to be programmatically determinable and controllable by both mainstream and alternate forms of user input, including assistive technologies.</li>
 					<li>Provide a clear path for web developers to smoothly transition from currently existing physical events to IndieUI events, during the period when implementations of IndieUI are incomplete.</li>
-				</ul>
+				</ol>
 			</section>
 
 			<section id="intro-scope" class="informative">
@@ -130,9 +130,84 @@
 				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a 'dismissrequest' event to close a dialog, but the decision to do so by physically pressing the <kbd>ESC</kbd> key is left as an implementation detail. It is up to each platform to determine whether <kbd>ESC</kbd> or some other interaction triggers the 'dismissrequest' event. As long as there is some way to initiate an event, the user agent will be considered a conforming implementation.</p>
 			</section>
 
-			<section id="intro-out-of-scope" class="informative">
+			<section id="intro-usage">
 				<h3>Usage Examples</h3>
-				<p class="placeholder">placeholder content</p>
+				
+				<section id="intro-example-dismissrequest"0>
+					<h4>Dismissing a Modal Dialog</h4>
+					<p>The following example uses a 'dismissrequest' event to close or cancel out of a modal application dialog.</p>
+					<pre class="example">
+						<span class="markup" data-transform="syntaxMarkup">
+						&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;
+						&lt;dialog <strong>ui-actions="dismiss"</strong> id="myDialog"&gt;
+						  ...
+						&lt;/dialog&gt;
+						
+						&lt;script type="text/javascript"&gt;</span><!--
+						--><span class="javascript" data-transform="syntaxJavaScript">
+						  
+						  var myDialog = document.getElementById('myDialog');
+						  
+						  // register the event at initialization
+						  // <strong>Option #1:</strong> On the receiver itself... (See next example for Option #2)
+						  <strong>myDialog.addEventListener('dismissrequest', dismissHandler);</strong>
+						
+						  // at some point during runtime, the handler will be called
+						  // (e.g. if the user presses ESC key while focus is inside the dialog)
+						  function dismissHandler(e) {
+						  
+						    // cancel and close the dialog (don't forget to move focus before closing)
+						    closeDialog(<strong>e.receiver</strong>); // Event.receiver is a readonly property like Event.target 
+						    
+						    // then cancel the event
+						    e.stopPropagation(); // stop the event from bubbling.
+						    <strong>e.preventDefault();</strong> // let the UA/AT know the event was intercepted successfully.
+
+						  }</span>
+						<span class="markup" data-transform="syntaxMarkup">
+						&lt;/script&gt;
+						</span>
+					</pre>
+				</section>
+				
+				<section id="intro-example-valuechangerequest"0>
+					<h4>Changing the Value of a Custom Slider</h4>
+					<p>The following example uses a 'valuechangerequest' event to modify the value of a custom ARIA slider.</p>
+					<pre class="example">
+						<span class="markup" data-transform="syntaxMarkup">
+						&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;
+						&lt;canvas <strong>ui-actions="valuechange"</strong> id="slider" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="42"&gt;&lt;/canvas&gt;
+						
+						&lt;script type="text/javascript"&gt;</span><!--
+						--><span class="javascript" data-transform="syntaxJavaScript">
+						  
+						  // register the event at initialization
+						  // <strong>Option #2:</strong> Using event delegation on any node (such as the body) that is higher in the DOM than the receiver element...
+						  <strong>document.body.addEventListener('valuechangerequest', valueChangeHandler);</strong>
+						
+						  // at some point during runtime, the handler will be called
+						  function valueChangeHandler(e) {
+						    
+						    // Find the event receiver element
+						    var slider = e.receiver;
+						    
+						    // grab context info from the Event object
+						    var changeType = <strong>e.request.changeType</strong>; // todo: Event.request object yet to be defined
+						    
+						    // update the model and display
+						    myApp.requestValueChangeForElement(changeType, slider);
+						
+						    // cancel the event
+						    e.stopPropagation(); // stop the event from bubbling 
+						    <strong>e.preventDefault();</strong> // let the UA/AT know the event was intercepted successfully
+						
+						  }</span>
+						<span class="markup" data-transform="syntaxMarkup">
+						&lt;/script&gt;
+						</span>
+					</pre>
+				</section>
+				
 			</section>
 			
 			<section id="intro-backwards-compatibility" class="informative">
@@ -156,6 +231,7 @@
 					<dt>attribute DOMString uiActions</dt>
 					<dd>A attribute whose string value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#ui-actions"><code>ui-actions</code></a> content attribute.</dd>
 				</dl>
+				<p class="ednote">It may be more appropriate to name this receives/@receives than uiActions/@ui-actions.</p>
 			</section>
 			
 			<section id="ui-actions">
@@ -165,21 +241,31 @@
 				<div data-transform="listActions"><!-- dynamically generates event list --></div>
 				<p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p>
 				<pre class="example">
+					<span class="markup" data-transform="syntaxMarkup">
+					&lt;!-- body element is event listener for all events, but event receiver only for 'undo' actions. --&gt;
 					&lt;body <strong>ui-actions="undo"</strong>&gt;
+					
+					  &lt;!-- Element container for custom 'mapview' is the event receiver for 'pan' and 'zoom' actions. --&gt;
 					  &lt;div id="mapview" <strong>ui-actions="pan zoom"</strong>&gt; ... &lt;/div&gt;
+					
+					  &lt;!-- This Dialog is the event receiver for 'dismiss' actions initiated on any lower-level event target. --&gt;
 					  &lt;dialog <strong>ui-actions="dismiss"</strong>&gt; ... &lt;/dialog&gt;
+					
 					&lt;/body&gt;
 					
-					&lt;script type="text/javascript"&gt;
-					  // registered on body as an example of event delegation to help illustrate the difference between
-					  // event target (document.activeElement or other point-of-regard), receiver (element with defined actions), and listener (body)
+					&lt;script type="text/javascript"&gt;</span>
+					  <span class="javascript" data-transform="syntaxJavaScript">
+					  // registered all of these on the body as an example of event delegation to help illustrate the difference between event
+					  // target (document.activeElement or other point-of-regard), receiver (element with defined actions), and listener (body)
 					  document.body.addEventListener(<strong>'dismissrequest'</strong>, handleDismiss);
 					  document.body.addEventListener(<strong>'panrequest'</strong>, handlePan);
 					  document.body.addEventListener(<strong>'undorequest'</strong>, handleUndo);
 					  document.body.addEventListener(<strong>'zoomrequest'</strong>, handleZoom);
+					</span><span class="markup" data-transform="syntaxMarkup">
 					&lt;/script&gt;
+					</span>
 				</pre>
-				<p class="note">In the previous example, 'undorequest' and 'redorequest' events could be fired any time the user's point-of-regard was inside the document. However, the 'dismissrequest' would only be fired when the user's point-of-regard was inside the dialog. Likewise, the 'panrequest' and 'zoomrequest' would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.</p>
+				<p class="note">In the previous example, the 'undorequest' event may be fired any time the user's point-of-regard was inside the document<!-- , presumably when the user triggered their platform's physical event to undo an action, such as <kbd>Control+Z</kbd> or <kbd>Command+Z</kbd> -->. However, the 'dismissrequest' would only be fired when the user's point-of-regard was inside the dialog. Likewise, the 'panrequest' and 'zoomrequest' would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.</p>
 			</section>
 
 		</section>

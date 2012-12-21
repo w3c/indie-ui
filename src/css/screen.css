@@ -97,3 +97,13 @@ code sup {
 ol li {
 	margin-bottom:1em;
 }
+
+
+/* Example syntax highlighting */
+pre.example {
+	color: #000;
+}
+pre.example .comment {
+	color: #808080; /* 50% gray */
+}
+
