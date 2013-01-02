@@ -101,8 +101,8 @@
 			
 			<section id="intro-background" class="informative">
 				<h3>Background</h3>
-				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be further customized based on personal preferences. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's interface.</p>
-				<p>For example, web application authors, wishing to intercept a user's intent to 'undo' the last action, need to listen for all of the following events:</p>
+				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be further customized based on personal preference. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's preferred interface.</p>
+				<p>For example, web application authors, wishing to intercept a user's intent to 'undo' the last action, need to "listen" for all of the following events:</p>
 				<ul>
 					<li><kbd>Control+Z</kbd> on Windows and Linux.</li>
 					<li><kbd>Command+Z</kbd> on Mac OS X.</li>
@@ -110,7 +110,7 @@
 				</ul>
 				<p>It would be simpler to listen for a single, normalized request to 'undo' the previous action.</p>
 				<p>In addition to the general user interface challenges, custom interfaces often don't take into account users who access web content via alternate assistive technologies including screen readers, switch interfaces, or speech-based command and control interfaces.</p>
-				<p>For example, a web page author may script a custom interface to look like a slider (e.g. an <abbr title="Hypertext Markup Language">HTML</abbr> 'range' input) and behave like a slider when using standard mouse input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
+				<p>For example, a web page author may script a custom interface to look like a slider (e.g. one styled to look like an <abbr title="Hypertext Markup Language">HTML</abbr> 'range' input) and behave like a slider when using standard mouse input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
 			</section>
 			
 			<section id="intro-goals" class="informative">
@@ -127,7 +127,7 @@
 				<h3>Document Scope</h3>
 				<p>Decisions regarding which specific physical user interactions (keyboard combinations, gestures, speech, etc.) trigger IndieUI events are explicitly listed as out-of-scope in the Working Group charter. User interface is—and should be—defined and controlled by each operating system, rather than defined as part of any technical specification.</p>
 				<p>However, throughout this document are listed informative examples of certain keyboard and mouse events that <em>may</em> trigger each IndieUI event. There is no requirement for a user agent to implement these examples, and they are listed here purely to aid in clarifying the reader's conceptual understanding of each event, as well as illustrating certain UI differences between platforms. These informative examples will be limited to keyboard and mouse events, because those physical modalities have been common in software interaction for decades, and their use is familiar to most readers.</p>
-				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a 'dismissrequest' event to close a dialog, but the decision to do so by physically pressing the <kbd>ESC</kbd> key is left as an implementation detail. It is up to each platform to determine whether <kbd>ESC</kbd> or some other interaction triggers the 'dismissrequest' event. As long as there is some way to initiate an event, the user agent will be considered a conforming implementation.</p>
+				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a 'dismissrequest' event to close a dialog, but the specification does not require the user agent to use any particular physical event. It is an implementation detail, and left for the developers of each platform or assistive technology to determine whether <kbd>ESC</kbd> or some other interaction is the most appropriate way to trigger the 'dismissrequest' event. As long as there is a way to initiate each event, the user agent will be considered a conforming implementation.</p>
 			</section>
 
 			<section id="intro-usage">
@@ -221,8 +221,7 @@
 		<!-- :::::::::::::::::::: UI Actions :::::::::::::::::::: -->
 		<section id="actions">
 			<h2><abbr title="User Interface">UI</abbr> Actions</h2>
-			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using  <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents MUST NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
-			<p class="ednote">Perhaps the previous user agent requirement should be a SHOULD NOT rather than a MUST NOT.</p>
+			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using  <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents SHOULD NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
 			
 			<section id="uiActions">
 				<h2>The <code>uiActions</code> IDL Attribute</h2>
@@ -277,7 +276,7 @@
 			
 			<p class="ednote">There is purposefully no request event for activating the default action. Authors are encouraged to use a standard <code>click</code> event for default actions.</p>
 			<p class="ednote">Event fires on point-of-regard (<code>document.activeElement</code>, clicked element, or AT equivalent) if applicable, or otherwise <code>document.body</code>.</p>
-			<p class="ednote">These events should be asynchronous, but when used in conjunction with keyboard events, should fire after <code>keydown</code>, but before both <code>keyup</code> and <code>keypress</code>.</p>
+			<p class="ednote">Event order: These events should be asynchronous, but when used in conjunction with keyboard events, we need to define where each IndieUI event fires in the chain of <code>keydown</code>, <code>keyup</code>, and <code>keypress</code>. Probably also need an identifier to associate each event with other related physical events: e.g. this <code>dismissrequest</code> event is associated with the keyboard events <code>keydown</code>, <code>keyup</code>, and <code>keypress</code> of the <kbd>ESC</kbd> key.</p>
 
 			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
 			<section id="UIRequestEvent">
@@ -300,6 +299,8 @@ partial interface UIEvent {
 				
 				<section id="UIRequestEventInit">
 					<h4>UIRequestEventInit</h4>
+					<p class="ednote">This might not need its own UIRequestEventInit, it could potentially use UIEventInit, depending on whether the EventTarget receiver is implemented here or on AbstractView.</p>
+					
 					<dl title="dictionary UIRequestEventInit" class="idl">
 						<dt>boolean bubbles = true</dt><dd></dd>
 						<dt>boolean cancelable = true</dt><dd></dd>
@@ -408,7 +409,7 @@ partial interface UIEvent {
 						<dt>optional double deltaY = 0.0</dt>
 						<dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
 
-						<dt>optional double scaleFactor = 0.0</dt>
+						<dt>optional double scaleFactor = 1.0</dt>
 						<dd>Scale factor, used in zoom manipulations, where 1.0 is the original scale factor. For example, a value of 2.0 or 3.0 indicates the element should enlarge to 2 or 3 times its original scale, respectively. A value of 0.5 indicates the element should decrease to one-half its original scale.</dd>
 
 						<dt>optional double rotation = 0.0</dt>
@@ -420,6 +421,7 @@ partial interface UIEvent {
 
 				<section id="DiscreteUIManipulationRequestEvents">
 					<h4>Discrete UIManipulationRequestEvent Types</h4>
+					<p class="note">Move, Pan, and Scroll request events are functionally identical, but are specified individually to aid in authoring clarity when using similar concepts like 1) moving an object on a layout canvas, 2) panning a continuous view like a map, and 3) scrolling a scroll view.</p>
 					<p>The <em>discrete</em> types of UIManipulationRequestEvents that can occur are:</p>
 					<dl>
 						<dt id="moverequest">Move Request <code class="event">moverequest</code></dt>
@@ -470,7 +472,6 @@ partial interface UIEvent {
 							</ul>
 						</dd>
 					</dl>
-					<p class="note">Move, Pan, and Scroll request events are functionally identical, but are specified individually to aid in authoring clarity when using similar concepts like 1) moving an object on a layout canvas, 2) panning a continuous view like a map, and 3) scrolling a scroll view.</p>
 				</section>
 
 				<section id="ContinuousUIManipulationRequestEvents">
@@ -553,15 +554,15 @@ partial interface UIEvent {
 					<dl>
 						<dt id="valuechangerequest">Value Change Request <code class="event">valuechangerequest</code></dt>
 						<dd>
-							<p>Initiated when the user agent sends a value change request to the web application.</p>
-							<p>Web authors <strong class="rfc2119">should</strong> code applications to accept <em>all</em> values of the <code>changeType</code> attribute. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
+							<p>Initiated when the user agent sends a value change request to the web application. Used on custom range controls like sliders, carousels, etc.</p>
+							<p>Web authors MUST code applications to accept <em>all</em> values of the <code>changeType</code> attribute. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
 								<li>Context Info: <code>changeType</code></li>
 							</ul>
 							<div class="example" title="Informative Example">
-								<p>Users, wanting to change the value of a custom range widget (e.g. sliders or spin buttons) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method.</p>
+								<p>Users, wanting to change the value of a custom range widget (e.g. sliders or carousels) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method.</p>
 							</div>
 						</dd>
 					</dl>
