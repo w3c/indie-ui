@@ -109,7 +109,7 @@
 					<li><em>Shake</em> events on some mobile devices.</li>
 				</ul>
 				<p>It would be simpler to listen for a single, normalized request to 'undo' the previous action.</p>
-				<p>In addition to the general user interface challenges, custom interfaces often don't take into account users who access web content via alternate assistive technologies including screen readers, switch interfaces, or speech-based command and control interfaces.</p>
+				<p>In addition to the general user interface challenges, custom interfaces often don't take into account users who access web content via assistive technologies that use alternate forms of input such as screen readers, switch interfaces, or speech-based command and control interfaces.</p>
 				<p>For example, a web page author may script a custom interface to look like a slider (e.g. one styled to look like an <abbr title="Hypertext Markup Language">HTML</abbr> 'range' input) and behave like a slider when using standard mouse input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
 			</section>
 			
@@ -117,7 +117,7 @@
 				<h3>Goals</h3>
 				<p>The primary goals of this specification are declared as the following:</p>
 				<ol>
-					<li>Make it easier for web developers to author consistently usable interfaces that are agnostic and independent of a user's particular platform, hardware, locale, and preferences.</li>
+					<li>Make it easier for web developers to author consistently usable interfaces that are input-agnostic and independent of a user's particular platform, hardware, locale, and preferences.</li>
 					<li>Enable every type of control in these interfaces to be programmatically determinable and controllable by both mainstream and alternate forms of user input, including assistive technologies.</li>
 					<li>Provide a clear path for web developers to smoothly transition from currently existing physical events to IndieUI events, during the period when implementations of IndieUI are incomplete.</li>
 				</ol>
@@ -314,7 +314,7 @@ partial interface UIEvent {
 					<h4>UIRequestEvent Types</h4>
 					<p>The different types of UIRequestEvents that can occur are:</p>
 					<dl>
-						<dt id="undorequest">Undo Request <code class="event">undorequest</code></dt>
+						<dt id="undorequest">Undo Request (<code class="event">undorequest</code>)</dt>
 						<dd>
 							<p>Indicates the user desires to 'undo' the previous action.</p>
 							<ul>
@@ -325,7 +325,7 @@ partial interface UIEvent {
 								<p>Users, wanting to 'undo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices.</p>
 							</div>
 						</dd>
-						<dt id="redorequest">Redo Request <code class="event">redorequest</code></dt>
+						<dt id="redorequest">Redo Request (<code class="event">redorequest</code>)</dt>
 						<dd>
 							<p>Indicates the user desires to 'redo' the previously 'undone' action.</p>
 							<ul>
@@ -336,7 +336,7 @@ partial interface UIEvent {
 								<p>Users, wanting to 'redo' a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Shift+Z</kbd> on Windows or Linux, <kbd>Command+Shift+Z</kbd> on Mac OS X.</p>
 							</div>
 						</dd>
-						<dt id="expandrequest">Expand Request <code class="event">expandrequest</code></dt>
+						<dt id="expandrequest">Expand Request (<code class="event">expandrequest</code>)</dt>
 						<dd>
 							<p>Indicates the user desires to to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
 							<ul>
@@ -344,7 +344,7 @@ partial interface UIEvent {
 								<li>Cancelable: Yes</li>
 							</ul>
 						</dd>
-						<dt id="collapserequest">Collapse Request <code class="event">collapserequest</code></dt>
+						<dt id="collapserequest">Collapse Request (<code class="event">collapserequest</code>)</dt>
 						<dd>
 							<p>Indicates the user desires to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
 							<ul>
@@ -352,7 +352,7 @@ partial interface UIEvent {
 								<li>Cancelable: Yes</li>
 							</ul>
 						</dd>
-						<dt id="dismissrequest">Dismiss Request <code class="event">dismissrequest</code></dt>
+						<dt id="dismissrequest">Dismiss Request (<code class="event">dismissrequest</code>)</dt>
 						<dd>
 							<p>Indicates the user desires 'dismiss' the current view (e.g. canceling a dialog, or closing a popup menu).</p>
 							<ul>
@@ -363,7 +363,7 @@ partial interface UIEvent {
 								<p>Users, wanting to 'escape from' or 'dismiss' a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, most commonly by pressing <kbd>Escape</kbd> on keyboard-controlled operating systems. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the 'dismiss' action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</p>
 							</div>
 						</dd>
-						<dt id="deleterequest">Delete Request <code class="event">deleterequest</code></dt>
+						<dt id="deleterequest">Delete Request (<code class="event">deleterequest</code>)</dt>
 						<dd>
 							<p>Indicates the user wants to initiate a 'delete' action on the <a href="#def_marked_element">marked element</a> or current view.</p>
 							<ul>
@@ -424,7 +424,7 @@ partial interface UIEvent {
 					<p class="note">Move, Pan, and Scroll request events are functionally identical, but are specified individually to aid in authoring clarity when using similar concepts like 1) moving an object on a layout canvas, 2) panning a continuous view like a map, and 3) scrolling a scroll view.</p>
 					<p>The <em>discrete</em> types of UIManipulationRequestEvents that can occur are:</p>
 					<dl>
-						<dt id="moverequest">Move Request <code class="event">moverequest</code></dt>
+						<dt id="moverequest">Move Request (<code class="event">moverequest</code>)</dt>
 						<dd>
 							<p>Initiated when the user agent sends a move request to the web application with accompanying x/y delta values. This is used, for example, when moving an object to a new location on a layout canvas.</p>
 							<ul>
@@ -433,7 +433,7 @@ partial interface UIEvent {
 								<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
 							</ul>
 						</dd>
-						<dt id="panrequest">Pan Request <code class="event">panrequest</code></dt>
+						<dt id="panrequest">Pan Request (<code class="event">panrequest</code>)</dt>
 						<dd>
 							<p>Initiated when the user agent sends a pan request to the web application with accompanying x/y delta values. This is used, for example, when changing the center point while panning a map or another custom image viewer.</p>
 							<ul>
@@ -442,7 +442,7 @@ partial interface UIEvent {
 								<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
 							</ul>
 						</dd>
-						<dt id="rotationrequest">Rotation Request <code class="event">rotationrequest</code></dt>
+						<dt id="rotationrequest">Rotation Request (<code class="event">rotationrequest</code>)</dt>
 						<dd>
 							<p>Initiated when the user agent sends a rotation request to the web application with accompanying origin x/y values and a rotation value in degrees.</p>
 							<ul>
@@ -451,7 +451,7 @@ partial interface UIEvent {
 								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>rotation</code></li>
 							</ul>
 						</dd>
-						<dt id="scrollrequest">Scroll Request <code class="event">scrollrequest</code></dt>
+						<dt id="scrollrequest">Scroll Request (<code class="event">scrollrequest</code>)</dt>
 						<dd>
 							<p>Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values.</p>
 							<p class="ednote">Need to specify algorithm for determining x/y deltas for events like pagedown/pageup. Should probably be max of receiver element width/height, or user agent viewport width/height (delta if overlapped inexactly), with potential for a smaller assistive technology viewport (e.g. if screen zoom does not show entirety of previous calculation's width/height).</p>
@@ -462,7 +462,7 @@ partial interface UIEvent {
 							</ul>
 						</dd>
 						<!-- zoom changes (e.g. maps or custom layout views) -->
-						<dt id="zoomrequest">Zoom Request <code class="event">zoomrequest</code></dt>
+						<dt id="zoomrequest">Zoom Request (<code class="event">zoomrequest</code>)</dt>
 						<dd>
 							<p>Initiated when the user agent sends a zoom request to the web application with accompanying origin x/y values and the zoom scale factor.</p>
 							<ul>
@@ -479,7 +479,7 @@ partial interface UIEvent {
 					<p class="ednote">These continuous events may need an identifier per manipulation, for example, to associate a manipulationcancelrequest with the originating manipulationstartrequest that needs to be canceled.</p>
 					<p>The <em>continuous</em> types of UIManipulationRequestEvents that can occur are:</p>
 					<dl>
-						<dt id="manipulationstartrequest">Manipulation Start Request <code class="event">manipulationstartrequest</code></dt>
+						<dt id="manipulationstartrequest">Manipulation Start Request (<code class="event">manipulationstartrequest</code>)</dt>
 						<dd>
 							<p class="todo">TBD</p>
 							<ul>
@@ -488,7 +488,7 @@ partial interface UIEvent {
 								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
 							</ul>
 						</dd>
-						<dt id="manipulationchangerequest">Manipulation Change Request <code class="event">manipulationchangerequest</code></dt>
+						<dt id="manipulationchangerequest">Manipulation Change Request (<code class="event">manipulationchangerequest</code>)</dt>
 						<dd>
 							<p class="todo">TBD</p>
 							<ul>
@@ -497,7 +497,7 @@ partial interface UIEvent {
 								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
 							</ul>
 						</dd>
-						<dt id="manipulationendrequest">Manipulation End Request <code class="event">manipulationendrequest</code></dt>
+						<dt id="manipulationendrequest">Manipulation End Request (<code class="event">manipulationendrequest</code>)</dt>
 						<dd>
 							<p class="todo">TBD</p>
 							<ul>
@@ -506,7 +506,7 @@ partial interface UIEvent {
 								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
 							</ul>
 						</dd>
-						<dt id="manipulationcancelrequest">Manipulation Cancel Request <code class="event">manipulationcancelrequest</code></dt>
+						<dt id="manipulationcancelrequest">Manipulation Cancel Request (<code class="event">manipulationcancelrequest</code>)</dt>
 						<dd>
 							<p class="todo">TBD</p>
 							<ul>
@@ -552,7 +552,7 @@ partial interface UIEvent {
 					<h4>UIValueChangeRequestEvent Types</h4>
 					<p>The single type of UIValueChangeRequestEvent that can occur is:</p>
 					<dl>
-						<dt id="valuechangerequest">Value Change Request <code class="event">valuechangerequest</code></dt>
+						<dt id="valuechangerequest">Value Change Request (<code class="event">valuechangerequest</code>)</dt>
 						<dd>
 							<p>Initiated when the user agent sends a value change request to the web application. Used on custom range controls like sliders, carousels, etc.</p>
 							<p>Web authors MUST code applications to accept <em>all</em> values of the <code>changeType</code> attribute. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
