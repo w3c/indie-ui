@@ -89,7 +89,8 @@
 	<body>
 
 		<section id="abstract">
-			<p>IndieUI: Events is an abstraction between physical, device-specific user interaction events and inferred user intent such as scrolling or changing values. This provides an intermediate layer between device- and modality-specific user interaction events, and the basic user interface functionality used by web applications. IndieUI: Events focuses on granular user interface interactions such as scrolling the view, canceling an action, changing the value of a user input widget, selecting a range, placing focus on an object, etc. Implementing platforms will take modality-specific user input, user idiosyncratic heuristics to determine the specific corresponding Indie UI event, and send that to the web application in addition to the modality-specific input such as mouse or keyboard events, should applications wish to process it. See the <a href="#intro">introduction</a> for background and usage examples.</p>
+			<p>IndieUI: Events 1.0 is an abstraction between physical, device-specific user interaction events and inferred user intent such as scrolling or changing values. This provides an intermediate layer between device- and modality-specific user interaction events, and the basic user interface functionality used by web applications. IndieUI: Events focuses on granular user interface interactions such as scrolling the view, canceling an action, changing the value of a user input widget, selecting a range, placing focus on an object, etc. Implementing platforms will combine modality-specific user input, user idiosyncratic heuristics to determine the specific corresponding Indie UI event, and send that to the web application in addition to the modality-specific input such as mouse or keyboard events, should applications wish to process it.</p>
+			<p>See the <a href="#intro">introduction</a> for background and usage examples.</p>
 		</section>
 
 		<section id="sotd">
@@ -99,7 +100,7 @@
 		<section id="intro" class="informative">
 			<h2>Introduction</h2>
 			
-			<section id="intro-background" class="informative">
+			<section id="intro-background">
 				<h3>Background</h3>
 				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be further customized based on personal preference. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's preferred interface.</p>
 				<p>For example, web application authors, wishing to intercept a user's intent to 'undo' the last action, need to "listen" for all of the following events:</p>
@@ -219,7 +220,7 @@
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 		
 		<!-- :::::::::::::::::::: UI Actions :::::::::::::::::::: -->
-		<section id="actions">
+		<section id="actions" class="normative">
 			<h2><abbr title="User Interface">UI</abbr> Actions</h2>
 			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using  <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents SHOULD NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
 			
@@ -235,7 +236,7 @@
 			
 			<section id="ui-actions">
 				<h3>The <code>ui-actions</code> Content Attribute</h3>
-				<p>Every element may have a <code>ui-actions</code> attribute specified. The attribute, if specified, must have a value that is a set of whitespace-separated tokens representing the various actions to which the web application responds on behalf of this element. The actions that an element has assigned to it consists of all the tokens returned when the value of the <code>ui-actions</code> attribute is split on whitespace. (Duplicates are ignored.)</p>
+				<p>Every element may have a <code>ui-actions</code> attribute specified, which is used to specify the event <a href="#def_request_event_receiver">receiver</a>. The attribute, if specified, must have a value that is a set of whitespace-separated tokens representing the various actions to which the web application responds on behalf of this element. The actions that an element has assigned to it consists of all the tokens returned when the value of the <code>ui-actions</code> attribute is split on whitespace. (Duplicates are ignored.)</p>
 				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>ui-actions</code> content attribute in the <a href="#uiActions"><code>uiActions</code></a> IDL attribute.</p>
 				<div data-transform="listActions"><!-- dynamically generates event list --></div>
 				<p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p>
@@ -271,7 +272,7 @@
 		<!-- :::::::::::::::::::: End UI Actions :::::::::::::::::::: -->
 		
 		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
-		<section id="RequestEvents">
+		<section id="RequestEvents" class="normative">
 			<h2><abbr title="User Interface">UI</abbr> Request Events</h2>
 			
 			<p class="ednote">There is purposefully no request event for activating the default action. Authors are encouraged to use a standard <code>click</code> event for default actions.</p>
@@ -279,9 +280,9 @@
 			<p class="ednote">Event order: These events should be asynchronous, but when used in conjunction with keyboard events, we need to define where each IndieUI event fires in the chain of <code>keydown</code>, <code>keyup</code>, and <code>keypress</code>. Probably also need an identifier to associate each event with other related physical events: e.g. this <code>dismissrequest</code> event is associated with the keyboard events <code>keydown</code>, <code>keyup</code>, and <code>keypress</code> of the <kbd>ESC</kbd> key.</p>
 
 			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
-			<section id="UIRequestEvent">
+			<section id="UIRequestEvent" class="normative">
 				<h3>Interface UIRequestEvent</h3>
-				<p class="ednote">Separate interface from UIEvent because the @ui-actions attribute will 1) affect when and where these events are fired, and 2) adds the distinction of an event "receiver" element (element declaring the ui-actions attribute) in addition to the "target" element where the event initiates and the "listener" element where the event is registered for and handled.</p>
+				<p class="ednote">Separate interface from UIEvent because the @ui-actions attribute will 1) affect when and where these events are fired, and 2) adds the distinction of an event <a href="#def_request_event_receiver">receiver</a> element (element declaring the ui-actions attribute) in addition to the "target" element where the event initiates and the "listener" element where the event is registered for and handled.</p>
 				<dl title="[Constructor(DOMString typeArg, optional UIRequestEventInit dictUIRequestEventInit)] interface UIRequestEvent : UIEvent" class="idl">
 					<dt>readonly attribute EventTarget receiver</dt>
 					<dd>In addition to the target and currentTarget, each UI Request Event has a receiver element, which is declared via the <a href="#ui-actions"><code>ui-actions</code></a> content attribute on an ancestor node of the event target. <p class="ednote">Note: This may need to be defined as a partial interface on AbstractView, rather than in this interface.</p></dd>
@@ -299,7 +300,7 @@ partial interface UIEvent {
 				
 				<section id="UIRequestEventInit">
 					<h4>UIRequestEventInit</h4>
-					<p class="ednote">This might not need its own UIRequestEventInit, it could potentially use UIEventInit, depending on whether the EventTarget receiver is implemented here or on AbstractView.</p>
+					<p class="ednote">This might not need its own UIRequestEventInit, it could potentially use UIEventInit, depending on whether the EventTarget <a href="#def_request_event_receiver">receiver</a> is implemented here or on AbstractView.</p>
 					
 					<dl title="dictionary UIRequestEventInit" class="idl">
 						<dt>boolean bubbles = true</dt><dd></dd>
@@ -379,7 +380,7 @@ partial interface UIEvent {
 			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
 
 			<!-- :::::::::::::::::::: UIManipulationRequestEvent :::::::::::::::::::: -->
-			<section id="UIManipulationRequestEvent">
+			<section id="UIManipulationRequestEvent" class="normative">
 				<h3>Interface UIManipulationRequestEvent</h3>
 
 				<dl title="[Constructor(DOMString typeArg, optional UIManipulationRequestEventInit dictUIManipulationRequestEventInit)] interface UIManipulationRequestEvent : UIRequestEvent" class="idl">
@@ -456,7 +457,7 @@ partial interface UIEvent {
 						<dt id="scrollrequest">Scroll Request (<code class="event">scrollrequest</code>)</dt>
 						<dd>
 							<p>Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values.</p>
-							<p class="ednote">Need to specify algorithm for determining x/y deltas for events like pagedown/pageup. Should probably be max of receiver element width/height, or user agent viewport width/height (delta if overlapped inexactly), with potential for a smaller assistive technology viewport (e.g. if screen zoom does not show entirety of previous calculation's width/height).</p>
+							<p class="ednote">Need to specify algorithm for determining x/y deltas for events like pagedown/pageup. Should probably be max of <a href="#def_request_event_receiver">receiver</a> element width/height, or user agent viewport width/height (delta if overlapped inexactly), with potential for a smaller assistive technology viewport (e.g. if screen zoom does not show entirety of previous calculation's width/height).</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -525,7 +526,7 @@ partial interface UIEvent {
 			<!-- :::::::::::::::::::: END UIManipulationRequestEvent :::::::::::::::::::: -->
 
 			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
-			<section id="UIValueChangeRequestEvent">
+			<section id="UIValueChangeRequestEvent" class="normative">
 				<h3>Interface UIValueChangeRequestEvent</h3>
 				<dl title="[Constructor(DOMString typeArg, optional UIValueChangeRequestEventInit dictUIValueChangeRequestEventInit)] interface UIValueChangeRequestEvent : UIRequestEvent" class="idl">
 					<dt>const unsigned short INCREMENT       = 1</dt><dd></dd>
