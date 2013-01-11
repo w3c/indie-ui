@@ -2,27 +2,40 @@
 <dl>
 	
 	<dt id="def_assistive_technology">Assistive Technology</dt>
-	<dd class="placeholder">TBD</dd>
+	<dd>
+		<p class="placeholder">TBD</p>
+	</dd>
 	
 	<dt id="def_marked_element">Marked Element(s)</dt>
-	<dd class="placeholder">TBD. Defined by markrequest, which is covered by ACTION-25.</dd>
+	<dd>
+		<p class="placeholder">TBD. Will be defined in conjunction with markrequest, which is covered by ACTION-25, and not yet in the spec.</p>
+	</dd>
 	
 	<dt id="def_point_of_regard">Point-of-Regard</dt>
-	<dd class="placeholder">
+	<dd>
 		<p>UIRequestEvents initiate from the element representing the point-of-regard, and are referenced in the Event object's <code>target</code> property.</p>
 		<p>For mainstream user agents, the point-of-regard will likely be the element under a pointer (e.g. mouse cursor) or, in the case of keyboard events, the currently focused element (e.g. document.activeElement). Assistive technologies or other alternative inputs may determine another element to be the subject of the user's attention, and initiate events from this new point-of-regard.</p>
 	</dd>
 	
 	<dt id="def_reflected_attribute">Reflected Attribute</dt>
-	<dd>Attributes whose DOM property and content attribute values remain in sync. Identical to <a href="http://dev.w3.org/html5/spec-preview/common-dom-interfaces.html#reflect" class="todo">reflected attributes in HTML</a>.</dd>
+	<dd>
+		<p>Attributes whose DOM property and content attribute values remain in sync. Identical to <a href="http://dev.w3.org/html5/spec-preview/common-dom-interfaces.html#reflect" class="todo">reflected attributes in HTML</a>.</p>
+	</dd>
 	
 	<dt id="def_request_event_receiver">Request Event Receiver</dt>
-	<dd class="placeholder">
-		TBD
-		<p class="ednote">Need to explain difference between the event.target, the element handling the event (addEventListener), and the "receiver" of the UIRequestEvent. The event "receiver" will be author-defined with an attribute (potentially @actions or @ui-actions) that describes the type of UI actions that can be performed on the element (the UIRequestEvent "receiver") as is a contract declaration of the types of UIRequestEvents that will be received and handled by the web application.</p>
+	<dd>
+		<p>The closest DOM ancestor to the user's <a href="#def_point_of_regard">point-of-regard</a> that declares the current event type via the @ui-actions content attribute or uiActions DOM attribute. The Request Event Receiver is referenced in the Event object's <code>receiver</code> property.</p>
+		<p>UI Request Events are not initiated by the user agent unless the following are true:</p>
+		<ol>
+			<li>The user's point of regard is on the current or descendant node of an element that declares the event receiver via <code>@ui-actions</code></li>
+			<li>The event receiver node (or any ancestor node of the receiver) also registered as the event listener via <code>element.addEventListener()</code></li>
+		</ol>
+		<p class="ednote">Some of this definition will need to be massaged and move into the normative sections above defining @ui-actions.</p>
 	</dd>
 	
 	<dt id="def_user_agent">User Agent</dt>
-	<dd class="placeholder">TBD</dd>
+	<dd>
+		<p class="placeholder">TBD</p>
+	</dd>
 	
 </dl>
