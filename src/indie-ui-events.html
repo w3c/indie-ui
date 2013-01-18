@@ -417,10 +417,10 @@ partial interface UIEvent {
 				</section>
 				
 
-				<section id="DiscreteUIManipulationRequestEvents">
-					<h4>Discrete UIManipulationRequestEvent Types</h4>
+				<section id="UIManipulationRequestEvents">
+					<h4><!-- Discrete  -->UIManipulationRequestEvent Types</h4>
 					<p class="note">Move, Pan, and Scroll request events are functionally identical, but are specified individually to aid in authoring clarity when using similar concepts like 1) moving an object on a layout canvas, 2) panning a continuous view like a map, and 3) scrolling a scroll view.</p>
-					<p>The <em>discrete</em> types of UIManipulationRequestEvents that can occur are:</p>
+					<p>The <!-- <em>discrete</em>  -->types of UIManipulationRequestEvents that can occur are:</p>
 					<dl>
 						<dt id="moverequest">Move Request (<code class="event">moverequest</code>)</dt>
 						<dd>
@@ -472,7 +472,9 @@ partial interface UIEvent {
 					</dl>
 				</section>
 
-<!-- Commenting the continuous events to avoid confusion, as they are not ready (for example, missing feature to associate related events, or what 'canceling' implies). It's possible they may not even be necessary, given that one can get the same behavior from a series of discrete events. -->
+                <p class="ednote">There may be a need for a combined, continuous manipulation events (e.g. Pan+Zoom simultaneously) in addition to the discrete events listed above, but specification ideas are incomplete. Currently an author could achieve the same result by listening for the series of discrete Zoom and Pan events.</p>
+
+<!-- Commenting the continuous events to avoid confusion, as they are not ready (for example, missing feature to associate related events, and a description of what 'canceling' implies). It's possible they may not even be necessary, given that one can get the same behavior from a series of discrete events. -->
 <!--
 				<section id="ContinuousUIManipulationRequestEvents">
 					<h4>Continuous UIManipulationRequestEvent Types</h4>
