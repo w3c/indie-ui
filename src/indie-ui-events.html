@@ -239,7 +239,7 @@
 				<p>Every element may have a <code>ui-actions</code> attribute specified, which is necessary to define the <a href="#def_request_event_receiver">receiver</a> of each type of request event. The attribute, if specified, must have a value that is a set of whitespace-separated tokens representing the various actions to which the web application responds on behalf of this element. The actions that an element has assigned to it consists of all the tokens returned when the value of the <code>ui-actions</code> attribute is split on whitespace. (Duplicates are ignored.)</p>
 				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>ui-actions</code> content attribute in the <a href="#uiActions"><code>uiActions</code></a> IDL attribute.</p>
 				<div data-transform="listActions"><!-- dynamically generates event list --></div>
-				<p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p>
+                <!-- <p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p> -->
 				<pre class="example">
 					<span class="markup" data-transform="syntaxMarkup">
 					&lt;!-- body element is event listener for all events, but event receiver only for 'undo' actions. --&gt;
@@ -384,11 +384,6 @@ partial interface UIEvent {
 				<h3>Interface UIManipulationRequestEvent</h3>
 
 				<dl title="[Constructor(DOMString typeArg, optional UIManipulationRequestEventInit dictUIManipulationRequestEventInit)] interface UIManipulationRequestEvent : UIRequestEvent" class="idl">
-					<!--
-					<dt>readonly attribute DOMString typeArg</dt><dd>The type of event. Either one of the simple, discrete types (e.g. <code>panrequest</code>, <code>zoomrequest</code>) or the superset, continuous manipulation events.</dd>
-					<dt>readonly attribute boolean canBubbleArg</dt><dd></dd>
-					<dt>readonly attribute boolean cancelableArg</dt><dd></dd>
-					-->
 				</dl>
 				
 				<section id="UIManipulationRequestEventInit">
@@ -477,6 +472,8 @@ partial interface UIEvent {
 					</dl>
 				</section>
 
+<!-- Commenting the continuous events to avoid confusion, as they are not ready (for example, missing feature to associate related events, or what 'canceling' implies). It's possible they may not even be necessary, given that one can get the same behavior from a series of discrete events. -->
+<!--
 				<section id="ContinuousUIManipulationRequestEvents">
 					<h4>Continuous UIManipulationRequestEvent Types</h4>
 					<p class="ednote">These continuous events may need an identifier per manipulation, for example, to associate a manipulationcancelrequest with the originating manipulationstartrequest that needs to be canceled.</p>
@@ -520,7 +517,7 @@ partial interface UIEvent {
 						</dd>
 					</dl>
 				</section>
-				
+-->				
 				
 			</section>
 			<!-- :::::::::::::::::::: END UIManipulationRequestEvent :::::::::::::::::::: -->
