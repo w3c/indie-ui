@@ -76,7 +76,7 @@ html code, html pre, html kbd{ /* more specific selector than the default W3C st
 html kbd {
 	text-transform: lowercase;
 	font-variant: small-caps;
-	font-style: bold;
+	font-weight: bold;
 	font-size:1em; 
 }
 html pre { /* more specific selector than the default W3C style sheet */
