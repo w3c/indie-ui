@@ -397,10 +397,10 @@ partial interface UIEvent {
 						<dt>AbstractView? view = null</dt><dd></dd>
 						<dt>long detail = 0</dt><dd></dd>
 						
-						<dt>optional double originX = 0.0</dt>
-						<dd>The cartesian X coordinate origin point, measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
-						<dt>optional double originY = 0.0</dt>
-						<dd>The cartesian Y coordinate origin point, measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+						<dt>optional double originX? = null</dt>
+						<dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+						<dt>optional double originY? = null</dt>
+						<dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
 
 						<dt>optional double deltaX = 0.0</dt>
 						<dd>The cartesian X coordinate delta, in CSS pixels.</dd>
@@ -448,6 +448,10 @@ partial interface UIEvent {
 								<li>Cancelable: Yes</li>
 								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>rotation</code></li>
 							</ul>
+							<div class="note">
+								<p>In the case where a User Agent lacks a clear or relevant point of origin, user agents could send null values for <code>originX</code> and <code>originY</code>, or they could send x/y coordinates representing the center point of the event.receiver element.</p>
+								<p>For example, many photo manipulation applications allow users to change orientation, or rotating a photograph 90 degrees, by pressing a key combination like <kbd>Option+LeftArrow</kbd> or <kbd>Option+RightArrow</kbd>. Since this represents a keyboard only event that is unrelated to the mouse pointer location, it would be appropriate to send null values. In many cases, web applications may not require the origin x/y coordinates for rotation events even if non-null values exist.</p>
+							</div>
 						</dd>
 						<dt id="scrollrequest">Scroll Request (<code class="event">scrollrequest</code>)</dt>
 						<dd>
