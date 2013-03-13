@@ -472,6 +472,9 @@ partial interface UIEvent {
 								<li>Cancelable: Yes</li>
 								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>scaleFactor</code></li>
 							</ul>
+							<div class="note">
+								<p>Web authors may use <code>originX</code> and <code>originY</code> in the way they deem most appropriate for the context of their application. In most cases, web applications receiving zoomrequest events will center the UI "zoom" on the originX/originY coordinates if they are provided. If origin coordinates are not provided, such as in the case of a keyboard-only zoom event, web authors will likely center the UI "zoom" in the middle of the receiving view.</p>
+							</div>
 						</dd>
 					</dl>
 				</section>
