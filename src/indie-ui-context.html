@@ -6,7 +6,7 @@
 		<link href="./css/screen.css" rel="stylesheet" type="text/css">
 		<script type="text/javascript" src="./loc/en/strings.js"></script>
 		<script type="text/javascript" src="./js/utils.js"></script>
-		<script type="text/javascript" src="./js/respec-transformers.js" class="remove"></script>
+		<script type="text/javascript" src="./js/respec-transformers.js"></script>
 		
 		<!-- 
       === NOTA BENE ===
@@ -103,12 +103,12 @@
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 		
 
-		<!-- :::::::::::::::::::: window.preferences :::::::::::::::::::: -->
-		<section id="UserPreferences">
-			<h3>Interface UserPreferences</h3>
-			<p>The <code>preferences</code> attribute of the Window interface MUST return an instance of the UserPreferences interface. The same object must be returned each time.</p>
+		<!-- :::::::::::::::::::: window.settings :::::::::::::::::::: -->
+		<section id="UserSettings">
+			<h3>Interface UserSettings</h3>
+			<p>The <code>settings</code> attribute of the Window interface MUST return an instance of the UserSettings interface. The same object must be returned each time.</p>
 
-			<dl title="interface UserPreferences" class="idl">
+			<dl title="interface UserSettings" class="idl">
 
 				<dt>DOMstring? valueForKey(<!-- params defined in dl below -->)</dt>
 				<dd>
@@ -117,14 +117,14 @@
 					<p class="note">An undefined or empty value for the <var>taxonomy</var> parameter indicates the <var>key</var> matches a preference defined in <a href="#preference-keys">Preference Keys</a> section of this document. Standard vendor prefixes (<code>ie</code>, <code>moz</code>, <code>o</code>, <code>webkit</code>) are reserved for the <var>taxonomy</var> parameter, and any additional implementation or external taxonomy identifiers will be defined in a supplemental, informative document.</p>
 					<pre class="example">
 						// example of a preference defined within the IndieUI User Context specification.
-						window.preferences.valueForKey('fontSize'); // e.g. '16px'
-						window.preferences.valueForKey('susbtitle'); // e.g. returns true if the user wants to see subtitles or captions by default
+						window.settings.valueForKey('fontSize'); // e.g. '16px'
+						window.settings.valueForKey('susbtitle'); // e.g. returns true if the user wants to see subtitles or captions by default
 						
 						// example of an vendor-proposed preference, intended for standardization.
-						window.preferences.valueForKey('foo', 'moz');
+						window.settings.valueForKey('foo', 'moz');
 						
 						// example of an implementation-specific preference that does not apply to other user agents.
-						window.preferences.valueForKey('focusAllControls', 'webkit');
+						window.settings.valueForKey('focusAllControls', 'webkit');
 					</pre>
 					<dl class="parameters">
 						
@@ -142,7 +142,7 @@
 				<h4>User Preference Keys</h4>
 				<p class="ednote">The different key groupings are to allow individual privacy restrictions for each group. We're still working on the best way to spec those privacy restrictions.</p>
 
-				<section id="GeneralKeys">
+				<section id="GeneralKeys" class="keys">
 					<h5>General User Preference Keys</h5>
 					
 					<dl title="dictionary GeneralKeys" class="idl">
@@ -160,14 +160,14 @@
 						<dd>Returns a DOM element that indicates the users current point-of-regard.
 							<p class="ednote">I am still hoping we'll come up with a better name than point-of-regard.</p>
 							<div class="note">Indicates the user's focused point of attention, which make be the element under the mouse, in keyboard focus, or indicated by assistive technology such as eye tracking software or screen reader focus. Point-of-regard is similar to the concept of document.activeElement, and in the simple case of full keyboard access, it will likely stay in sync with document.activeElement.</div>
-							<p class="ednote">This one may indicate too much about AT to remain in the general preferences.</p>
+							<p class="ednote">This one may indicate too much about AT to remain in the general settings.</p>
 						</dd>
 					
 					</dl>
 					
 				</section>
 				
-				<section id="AuditoryAlternativeKeys">
+				<section id="AuditoryAlternativeKeys" class="keys">
 					<h5>Auditory Alternative Keys (Subtitles, Captions, and Transcripts)</h5>
 					<p class="ednote">TBD: Keys in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
 					
@@ -198,7 +198,7 @@
 				</section>
 				
 				
-				<section id="ScreenReaderKeys">
+				<section id="ScreenReaderKeys" class="keys">
 					<h5>Screen Reader Keys</h5>
 					<p class="ednote">TBD: Keys in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
 				
@@ -218,7 +218,7 @@
 				
 			</section>
 		</section>
-		<!-- :::::::::::::::::::: window.preferences :::::::::::::::::::: -->
+		<!-- :::::::::::::::::::: window.settings :::::::::::::::::::: -->
 
 
 		
@@ -433,6 +433,11 @@ interface MagnifierNotifications {
 		<pre data-transform='xmp'>This markup is <b>escaped</b> like an <code>xmp</code>.</pre>
 		-->
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
+		<section id="keyslist" class="">
+			<h2>Settings Key List (alphabetical)</h2>
+			<div data-transform="listKeys"><!-- dynamically generates key list --></div>
+		</section>
+		
 		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>
 		
 	</body>
