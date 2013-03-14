@@ -113,11 +113,12 @@
 				<dt>DOMstring? valueForKey(<!-- params defined in dl below -->)</dt>
 				<dd>
 					<p class="ednote">Description TBD (esp re: privacy and fingerprinting, and prompt access for certain parameters on a per-domain basis, similar to location sharing)</p>
-					<p class="ednote">Need an additional "silent fail" parameter when keys are nice-to-have but not important enough to prompt if the user or platform specifies "prompt for access" to a particular key.</p>
+					<p class="ednote">May need an additional "silent fail" parameter when keys are nice-to-have but not important enough to prompt if the user or platform specifies "prompt for access" to a particular key.</p>
 					<p class="note">An undefined or empty value for the <var>taxonomy</var> parameter indicates the <var>key</var> matches a preference defined in <a href="#preference-keys">Preference Keys</a> section of this document. Standard vendor prefixes (<code>ie</code>, <code>moz</code>, <code>o</code>, <code>webkit</code>) are reserved for the <var>taxonomy</var> parameter, and any additional implementation or external taxonomy identifiers will be defined in a supplemental, informative document.</p>
 					<pre class="example">
 						// example of a preference defined within the IndieUI User Context specification.
-						window.preferences.valueForKey('fontSize');
+						window.preferences.valueForKey('fontSize'); // e.g. '16px'
+						window.preferences.valueForKey('susbtitle'); // e.g. returns true if the user wants to see subtitles or captions by default
 						
 						// example of an vendor-proposed preference, intended for standardization.
 						window.preferences.valueForKey('foo', 'moz');
@@ -139,13 +140,82 @@
 			
 			<section id="UserPreferenceKeys">
 				<h4>User Preference Keys</h4>
-				<p class="ednote">TBD whether this is the best way to define these in IDL, or if the IDL is even necessary here. More keys are coming.</p>
+				<p class="ednote">The different key groupings are to allow individual privacy restrictions for each group. We're still working on the best way to spec those privacy restrictions.</p>
 
-				<dl title="dictionary UserPreferenceKeys" class="idl">
-					<dt>DOMString? fontSize = null</dt><dd>User's current default font size of root element, prior to applying page styles, returned in a CSS pixel unit formatted string, e.g. '14px'</dd>
-					<dt>boolean? showCaptions = null</dt><dd>Simple status of whether or not a user wants captions displayed. Note: keys will likely need to be added to indicate preferred languages and type of captions (CC, SDH, Subtitle, etc).</dd>
-				</dl>
-
+				<section id="GeneralKeys">
+					<h5>General User Preference Keys</h5>
+					
+					<dl title="dictionary GeneralKeys" class="idl">
+					
+						<dt>DOMString? fontSize = null</dt>
+						<dd>User's current default font size of root element, prior to applying page styles. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '14px'</dd>
+						
+						<dt>DOMString? fontSizeMinimum = null</dt>
+						<dd>User's minimum font size limit. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '9px'</dd>
+						
+						<dt>boolean? invertColors = null</dt>
+						<dd>Status indicating whether the display colors are currently inverted by the operating system or user agent. Web authors SHOULD NOT re-invert foreground and background colors based on this setting, but MAY choose to double-invert some content, such as photographs.</dd>
+					
+						<dt>DOMElement? pointOfRegard = null</dt>
+						<dd>Returns a DOM element that indicates the users current point-of-regard.
+							<p class="ednote">I am still hoping we'll come up with a better name than point-of-regard.</p>
+							<div class="note">Indicates the user's focused point of attention, which make be the element under the mouse, in keyboard focus, or indicated by assistive technology such as eye tracking software or screen reader focus. Point-of-regard is similar to the concept of document.activeElement, and in the simple case of full keyboard access, it will likely stay in sync with document.activeElement.</div>
+							<p class="ednote">This one may indicate too much about AT to remain in the general preferences.</p>
+						</dd>
+					
+					</dl>
+					
+				</section>
+				
+				<section id="AuditoryAlternativeKeys">
+					<h5>Auditory Alternative Keys (Subtitles, Captions, and Transcripts)</h5>
+					<p class="ednote">TBD: Keys in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
+					
+					<dl title="dictionary AuditoryAlternativeKeys" class="idl">
+						
+						<dt>boolean? subtitle = null</dt>
+						<dd>Status indicating whether subtitles or captions are displayed (true) or not displayed (false) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom caption display SHOULD display captions based on this setting.</dd>
+						
+						<dt>DOMString? subtitleLanguages = null</dt>
+						<dd>Preferred languages in order of preference. Users Agents MUST format the string as a space-separated list of ISO-639 language codes, that may be optionally hyphenated to include ISO-3166 country codes. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect.</dd>
+						
+						<dt>DOMString? subtitleType = null</dt>
+						<dd>Preferred type of subtitle or caption in order of preference: Users Agents MUST format the string as a space-separated list of the following tokens: 'sdh', 'cc', or 'standard'.
+							<p class="ednote">This key is necessary to indicate a preference for subtitles for the deaf and hard of hearing (SDH) over standard spoken-language-only subtitles, but the preference for closed-captions (CC) versus SDH may not be necessary. SDH appears to be generally preferred over CC when available, and a preference for SDH could indicate an implicit preference for CC over standard when CC is available but SDH is not.</p>
+						</dd>
+						
+						<dt>boolean? transcript = null</dt>
+						<dd>Indicates a user's preference to be presented with a transcript if available. Web authors MAY provide concatenated subtitles in static form, if no other transcript exists.
+							<p class="ednote">There is some concern within the working group regarding this preference because no known operating system or user agent currently includes a way for a user to set this preference. The IndieUI working group is actively seeking comment on the perceived necessity or feasibility of this preference. It may be that this is already covered by <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html">WCAG 2.0 SC 1.2.1</a> which indicates sites should offer transcripts when available.</p>
+						</dd>
+						
+						<dt>boolean? signLanguage = null</dt>
+						<dd>Indicates a user's preference to be presented with a video of sign language if available.
+							<p class="ednote">Do we need a language order preference for type of sign? ASL, etc? Worried this feature will be at-risk due to lack of available signed alternatives.</p>
+						</dd>
+						
+					</dl>
+				</section>
+				
+				
+				<section id="ScreenReaderKeys">
+					<h5>Screen Reader Keys</h5>
+					<p class="ednote">TBD: Keys in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
+				
+					<dl title="dictionary ScreenReaderKeys" class="idl">
+						
+						<dt>boolean? screenReaderActive = null</dt>
+						<dd>Returns a boolean indicating whether or not a screen reader is currently active or in use. The user agent MUST return <code>true</code> if a screen reader is running, or <code>false</code> otherwise. User agents MAY return <code>false</code> if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
+						
+						<dt>DOMString? screenReaderName = null</dt>
+						<dd>Returns the application name of the screen reader in use. The user agent MUST return either an empty string or a string representing the name of the screen reader in detail, e.g. <code>"Apple VoiceOver"</code>. User agents MAY return an empty string if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
+						
+						<dt>DOMString? screenReaderVersion = null</dt>
+						<dd>Returns the application version of the screen reader in use. The user agent MUST return either an empty string or a string representing the version of the screen reader in detail, e.g. "<code>4.0 (220.2)</code>". User agents MAY return an empty string if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
+						
+					</dl>
+				</section>
+				
 			</section>
 		</section>
 		<!-- :::::::::::::::::::: window.preferences :::::::::::::::::::: -->
@@ -153,6 +223,7 @@
 
 		
 		<!-- :::::::::::::::::::: window.accessibility :::::::::::::::::::: -->
+		<!-- Commented b/c this section is mostly overcome by other features or specs. Leaving comments as some of these may be pulled back in but reformatted.
 		<section id="identification">
 			<h2>Assistive Technology Identification and Notification</h2>
 			<p class="ednote">Most of this section is out-of-date. Please don't put too much effort into change requests yet.</p>
@@ -246,8 +317,8 @@ interface MagnifierID {
 [Supplemental, NoInterfaceObject]
 interface MagnifierStatus {
   readonly attribute boolean active;
-<!--  readonly attribute float   zoom;
--->};
+  readonly attribute float   zoom;
+};
 
 [Supplemental, NoInterfaceObject]
 interface MagnifierNotifications {
@@ -268,10 +339,8 @@ interface MagnifierNotifications {
 					<dd>Returns the application name of the screen magnifier in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the name of the screen magnifier in detail, e.g. "<code>Apple Universal Access Zoom</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
 					<dt><code>window.accessibility.magnifier.version</code></dt>
 					<dd>Returns the application version of the screen magnifier in use. The user agent <strong class="rfc2119">must</strong> return either an empty string or a string representing the version of the screen magnifier in detail, e.g. "<code>4.0 (220.2)</code>". User agents <strong class="rfc2119">may</strong> return an empty string if the user has chosen to disallow sharing this information with the requesting domain.</dd>
-					<!--
 					<dt><code>window.accessibility.magnifier.zoom</code></dt>
 					<dd>Returns a floating point number indicating the current magnification level of the screen magnifier. The user agent <strong class="rfc2119">must</strong> return <code>1.0</code> or the current magnification level. User agents <strong class="rfc2119">may</strong> return <code>1.0</code> if the user has chosen to disallow sharing this information with the requesting domain.</dd>
-					-->
 				</dl>
 			</div>
 			<h4>Methods for <strong>Interface <em>Magnifier</em></strong></h4>
@@ -296,7 +365,6 @@ interface MagnifierNotifications {
 				<p class="note">Note: The <code>focusPosition()</code> method would be necessary for screen magnifiers to work with canvas-based web apps like <a href="https://bespin.mozillalabs.com/">Bespin</a> or the <a href="http://280north.com/">280 North</a> projects. This method is not necessary for text views managed by the user agent, including <code>contentEditable</code> views.</p>
 			</div>
 			
-			<!--
 			<h3><strong>Interface <em>Speech</em></strong></h3>
 			<p>The <code>speech</code> attribute of the Accessibility interface <strong class="rfc2119">must</strong> return an instance of the Speech interface:</p>
 			<div class="idlwrapper">
@@ -313,11 +381,11 @@ interface MagnifierNotifications {
 		
 		
 		<!-- :::::::::::::::::::: Accessibility Event Interfaces :::::::::::::::::::: -->
+		<!--
 		<section id="AccessibilityEvents">
 			<h2>Accessibility Events</h2>
 			
 			
-			<!-- :::::::::::::::::::: AccessibilityEvent :::::::::::::::::::: -->
 			<section id="AccessibilityEvent">
 				<h3>Interface AccessibilityEvent</h3>
 				<p class="ednote">It's possible this will not need an AccessibilityEvent interface, as this is more-or-less equivalent to UIEvent at the moment.</p>
@@ -352,9 +420,8 @@ interface MagnifierNotifications {
 					</dl>
 				</section>
 			</section>
-			<!-- :::::::::::::::::::: END AccessibilityEvent :::::::::::::::::::: -->
-			
 		</section>
+		-->
 		<!-- :::::::::::::::::::: END Accessibility Event Interfaces :::::::::::::::::::: -->
 		
 		
