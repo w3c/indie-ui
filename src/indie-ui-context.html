@@ -114,7 +114,7 @@
 				<dd>
 					<p class="ednote">Description TBD (esp re: privacy and fingerprinting, and prompt access for certain parameters on a per-domain basis, similar to location sharing)</p>
 					<p class="ednote">May need an additional "silent fail" parameter when keys are nice-to-have but not important enough to prompt if the user or platform specifies "prompt for access" to a particular key.</p>
-					<p class="note">An undefined or empty value for the <var>taxonomy</var> parameter indicates the <var>key</var> matches a preference defined in <a href="#preference-keys">Preference Keys</a> section of this document. Standard vendor prefixes (<code>ie</code>, <code>moz</code>, <code>o</code>, <code>webkit</code>) are reserved for the <var>taxonomy</var> parameter, and any additional implementation or external taxonomy identifiers will be defined in a supplemental, informative document.</p>
+					<p class="note">An undefined or empty value for the <var>taxonomy</var> parameter indicates the <var>key</var> matches a preference defined in <a href="#UserSettingsKeys">User Settings Keys</a> section of this document. Standard vendor prefixes (<code>ie</code>, <code>moz</code>, <code>o</code>, <code>webkit</code>) are reserved for the <var>taxonomy</var> parameter, and any additional implementation or external taxonomy identifiers will be defined in a supplemental, informative document.</p>
 					<pre class="example">
 						// example of a preference defined within the IndieUI User Context specification.
 						window.settings.valueForKey('fontSize'); // e.g. '16px'
@@ -138,24 +138,15 @@
 
 			</dl>
 			
-			<section id="UserPreferenceKeys">
-				<h4>User Preference Keys</h4>
-				<p class="ednote">The different key groupings are to allow individual privacy restrictions for each group. We're still working on the best way to spec those privacy restrictions.</p>
+			<section id="UserSettingsKeys">
+				<h4>User Settings Keys</h4>
+				<p class="ednote">The different settings key groupings are intended to allow individual privacy restrictions for each group. We're still working on the best way to spec those privacy restrictions.</p>
 
-				<section id="GeneralKeys" class="keys">
-					<h5>General User Preference Keys</h5>
+				<section id="GeneralSettings" class="keys">
+					<h5>General Settings</h5>
 					
-					<dl title="dictionary GeneralKeys" class="idl">
-					
-						<dt>DOMString? fontSize = null</dt>
-						<dd>User's current default font size of root element, prior to applying page styles. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '14px'</dd>
-						
-						<dt>DOMString? fontSizeMinimum = null</dt>
-						<dd>User's minimum font size limit. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '9px'</dd>
-						
-						<dt>boolean? invertColors = null</dt>
-						<dd>Status indicating whether the display colors are currently inverted by the operating system or user agent. Web authors SHOULD NOT re-invert foreground and background colors based on this setting, but MAY choose to double-invert some content, such as photographs.</dd>
-					
+					<dl title="dictionary GeneralSettings" class="idl">
+
 						<dt>DOMElement? pointOfRegard = null</dt>
 						<dd>Returns a DOM element that indicates the users current point-of-regard.
 							<p class="ednote">I am still hoping we'll come up with a better name than point-of-regard.</p>
@@ -163,15 +154,43 @@
 							<p class="ednote">This one may indicate too much about AT to remain in the general settings.</p>
 						</dd>
 					
+						<dt>boolean? invertColors = null</dt>
+						<dd>Status indicating whether the display colors are currently inverted by the operating system or user agent. Web authors SHOULD NOT re-invert foreground and background colors based on this setting, but MAY choose to double-invert some content, such as photographs.</dd>
+					
+					</dl>
+					
+				</section>
+
+				<section id="TypeSettings" class="keys">
+					<h5>Type Settings</h5>
+					<p class="ednote">Type settings will not be restricted (by default) from the requesting page, primarily because a site can figure out all of this information using some creative CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users.</p>
+					
+					<dl title="dictionary TypeSettings" class="idl">
+					
+						<dt>DOMString? fontSize = null</dt>
+						<dd>User's current default font size of root element, prior to applying page styles. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '14px'</dd>
+						
+						<dt>DOMString? fontSizeMinimum = null</dt>
+						<dd>User's minimum font size limit. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '9px'</dd>
+					
+						<dt>DOMString? letterSpacing = null</dt>
+						<dd>Unit TBD; this should probably also be a calculated CSS pixel value equivalent to default or user value for CSS 'letter-spacing' property.</dd>
+
+						<dt>double? lineHeight = null</dt>
+						<dd>Unitless multiplier; equivalent to unitless 'Number' value for CSS 'line-height' property. e.g. 1.2, not '1.2em' or '12px' </dd>
+						
+						<dt>DOMString? wordSpacing = null</dt>
+						<dd>Unit TBD; this should probably also be a calculated CSS pixel value equivalent to default or user value for CSS 'word-spacing' property.</dd>
+
 					</dl>
 					
 				</section>
 				
-				<section id="AuditoryAlternativeKeys" class="keys">
-					<h5>Auditory Alternative Keys (Subtitles, Captions, and Transcripts)</h5>
-					<p class="ednote">TBD: Keys in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
+				<section id="AudioAlternativeSettings" class="keys">
+					<h5>Audio Alternative Settings (Subtitles, etc.)</h5>
+					<p class="ednote">TBD: Settings in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
 					
-					<dl title="dictionary AuditoryAlternativeKeys" class="idl">
+					<dl title="dictionary AudioAlternativeSettings" class="idl">
 						
 						<dt>boolean? subtitle = null</dt>
 						<dd>Status indicating whether subtitles or captions are displayed (true) or not displayed (false) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom caption display SHOULD display captions based on this setting.</dd>
@@ -198,20 +217,20 @@
 				</section>
 				
 				
-				<section id="ScreenReaderKeys" class="keys">
-					<h5>Screen Reader Keys</h5>
-					<p class="ednote">TBD: Keys in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
+				<section id="ScreenReaderSettings" class="keys">
+					<h5>Screen Reader Settings</h5>
+					<p class="ednote">TBD: Settings in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
 				
-					<dl title="dictionary ScreenReaderKeys" class="idl">
+					<dl title="dictionary ScreenReaderSettings" class="idl">
 						
 						<dt>boolean? screenReaderActive = null</dt>
-						<dd>Returns a boolean indicating whether or not a screen reader is currently active or in use. The user agent MUST return <code>true</code> if a screen reader is running, or <code>false</code> otherwise. User agents MAY return <code>false</code> if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
+						<dd>Returns a boolean indicating whether or not a screen reader is currently active or in use. The user agent MUST return <code>true</code> if a screen reader is running, or <code>false</code> otherwise. User agents MAY return a null value if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
 						
 						<dt>DOMString? screenReaderName = null</dt>
-						<dd>Returns the application name of the screen reader in use. The user agent MUST return either an empty string or a string representing the name of the screen reader in detail, e.g. <code>"Apple VoiceOver"</code>. User agents MAY return an empty string if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
+						<dd>Returns the application name of the screen reader in use. The user agent MUST return either an empty string or a string representing the name of the screen reader in detail, e.g. <code>"Apple VoiceOver"</code>. User agents MAY return a null value if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
 						
 						<dt>DOMString? screenReaderVersion = null</dt>
-						<dd>Returns the application version of the screen reader in use. The user agent MUST return either an empty string or a string representing the version of the screen reader in detail, e.g. "<code>4.0 (220.2)</code>". User agents MAY return an empty string if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
+						<dd>Returns the application version of the screen reader in use. The user agent MUST return either an empty string or a string representing the version of the screen reader in detail, e.g. "<code>4.0 (220.2)</code>". User agents MAY return a null value if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
 						
 					</dl>
 				</section>
@@ -432,12 +451,11 @@ interface MagnifierNotifications {
 		<script type="text/javascript">function xmp(r, content) { return content.replace(/</g,'&lt;').replace(/>/g,'&gt;'); } </script>
 		<pre data-transform='xmp'>This markup is <b>escaped</b> like an <code>xmp</code>.</pre>
 		-->
-		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
-		<section id="keyslist" class="">
-			<h2>Settings Key List (alphabetical)</h2>
+		<section id="keyslist" class="appendix">
+			<h2>Settings List (alphabetical)</h2>
 			<div data-transform="listKeys"><!-- dynamically generates key list --></div>
 		</section>
-		
+		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
 		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>
 		
 	</body>
