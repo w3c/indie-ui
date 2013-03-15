@@ -37,29 +37,22 @@ function listActions(r, content) {
 
 // utility used by listKeys
 function allKeys() {
-	var selector = '', keyList = [], nodeList = $$('.keys');
-	// first find all the Dictionary IDs ('GeneralKeys', 'AuditoryAlternativeKeys', etc.); we'll use them 
+	var selector = '', keyList = [], nodeList = $$('.key');
 	for (var i=0; i<nodeList.length; i++) {
-		selector += '#' + nodeList[i].id + ' dt, '; // construct selector for the next query: '#GeneralKeys dt, #AuditoryAlternativeKeys dt, '
-	}
-	selector = selector.replace(/, $/, ''); // trim the trailing ', ', or querySelectorAll will throw a syntax error
-	// now the real key search
-	nodeList = $$(selector);
-	for (var i=0; i<nodeList.length; i++) {
-		var nodeId = nodeList[i].id;
-		console.log(document.getElementById(nodeId));
-		nodeId = nodeId.substring(nodeId.lastIndexOf('-')+1);
-		keyList.push(nodeId);
+		keyList.push(nodeList[i].id);
 	}
 	return keyList.sort();
 }
 
 /* listKeys: alphabetical list generated from user context keys. */
 function listKeys(r, content) {
-	var s = '<ul>', keyList = allKeys();
+	var s = '<ul>', keyName = '', linkId = '', keyList = allKeys();
 	for (var i=0; i<keyList.length; i++){
-		var keyName = keyList[i];
-		s += '<li><code>' + keyName + '</code></li>'; // todo: link these
+		keyName = keyList[i];
+		linkId = keyName.replace(/([a-z]+)-([a-z]+)/i, 'widl-$2-$1'); // regex: hardcoded ID 'fooBar-bazBop' becomes ReSpec-generated ID 'widl-bazBop-fooBar'
+		keyName = keyName.substring(0, keyName.indexOf('-'));
+		//console.log(keyList[i] + ' : ' + keyName + ' : ' + linkId);
+		s += '<li><code><a href="#' + linkId + '">' + keyName + '</a></code></li>';
 	}
 	s += '</ul>';
 	return content + s;
