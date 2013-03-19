@@ -186,32 +186,35 @@
 					
 				</section>
 				
-				<section id="AudioAlternativeSettings">
-					<h5>Audio Alternative Settings (Subtitles, etc.)</h5>
+				<section id="MediaAlternativeSettings">
+					<h5>Media Alternative Settings (Subtitles, etc.)</h5>
 					<p class="ednote">TBD: Settings in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
 					
-					<dl title="dictionary AudioAlternativeSettings" class="idl">
+					<dl title="dictionary MediaAlternativeSettings" class="idl">
 						
-						<dt class="key" id="subtitle-AudioAlternativeSettings">boolean? subtitle = null</dt>
+						<dt class="key" id="subtitle-MediaAlternativeSettings">boolean? subtitle = null</dt>
 						<dd>Status indicating whether subtitles or captions are displayed (true) or not displayed (false) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom caption display SHOULD display captions based on this setting.</dd>
 						
-						<dt class="key" id="subtitleLanguages-AudioAlternativeSettings">DOMString? subtitleLanguages = null</dt>
+						<dt class="key" id="subtitleLanguages-MediaAlternativeSettings">DOMString? subtitleLanguages = null</dt>
 						<dd>Preferred languages in order of preference. Users Agents MUST format the string as a space-separated list of ISO-639 language codes, that may be optionally hyphenated to include ISO-3166 country codes. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect.</dd>
 						
-						<dt class="key" id="subtitleType-AudioAlternativeSettings">DOMString? subtitleType = null</dt>
+						<dt class="key" id="subtitleType-MediaAlternativeSettings">DOMString? subtitleType = null</dt>
 						<dd>Preferred type of subtitle or caption in order of preference: Users Agents MUST format the string as a space-separated list of the following tokens: 'sdh', 'cc', or 'standard'.
 							<p class="ednote">This key is necessary to indicate a preference for subtitles for the deaf and hard of hearing (SDH) over standard spoken-language-only subtitles, but the preference for closed-captions (CC) versus SDH may not be necessary. SDH appears to be generally preferred over CC when available, and a preference for SDH could indicate an implicit preference for CC over standard when CC is available but SDH is not.</p>
 						</dd>
 						
-						<dt class="key" id="transcript-AudioAlternativeSettings">boolean? transcript = null</dt>
+						<dt class="key" id="transcript-MediaAlternativeSettings">boolean? transcript = null</dt>
 						<dd>Indicates a user's preference to be presented with a transcript if available. Web authors MAY provide concatenated subtitles in static form, if no other transcript exists.
 							<p class="ednote">There is some concern within the working group regarding this preference because no known operating system or user agent currently includes a way for a user to set this preference. The IndieUI working group is actively seeking comment on the perceived necessity or feasibility of this preference. It may be that this is already covered by <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html">WCAG 2.0 SC 1.2.1</a> which indicates sites should offer transcripts when available.</p>
 						</dd>
 						
-						<dt class="key" id="signLanguage-AudioAlternativeSettings">boolean? signLanguage = null</dt>
+						<dt class="key" id="signLanguage-MediaAlternativeSettings">boolean? signLanguage = null</dt>
 						<dd>Indicates a user's preference to be presented with a video of sign language if available.
 							<p class="ednote">Do we need a language order preference for type of sign? ASL, etc? Worried this feature will be at-risk due to lack of available signed alternatives.</p>
 						</dd>
+						
+						<dt class="key" id="audioDescription-MediaAlternativeSettings">boolean? audioDescription = null</dt>
+						<dd>Indicates a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</dd>
 						
 					</dl>
 				</section>
