@@ -144,6 +144,7 @@
 
 				<section id="GeneralSettings">
 					<h5>General Settings</h5>
+					<p class="ednote">Current thinking is that General Settings will not be restricted (by default) from the requesting page. Values of these settings are expected to change often, and would therfore be of little value for any purpose but the intended use.</p>
 					
 					<dl title="dictionary GeneralSettings" class="idl">
 
@@ -185,6 +186,27 @@
 					</dl>
 					
 				</section>
+
+				<section id="DisplaySettings">
+					<h5>Display Settings</h5>
+					<p class="ednote">TBD: Settings in this section will be subject to domain-specific privacy policy limiting initial access and prompting the user. TBD whether these keys may be accessed only on a user triggered event, as opposed to onload for example.</p>
+					
+					<dl title="dictionary DisplaySettings" class="idl">
+
+						<dt class="key" id="displayContrast-DisplaySettings">double? displayContrast = null</dt>
+						<dd>Returns a number value between -1.0 and 1.0, representing the software contrast setting of the user's operating system. A value of 0.0 represents no contrast modification to the display (normal), and 1.0 represents the highest possible contrast modification. A negative number (uncommon) represents a lower-than-average contrast. User Agents SHOULD NOT use a positive value to represent hardware display settings, as this value is reserved for assistive contrast modes. User Agents MAY use a negative value to represent lower-than-average contrast in a hardware display.</dd>
+					
+						<dt class="key" id="displayGrayscale-DisplaySettings">boolean? displayGrayscale = null</dt>
+						<dd>Returns a boolean value representing whether the user's video display is currently set to only display in grayscale (true) or displays full color (false).</dd>
+
+						<dt class="key" id="displayLightOnDark-DisplaySettings">boolean? displayLightOnDark = null</dt>
+						<dd>Returns a boolean representing a user's preference for lightly colored foreground text on a darkly colored background.
+							<p class="ednote">I am concerned that this one will be confused with the general 'invertColors' setting.</p>
+						</dd>						
+					
+					</dl>
+					
+				</section>
 				
 				<section id="MediaAlternativeSettings">
 					<h5>Media Alternative Settings (Subtitles, etc.)</h5>
@@ -193,7 +215,7 @@
 					<dl title="dictionary MediaAlternativeSettings" class="idl">
 						
 						<dt class="key" id="subtitle-MediaAlternativeSettings">boolean? subtitle = null</dt>
-						<dd>Status indicating whether subtitles or captions are displayed (true) or not displayed (false) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom caption display SHOULD display captions based on this setting.</dd>
+						<dd>Returns a boolean value indicating whether subtitles or captions are displayed (true) or not displayed (false) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom caption display SHOULD display captions based on this setting.</dd>
 						
 						<dt class="key" id="subtitleLanguages-MediaAlternativeSettings">DOMString? subtitleLanguages = null</dt>
 						<dd>Preferred languages in order of preference. Users Agents MUST format the string as a space-separated list of ISO-639 language codes, that may be optionally hyphenated to include ISO-3166 country codes. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect.</dd>
