@@ -121,10 +121,8 @@
 						window.settings.valueForKey('subtitle'); // e.g. returns true if the user wants to see subtitles or captions by default
 						
 						// example of an vendor-proposed preference, intended for standardization.
-						window.settings.valueForKey('foo', 'moz');
+						window.settings.valueForKey('foo', 'webkit');
 						
-						// example of an implementation-specific preference that does not apply to other user agents.
-						window.settings.valueForKey('focusAllControls', 'webkit');
 					</pre>
 					<dl class="parameters">
 						
@@ -144,7 +142,7 @@
 
 				<section id="GeneralSettings">
 					<h5>General Settings</h5>
-					<p class="ednote">Current thinking is that General Settings will not be restricted (by default) from the requesting page. Values of these settings are expected to change often, and would therfore be of little value for any purpose but the intended use.</p>
+					<p class="ednote">Current thinking is that General Settings will not be restricted (by default) from the requesting page. Values of these settings are expected to change often, and would therefore be of little value for any purpose but the intended use.</p>
 					
 					<dl title="dictionary GeneralSettings" class="idl">
 
@@ -154,9 +152,12 @@
 							<div class="note">Indicates the user's focused point of attention, which make be the element under the mouse, in keyboard focus, or indicated by assistive technology such as eye tracking software or screen reader focus. Point-of-regard is similar to the concept of document.activeElement, and in the simple case of full keyboard access, it will likely stay in sync with document.activeElement.</div>
 							<p class="ednote">This one may indicate too much about AT to remain in the general settings.</p>
 						</dd>
-					
+						
+						<dt class="key" id="fullKeyboardAccess-GeneralSettings">boolean? fullKeyboardAccess = null</dt>
+						<dd>Returns a boolean indicating whether the user's keyboard settings allow focusing all interactive elements (buttons, links, etc) by default. Note: The default non-null value will be <code>true</code> in most browsers.</dd>
+
 						<dt class="key" id="invertColors-GeneralSettings">boolean? invertColors = null</dt>
-						<dd>Status indicating whether the display colors are currently inverted by the operating system or user agent. Web authors SHOULD NOT re-invert foreground and background colors based on this setting, but MAY choose to double-invert some content, such as photographs.</dd>
+						<dd>Returns a boolean indicating whether the display colors are currently inverted by the operating system or user agent. Web authors SHOULD NOT re-invert foreground and background colors based on this setting, but MAY choose to double-invert some content, such as photographs.</dd>
 					
 					</dl>
 					
@@ -169,16 +170,16 @@
 					<dl title="dictionary TypeSettings" class="idl">
 					
 						<dt class="key" id="fontSize-TypeSettings">DOMString? fontSize = null</dt>
-						<dd>User's current default font size of root element, prior to applying page styles. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '14px'</dd>
+						<dd>Returns a string representing the user's current default font size of root element, prior to applying page styles. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '14px'</dd>
 						
 						<dt class="key" id="fontSizeMinimum-TypeSettings">DOMString? fontSizeMinimum = null</dt>
-						<dd>User's minimum font size limit. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '9px'</dd>
+						<dd>Returns a string representing the user's minimum font size limit. User Agents MUST return the value in a CSS pixel unit formatted string, e.g. '9px'</dd>
 					
 						<dt class="key" id="letterSpacing-TypeSettings">DOMString? letterSpacing = null</dt>
 						<dd>Unit TBD; this should probably also be a calculated CSS pixel value equivalent to default or user value for CSS 'letter-spacing' property.</dd>
 
 						<dt class="key" id="lineHeight-TypeSettings">double? lineHeight = null</dt>
-						<dd>Unitless multiplier; equivalent to unitless 'Number' value for CSS 'line-height' property. e.g. 1.2, not '1.2em' or '12px' </dd>
+						<dd>Returns a number as a unitless multiplier; equivalent to unitless 'Number' value for CSS 'line-height' property. e.g. 1.2, not '1.2em' or '12px' </dd>
 						
 						<dt class="key" id="wordSpacing-TypeSettings">DOMString? wordSpacing = null</dt>
 						<dd>Unit TBD; this should probably also be a calculated CSS pixel value equivalent to default or user value for CSS 'word-spacing' property.</dd>
@@ -218,25 +219,25 @@
 						<dd>Returns a boolean value indicating whether subtitles or captions are displayed (true) or not displayed (false) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom caption display SHOULD display captions based on this setting.</dd>
 						
 						<dt class="key" id="subtitleLanguages-MediaAlternativeSettings">DOMString? subtitleLanguages = null</dt>
-						<dd>Preferred languages in order of preference. Users Agents MUST format the string as a space-separated list of ISO-639 language codes, that may be optionally hyphenated to include ISO-3166 country codes. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect.</dd>
+						<dd>Returns a string of languages in order of preference. Users Agents MUST format the string as a space-separated list of ISO-639 language codes, that may be optionally hyphenated to include ISO-3166 country codes. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect.</dd>
 						
 						<dt class="key" id="subtitleType-MediaAlternativeSettings">DOMString? subtitleType = null</dt>
-						<dd>Preferred type of subtitle or caption in order of preference: Users Agents MUST format the string as a space-separated list of the following tokens: 'sdh', 'cc', or 'standard'.
+						<dd>Returns a string of type of subtitles or captions in order of preference: Users Agents MUST format the string as a space-separated list of the following tokens: <code>sdh</code>, <code>cc</code>, or <code>standard</code>.
 							<p class="ednote">This key is necessary to indicate a preference for subtitles for the deaf and hard of hearing (SDH) over standard spoken-language-only subtitles, but the preference for closed-captions (CC) versus SDH may not be necessary. SDH appears to be generally preferred over CC when available, and a preference for SDH could indicate an implicit preference for CC over standard when CC is available but SDH is not.</p>
 						</dd>
 						
 						<dt class="key" id="transcript-MediaAlternativeSettings">boolean? transcript = null</dt>
-						<dd>Indicates a user's preference to be presented with a transcript if available. Web authors MAY provide concatenated subtitles in static form, if no other transcript exists.
+						<dd>Returns a boolean indicating a user's preference to be presented with a transcript if available. Web authors MAY provide concatenated subtitles in static form, if no other transcript exists.
 							<p class="ednote">There is some concern within the working group regarding this preference because no known operating system or user agent currently includes a way for a user to set this preference. The IndieUI working group is actively seeking comment on the perceived necessity or feasibility of this preference. It may be that this is already covered by <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html">WCAG 2.0 SC 1.2.1</a> which indicates sites should offer transcripts when available.</p>
 						</dd>
 						
 						<dt class="key" id="signLanguage-MediaAlternativeSettings">boolean? signLanguage = null</dt>
-						<dd>Indicates a user's preference to be presented with a video of sign language if available.
+						<dd>Returns a boolean indicates a user's preference to be presented with a video of sign language if available.
 							<p class="ednote">Do we need a language order preference for type of sign? ASL, etc? Worried this feature will be at-risk due to lack of available signed alternatives.</p>
 						</dd>
 						
 						<dt class="key" id="audioDescription-MediaAlternativeSettings">boolean? audioDescription = null</dt>
-						<dd>Indicates a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</dd>
+						<dd>Returns a boolean indicates a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</dd>
 						
 					</dl>
 				</section>
@@ -252,10 +253,10 @@
 						<dd>Returns a boolean indicating whether or not a screen reader is currently active or in use. The user agent MUST return <code>true</code> if a screen reader is running, or <code>false</code> otherwise. User agents MAY return a null value if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
 						
 						<dt class="key" id="screenReaderName-ScreenReaderSettings">DOMString? screenReaderName = null</dt>
-						<dd>Returns the application name of the screen reader in use. The user agent MUST return either an empty string or a string representing the name of the screen reader in detail, e.g. <code>"Apple VoiceOver"</code>. User agents MAY return a null value if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
+						<dd>Returns a string representing the application name of the screen reader in use. The user agent MUST return either an empty string or a string representing the name of the screen reader in detail, e.g. <code>"Apple VoiceOver"</code>. User agents MAY return a null value if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
 						
 						<dt class="key" id="screenReaderVersion-ScreenReaderSettings">DOMString? screenReaderVersion = null</dt>
-						<dd>Returns the application version of the screen reader in use. The user agent MUST return either an empty string or a string representing the version of the screen reader in detail, e.g. "<code>4.0 (220.2)</code>". User agents MAY return a null value if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
+						<dd>Returns a string representing the application version of the screen reader in use. The user agent MUST return either an empty string or a string representing the version of the screen reader in detail, e.g. "<code>4.0 (220.2)</code>". User agents MAY return a null value if the user has chosen to disallow sharing screen reader information with the requesting domain.</dd>
 						
 					</dl>
 				</section>
