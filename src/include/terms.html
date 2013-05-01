@@ -24,13 +24,13 @@
 	
 	<dt id="def_request_event_receiver">Request Event Receiver</dt>
 	<dd>
-		<p>The closest DOM ancestor to the user's <a href="#def_point_of_regard">point-of-regard</a> that declares the current event type via the @ui-actions content attribute or uiActions DOM attribute. The Request Event Receiver is referenced in the Event object's <code>receiver</code> property.</p>
+		<p>The closest DOM ancestor to the user's <a href="#def_point_of_regard">point-of-regard</a> that declares the current event type via the <code>uiactions</code> content attribute or <code>uiactions</code> DOM attribute. The Request Event Receiver is referenced in the Event object's <code>receiver</code> property.</p>
 		<p>UI Request Events are not initiated by the user agent unless the following are true:</p>
 		<ol>
-			<li>The user's point of regard is on the current or descendant node of an element that declares the event receiver via <code>@ui-actions</code></li>
+			<li>The user's point of regard is on the current or descendant node of an element that declares the event receiver via <code>@uiactions</code></li>
 			<li>The event receiver node (or any ancestor node of the receiver) also registered as the event listener via <code>element.addEventListener()</code></li>
 		</ol>
-		<p class="ednote">Some of this definition will need to be massaged and move into the normative sections above defining @ui-actions.</p>
+		<p class="ednote">Some of this definition will need to be massaged and move into the normative sections above defining @uiactions.</p>
 	</dd>
 	
 	<dt id="def_user_agent">User Agent</dt>
