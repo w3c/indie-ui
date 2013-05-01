@@ -378,6 +378,94 @@ partial interface UIEvent {
 			</section>
 			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
 
+			<!-- :::::::::::::::::::: UIFocusRequestEvent :::::::::::::::::::: -->
+			<section id="UIFocusRequestEvent" class="normative">
+				<h3>Interface UIFocusRequestEvent</h3>
+
+				<p class="ednote">Will probably need an ARIA 1.1 or 2.0 role for palette.</p>
+
+				<dl title="[Constructor(DOMString typeArg, optional UIFocusRequestEventInit dictUIFocusRequestEventInit)] interface UIFocusRequestEvent : UIRequestEvent" class="idl">
+
+					<dt>const unsigned short LINEAR_FIRST    = TBD</dt><dd></dd>
+					<dt>const unsigned short LINEAR_PREVIOUS = TBD</dt><dd></dd>
+					<dt>const unsigned short LINEAR_NEXT     = TBD</dt><dd></dd>
+					<dt>const unsigned short LINEAR_LAST     = TBD</dt><dd></dd>
+
+					<dt>const unsigned short DIR_NORTH     = TBD</dt><dd></dd>
+					<dt>const unsigned short DIR_NORTHEAST = TBD</dt><dd></dd>
+					<dt>const unsigned short DIR_EAST      = TBD</dt><dd></dd>
+					<dt>const unsigned short DIR_SOUTHEAST = TBD</dt><dd></dd>
+					<dt>const unsigned short DIR_SOUTH     = TBD</dt><dd></dd>
+					<dt>const unsigned short DIR_SOUTHWEST = TBD</dt><dd></dd>
+					<dt>const unsigned short DIR_WEST      = TBD</dt><dd></dd>
+					<dt>const unsigned short DIR_NORTHWEST = TBD</dt><dd></dd>
+				</dl>
+				
+
+				<section id="UIFocusRequestEventInit">
+					<h4>UIFocusRequestEventInit</h4>
+					<dl title="dictionary UIFocusRequestEventInit" class="idl">
+						
+						<!-- todo: Incorporate receiver into initializer -->
+						
+						<dt>boolean bubbles = false</dt><dd></dd>
+						<dt>boolean cancelable = false</dt><dd></dd>
+						<dt>AbstractView? view = null</dt><dd></dd>
+						<dt>long detail = 0</dt><dd></dd>
+						<dt>unsigned short? focusType = null</dt><dd>Type of linear or directional focus requested, as defined in the interface constants.</dd>
+					</dl>
+				</section>
+				
+				<section id="UIFocusRequestEvents">
+					<h4>UIFocusRequestEvent Types</h4>
+					<p class="ednote">Todo: explain these can cover focus changes when the element to focus is not yet loaded in the DOM or yet focusable (for example, in list or table views where the entire dataset is not displayed), or non-linear focus shortcuts or overrides when linear focus is not possible (for example, jumping directly from a contenteditable region to the editing toolbar, when Tab and Shift+Tab mean other things).</p>
+					<p>The types of UIFocusRequestEvents that can occur are:</p>
+					<dl>
+						
+						<dt id="directionalfocusrequest">Directional Focus Request (<code class="event">directionalfocusrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a "direction focus" request to the web application. Web authors SHOULD NOT use or register for <code>directionalfocusrequest</code> events when standard browser focus and blur events are sufficient. Using these events unnecessarily could result is reduced performance or an other negative user experience.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>focusType</code> (one of directional focus constants)</li>
+							</ul>
+						</dd>
+
+						<dt id="linearfocusrequest">Linear Focus Request (<code class="event">linearfocusrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a "linear focus" request to the web application. Web authors SHOULD NOT use or register for <code>linearfocusrequest</code> events when standard browser focus and blur events are sufficient. This event type is only necessary on specialized control types such as data grids where the logical next element may not be focusable or even in the DOM until requested. Using these events unnecessarily could result is reduced performance or an other negative user experience.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>focusType</code> (one of linear focus constants)</li>
+							</ul>
+						</dd>
+
+						<dt id="palettefocusrequest">Palette Focus Request (<code class="event">palettefocusrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a "palette focus" request to the web application. Web app authors receiving this event SHOULD move focus to the first palette in the web application, or cycle focus between all available palettes. Note: palettes are sometimes referred to as non-modal dialogs or inspector windows.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+
+						<dt id="toolbarfocusrequest">Toolbar Focus Request (<code class="event">toolbarfocusrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a "toolbar focus" request to the web application. Web app authors receiving this event SHOULD move focus to the main toolbar in the web application, or cycle focus between all available toolbars.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+
+					</dl>
+				</section>
+				
+			</section>
+			<!-- :::::::::::::::::::: END UIFocusRequestEvent :::::::::::::::::::: -->
+
 			<!-- :::::::::::::::::::: UIManipulationRequestEvent :::::::::::::::::::: -->
 			<section id="UIManipulationRequestEvent" class="normative">
 				<h3>Interface UIManipulationRequestEvent</h3>
@@ -414,7 +502,6 @@ partial interface UIEvent {
 						
 					</dl>
 				</section>
-				
 
 				<section id="UIManipulationRequestEvents">
 					<h4><!-- Discrete  -->UIManipulationRequestEvent Types</h4>
@@ -593,7 +680,8 @@ partial interface UIEvent {
 		<section id="changelist" class="appendix">
 			<h2>Normative changes since the last public working draft</h2>
 			<ul>
-				<li>The reflected attribute uiActions/@ui-actions is now uiactions/@uiactions.</li>
+				<li>30 Apr 2013: The reflected attribute uiActions/@ui-actions is now uiactions/@uiactions.</li>
+				<li>01 May 2013: Added UIFocusRequestEvent section.</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
