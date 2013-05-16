@@ -383,22 +383,25 @@ partial interface UIEvent {
 				<h3>Interface UIFocusRequestEvent</h3>
 
 				<p class="ednote">Will probably need an ARIA 1.1 or 2.0 role for palette.</p>
+				<p class="ednote">These NAV_* constants may be better defined as dictionaries.</p>
 
 				<dl title="[Constructor(DOMString typeArg, optional UIFocusRequestEventInit dictUIFocusRequestEventInit)] interface UIFocusRequestEvent : UIRequestEvent" class="idl">
 
-					<dt>const unsigned short LINEAR_FIRST    = TBD</dt><dd></dd>
-					<dt>const unsigned short LINEAR_PREVIOUS = TBD</dt><dd></dd>
-					<dt>const unsigned short LINEAR_NEXT     = TBD</dt><dd></dd>
-					<dt>const unsigned short LINEAR_LAST     = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_FIRST = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_PREV  = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_NEXT  = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_LAST  = TBD</dt><dd></dd>
 
-					<dt>const unsigned short DIR_NORTH     = TBD</dt><dd></dd>
-					<dt>const unsigned short DIR_NORTHEAST = TBD</dt><dd></dd>
-					<dt>const unsigned short DIR_EAST      = TBD</dt><dd></dd>
-					<dt>const unsigned short DIR_SOUTHEAST = TBD</dt><dd></dd>
-					<dt>const unsigned short DIR_SOUTH     = TBD</dt><dd></dd>
-					<dt>const unsigned short DIR_SOUTHWEST = TBD</dt><dd></dd>
-					<dt>const unsigned short DIR_WEST      = TBD</dt><dd></dd>
-					<dt>const unsigned short DIR_NORTHWEST = TBD</dt><dd></dd>
+					<!-- clockwise from top -->
+					<dt>const unsigned short NAV_UP         = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_UP_LEFT    = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_LEFT       = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_DOWN_LEFT  = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_DOWN       = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_DOWN_RIGHT = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_RIGHT      = TBD</dt><dd></dd>
+					<dt>const unsigned short NAV_UP_RIGHT   = TBD</dt><dd></dd>
+					
 				</dl>
 				
 
