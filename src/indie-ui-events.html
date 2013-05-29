@@ -283,8 +283,10 @@
 				<h3>Interface UIRequestEvent</h3>
 				<p class="ednote">Separate interface from UIEvent because the @uiactions attribute will 1) affect when and where these events are fired, and 2) adds the distinction of an event <a href="#def_request_event_receiver">receiver</a> element (element declaring the uiactions attribute) in addition to the "target" element where the event initiates and the "listener" element where the event is registered for and handled.</p>
 				<dl title="[Constructor(DOMString typeArg, optional UIRequestEventInit dictUIRequestEventInit)] interface UIRequestEvent : UIEvent" class="idl">
-					<dt>readonly attribute EventTarget receiver</dt>
-					<dd>In addition to the target and currentTarget, each UI Request Event has a receiver element, which is declared via the <a href="#uiactions-content-attribute"><code>uiactions</code></a> content attribute on an ancestor node of the event target. <p class="ednote">Note: This may need to be defined as a partial interface on AbstractView, rather than in this interface.</p></dd>
+					<dt>readonly attribute EventTarget target</dt>
+					<dd>Identical to event target on MouseEvent or FocusEvent.</dd>
+					<dt>readonly attribute EventReceiver receiver</dt>
+					<dd>In addition to the target and currentTarget, each UI Request Event has a receiver element, which is declared via the <a href="#uiactions-content-attribute"><code>uiactions</code></a> content attribute on an ancestor node of the event target. </dd>
 				</dl>
 				
 				<div class="ednote">
