@@ -302,11 +302,19 @@ partial interface UIEvent {
 					<p class="ednote">This might not need its own UIRequestEventInit, it could potentially use UIEventInit, depending on whether the EventTarget <a href="#def_request_event_receiver">receiver</a> is implemented here or on AbstractView.</p>
 					
 					<dl title="dictionary UIRequestEventInit" class="idl">
+
+						<!-- Attributes from EventInit -->
 						<dt>boolean bubbles = true</dt><dd></dd>
 						<dt>boolean cancelable = true</dt><dd></dd>
+
+						<!-- Attributes from UIEventInit -->
 						<dt>AbstractView? view = null</dt><dd></dd>
 						<dt>long detail = 0</dt><dd></dd>
-						<!-- todo: Incorporate receiver into initializer -->
+
+						<!-- Attributes from UIRequestEventInit -->
+						<dt>EventTarget? relatedTarget = null;</dt><dd></dd>
+						<dt>EventReceiver? relatedReceiver = null;</dt><dd></dd>
+
 					</dl>
 				</section>
 
@@ -409,13 +417,21 @@ partial interface UIEvent {
 					<h4>UIFocusRequestEventInit</h4>
 					<dl title="dictionary UIFocusRequestEventInit" class="idl">
 						
-						<!-- todo: Incorporate receiver into initializer -->
-						
-						<dt>boolean bubbles = false</dt><dd></dd>
-						<dt>boolean cancelable = false</dt><dd></dd>
+						<!-- Attributes from EventInit -->
+						<dt>boolean bubbles = true</dt><dd></dd>
+						<dt>boolean cancelable = true</dt><dd></dd>
+
+						<!-- Attributes from UIEventInit -->
 						<dt>AbstractView? view = null</dt><dd></dd>
 						<dt>long detail = 0</dt><dd></dd>
-						<dt>unsigned short? focusType = null</dt><dd>Type of linear or directional focus requested, as defined in the interface constants.</dd>
+
+						<!-- Attributes from UIRequestEventInit -->
+						<dt>EventTarget? relatedTarget = null;</dt><dd></dd>
+						<dt>EventReceiver? relatedReceiver = null;</dt><dd></dd>
+
+						<!-- Attributes from UIFocusRequestEventInit -->
+						<dt>unsigned short? focusType = null</dt><dd>Type of linear or directional focus requested, as defined in the LinearFocusType and DirectionalFocusType interface constants.</dd>
+
 					</dl>
 				</section>
 
@@ -507,10 +523,19 @@ partial interface UIEvent {
 						
 						<!-- todo: Incorporate receiver into initializer -->
 						
-						<dt>boolean bubbles = false</dt><dd></dd>
-						<dt>boolean cancelable = false</dt><dd></dd>
+						<!-- Attributes from EventInit -->
+						<dt>boolean bubbles = true</dt><dd></dd>
+						<dt>boolean cancelable = true</dt><dd></dd>
+
+						<!-- Attributes from UIEventInit -->
 						<dt>AbstractView? view = null</dt><dd></dd>
 						<dt>long detail = 0</dt><dd></dd>
+
+						<!-- Attributes from UIRequestEventInit -->
+						<dt>EventTarget? relatedTarget = null;</dt><dd></dd>
+						<dt>EventReceiver? relatedReceiver = null;</dt><dd></dd>
+
+						<!-- Attributes from UIManipulationRequestEventInit -->
 						
 						<dt>optional double originX? = null</dt>
 						<dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
@@ -662,12 +687,22 @@ partial interface UIEvent {
 				<section id="UIValueChangeRequestEventInit">
 					<h4>UIValueChangeRequestEventInit</h4>
 					<dl title="dictionary UIValueChangeRequestEventInit" class="idl">
-						<!-- todo: Incorporate receiver into initializer -->
-						<dt>boolean bubbles = false</dt><dd></dd>
-						<dt>boolean cancelable = false</dt><dd></dd>
+						
+						<!-- Attributes from EventInit -->
+						<dt>boolean bubbles = true</dt><dd></dd>
+						<dt>boolean cancelable = true</dt><dd></dd>
+
+						<!-- Attributes from UIEventInit -->
 						<dt>AbstractView? view = null</dt><dd></dd>
 						<dt>long detail = 0</dt><dd></dd>
+
+						<!-- Attributes from UIRequestEventInit -->
+						<dt>EventTarget? relatedTarget = null;</dt><dd></dd>
+						<dt>EventReceiver? relatedReceiver = null;</dt><dd></dd>
+
+						<!-- Attributes from UIValueChangeRequestEventInit  -->
 						<dt>unsigned short? changeType = null</dt><dd>Type of change requested, as defined in the interface constants.</dd>
+
 					</dl>
 				</section>
 
