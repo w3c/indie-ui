@@ -193,7 +193,7 @@
 						    var slider = e.receiver;
 						    
 						    // grab context info from the Event object
-						    var changeType = <strong>e.request.changeType</strong>; // todo: Event.request object yet to be defined
+						    var changeType = <strong>e.changeType</strong>;
 						    
 						    // update the model and display
 						    myApp.requestValueChangeForElement(changeType, slider);
@@ -283,10 +283,8 @@
 				<h3>Interface UIRequestEvent</h3>
 				<p class="ednote">Separate interface from UIEvent because the @uiactions attribute will 1) affect when and where these events are fired, and 2) adds the distinction of an event <a href="#def_request_event_receiver">receiver</a> element (element declaring the uiactions attribute) in addition to the "target" element where the event initiates and the "listener" element where the event is registered for and handled.</p>
 				<dl title="[Constructor(DOMString typeArg, optional UIRequestEventInit dictUIRequestEventInit)] interface UIRequestEvent : UIEvent" class="idl">
-					<dt>readonly attribute EventTarget target</dt>
-					<dd>Identical to event target on MouseEvent or FocusEvent.</dd>
 					<dt>readonly attribute EventTarget receiver</dt>
-					<dd>In addition to the target and currentTarget, each UI Request Event has a receiver element, which is declared via the <a href="#uiactions-content-attribute"><code>uiactions</code></a> content attribute on an ancestor node of the event target. </dd>
+					<dd>In addition to the event target, each UI Request Event has a receiver element, which is declared via the <a href="#uiactions-content-attribute"><code>uiactions</code></a> content attribute on an ancestor node of the event target. </dd>
 				</dl>
 				
 				<div class="ednote">
@@ -312,9 +310,8 @@ partial interface UIEvent {
 						<dt>AbstractView? view = null</dt><dd></dd>
 						<dt>long detail = 0</dt><dd></dd>
 
-						<!-- Attributes from UIRequestEventInit -->
-						<dt>EventTarget? relatedTarget = null</dt><dd></dd>
-						<dt>EventTarget? relatedReceiver = null</dt><dd></dd>
+						<!-- Attribute from UIRequestEventInit -->
+						<dt>EventTarget? receiver = null</dt><dd></dd>
 
 					</dl>
 				</section>
@@ -410,6 +407,8 @@ partial interface UIEvent {
 					<dt>const unsigned short NAV_DOWN_RIGHT = TBD</dt><dd></dd>
 					<dt>const unsigned short NAV_RIGHT      = TBD</dt><dd></dd>
 					<dt>const unsigned short NAV_UP_RIGHT   = TBD</dt><dd></dd>
+
+					<dt>readonly attribute unsigned short focusType</dt><dd>Type of linear or directional focus requested.</dd>
 					
 				</dl>
 				
@@ -426,12 +425,11 @@ partial interface UIEvent {
 						<dt>AbstractView? view = null</dt><dd></dd>
 						<dt>long detail = 0</dt><dd></dd>
 
-						<!-- Attributes from UIRequestEventInit -->
-						<dt>EventTarget? relatedTarget = null</dt><dd></dd>
-						<dt>EventTarget? relatedReceiver = null</dt><dd></dd>
+						<!-- Attribute from UIRequestEventInit -->
+						<dt>EventTarget? receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIFocusRequestEventInit -->
-						<dt>unsigned short? focusType = null</dt><dd>Type of linear or directional focus requested, as defined in the LinearFocusType and DirectionalFocusType interface constants.</dd>
+						<dt>unsigned short? focusType = null</dt><dd>Type of linear or directional focus requested, as defined in the interface constants. <p class="ednote">TBD whether this will be constants in the constructor, or in the LinearFocusType and DirectionalFocusType dictionaries. Both are defined here during consideration.</p></dd>
 
 					</dl>
 				</section>
@@ -532,9 +530,8 @@ partial interface UIEvent {
 						<dt>AbstractView? view = null</dt><dd></dd>
 						<dt>long detail = 0</dt><dd></dd>
 
-						<!-- Attributes from UIRequestEventInit -->
-						<dt>EventTarget? relatedTarget = null</dt><dd></dd>
-						<dt>EventTarget? relatedReceiver = null</dt><dd></dd>
+						<!-- Attribute from UIRequestEventInit -->
+						<dt>EventTarget? receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIManipulationRequestEventInit -->
 						
@@ -675,6 +672,7 @@ partial interface UIEvent {
 			<section id="UIValueChangeRequestEvent" class="normative">
 				<h3>Interface UIValueChangeRequestEvent</h3>
 				<dl title="[Constructor(DOMString typeArg, optional UIValueChangeRequestEventInit dictUIValueChangeRequestEventInit)] interface UIValueChangeRequestEvent : UIRequestEvent" class="idl">
+					
 					<dt>const unsigned short INCREMENT       = 1</dt><dd></dd>
 					<dt>const unsigned short INCREMENT_SMALL = 2</dt><dd></dd>
 					<dt>const unsigned short INCREMENT_LARGE = 3</dt><dd></dd>
@@ -683,6 +681,9 @@ partial interface UIEvent {
 					<dt>const unsigned short DECREMENT_SMALL = 6</dt><dd></dd>
 					<dt>const unsigned short DECREMENT_LARGE = 7</dt><dd></dd>
 					<dt>const unsigned short DECREMENT_MIN   = 8</dt><dd></dd>
+
+					<dt>readonly attribute unsigned short changeType</dt><dd>Type of change requested.</dd>
+
 				</dl>
 				
 				<section id="UIValueChangeRequestEventInit">
@@ -697,9 +698,8 @@ partial interface UIEvent {
 						<dt>AbstractView? view = null</dt><dd></dd>
 						<dt>long detail = 0</dt><dd></dd>
 
-						<!-- Attributes from UIRequestEventInit -->
-						<dt>EventTarget? relatedTarget = null</dt><dd></dd>
-						<dt>EventTarget? relatedReceiver = null</dt><dd></dd>
+						<!-- Attribute from UIRequestEventInit -->
+						<dt>EventTarget? receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIValueChangeRequestEventInit  -->
 						<dt>unsigned short? changeType = null</dt><dd>Type of change requested, as defined in the interface constants.</dd>
@@ -747,6 +747,7 @@ partial interface UIEvent {
 				<li>30 Apr 2013: The reflected attribute uiActions/@ui-actions is now uiactions/@uiactions.</li>
 				<li>01 May 2013: Added UIFocusRequestEvent section.</li>
 				<li>29 May 2013: Updated event initilizers to include event receiver.</li>
+				<li>04 Jun 2013: UIValueChangeRequestEvent.changeType and UIFocusRequestEvent.focusType were missing in the interfaces; UIRequestEvent.target previously overrode Event.target.</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
