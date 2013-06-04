@@ -285,7 +285,7 @@
 				<dl title="[Constructor(DOMString typeArg, optional UIRequestEventInit dictUIRequestEventInit)] interface UIRequestEvent : UIEvent" class="idl">
 					<dt>readonly attribute EventTarget target</dt>
 					<dd>Identical to event target on MouseEvent or FocusEvent.</dd>
-					<dt>readonly attribute EventReceiver receiver</dt>
+					<dt>readonly attribute EventTarget receiver</dt>
 					<dd>In addition to the target and currentTarget, each UI Request Event has a receiver element, which is declared via the <a href="#uiactions-content-attribute"><code>uiactions</code></a> content attribute on an ancestor node of the event target. </dd>
 				</dl>
 				
@@ -314,7 +314,7 @@ partial interface UIEvent {
 
 						<!-- Attributes from UIRequestEventInit -->
 						<dt>EventTarget? relatedTarget = null</dt><dd></dd>
-						<dt>EventReceiver? relatedReceiver = null</dt><dd></dd>
+						<dt>EventTarget? relatedReceiver = null</dt><dd></dd>
 
 					</dl>
 				</section>
@@ -428,7 +428,7 @@ partial interface UIEvent {
 
 						<!-- Attributes from UIRequestEventInit -->
 						<dt>EventTarget? relatedTarget = null</dt><dd></dd>
-						<dt>EventReceiver? relatedReceiver = null</dt><dd></dd>
+						<dt>EventTarget? relatedReceiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIFocusRequestEventInit -->
 						<dt>unsigned short? focusType = null</dt><dd>Type of linear or directional focus requested, as defined in the LinearFocusType and DirectionalFocusType interface constants.</dd>
@@ -534,7 +534,7 @@ partial interface UIEvent {
 
 						<!-- Attributes from UIRequestEventInit -->
 						<dt>EventTarget? relatedTarget = null</dt><dd></dd>
-						<dt>EventReceiver? relatedReceiver = null</dt><dd></dd>
+						<dt>EventTarget? relatedReceiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIManipulationRequestEventInit -->
 						
@@ -699,7 +699,7 @@ partial interface UIEvent {
 
 						<!-- Attributes from UIRequestEventInit -->
 						<dt>EventTarget? relatedTarget = null</dt><dd></dd>
-						<dt>EventReceiver? relatedReceiver = null</dt><dd></dd>
+						<dt>EventTarget? relatedReceiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIValueChangeRequestEventInit  -->
 						<dt>unsigned short? changeType = null</dt><dd>Type of change requested, as defined in the interface constants.</dd>
@@ -746,6 +746,7 @@ partial interface UIEvent {
 			<ul>
 				<li>30 Apr 2013: The reflected attribute uiActions/@ui-actions is now uiactions/@uiactions.</li>
 				<li>01 May 2013: Added UIFocusRequestEvent section.</li>
+				<li>29 May 2013: Updated event initilizers to include event receiver.</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
