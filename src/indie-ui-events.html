@@ -226,10 +226,10 @@
 			
 			<section id="uiactions-attribute">
 				<h2>The <code>uiactions</code> IDL Attribute</h2>
-				<p>The <code>uiactions</code> attribute of each instance of the Element interface MUST return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>.</p>
+				<p>The <code>uiactions</code> attribute of each instance of the Element interface MUST return a DOMTokenList <a href="#def_reflected_attribute">reflecting</a> the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>.</p>
 				<dl title="partial interface Element" class="idl">
-					<dt>attribute DOMString uiactions</dt>
-					<dd>A DOM element attribute whose string value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>.</dd>
+					<dt>attribute DOMTokenList uiactions</dt>
+					<dd>A DOM element attribute whose DOMTokenList value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>.</dd>
 				</dl>
 			</section>
 			
@@ -752,7 +752,8 @@ partial interface UIEvent {
 				<li>01 May 2013: Added UIFocusRequestEvent section.</li>
 				<li>29 May 2013: Updated event initilizers to include event receiver.</li>
 				<li>04 Jun 2013: UIValueChangeRequestEvent.changeType and UIFocusRequestEvent.focusType were missing in the interfaces; UIRequestEvent.target previously overrode Event.target.</li>
-				<li>changeType and focusType are unsigned shorts and not nullable. Added UNKNOWN = 0 constants to account for the change. Removed previous option for separate LinearFocusType and DirectionalFocusType dictionaries; these constants (NAV_NEXT, NAV_UP, etc.) are now defined in the constructor.</li>
+				<li>05 Jun 2013: changeType and focusType are unsigned shorts and not nullable. Added UNKNOWN = 0 constants to account for the change. Removed previous option for separate LinearFocusType and DirectionalFocusType dictionaries; these constants (NAV_NEXT, NAV_UP, etc.) are now defined in the constructor.</li>
+				<li>09 Jul 2013: The uiactions IDL attribute is now a DOMTokenList rather than a DOMString.</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
