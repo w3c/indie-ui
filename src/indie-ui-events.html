@@ -323,7 +323,7 @@ partial interface UIEvent {
 						<dt>long detail = 0</dt><dd></dd>
 
 						<!-- Attribute from UIRequestEventInit -->
-						<dt>EventTarget? receiver = null</dt><dd></dd>
+						<dt>EventTarget receiver = null</dt><dd></dd>
 
 					</dl>
 				</section>
@@ -440,7 +440,7 @@ partial interface UIEvent {
 						<dt>long detail = 0</dt><dd></dd>
 
 						<!-- Attribute from UIRequestEventInit -->
-						<dt>EventTarget? receiver = null</dt><dd></dd>
+						<dt>EventTarget receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIFocusRequestEventInit -->
 						<dt>unsigned short focusType = 0</dt><dd>Type of linear or directional focus requested, as defined in the interface constants. Defaults to 0 (UNKNOWN). <!-- <p class="ednote">TBD whether this will be constants in the constructor, or in the LinearFocusType and DirectionalFocusType dictionaries. Both are defined here during consideration.</p> --></dd>
@@ -529,6 +529,14 @@ partial interface UIEvent {
 				<h3>Interface UIManipulationRequestEvent</h3>
 
 				<dl title="[Constructor(DOMString typeArg, optional UIManipulationRequestEventInit dictUIManipulationRequestEventInit)] interface UIManipulationRequestEvent : UIRequestEvent" class="idl">
+					
+					<dt>readonly attribute double? originX</dt><dd></dd>
+					<dt>readonly attribute double? originY</dt><dd></dd>
+					<dt>readonly attribute double deltaX</dt><dd></dd>
+					<dt>readonly attribute double deltaY</dt><dd></dd>
+					<dt>readonly attribute double scaleFactor</dt><dd></dd>
+					<dt>readonly attribute double rotation</dt><dd></dd>
+
 				</dl>
 				
 				<section id="UIManipulationRequestEventInit">
@@ -546,13 +554,13 @@ partial interface UIEvent {
 						<dt>long detail = 0</dt><dd></dd>
 
 						<!-- Attribute from UIRequestEventInit -->
-						<dt>EventTarget? receiver = null</dt><dd></dd>
+						<dt>EventTarget receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIManipulationRequestEventInit -->
 						
-						<dt>optional double originX? = null</dt>
+						<dt>optional double? originX = null</dt>
 						<dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
-						<dt>optional double originY? = null</dt>
+						<dt>optional double? originY = null</dt>
 						<dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
 
 						<dt>optional double deltaX = 0.0</dt>
@@ -715,7 +723,7 @@ partial interface UIEvent {
 						<dt>long detail = 0</dt><dd></dd>
 
 						<!-- Attribute from UIRequestEventInit -->
-						<dt>EventTarget? receiver = null</dt><dd></dd>
+						<dt>EventTarget receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIValueChangeRequestEventInit  -->
 						<dt>unsigned short changeType = 0</dt><dd>Type of change requested, as defined in the interface constants. Defaults to 0 (UNKNOWN).</dd>
