@@ -686,24 +686,24 @@ partial interface UIEvent {
 				<h3>Interface UIScrollRequestEvent</h3>
 				<dl title="[Constructor(DOMString typeArg, optional UIScrollRequestEventInit dictUIScrollRequestEventInit)] interface UIScrollRequestEvent : UIRequestEvent" class="idl">
 					
-					<dt>const unsigned short DELTAS = 0</dt><dd></dd>
+					<dt>const unsigned short DELTAS = 0</dt><dd>Default value for scrollType indicating that scroll amount is provided as deltaX and deltaY in CSS pixels.</dd>
 					
 					<!-- clockwise from top -->
-					<dt>const unsigned short UP          = 1</dt><dd></dd>
-					<dt>const unsigned short RIGHT       = 2</dt><dd></dd>
-					<dt>const unsigned short DOWN        = 3</dt><dd></dd>
-					<dt>const unsigned short LEFT        = 4</dt><dd></dd>
-					<dt>const unsigned short PAGE_UP     = 5</dt><dd></dd>
+					<dt>const unsigned short UP          = 1</dt><dd>Equivalent to the default behavior of the <kbd>UP</kbd> key in most native scroll views.</dd>
+					<dt>const unsigned short RIGHT       = 2</dt><dd>Equivalent to the default behavior of the <kbd>RIGHT</kbd> key in most native scroll views.</dd>
+					<dt>const unsigned short DOWN        = 3</dt><dd>Equivalent to the default behavior of the <kbd>DOWN</kbd> key in most native scroll views.</dd>
+					<dt>const unsigned short LEFT        = 4</dt><dd>Equivalent to the default behavior of the <kbd>LEFT</kbd> key in most native scroll views.</dd>
+					<dt>const unsigned short PAGE_UP     = 5</dt><dd>Equivalent to the default behavior of the <kbd>PAGEUP</kbd> key in most native scroll views.</dd>
 					<dt>const unsigned short PAGE_RIGHT  = 6</dt><dd></dd>
-					<dt>const unsigned short PAGE_DOWN   = 7</dt><dd></dd>
+					<dt>const unsigned short PAGE_DOWN   = 7</dt><dd>Equivalent to the default behavior of the <kbd>PAGEDOWN</kbd> key in most native scroll views.</dd>
 					<dt>const unsigned short PAGE_LEFT   = 8</dt><dd></dd>
-					<dt>const unsigned short LIMIT_UP    = 9</dt><dd></dd>
+					<dt>const unsigned short LIMIT_UP    = 9</dt><dd>Equivalent to the default behavior of the <kbd>HOME</kbd> key in most native scroll views.</dd>
 					<dt>const unsigned short LIMIT_RIGHT = 10</dt><dd></dd>
-					<dt>const unsigned short LIMIT_DOWN  = 11</dt><dd></dd>
+					<dt>const unsigned short LIMIT_DOWN  = 11</dt><dd>Equivalent to the default behavior of the <kbd>END</kbd> key in most native scroll views.</dd>
 					<dt>const unsigned short LIMIT_LEFT  = 12</dt><dd></dd>
 
-					<dt>readonly attribute double? deltaX</dt><dd></dd>
-					<dt>readonly attribute double? deltaY</dt><dd></dd>
+					<dt>readonly attribute double? deltaX</dt><dd> </dd>
+					<dt>readonly attribute double? deltaY</dt><dd> </dd>
 					<dt>readonly attribute unsigned short scrollType</dt><dd></dd>
 
 				</dl>
@@ -738,6 +738,7 @@ partial interface UIEvent {
 						<dt id="scrollrequest">Scroll Request (<code class="event">scrollrequest</code>)</dt>
 						<dd>
 							<p>Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values or one of the other defined scrollType values. Authors SHOULD only use this event and uiaction with custom scroll views.</p>
+							<p class="ednote">Need an example here and clarifying text to indicate UAs "must" either send a non-default scrollType, or non-default deltas, but not both.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -755,14 +756,14 @@ partial interface UIEvent {
 				<dl title="[Constructor(DOMString typeArg, optional UIValueChangeRequestEventInit dictUIValueChangeRequestEventInit)] interface UIValueChangeRequestEvent : UIRequestEvent" class="idl">
 					
 					<dt>const unsigned short UNKNOWN         = 0</dt><dd></dd>
-					<dt>const unsigned short INCREMENT       = 1</dt><dd></dd>
-					<dt>const unsigned short INCREMENT_SMALL = 2</dt><dd></dd>
-					<dt>const unsigned short INCREMENT_LARGE = 3</dt><dd></dd>
-					<dt>const unsigned short INCREMENT_MAX   = 4</dt><dd></dd>
-					<dt>const unsigned short DECREMENT       = 5</dt><dd></dd>
-					<dt>const unsigned short DECREMENT_SMALL = 6</dt><dd></dd>
-					<dt>const unsigned short DECREMENT_LARGE = 7</dt><dd></dd>
-					<dt>const unsigned short DECREMENT_MIN   = 8</dt><dd></dd>
+					<dt>const unsigned short INCREMENT       = 1</dt><dd>Equivalent to the default behavior of the <kbd>UP</kbd> key on most native sliders.</dd>
+					<dt>const unsigned short INCREMENT_SMALL = 2</dt><dd>Equivalent to the behavior of <kbd>ALT+UP</kbd> or <kbd>OPTION+UP</kbd> on some native controls, indicating a finely tuned adjustment (e.g. +0.1% as opposed to +1%).</dd>
+					<dt>const unsigned short INCREMENT_LARGE = 3</dt><dd>Equivalent to the default behavior of <kbd>PAGEUP</kbd> or <kbd>SHIFT+UP</kbd> on many native sliders.</dd>
+					<dt>const unsigned short INCREMENT_MAX   = 4</dt><dd>Equivalent to the default behavior of the <kbd>END</kbd> key on most native sliders.</dd>
+					<dt>const unsigned short DECREMENT       = 5</dt><dd>Equivalent to the default behavior of the <kbd>DOWN</kbd> key on most native sliders.</dd>
+					<dt>const unsigned short DECREMENT_SMALL = 6</dt><dd>Equivalent to the behavior of <kbd>ALT+DOWN</kbd> or <kbd>OPTION+DOWN</kbd> on some native controls, indicating a finely tuned adjustment (e.g. -0.1% as opposed to -1%).</dd>
+					<dt>const unsigned short DECREMENT_LARGE = 7</dt><dd>Equivalent to the default behavior of <kbd>PAGEDOWN</kbd> or <kbd>SHIFT+DOWN</kbd> on many native sliders.</dd>
+					<dt>const unsigned short DECREMENT_MIN   = 8</dt><dd>Equivalent to the default behavior of the <kbd>HOME</kbd> key on most native sliders.</dd>
 
 					<dt>readonly attribute unsigned short changeType</dt><dd></dd>
 
