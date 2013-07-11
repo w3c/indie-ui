@@ -414,15 +414,15 @@ partial interface UIEvent {
 
 					<!-- clockwise from top -->
 					<dt>const unsigned short NAV_UP         = 5</dt><dd></dd>
-					<dt>const unsigned short NAV_UP_LEFT    = 6</dt><dd></dd>
-					<dt>const unsigned short NAV_LEFT       = 7</dt><dd></dd>
-					<dt>const unsigned short NAV_DOWN_LEFT  = 8</dt><dd></dd>
+					<dt>const unsigned short NAV_UP_RIGHT   = 6</dt><dd></dd>
+					<dt>const unsigned short NAV_RIGHT      = 7</dt><dd></dd>
+					<dt>const unsigned short NAV_DOWN_RIGHT = 8</dt><dd></dd>
 					<dt>const unsigned short NAV_DOWN       = 9</dt><dd></dd>
-					<dt>const unsigned short NAV_DOWN_RIGHT = 10</dt><dd></dd>
-					<dt>const unsigned short NAV_RIGHT      = 11</dt><dd></dd>
-					<dt>const unsigned short NAV_UP_RIGHT   = 12</dt><dd></dd>
+					<dt>const unsigned short NAV_DOWN_LEFT  = 10</dt><dd></dd>
+					<dt>const unsigned short NAV_LEFT       = 11</dt><dd></dd>
+					<dt>const unsigned short NAV_UP_LEFT    = 12</dt><dd></dd>
 
-					<dt>readonly attribute unsigned short focusType</dt><dd>Type of linear or directional focus requested.</dd>
+					<dt>readonly attribute unsigned short focusType</dt><dd></dd>
 					
 				</dl>
 				
@@ -579,7 +579,7 @@ partial interface UIEvent {
 
 				<section id="UIManipulationRequestEvents">
 					<h4><!-- Discrete  -->UIManipulationRequestEvent Types</h4>
-					<p class="note">Move, Pan, and Scroll request events are functionally identical, but are specified individually to aid in authoring clarity when using similar concepts like 1) moving an object on a layout canvas, 2) panning a continuous view like a map, and 3) scrolling a scroll view.</p>
+					<p class="note">Move and Pan request events are functionally identical, but are specified individually to aid in authoring clarity when using similar concepts like 1) moving an object on a layout canvas, and 2) panning a continuous view like a map.</p>
 					<p>The <!-- <em>discrete</em>  -->types of UIManipulationRequestEvents that can occur are:</p>
 					<dl>
 						<dt id="moverequest">Move Request (<code class="event">moverequest</code>)</dt>
@@ -612,16 +612,6 @@ partial interface UIEvent {
 								<p>In the case where a User Agent lacks a clear or relevant point of origin, user agents could send null values for <code>originX</code> and <code>originY</code>, or they could send x/y coordinates representing the center point of the event.receiver element.</p>
 								<p>For example, many photo manipulation applications allow users to change orientation, or rotating a photograph 90 degrees, by pressing a key combination like <kbd>Option+LeftArrow</kbd> or <kbd>Option+RightArrow</kbd>. Since this represents a keyboard only event that is unrelated to the mouse pointer location, it would be appropriate to send null values. In many cases, web applications may not require the origin x/y coordinates for rotation events even if non-null values exist.</p>
 							</div>
-						</dd>
-						<dt id="scrollrequest">Scroll Request (<code class="event">scrollrequest</code>)</dt>
-						<dd>
-							<p>Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values.</p>
-							<p class="ednote">Need to specify algorithm for determining x/y deltas for events like pagedown/pageup. Should probably be max of <a href="#def_request_event_receiver">receiver</a> element width/height, or user agent viewport width/height (delta if overlapped inexactly), with potential for a smaller assistive technology viewport (e.g. if screen zoom does not show entirety of previous calculation's width/height).</p>
-							<ul>
-								<li>Bubbles: Yes</li>
-								<li>Cancelable: Yes</li>
-								<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
-							</ul>
 						</dd>
 						<!-- zoom changes (e.g. maps or custom layout views) -->
 						<dt id="zoomrequest">Zoom Request (<code class="event">zoomrequest</code>)</dt>
@@ -691,6 +681,74 @@ partial interface UIEvent {
 			</section>
 			<!-- :::::::::::::::::::: END UIManipulationRequestEvent :::::::::::::::::::: -->
 
+			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
+			<section id="UIScrollRequestEvent" class="normative">
+				<h3>Interface UIScrollRequestEvent</h3>
+				<dl title="[Constructor(DOMString typeArg, optional UIScrollRequestEventInit dictUIScrollRequestEventInit)] interface UIScrollRequestEvent : UIRequestEvent" class="idl">
+					
+					<dt>const unsigned short DELTAS = 0</dt><dd></dd>
+					
+					<!-- clockwise from top -->
+					<dt>const unsigned short UP          = 1</dt><dd></dd>
+					<dt>const unsigned short RIGHT       = 2</dt><dd></dd>
+					<dt>const unsigned short DOWN        = 3</dt><dd></dd>
+					<dt>const unsigned short LEFT        = 4</dt><dd></dd>
+					<dt>const unsigned short PAGE_UP     = 5</dt><dd></dd>
+					<dt>const unsigned short PAGE_RIGHT  = 6</dt><dd></dd>
+					<dt>const unsigned short PAGE_DOWN   = 7</dt><dd></dd>
+					<dt>const unsigned short PAGE_LEFT   = 8</dt><dd></dd>
+					<dt>const unsigned short LIMIT_UP    = 9</dt><dd></dd>
+					<dt>const unsigned short LIMIT_RIGHT = 10</dt><dd></dd>
+					<dt>const unsigned short LIMIT_DOWN  = 11</dt><dd></dd>
+					<dt>const unsigned short LIMIT_LEFT  = 12</dt><dd></dd>
+
+					<dt>readonly attribute double? deltaX</dt><dd></dd>
+					<dt>readonly attribute double? deltaY</dt><dd></dd>
+					<dt>readonly attribute unsigned short scrollType</dt><dd></dd>
+
+				</dl>
+				
+				<section id="UIScrollRequestEventInit">
+					<h4>UIScrollRequestEventInit</h4>
+					<dl title="dictionary UIScrollRequestEventInit" class="idl">
+						
+						<!-- Attributes from EventInit -->
+						<dt>boolean bubbles = true</dt><dd></dd>
+						<dt>boolean cancelable = true</dt><dd></dd>
+
+						<!-- Attributes from UIEventInit -->
+						<dt>AbstractView? view = null</dt><dd></dd>
+						<dt>long detail = 0</dt><dd></dd>
+
+						<!-- Attribute from UIRequestEventInit -->
+						<dt>EventTarget receiver = null</dt><dd></dd>
+
+						<!-- Attributes from UIScrollRequestEventInit  -->
+						<dt>optional double? deltaX = 0.0</dt><dd>The cartesian X coordinate delta, in CSS pixels.</dd>
+						<dt>optional double? deltaY = 0.0</dt><dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
+						<dt>unsigned short scrollType = 0</dt><dd>Type of scroll requested, as defined in the interface constants. Defaults to 0 (DELTAS) which indicates deltas are provided.</dd>
+
+					</dl>
+				</section>
+
+				<section id="UIScrollRequestEvents">
+					<h4>UIScrollRequestEvent Types</h4>
+					<p>The single type of UIScrollRequestEvent that can occur is:</p>
+					<dl>
+						<dt id="scrollrequest">Scroll Request (<code class="event">scrollrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values or one of the other defined scrollType values. Authors SHOULD only use this event and uiaction with custom scroll views.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>scrollType</code>, <code>deltaX</code>, and <code>deltaY</code></li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
+			</section>
+			<!-- :::::::::::::::::::: END UIScrollRequestEvent :::::::::::::::::::: -->
+
 			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
 			<section id="UIValueChangeRequestEvent" class="normative">
 				<h3>Interface UIValueChangeRequestEvent</h3>
@@ -706,7 +764,7 @@ partial interface UIEvent {
 					<dt>const unsigned short DECREMENT_LARGE = 7</dt><dd></dd>
 					<dt>const unsigned short DECREMENT_MIN   = 8</dt><dd></dd>
 
-					<dt>readonly attribute unsigned short changeType</dt><dd>Type of change requested.</dd>
+					<dt>readonly attribute unsigned short changeType</dt><dd></dd>
 
 				</dl>
 				
