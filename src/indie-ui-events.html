@@ -833,7 +833,7 @@ partial interface UIEvent {
 			<h2>Events List (alphabetical)</h2>
 			<div data-transform="listEvents"><!-- dynamically generates event list --></div>
 		</section>
-		<section id="changelist" class="appendix">
+		<section id="changelog" class="appendix">
 			<h2>Normative changes since the last public working draft</h2>
 			<ul>
 				<li>30 Apr 2013: The reflected attribute uiActions/@ui-actions is now uiactions/@uiactions.</li>
@@ -844,6 +844,7 @@ partial interface UIEvent {
 				<li>09 Jul 2013: The uiactions IDL attribute is now a DOMTokenList rather than a DOMString.</li>
 				<li>10 Jul 2013: Added section defining strings for DOMImplementation.hasFeature().</li>
 				<li>10 Jul 2013: Added steps to determine the event receiver.</li>
+				<li>11 Jul 2013: Promoted scrollrequest to its own Event interface UIScrollRequestEvent, so that it could accept either finite x/y deltas, or named semantic scroll events like PageDown, Home, etc.</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
