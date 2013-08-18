@@ -531,20 +531,20 @@ partial interface UIEvent {
 
 						<!-- Attributes from UIManipulationRequestEventInit -->
 						
-						<dt>optional double? originX = null</dt>
+						<dt>double? originX = null</dt>
 						<dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
-						<dt>optional double? originY = null</dt>
+						<dt>double? originY = null</dt>
 						<dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
 
-						<dt>optional double deltaX = 0.0</dt>
+						<dt>double deltaX = 0.0</dt>
 						<dd>The cartesian X coordinate delta, in CSS pixels.</dd>
-						<dt>optional double deltaY = 0.0</dt>
+						<dt>double deltaY = 0.0</dt>
 						<dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
 
-						<dt>optional double scaleFactor = 1.0</dt>
+						<dt>double scaleFactor = 1.0</dt>
 						<dd>Scale factor, used in zoom manipulations, where 1.0 is the original scale factor. For example, a value of 2.0 or 3.0 indicates the element should enlarge to 2 or 3 times its original scale, respectively. A value of 0.5 indicates the element should decrease to one-half its original scale.</dd>
 
-						<dt>optional double rotation = 0.0</dt>
+						<dt>double rotation = 0.0</dt>
 						<dd>Rotation value, in degrees from 0. Positive values indicate a counter-clockwise rotation. Negative values indicate a clockwise rotation.</dd>
 						
 					</dl>
@@ -700,8 +700,8 @@ partial interface UIEvent {
 						<dt>EventTarget receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIScrollRequestEventInit  -->
-						<dt>optional double? deltaX = 0.0</dt><dd>The cartesian X coordinate delta, in CSS pixels.</dd>
-						<dt>optional double? deltaY = 0.0</dt><dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
+						<dt>double? deltaX = 0.0</dt><dd>The cartesian X coordinate delta, in CSS pixels.</dd>
+						<dt>double? deltaY = 0.0</dt><dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
 
 						<dt>ScrollRequestScrollType scrollType = "DELTAS"</dt><dd></dd>
 
