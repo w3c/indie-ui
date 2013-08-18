@@ -312,7 +312,7 @@ partial interface UIEvent {
 				<section id="UIRequestEventInit">
 					<h4>UIRequestEventInit</h4>
 					
-					<dl title="dictionary UIRequestEventInit" class="idl">
+					<dl title="dictionary UIRequestEventInit : UIEventInit" class="idl">
 
 						<!-- Attributes from EventInit -->
 						<dt>boolean bubbles = true</dt><dd></dd>
@@ -412,7 +412,7 @@ partial interface UIEvent {
 
 				<section id="UIFocusRequestEventInit">
 					<h4>UIFocusRequestEventInit</h4>
-					<dl title="dictionary UIFocusRequestEventInit" class="idl">
+					<dl title="dictionary UIFocusRequestEventInit : UIRequestEventInit" class="idl">
 						
 						<!-- Attributes from EventInit -->
 						<dt>boolean bubbles = true</dt><dd></dd>
@@ -516,7 +516,7 @@ partial interface UIEvent {
 				
 				<section id="UIManipulationRequestEventInit">
 					<h4>UIManipulationRequestEventInit</h4>
-					<dl title="dictionary UIManipulationRequestEventInit" class="idl">
+					<dl title="dictionary UIManipulationRequestEventInit : UIRequestEventInit" class="idl">
 						
 						<!-- todo: Incorporate receiver into initializer -->
 						
@@ -669,7 +669,7 @@ partial interface UIEvent {
 				
 				<section id="UIScrollRequestEventInit">
 					<h4>UIScrollRequestEventInit</h4>
-					<dl title="dictionary UIScrollRequestEventInit" class="idl">
+					<dl title="dictionary UIScrollRequestEventInit : UIRequestEventInit" class="idl">
 						
 						<!-- Attributes from EventInit -->
 						<dt>boolean bubbles = true</dt><dd></dd>
@@ -738,7 +738,7 @@ partial interface UIEvent {
 				
 				<section id="UIValueChangeRequestEventInit">
 					<h4>UIValueChangeRequestEventInit</h4>
-					<dl title="dictionary UIValueChangeRequestEventInit" class="idl">
+					<dl title="dictionary UIValueChangeRequestEventInit : UIRequestEventInit" class="idl">
 						
 						<!-- Attributes from EventInit -->
 						<dt>boolean bubbles = true</dt><dd></dd>
@@ -818,6 +818,7 @@ partial interface UIEvent {
 			<h2>Normative changes since the <a href="http://www.w3.org/TR/2013/WD-indie-ui-events-20130730/">last public working draft</a></h2>
 			<ul>
 				<li>18-Aug-2013: Enum constants defined in UIScrollRequestEvent, UIValueChangeRequestEvent, and UIFocusRequestEvent have been changed to readonly strings to match modern recommendations for WebIDL. (<a href="https://www.w3.org/WAI/IndieUI/track/actions/64">ACTION-64</a>)</li>
+				<li>18-Aug-2013: Event initializer dictionaries were missing inheritance declaration in the IDL.</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
