@@ -401,14 +401,30 @@ partial interface UIEvent {
 				<h3>Interface UIFocusRequestEvent</h3>
 
 				<p class="ednote">Will probably need an ARIA 1.1 or 2.0 role for palette.</p>
-				<!-- <p class="ednote">TBD: These NAV_* constants may be better defined as dictionaries. See below.</p> -->
 
 				<dl title="[Constructor(DOMString typeArg, optional UIFocusRequestEventInit dictUIFocusRequestEventInit)] interface UIFocusRequestEvent : UIRequestEvent" class="idl">
-
-					<dt>readonly attribute DOMString focusType</dt><dd></dd>
-					
+					<dt>readonly attribute FocusRequestFocusType focusType</dt><dd></dd>
 				</dl>
 				
+				<section id="FocusRequestFocusType">
+					<h4>Enumeration FocusRequestFocusType</h4>
+					<dl title="enum FocusRequestFocusType" class="idl">
+						
+						<dt>NONE</dt><dd>Not applicable. Event is not a linear or directional focus event.</dd>
+						<dt>NAV_FIRST</dt><dd>linear first</dd>
+						<dt>NAV_PREV</dt><dd>linear previous</dd>
+						<dt>NAV_NEXT</dt><dd>linear next</dd>
+						<dt>NAV_LAST</dt><dd>linear last</dd>
+						<dt>NAV_UP</dt><dd>directional "North"</dd>
+						<dt>NAV_UP_RIGHT</dt><dd>directional "Northeast"</dd>
+						<dt>NAV_RIGHT</dt><dd>directional "East"</dd>
+						<dt>NAV_DOWN_RIGHT</dt><dd>directional "Southeast"</dd>
+						<dt>NAV_DOWN</dt><dd>directional "South"</dd>
+						<dt>NAV_DOWN_LEFT</dt><dd>directional "Southwest"</dd>
+						<dt>NAV_LEFT</dt><dd>directional "West"</dd>
+						<dt>NAV_UP_LEFT</dt><dd>directional "Northwest"</dd>
+					</dl>
+				</section>
 
 				<section id="UIFocusRequestEventInit">
 					<h4>UIFocusRequestEventInit</h4>
@@ -426,25 +442,7 @@ partial interface UIEvent {
 						<dt>EventTarget receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIFocusRequestEventInit -->
-						<dt>DOMString? focusType = null</dt>
-						<dd>
-							<p>Type of linear or directional focus requested, as defined below. Value remains null except when used for directionalfocusrequest or linearfocusrequest.</p>
-							<p class="ednote">Note: We may need to defined these "constant" string values elsewhere in the IDL.</p>
-							<ul>
-								<li><code>"NAV_FIRST"</code>: linear first</li>
-								<li><code>"NAV_PREV"</code>: linear previous</li>
-								<li><code>"NAV_NEXT"</code>: linear next</li>
-								<li><code>"NAV_LAST"</code>: linear last</li>
-								<li><code>"NAV_UP"</code>: directional "North"</li>
-								<li><code>"NAV_UP_RIGHT"</code>: directional "Northeast"</li>
-								<li><code>"NAV_RIGHT"</code>: directional "East"</li>
-								<li><code>"NAV_DOWN_RIGHT"</code>: directional "Southeast"</li>
-								<li><code>"NAV_DOWN"</code>: directional "South"</li>
-								<li><code>"NAV_DOWN_LEFT"</code>: directional "Southwest"</li>
-								<li><code>"NAV_LEFT"</code>: directional "West"</li>
-								<li><code>"NAV_UP_LEFT"</code>: directional "Northwest"</li>
-							</ul>
-						</dd>
+						<dt>FocusRequestFocusType focusType = "NONE"</dt><dd>Type of linear or directional focus requested, as defined in the FocusRequestFocusType enumeration definition. Value remains "NONE" except when used for directionalfocusrequest or linearfocusrequest.</dd>
 
 					</dl>
 				</section>
@@ -663,10 +661,29 @@ partial interface UIEvent {
 					
 					<dt>readonly attribute double? deltaX</dt><dd> </dd>
 					<dt>readonly attribute double? deltaY</dt><dd> </dd>
-					<dt>readonly attribute DOMString scrollType</dt><dd></dd>
+					<dt>readonly attribute ScrollRequestScrollType scrollType</dt><dd></dd>
 
 				</dl>
-				
+
+				<section id="ScrollRequestScrollType">
+					<h4>Enumeration ScrollRequestScrollType</h4>
+					<dl title="enum ScrollRequestScrollType" class="idl">
+						<dt>DELTAS</dt><dd>Default value for scrollType indicating that scroll amount is provided as deltaX and deltaY in CSS pixels.</dd>
+						<dt>UP</dt><dd>Equivalent to the default behavior of the <kbd>UP</kbd> key in most native scroll views.</dd>
+						<dt>RIGHT</dt><dd>Equivalent to the default behavior of the <kbd>RIGHT</kbd> key in most native scroll views.</dd>
+						<dt>DOWN</dt><dd>Equivalent to the default behavior of the <kbd>DOWN</kbd> key in most native scroll views.</dd>
+						<dt>LEFT</dt><dd>Equivalent to the default behavior of the <kbd>LEFT</kbd> key in most native scroll views.</dd>
+						<dt>PAGE_UP</dt><dd>Equivalent to the default behavior of the <kbd>PAGEUP</kbd> key in most native scroll views.</dd>
+						<dt>PAGE_RIGHT</dt><dd></dd>
+						<dt>PAGE_DOWN</dt><dd>Equivalent to the default behavior of the <kbd>PAGEDOWN</kbd> key in most native scroll views.</dd>
+						<dt>PAGE_LEFT</dt><dd></dd>
+						<dt>LIMIT_UP</dt><dd>Equivalent to the default behavior of the <kbd>HOME</kbd> key in most native scroll views.</dd>
+						<dt>LIMIT_RIGHT</dt><dd></dd>
+						<dt>LIMIT_DOWN</dt><dd>Equivalent to the default behavior of the <kbd>END</kbd> key in most native scroll views.</dd>
+						<dt>LIMIT_LEFT</dt><dd></dd>
+					</dl>
+				</section>
+
 				<section id="UIScrollRequestEventInit">
 					<h4>UIScrollRequestEventInit</h4>
 					<dl title="dictionary UIScrollRequestEventInit : UIRequestEventInit" class="idl">
@@ -686,26 +703,7 @@ partial interface UIEvent {
 						<dt>optional double? deltaX = 0.0</dt><dd>The cartesian X coordinate delta, in CSS pixels.</dd>
 						<dt>optional double? deltaY = 0.0</dt><dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
 
-						<dt>DOMString? scrollType = "DELTAS"</dt>
-						<dd>
-							<p>Type of scroll requested, as defined below.</p>
-							<p class="ednote">Note: We may need to defined these "constant" string values elsewhere in the IDL.</p>
-							<ul>
-								<li><code>"DELTAS"</code>: Default value for scrollType indicating that scroll amount is provided as deltaX and deltaY in CSS pixels.</li>
-								<li><code>"UP"</code>: Equivalent to the default behavior of the <kbd>UP</kbd> key in most native scroll views.</li>
-								<li><code>"RIGHT"</code>: Equivalent to the default behavior of the <kbd>RIGHT</kbd> key in most native scroll views.</li>
-								<li><code>"DOWN"</code>: Equivalent to the default behavior of the <kbd>DOWN</kbd> key in most native scroll views.</li>
-								<li><code>"LEFT"</code>: Equivalent to the default behavior of the <kbd>LEFT</kbd> key in most native scroll views.</li>
-								<li><code>"PAGE_UP"</code>: Equivalent to the default behavior of the <kbd>PAGEUP</kbd> key in most native scroll views.</li>
-								<li><code>"PAGE_RIGHT"</code>: </li>
-								<li><code>"PAGE_DOWN"</code>: Equivalent to the default behavior of the <kbd>PAGEDOWN</kbd> key in most native scroll views.</li>
-								<li><code>"PAGE_LEFT"</code>: </li>
-								<li><code>"LIMIT_UP"</code>: Equivalent to the default behavior of the <kbd>HOME</kbd> key in most native scroll views.</li>
-								<li><code>"LIMIT_RIGHT"</code>: </li>
-								<li><code>"LIMIT_DOWN"</code>: Equivalent to the default behavior of the <kbd>END</kbd> key in most native scroll views.</li>
-								<li><code>"LIMIT_LEFT"</code>: </li>
-							</ul>
-						</dd>
+						<dt>ScrollRequestScrollType scrollType = "DELTAS"</dt><dd></dd>
 
 					</dl>
 				</section>
@@ -733,8 +731,24 @@ partial interface UIEvent {
 			<section id="UIValueChangeRequestEvent" class="normative">
 				<h3>Interface UIValueChangeRequestEvent</h3>
 				<dl title="[Constructor(DOMString typeArg, optional UIValueChangeRequestEventInit dictUIValueChangeRequestEventInit)] interface UIValueChangeRequestEvent : UIRequestEvent" class="idl">
-					<dt>readonly attribute DOMString changeType</dt><dd></dd>
+					<dt>readonly attribute ValueChangeRequestChangeType changeType</dt><dd></dd>
 				</dl>
+
+				<section id="ValueChangeRequestChangeType">
+					<h4>Enumeration ValueChangeRequestChangeType</h4>
+					<dl title="enum ValueChangeRequestChangeType" class="idl">
+						
+						<dt>UNKNOWN</dt><dd></dd>
+						<dt>INCREMENT</dt><dd>Equivalent to the default behavior of the <kbd>UP</kbd> key on most native sliders.</dd>
+						<dt>INCREMENT_SMALL</dt><dd>Equivalent to the behavior of <kbd>ALT+UP</kbd> or <kbd>OPTION+UP</kbd> on some native controls, indicating a finely tuned adjustment (e.g. +0.1% as opposed to +1%).</dd>
+						<dt>INCREMENT_LARGE</dt><dd>Equivalent to the default behavior of <kbd>PAGEUP</kbd> or <kbd>SHIFT+UP</kbd> on many native sliders.</dd>
+						<dt>INCREMENT_MAX</dt><dd>Equivalent to the default behavior of the <kbd>END</kbd> key on most native sliders.</dd>
+						<dt>DECREMENT</dt><dd>Equivalent to the default behavior of the <kbd>DOWN</kbd> key on most native sliders.</dd>
+						<dt>DECREMENT_SMALL</dt><dd>Equivalent to the behavior of <kbd>ALT+DOWN</kbd> or <kbd>OPTION+DOWN</kbd> on some native controls, indicating a finely tuned adjustment (e.g. -0.1% as opposed to -1%).</dd>
+						<dt>DECREMENT_LARGE</dt><dd>Equivalent to the default behavior of <kbd>PAGEDOWN</kbd> or <kbd>SHIFT+DOWN</kbd> on many native sliders.</dd>
+						<dt>DECREMENT_MIN</dt><dd>Equivalent to the default behavior of the <kbd>HOME</kbd> key on most native sliders.</dd>
+					</dl>
+				</section>
 				
 				<section id="UIValueChangeRequestEventInit">
 					<h4>UIValueChangeRequestEventInit</h4>
@@ -752,21 +766,7 @@ partial interface UIEvent {
 						<dt>EventTarget receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIValueChangeRequestEventInit  -->
-						<dt>DOMString? changeType = null</dt>
-						<dd>
-							<p>Type of change requested, as defined below.</p>
-							<p class="ednote">Note: We may need to defined these "constant" string values elsewhere in the IDL.</p>
-							<ul>
-								<li><code>"INCREMENT"</code>: Equivalent to the default behavior of the <kbd>UP</kbd> key on most native sliders.</li>
-								<li><code>"INCREMENT_SMALL"</code>: Equivalent to the behavior of <kbd>ALT+UP</kbd> or <kbd>OPTION+UP</kbd> on some native controls, indicating a finely tuned adjustment (e.g. +0.1% as opposed to +1%).</li>
-								<li><code>"INCREMENT_LARGE"</code>: Equivalent to the default behavior of <kbd>PAGEUP</kbd> or <kbd>SHIFT+UP</kbd> on many native sliders.</li>
-								<li><code>"INCREMENT_MAX"</code>: Equivalent to the default behavior of the <kbd>END</kbd> key on most native sliders.</li>
-								<li><code>"DECREMENT"</code>: Equivalent to the default behavior of the <kbd>DOWN</kbd> key on most native sliders.</li>
-								<li><code>"DECREMENT_SMALL"</code>: Equivalent to the behavior of <kbd>ALT+DOWN</kbd> or <kbd>OPTION+DOWN</kbd> on some native controls, indicating a finely tuned adjustment (e.g. -0.1% as opposed to -1%).</li>
-								<li><code>"DECREMENT_LARGE"</code>: Equivalent to the default behavior of <kbd>PAGEDOWN</kbd> or <kbd>SHIFT+DOWN</kbd> on many native sliders.</li>
-								<li><code>"DECREMENT_MIN"</code>: Equivalent to the default behavior of the <kbd>HOME</kbd> key on most native sliders.</li>
-							</ul>
-						</dd>
+						<dt>ValueChangeRequestChangeType changeType = "UNKNOWN"</dt><dd></dd>
 
 					</dl>
 				</section>
@@ -817,7 +817,7 @@ partial interface UIEvent {
 		<section id="changelog" class="appendix">
 			<h2>Normative changes since the <a href="http://www.w3.org/TR/2013/WD-indie-ui-events-20130730/">last public working draft</a></h2>
 			<ul>
-				<li>18-Aug-2013: Enum constants defined in UIScrollRequestEvent, UIValueChangeRequestEvent, and UIFocusRequestEvent have been changed to readonly strings to match modern recommendations for WebIDL. (<a href="https://www.w3.org/WAI/IndieUI/track/actions/64">ACTION-64</a>)</li>
+				<li>18-Aug-2013: Enum constants defined in UIScrollRequestEvent, UIValueChangeRequestEvent, and UIFocusRequestEvent have been changed to WebIDL enumeration identifier strings. (<a href="https://www.w3.org/WAI/IndieUI/track/actions/64">ACTION-64</a>)</li>
 				<li>18-Aug-2013: Event initializer dictionaries were missing inheritance declaration in the IDL.</li>
 			</ul>
 		</section>
