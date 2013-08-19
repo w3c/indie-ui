@@ -802,6 +802,7 @@ partial interface UIEvent {
 			<p>User agents with <em>complete</em> support for IndieUI Events 1.0 MUST return <code>true</code> when the <code>DOMImplementation.hasFeature()</code> method is called with the feature string <code>"org.w3c.indieui.events"</code> and version <code>"1.0"</code>. User agents with partial-but-incomplete support for Indie UI 1.0 MAY return <code>true</code> when queried with the version string <code>"0.0"</code>.</p>
 			<p class="ednote">The previous RFC-2119 "may" is intended to prevent UAs from claiming full support too soon. Should we use 0.0, 0.9, or something else here? UAs should probably not return true for <code>DOMImplementation.hasFeature("org.w3c.indieui.events", "1.0")</code> until after we publish a Last Call draft.</p>
 			<p>User agents implementing specific events MUST return <code>true</code> when the <code>DOMImplementation.hasFeature()</code> method is called with a feature string matching the literal event name appended to the main IndieUI events string, such as <code>"org.w3c.indieui.events.valuechangerequest"</code>.</p>
+			<p class="ednote">Note: WHATWG has <a href="http://dom.spec.whatwg.org/#dom-domimplementation-hasfeature">deprecated hasFeature</a>, so we may need to add some additional interfaces to allow object detection of supported features.</p>
 		</section>
 		<!-- :::::::::::::::::::: END DOMImplementation.hasFeature :::::::::::::::::::: -->
 
