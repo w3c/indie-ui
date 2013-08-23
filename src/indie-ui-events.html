@@ -797,12 +797,23 @@ partial interface UIEvent {
 		<!-- :::::::::::::::::::: END UI Request Event Interfaces :::::::::::::::::::: -->
 
 		<!-- :::::::::::::::::::: DOM Feature Detection :::::::::::::::::::: -->
-		<section id="hasFeature" class="normative">
-			<h2>Strings for DOMImplementation.hasFeature()</h2>
-			<p>User agents with <em>complete</em> support for IndieUI Events 1.0 MUST return <code>true</code> when the <code>DOMImplementation.hasFeature()</code> method is called with the feature string <code>"org.w3c.indieui.events"</code> and version <code>"1.0"</code>. User agents with partial-but-incomplete support for Indie UI 1.0 MAY return <code>true</code> when queried with the version string <code>"0.0"</code>.</p>
-			<p class="ednote">The previous RFC-2119 "may" is intended to prevent UAs from claiming full support too soon. Should we use 0.0, 0.9, or something else here? UAs should probably not return true for <code>DOMImplementation.hasFeature("org.w3c.indieui.events", "1.0")</code> until after we publish a Last Call draft.</p>
-			<p>User agents implementing specific events MUST return <code>true</code> when the <code>DOMImplementation.hasFeature()</code> method is called with a feature string matching the literal event name appended to the main IndieUI events string, such as <code>"org.w3c.indieui.events.valuechangerequest"</code>.</p>
-			<p class="ednote">Note: <a href="http://www.w3.org/TR/domcore/#dom-domimplementation-hasfeature">hasFeature is deprecated</a> in DOM 4, so we may need to add some additional interfaces to allow object detection of supported features, unless we can use the similar functionality of <a href="http://www.w3.org/TR/domcore/#dom-node-issupported">Node.isSupported</a> or <a href="http://www.w3.org/TR/domcore/#dom-node-getfeature">Node.getFeature</a>.</p>
+		<section id="feature-detection" class="informative">
+			<h2>Feature Detection</h2>
+			<p>Authors wishing to conditionally assign request event handlers based on whether the user agent supports these events can use standard objection detection for each event handler or property.</p>
+			<section id="feature-detection-example-dismissrequest"0>
+				<h4>Conditionally Assigning a UI Request Event</h4>
+					<p>The following example conditionally assigns a 'dismissrequest' event based on whether the user agent has support for the feature.</p>
+					<pre class="example">
+						<span class="javascript" data-transform="syntaxJavaScript">if (typeof document.body.ondismissrequest !== 'undefined') {
+						  // okay to use 'dismissrequest'
+						  document.body.addEventListener('dismissrequest', dismissHandler);
+						} else {
+						  // otherwise catch the ESC key or another platform-specific equivalent event
+						  document.body.addEventListener('keyup', keyHandler);
+						}</span>
+					</pre>
+				</section>
+			<p class="ednote">Note: need to double-check that the above code sample is really the best approach.</p>
 		</section>
 		<!-- :::::::::::::::::::: END DOM Feature Detection :::::::::::::::::::: -->
 
@@ -818,8 +829,9 @@ partial interface UIEvent {
 		<section id="changelog" class="appendix">
 			<h2>Normative changes since the <a href="http://www.w3.org/TR/2013/WD-indie-ui-events-20130730/#changelog">last public working draft</a></h2>
 			<ul>
-				<li>18-Aug-2013: Enum constants defined in UIScrollRequestEvent, UIValueChangeRequestEvent, and UIFocusRequestEvent have been changed to WebIDL enumeration identifier strings. (<a href="https://www.w3.org/WAI/IndieUI/track/actions/64">ACTION-64</a>)</li>
-				<li>18-Aug-2013: Event initializer dictionaries were missing inheritance declaration in the IDL.</li>
+				<li>18-Aug-2013: Enum constants formerly defined in <a href="#UIScrollRequestEvent">UIScrollRequestEvent</a>, <a href="#UIValueChangeRequestEvent">UIValueChangeRequestEvent</a>, and <a href="#UIFocusRequestEvent">UIFocusRequestEvent</a> have been changed to WebIDL enumeration identifier strings. (<a href="https://www.w3.org/WAI/IndieUI/track/actions/64">ACTION-64</a>)</li>
+				<li>18-Aug-2013: Event initializer dictionaries (e.g. <a href="#UIRequestEventInit">UIRequestEventInit</a>, <a href="#UIFocusRequestEventInit">UIFocusRequestEventInit</a>) were missing inheritance declarations in the IDL.</li>
+				<li>22-Aug-2013: <a href="#feature-detection">Feature detection section</a> recommends direct object detection now rather than using DOMImplementation.hasFeature().</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
