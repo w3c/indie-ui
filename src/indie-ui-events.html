@@ -413,19 +413,19 @@ partial interface UIEvent {
 					<h4>Enumeration FocusRequestFocusType</h4>
 					<dl title="enum FocusRequestFocusType" class="idl">
 						
-						<dt>NONE</dt><dd>Not applicable. Event is not a linear or directional focus event.</dd>
-						<dt>NAV_FIRST</dt><dd>linear first</dd>
-						<dt>NAV_PREV</dt><dd>linear previous</dd>
-						<dt>NAV_NEXT</dt><dd>linear next</dd>
-						<dt>NAV_LAST</dt><dd>linear last</dd>
-						<dt>NAV_UP</dt><dd>directional "North"</dd>
-						<dt>NAV_UP_RIGHT</dt><dd>directional "Northeast"</dd>
-						<dt>NAV_RIGHT</dt><dd>directional "East"</dd>
-						<dt>NAV_DOWN_RIGHT</dt><dd>directional "Southeast"</dd>
-						<dt>NAV_DOWN</dt><dd>directional "South"</dd>
-						<dt>NAV_DOWN_LEFT</dt><dd>directional "Southwest"</dd>
-						<dt>NAV_LEFT</dt><dd>directional "West"</dd>
-						<dt>NAV_UP_LEFT</dt><dd>directional "Northwest"</dd>
+						<dt>none</dt><dd>Not applicable. Event is not a linear or directional focus event.</dd>
+						<dt>navFirst</dt><dd>linear first</dd>
+						<dt>navPrevious</dt><dd>linear previous</dd>
+						<dt>navNext</dt><dd>linear next</dd>
+						<dt>navLast</dt><dd>linear last</dd>
+						<dt>navUp</dt><dd>directional "North"</dd>
+						<dt>navUpRight</dt><dd>directional "Northeast"</dd>
+						<dt>navRight</dt><dd>directional "East"</dd>
+						<dt>navDownRight</dt><dd>directional "Southeast"</dd>
+						<dt>navDown</dt><dd>directional "South"</dd>
+						<dt>navDownLeft</dt><dd>directional "Southwest"</dd>
+						<dt>navLeft</dt><dd>directional "West"</dd>
+						<dt>navUpLeft</dt><dd>directional "Northwest"</dd>
 					</dl>
 				</section>
 
@@ -671,19 +671,19 @@ partial interface UIEvent {
 				<section id="ScrollRequestScrollType">
 					<h4>Enumeration ScrollRequestScrollType</h4>
 					<dl title="enum ScrollRequestScrollType" class="idl">
-						<dt>DELTAS</dt><dd>Default value for scrollType indicating that scroll amount is provided as deltaX and deltaY in CSS pixels.</dd>
-						<dt>UP</dt><dd>Equivalent to the default behavior of the <kbd>UP</kbd> key in most native scroll views.</dd>
-						<dt>RIGHT</dt><dd>Equivalent to the default behavior of the <kbd>RIGHT</kbd> key in most native scroll views.</dd>
-						<dt>DOWN</dt><dd>Equivalent to the default behavior of the <kbd>DOWN</kbd> key in most native scroll views.</dd>
-						<dt>LEFT</dt><dd>Equivalent to the default behavior of the <kbd>LEFT</kbd> key in most native scroll views.</dd>
-						<dt>PAGE_UP</dt><dd>Equivalent to the default behavior of the <kbd>PAGEUP</kbd> key in most native scroll views.</dd>
-						<dt>PAGE_RIGHT</dt><dd></dd>
-						<dt>PAGE_DOWN</dt><dd>Equivalent to the default behavior of the <kbd>PAGEDOWN</kbd> key in most native scroll views.</dd>
-						<dt>PAGE_LEFT</dt><dd></dd>
-						<dt>LIMIT_UP</dt><dd>Equivalent to the default behavior of the <kbd>HOME</kbd> key in most native scroll views.</dd>
-						<dt>LIMIT_RIGHT</dt><dd></dd>
-						<dt>LIMIT_DOWN</dt><dd>Equivalent to the default behavior of the <kbd>END</kbd> key in most native scroll views.</dd>
-						<dt>LIMIT_LEFT</dt><dd></dd>
+						<dt>deltas</dt><dd>Default value for scrollType indicating that scroll amount is provided as deltaX and deltaY in CSS pixels.</dd>
+						<dt>up</dt><dd>Equivalent to the default behavior of the <kbd>UP</kbd> key in most native scroll views.</dd>
+						<dt>right</dt><dd>Equivalent to the default behavior of the <kbd>RIGHT</kbd> key in most native scroll views.</dd>
+						<dt>down</dt><dd>Equivalent to the default behavior of the <kbd>DOWN</kbd> key in most native scroll views.</dd>
+						<dt>left</dt><dd>Equivalent to the default behavior of the <kbd>LEFT</kbd> key in most native scroll views.</dd>
+						<dt>pageUp</dt><dd>Equivalent to the default behavior of the <kbd>PAGEUP</kbd> key in most native scroll views.</dd>
+						<dt>pageRight</dt><dd></dd>
+						<dt>pageDown</dt><dd>Equivalent to the default behavior of the <kbd>PAGEDOWN</kbd> key in most native scroll views.</dd>
+						<dt>pageLeft</dt><dd></dd>
+						<dt>limitUp</dt><dd>Equivalent to the default behavior of the <kbd>HOME</kbd> key in most native scroll views.</dd>
+						<dt>limitRight</dt><dd></dd>
+						<dt>limitDown</dt><dd>Equivalent to the default behavior of the <kbd>END</kbd> key in most native scroll views.</dd>
+						<dt>limitLeft</dt><dd></dd>
 					</dl>
 				</section>
 
@@ -741,15 +741,15 @@ partial interface UIEvent {
 					<h4>Enumeration ValueChangeRequestChangeType</h4>
 					<dl title="enum ValueChangeRequestChangeType" class="idl">
 						
-						<dt>UNKNOWN</dt><dd></dd>
-						<dt>INCREMENT</dt><dd>Equivalent to the default behavior of the <kbd>UP</kbd> key on most native sliders.</dd>
-						<dt>INCREMENT_SMALL</dt><dd>Equivalent to the behavior of <kbd>ALT+UP</kbd> or <kbd>OPTION+UP</kbd> on some native controls, indicating a finely tuned adjustment (e.g. +0.1% as opposed to +1%).</dd>
-						<dt>INCREMENT_LARGE</dt><dd>Equivalent to the default behavior of <kbd>PAGEUP</kbd> or <kbd>SHIFT+UP</kbd> on many native sliders.</dd>
-						<dt>INCREMENT_MAX</dt><dd>Equivalent to the default behavior of the <kbd>END</kbd> key on most native sliders.</dd>
-						<dt>DECREMENT</dt><dd>Equivalent to the default behavior of the <kbd>DOWN</kbd> key on most native sliders.</dd>
-						<dt>DECREMENT_SMALL</dt><dd>Equivalent to the behavior of <kbd>ALT+DOWN</kbd> or <kbd>OPTION+DOWN</kbd> on some native controls, indicating a finely tuned adjustment (e.g. -0.1% as opposed to -1%).</dd>
-						<dt>DECREMENT_LARGE</dt><dd>Equivalent to the default behavior of <kbd>PAGEDOWN</kbd> or <kbd>SHIFT+DOWN</kbd> on many native sliders.</dd>
-						<dt>DECREMENT_MIN</dt><dd>Equivalent to the default behavior of the <kbd>HOME</kbd> key on most native sliders.</dd>
+						<dt>unknown</dt><dd></dd>
+						<dt>increment</dt><dd>Equivalent to the default behavior of the <kbd>UP</kbd> key on most native sliders.</dd>
+						<dt>incrementSmall</dt><dd>Equivalent to the behavior of <kbd>ALT+UP</kbd> or <kbd>OPTION+UP</kbd> on some native controls, indicating a finely tuned adjustment (e.g. +0.1% as opposed to +1%).</dd>
+						<dt>incrementLarge</dt><dd>Equivalent to the default behavior of <kbd>PAGEUP</kbd> or <kbd>SHIFT+UP</kbd> on many native sliders.</dd>
+						<dt>incrementMaximum</dt><dd>Equivalent to the default behavior of the <kbd>END</kbd> key on most native sliders.</dd>
+						<dt>decrement</dt><dd>Equivalent to the default behavior of the <kbd>DOWN</kbd> key on most native sliders.</dd>
+						<dt>decrementSmall</dt><dd>Equivalent to the behavior of <kbd>ALT+DOWN</kbd> or <kbd>OPTION+DOWN</kbd> on some native controls, indicating a finely tuned adjustment (e.g. -0.1% as opposed to -1%).</dd>
+						<dt>decrementLarge</dt><dd>Equivalent to the default behavior of <kbd>PAGEDOWN</kbd> or <kbd>SHIFT+DOWN</kbd> on many native sliders.</dd>
+						<dt>decrementMinimum</dt><dd>Equivalent to the default behavior of the <kbd>HOME</kbd> key on most native sliders.</dd>
 					</dl>
 				</section>
 				
