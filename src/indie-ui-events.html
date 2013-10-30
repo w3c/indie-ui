@@ -103,15 +103,18 @@
 			<section id="intro-background">
 				<h3>Background</h3>
 				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be further customized based on personal preference. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's preferred interface.</p>
-				<p>For example, web application authors, wishing to intercept a user's intent to 'undo' the last action, need to "listen" for all of the following events:</p>
+				<p>For example, web application authors, wishing to intercept a user's intent to 'zoom in' on a custom image viewer or map view, need to "listen" for all of the following events:</p>
 				<ul>
-					<li><kbd>Control+Z</kbd> on Windows and Linux.</li>
-					<li><kbd>Command+Z</kbd> on Mac OS X.</li>
-					<li><em>Shake</em> events on some mobile devices.</li>
+					<li><kbd>Control+PLUS</kbd> on Windows and Linux.</li>
+					<li><kbd>Command+PLUS</kbd> on Mac OS X.</li>
+					<li>Scroll events initiated by a trackpad or mouse scroll wheel.</li>
+					<li>Multiple touch or pointer events on some devices.</li>
+					<li>Additional gestures or speech commands on implementations that may not currently be detectable.</li>
 				</ul>
-				<p>It would be simpler to listen for a single, normalized request to 'undo' the previous action.</p>
 				<p>In addition to the general user interface challenges, custom interfaces often don't take into account users who access web content via assistive technologies that use alternate forms of input such as screen readers, switch interfaces, or speech-based command and control interfaces.</p>
-				<p>For example, a web page author may script a custom interface to look like a slider (e.g. one styled to look like an <abbr title="Hypertext Markup Language">HTML</abbr> 'range' input) and behave like a slider when using standard mouse input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
+				<p>For example, a web page author may script a custom interface to look like a slider (e.g. one styled to look like an <abbr title="Hypertext Markup Language">HTML</abbr> 'range' input) and behave like a slider when using standard mouse-based input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
+				<p>It would be simpler to listen for a normalized request to "zoom in" on the current view, whereby the web application could determine the new scale factor and update its custom view accordingly. Whether through continuous physical events like a scroll wheel or discrete physical events like the keyboard shortcuts, a user could indicate his intent to "zoom in" and the web application author would only need to listen for a single type of event: <code>zoomrequest</code>.</p>
+				<p>IndieUI Events defines a way for web authors to register for these <em>request events</em> on a leaf node element or on a ancestor element acting as an event delegate. Authors also declaritively define which actions or behaviors a view responds to, and when it is appropriate for browsers to initiate these events.</p>
 			</section>
 			
 			<section id="intro-goals" class="informative">
@@ -119,16 +122,16 @@
 				<p>The primary goals of this specification are declared as the following:</p>
 				<ol>
 					<li>Make it easier for web developers to author consistently usable interfaces that are input-agnostic and independent of a user's particular platform, hardware, locale, and preferences.</li>
-					<li>Enable every type of control in these interfaces to be programmatically determinable and controllable by both mainstream and alternate forms of user input, including assistive technologies.</li>
-					<li>Provide a clear path for web developers to smoothly transition from currently existing physical events to IndieUI events, during the period when implementations of IndieUI are incomplete.</li>
+					<li>Enable every type of control in these interfaces to be programmatically determinable and controllable by both mainstream and alternate forms of user input.</li>
+					<li>Provide a clear path for web developers to smoothly transition from currently existing physical events to IndieUI events, during the period when implementations of IndieUI are incomplete. This will likely be achieved through polyfill implementations in common JavaScript libraries.</li>
 				</ol>
 			</section>
 
 			<section id="intro-scope" class="informative">
 				<h3>Document Scope</h3>
-				<p>Decisions regarding which specific physical user interactions (keyboard combinations, gestures, speech, etc.) trigger IndieUI events are explicitly listed as out-of-scope in the Working Group charter. User interface is—and should be—defined and controlled by each operating system, rather than defined as part of any technical specification.</p>
-				<p>However, throughout this document are listed informative examples of certain keyboard and mouse events that <em>may</em> trigger each IndieUI event. There is no requirement for a user agent to implement these examples, and they are listed here purely to aid in clarifying the reader's conceptual understanding of each event, as well as illustrating certain UI differences between platforms. These informative examples will be limited to keyboard and mouse events, because those physical modalities have been common in software interaction for decades, and their use is familiar to most readers.</p>
-				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a 'dismissrequest' event to close a dialog, but the specification does not require the user agent to use any particular physical event. It is an implementation detail, and left for the developers of each platform or assistive technology to determine whether <kbd>ESC</kbd> or some other interaction is the most appropriate way to trigger the 'dismissrequest' event. As long as there is a way to initiate each event, the user agent will be considered a conforming implementation.</p>
+				<p>Decisions regarding which specific physical user interactions (keyboard combinations, gestures, speech, etc.) trigger IndieUI events are explicitly listed as out-of-scope in the Working Group charter. User interface interaction patterns should be designed and defined by each operating system, rather than defined as part of any technical specification.</p>
+				<p>However, this document lists informative examples of certain keyboard and mouse events that <em>may</em> trigger each IndieUI event. They are listed here purely to aid in clarifying the reader's conceptual understanding of each event, as well as illustrating certain UI differences between platforms. These informative examples are primarily limited to keyboard and mouse events, because those physical modalities have been common in software interaction for decades, and their use is familiar to most readers.</p>
+				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a 'dismissrequest' event to close a dialog on most systems, but the specification does not require the user agent to use any particular physical event. It is an implementation detail, and left for the developers of each platform or assistive technology to determine whether <kbd>ESC</kbd> or some other interaction is the most appropriate way to trigger the 'dismissrequest' event. As long as there is a documented way for end users to initiate each event, the user agent will be considered a conforming implementation.</p>
 			</section>
 
 			<section id="intro-usage">
@@ -213,7 +216,7 @@
 			
 			<section id="intro-backwards-compatibility" class="informative">
 				<h3>Backwards-Compatibility</h3>
-				<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a backwards-compatible, opt-in basis. In other words, the web application author has to first be aware of these events, then explicitly declare each event receiver and register an event listener, or user agents behave as they normally would.</p>
+				<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a backwards-compatible, opt-in basis. In other words, the web application author has to first be aware of these events, then explicitly declare each event receiver and register an event listener, or user agents behave as normal and do not initiate these events.</p>
 				<p>Change request events do not cause any direct manipulation or mutation of the <abbr title="Document Object Model">DOM</abbr>, and do not have any 'default action' in the context of a web view. Instead, the event conveys the user's intent to the web application, and allows the web application to perform the appropriate action on behalf of the user, including making potential changes to the DOM. If a web application is authored to understand the change request event, it can cancel the event, which informs the user agent that the event has been captured and understood. If a web application does not cancel the event, the user agent may attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
 			</section>
 		</section>
@@ -241,8 +244,8 @@
                 <!-- <p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p> -->
 				<pre class="example">
 					<span class="markup" data-transform="syntaxMarkup">
-					&lt;!-- body element is event listener for all events, but event receiver only for 'undo' actions. --&gt;
-					&lt;body <strong>uiactions="undo"</strong>&gt;
+					&lt;!-- body element is event listener for all events, but event receiver only for 'delete' actions. --&gt;
+					&lt;body <strong>uiactions="delete"</strong>&gt;
 					
 					  &lt;!-- Element container for custom 'mapview' is the event receiver for 'pan' and 'zoom' actions. --&gt;
 					  &lt;div id="mapview" <strong>uiactions="pan zoom"</strong>&gt; ... &lt;/div&gt;
@@ -258,13 +261,13 @@
 					  // target (document.activeElement or other point-of-regard), receiver (element with defined actions), and listener (body)
 					  document.body.addEventListener(<strong>'dismissrequest'</strong>, handleDismiss);
 					  document.body.addEventListener(<strong>'panrequest'</strong>, handlePan);
-					  document.body.addEventListener(<strong>'undorequest'</strong>, handleUndo);
+					  document.body.addEventListener(<strong>'deleterequest'</strong>, handleDelete);
 					  document.body.addEventListener(<strong>'zoomrequest'</strong>, handleZoom);
 					</span><span class="markup" data-transform="syntaxMarkup">
 					&lt;/script&gt;
 					</span>
 				</pre>
-				<p class="note">In the previous example, the 'undorequest' event may be fired any time the user's point-of-regard was inside the document<!-- , presumably when the user triggered their platform's physical event to undo an action, such as <kbd>Control+Z</kbd> or <kbd>Command+Z</kbd> -->. However, the 'dismissrequest' would only be fired when the user's point-of-regard was inside the dialog. Likewise, the 'panrequest' and 'zoomrequest' would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.</p>
+				<p class="note">In the previous example, the 'deleterequest' event may be fired any time the user's point-of-regard was inside the document, presumably when the user triggered their platform's physical event to initiate a deletion, such as pressing the <kbd>DELETE</kbd> key. However, the 'dismissrequest' would only be fired when the user's point-of-regard was inside the dialog. Likewise, the 'panrequest' and 'zoomrequest' would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.</p>
 			</section>
 
 		</section>
