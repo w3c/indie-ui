@@ -98,7 +98,14 @@
 		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
 		<section id="intro" class="introductory informative">
 			<h2>Introduction</h2>
-			<p class="placeholder">Placeholder for remaining intro and background.</p>
+			<p>The primary goal of IndieUI User Context is to provide authorized web applications access to information about a user's relevant settings and preferences, to provide the best possible user experience to all users. Some complex web applications can provide a much better experience if given access to information such as a user's preferred color, font, screen, and even *restricted* assistive technology settings such as a preference to render captions, or whether a screen reader is on. General web pages developed using best practices may never need access to restricted user settings, but complex web applications can utilize this information to enhance the performance and user interface.</p>
+			<p>There are obviously major privacy implications to providing any user-specific information to a third-party such as a web site, so a critical part of this specification defines how user agents and web browsers must prevent unauthorized access to user information, including methods to prevent access from parties interested in abusive uses such as user "fingerprinting" by marketers. The IndieUI Working Group members believe we've solved this problem by preventing web sites from being able to detect any difference between a user preference that is _Off_, and a user preference that _On_ but is not shared with the requesting site.</p>
+			<p>The specification below adds several new "Media Features" to detect user settings, using existing syntax defined in the CSS3 Media Queries specification, and provides an access control extension to the MediaQueryList interface defined in the CSSOM View Model. Because this approach relies so heavily on features that overlap with work maintained by the CSS Working Group and Web Applications Working Group, it is likely that portions or all of this specification may move under the purview these other groups. At a minimum, the IndieUI Working Group requests guidance and a collaborative working relationship with CSS and WebApps.</p>
+			<p class="todo">
+				Move these to the refs section and link them here: <br>
+				http://www.w3.org/TR/css3-mediaqueries/<br>
+				http://www.w3.org/TR/cssom-view/#the-mediaquerylist-interface
+			</p>
 		</section>
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 		
