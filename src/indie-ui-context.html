@@ -115,7 +115,8 @@
 			<p>This section defines media features using syntax defined in the CSS3 Media Queries specification, but adds a RestrictionCategory parameter used by the access control extension to the MediaQueryList interface and the @media selector. <span class="todo">Todo: link these the the relevant portions of the access control extension.</span></p>
 			<p>The media features are grouped by restriction categories (e.g. type settings, media settings, etc.) that define related media features, and recommended default restriction levels.</p>
 
-			<section id="ColorSettings" class="restrictioncategory">
+			<!-- :::::::::::::::::::: ColorSettings :::::::::::::::::::: -->
+			<section id="ColorSettings" class="restriction-category">
 				<h3><code>ColorSettings</code></h3>
 
 				<dl class="properties">
@@ -123,13 +124,13 @@
 					<dt>Default restriction</dt>
 					<dd>none</dd>
 					
-					<dt>Allowed from</dt>
+					<dt>Allow from</dt>
 					<dd>domain (e.g. not advertisers and third-party sites)</dd>
 
 				</dl>
 
 				<p class="note">Color settings are not be restricted by default from the requesting page, primarily because a site can figure out most of this information using some creative CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users. The display inversion feature is not currently detectable, but does not represent a major concern for privacy or fingerprinting.</p>
-				<p class="ednote">Note: An equivalent to Microsoft's high-contrast settings may end up in a restricted category if it's determined they open the user to privacy or fingerprinting implications.</p>
+				<p class="ednote">Note: An generalized equivalent to Microsoft's <a href="http://msdn.microsoft.com/en-us/library/windows/apps/hh465764.aspx">-ms-high-contrast</a> proposal will be needed (and possibly implemented as <code>display-contrast-increased: &lt;percent&gt;</code> in combination with the color settings below), but the contrast setting may end up in a restricted category if it's determined to expose the user to privacy or fingerprinting implications.</p>
 
 				<section id="user-color">
 					<h4 class="media-feature"><code>user-color</code></h4>
@@ -228,8 +229,10 @@
 				</section>
 
 			</section>
+			<!-- :::::::::::::::::::: END ColorSettings :::::::::::::::::::: -->
 
-			<section id="TypeSettings" class="restrictioncategory">
+			<!-- :::::::::::::::::::: TypeSettings :::::::::::::::::::: -->
+			<section id="TypeSettings" class="restriction-category">
 				<h3><code>TypeSettings</code></h3>
 
 				<dl class="properties">
@@ -237,7 +240,7 @@
 					<dt>Default restriction</dt>
 					<dd>none</dd>
 					
-					<dt>Allowed from</dt>
+					<dt>Allow from</dt>
 					<dd>domain (e.g. not advertisers and third-party sites)</dd>
 
 				</dl>
@@ -297,7 +300,6 @@
 						<dd data-transform="linkId">TypeSettings</dd>
 						
 					</dl>
-					<p class="note">The working group does not expect this media feature to be used frequently, but line-height, letter-spacing, and word-spacing preferences can be important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p>
 				</section>
 
 				<section id="user-letter-spacing">
@@ -317,7 +319,6 @@
 						<dd data-transform="linkId">TypeSettings</dd>
 						
 					</dl>
-					<p class="note">The working group does not expect this media feature to be used frequently, but line-height, letter-spacing, and word-spacing preferences can be important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p>
 				</section>
 
 				<section id="user-word-spacing">
@@ -337,10 +338,144 @@
 						<dd data-transform="linkId">TypeSettings</dd>
 						
 					</dl>
-					<p class="note">The working group does not expect this media feature to be used frequently, but line-height, letter-spacing, and word-spacing preferences can be important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p>
+					
+				</section>
+
+				<p class="note">In addition to font-size, which is commonly adjusted by mainstream users, line-height, letter-spacing, and word-spacing can be especially important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p>
+
+			</section>
+			<!-- :::::::::::::::::::: END TypeSettings :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: MediaAlternativeSettings :::::::::::::::::::: -->
+			<section id="MediaAlternativeSettings" class="restriction-category">
+				<h3><code>MediaAlternativeSettings</code></h3>
+
+				<dl class="properties">
+					
+					<dt>Default restriction</dt>
+					<dd>prompt</dd>
+					
+					<dt>Allow from</dt>
+					<dd>domain (e.g. not advertisers and third-party sites)</dd>
+
+				</dl>
+
+				<section id="subtitle">
+					<h4 class="media-feature"><code>subtitle</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>on | off</dd>
+						
+						<dt>Applies to</dt>
+						<dd>continuous, visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						
+					</dl>
+					<p>Returns a boolean value indicating whether subtitles or captions are displayed (on) or not displayed (off) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom subtitle view SHOULD display the custom-rendered subtitles based on this setting.</p>
+				</section>
+
+				<p class="todo">Need to determine how to expose list of preferred subtitle languages, which will likely require an object interface rather than a media feature. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect. (Note: previously exposed in IndieUI UC draft as DOMString? subtitleLanguages)</p>
+
+				<section id="subtitle-type">
+					<h4 class="media-feature"><code>subtitle-type</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>sdh | cc | default</dd>
+						
+						<dt>Applies to</dt>
+						<dd>continuous, visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						
+					</dl>
+					<p class="ednote">This key is necessary to indicate a preference for subtitles for the deaf and hard of hearing (SDH) over standard spoken-language-only subtitles, but the preference for closed captions (CC) versus SDH may not be necessary. SDH appears to be generally preferred over CC when available, and a preference for SDH could indicate an implicit preference for CC over standard when CC is available but SDH is not.</p>
+				</section>
+
+				<section id="audio-description">
+					<h4 class="media-feature"><code>audio-description</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>on | off</dd>
+						
+						<dt>Applies to</dt>
+						<dd>continuous, audio media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						
+					</dl>
+					<p>Returns a boolean indicating a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</p>
+				</section>
+
+				<!-- todo: work these in when possible -->
+				<!--
+				<dt class="key" id="transcript-MediaAlternativeSettings">boolean? transcript = null</dt>
+				<dd>Returns a boolean indicating a user's preference to be presented with a transcript if available. Web authors MAY provide concatenated subtitles in static form, if no other transcript exists.
+					<p class="ednote">There is some concern within the working group regarding this preference because no known operating system or user agent currently includes a way for a user to set this preference. The IndieUI working group is actively seeking comment on the perceived necessity or feasibility of this preference. It may be that this is already covered by <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html">WCAG 2.0 SC 1.2.1</a> which indicates sites should offer transcripts when available.</p>
+				</dd>
+				
+				<dt class="key" id="signLanguage-MediaAlternativeSettings">boolean? signLanguage = null</dt>
+				<dd>Returns a boolean indicates a user's preference to be presented with a video of sign language if available.
+				<p class="ednote">Do we need a language order preference for type of sign? ASL, etc? Worried this feature will be at-risk due to lack of available signed alternatives.</p>
+				</dd>
+				-->
+
+			</section>
+			<!-- :::::::::::::::::::: END MediaAlternativeSettings :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: ScreenReaderSettings :::::::::::::::::::: -->
+			<section id="ScreenReaderSettings" class="restriction-category">
+				<h3><code>ScreenReaderSettings</code></h3>
+
+				<dl class="properties">
+					
+					<dt>Default restriction</dt>
+					<dd>prompt with justification</dd>
+					
+					<dt>Allow from</dt>
+					<dd>domain (e.g. not advertisers and third-party sites)</dd>
+
+				</dl>
+
+				<p>Web authors SHOULD NOT request any keys in this category unless the knowledge is essential to the operation of the web application, and web authors MUST provide a justification for the request as defined in @@ section.</p>
+
+				<section id="screenreader">
+					<h4 class="media-feature"><code>screenreader</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>on | off</dd>
+						
+						<dt>Applies to</dt>
+						<dd>continuous, visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">ScreenReaderSettings</dd>
+						
+					</dl>
+					<p>Returns a boolean value indicating whether a screen reader is currently active (on) or not (off).</p>
 				</section>
 
 			</section>
+			<!-- :::::::::::::::::::: END ScreenReaderSettings :::::::::::::::::::: -->
 
 		</section>
 		<!-- :::::::::::::::::::: END Media Features :::::::::::::::::::: -->
