@@ -109,7 +109,242 @@
 		</section>
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 		
-		
+		<!-- :::::::::::::::::::: Media Features :::::::::::::::::::: -->
+		<section id="MediaFeatures">
+			<h2>Media Features</h2>
+			<p>This section defines media features using syntax defined in the CSS3 Media Queries specification, but adds a RestrictionCategory parameter used by the access control extension to the MediaQueryList interface and the @media selector. <span class="todo">Todo: link these the the relevant portions of the access control extension.</span></p>
+			<p>The media features are grouped by restriction categories (e.g. type settings, media settings, etc.) that define related media features, and recommended default restriction levels.</p>
+
+			<section id="ColorSettings" class="restrictioncategory">
+				<h3><code>ColorSettings</code></h3>
+
+				<dl class="properties">
+					
+					<dt>Default restriction</dt>
+					<dd>none</dd>
+					
+					<dt>Allowed from</dt>
+					<dd>domain (e.g. not advertisers and third-party sites)</dd>
+
+				</dl>
+
+				<p class="note">Color settings are not be restricted by default from the requesting page, primarily because a site can figure out most of this information using some creative CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users. The display inversion feature is not currently detectable, but does not represent a major concern for privacy or fingerprinting.</p>
+				<p class="ednote">Note: An equivalent to Microsoft's high-contrast settings may end up in a restricted category if it's determined they open the user to privacy or fingerprinting implications.</p>
+
+				<section id="user-color">
+					<h4 class="media-feature"><code>user-color</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>&lt;color&gt;</dd>
+						
+						<dt>Applies to</dt>
+						<dd>visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">ColorSettings</dd>
+						
+					</dl>
+					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
+				</section>
+
+				<section id="user-background-color">
+					<h4 class="media-feature"><code>user-background-color</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>&lt;color&gt;</dd>
+						
+						<dt>Applies to</dt>
+						<dd>visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">ColorSettings</dd>
+						
+					</dl>
+					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
+				</section>
+
+				<section id="display-colors-inverted">
+					<h4 class="media-feature"><code>display-colors-inverted</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>inverted | off</dd>
+						
+						<dt>Applies to</dt>
+						<dd>visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">ColorSettings</dd>
+						
+					</dl>
+
+					<div class="ex" title="Informative">
+						<p>In this example, the hardware display rendering is inverted, so the web app could <em>double-invert</em> foreground image and video content, which usually looks strange while inverted. This would leave text foreground color, all background colors, and background styles inverted to adhere to user setting.</p>
+						<pre class="example css" data-transform="syntaxCSS">
+							@media (display-colors-inverted: inverted) {
+							    img, video {
+							        filter: invert(100%);
+							    }
+							}
+						</pre> 
+						<figure>
+							<img src="./img/uc-inverted.png" alt="Screen shot of Twitter mobile web site displayed on iOS with screen colors inverted." height="320" width="181">
+							<img src="./img/uc-double-inverted.png" alt="Mock up of previous screen shot with user profile images double-inverted, to achieve a more natural rendering and skin color." height="320" width="181">
+							<figcaption>Everything in the first screen shot, including the user profile image, is inverted so skin tones are unnatural. A web application could choose to double-invert content images, as is done in the second screen shot.</figcaption>
+						</figure>
+					</div>
+
+					<p class="note">Note: Privacy and fingerprinting concerns related to this media feature are minimal, since it is unlikely that most individuals will have this setting enabled all the time. For example, due to personal preference or situational context, some individuals use this as a manual quick toggle to temporarily view text content in a light-on-dark color scheme as opposed to a dark-on-light default.</p>
+
+					<section class="relatedconcepts">
+						<h5>Concepts related to display-colors-inverted</h5>
+						<ul>
+							<li>
+								Apple UIKit API for detecting color inversion on iOS<br>
+								<code class="ex">
+									// From &lt;UIKit/UIAccessibility.h&gt;<br>
+									// Returns whether the system preference for invert colors is enabled.<br>
+									UIKIT_EXTERN BOOL <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKitFunctionReference/Reference/reference.html#//apple_ref/c/func/UIAccessibilityIsInvertColorsEnabled">UIAccessibilityIsInvertColorsEnabled()</a> NS_AVAILABLE_IOS(6_0);<br>
+									UIKIT_EXTERN NSString *const <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIAccessibility_Protocol/Introduction/Introduction.html#//apple_ref/c/data/UIAccessibilityInvertColorsStatusDidChangeNotification">UIAccessibilityInvertColorsStatusDidChangeNotification</a> NS_AVAILABLE_IOS(6_0);<br>
+								</code>
+							</li>
+
+							<li>Mac OS X and other platforms have similar features to invert display colors.</li>
+							
+						</ul>
+					</section>
+
+				</section>
+
+			</section>
+
+			<section id="TypeSettings" class="restrictioncategory">
+				<h3><code>TypeSettings</code></h3>
+
+				<dl class="properties">
+					
+					<dt>Default restriction</dt>
+					<dd>none</dd>
+					
+					<dt>Allowed from</dt>
+					<dd>domain (e.g. not advertisers and third-party sites)</dd>
+
+				</dl>
+
+				<p class="note">Type settings are not restricted by default from the requesting page, because a site can figure out all of this information by creatively using CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users.</p>
+
+				<section id="user-font-size">
+					<h4 class="media-feature"><code>user-font-size</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>&lt;Number&gt; (All values converted to finite CSS pixels)</dd>
+						
+						<dt>Applies to</dt>
+						<dd>visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>Yes</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">TypeSettings</dd>
+						
+					</dl>
+
+					<pre class="example css" data-transform="syntaxCSS">
+						/* Default layout uses 2 columns */
+						main {
+						    columns: 2;
+						}
+
+						/* But if the user's default font size (from browser text zoom setting or... */
+						/* user style sheet...) is larger than 32px, drop the columns. */
+						/* Note: syntax might be more understandable as (user-font-size > 32px) */
+						@media (min-user-font-size: 32px) { 
+						    main {
+						        columns: auto;
+						    }
+						}
+					</pre> 
+
+				</section>
+
+				<section id="user-line-height">
+					<h4 class="media-feature"><code>user-line-height</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>&lt;Number&gt; (All values converted to finite CSS pixels)</dd>
+						
+						<dt>Applies to</dt>
+						<dd>visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>Yes</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">TypeSettings</dd>
+						
+					</dl>
+					<p class="note">The working group does not expect this media feature to be used frequently, but line-height, letter-spacing, and word-spacing preferences can be important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p>
+				</section>
+
+				<section id="user-letter-spacing">
+					<h4 class="media-feature"><code>user-letter-spacing</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>&lt;Number&gt; (All values converted to finite CSS pixels)</dd>
+						
+						<dt>Applies to</dt>
+						<dd>visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>Yes</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">TypeSettings</dd>
+						
+					</dl>
+					<p class="note">The working group does not expect this media feature to be used frequently, but line-height, letter-spacing, and word-spacing preferences can be important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p>
+				</section>
+
+				<section id="user-word-spacing">
+					<h4 class="media-feature"><code>user-word-spacing</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>&lt;Number&gt; (All values converted to finite CSS pixels)</dd>
+						
+						<dt>Applies to</dt>
+						<dd>visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>Yes</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">TypeSettings</dd>
+						
+					</dl>
+					<p class="note">The working group does not expect this media feature to be used frequently, but line-height, letter-spacing, and word-spacing preferences can be important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p>
+				</section>
+
+			</section>
+
+		</section>
+		<!-- :::::::::::::::::::: END Media Features :::::::::::::::::::: -->
+
 		<!--
 		ReSpec example: Use @data-transform to reuse a content transformer, and @data-oninclude to transform external content prior to inclusion.
 		<script type="text/javascript">function xmp(r, content) { return content.replace(/</g,'&lt;').replace(/>/g,'&gt;'); } </script>
@@ -120,6 +355,7 @@
 			<div data-transform="listMediaFeatures"><!-- dynamically generates media feature list --></div>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
+		<p class="ednote">Glossary currently includes all terms in Events Module and User Context Module. Need to remove the ones that are not used in the current document.</p>
 		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>
 		
 	</body>

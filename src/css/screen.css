@@ -8,22 +8,22 @@
 }
 
 .ednote {
-	color:#c00 !important;
-	font-style:italic;
-	position:relative;
+	color: #c00 !important;
+	font-style: italic;
+	position: relative;
 }
 div.ednote, p.ednote{
-	padding-right:150px;
+	padding-right: 150px;
 }
 div.ednote:before, p.ednote:before{
-	content: 'Editorial Note';
-	position:absolute;
-	top:0;
-	right:0;
-	font-size:11px;
-	padding:0.2em 0.5em;
-	margin:0;
-	border:solid 1px #c00;
+	content: 'Editorial Note'; /* todo: localize as attr(data-label) */
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 11px;
+	padding: 0.2em 0.5em;
+	margin: 0;
+	border: solid 1px #c00;
 }
 
 [hidden] {
@@ -31,43 +31,47 @@ div.ednote:before, p.ednote:before{
 }
 
 .todo, .todo:before {
-	color:#c00 !important;
-	border-color:#c00 !important;
+	color: #c00 !important;
+	border-color: #c00 !important;
 }
 .todo[title]:before{
-	content: 'To-do';
-	position:absolute;
-	top:0;
-	right:0;
-	font-size:11px;
-	padding:0.2em 0.5em;
-	margin:0;
+	content: 'To-do'; /* todo: localize as attr(data-label) */
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 11px;
+	padding: 0.2em 0.5em;
+	margin: 0;
 	border:solid 1px #c00;
 	border-width: 0 0 1px 1px;
 }
 
-.example {
+/* .ex class for example containers b/c .example is reserved by ReSpec */
+.ex {
 	margin: 1em 0;
 	padding: 0.7em 1em 0.2em;
 	border: solid 1px #999;
-	position:relative;
+	position: relative;
+	color: inherit;
+	background-color: inherit;
+	display: block;
 }
-.example[title]:before{
-	content:attr(title);
-	position:absolute;
-	top:0;
-	left:0;
-	font-size:11px;
-	padding:0.2em 0.5em;
-	margin:0;
-	border:solid 1px #999;
+.ex[title]:before{
+	content: attr(title);
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 11px;
+	padding: 0.2em 0.5em;
+	margin: 0;
+	border: solid 1px #999;
 	border-width: 0 1px 1px 0;
 }
-.example h4, .note h4{
-	margin:0.5em 0;
+.ex h4, .note h4{
+	margin: 0.5em 0;
 }
-.example ol li, .note ol li{
-	margin:0 0 0.5em;
+.ex ol li, .note ol li{
+	margin: 0 0 0.5em;
 }
 
 html code, html pre, html kbd{ /* more specific selector than the default W3C style sheet */
@@ -111,3 +115,16 @@ pre.example .comment {
 	color: #808080; /* 50% gray */
 }
 
+dl.properties dt {
+	float: left;
+	margin-right: 0.5em;
+	font-weight: normal;
+	font-style: italic;
+}
+dl.properties dt::after {
+	content: ":";
+}
+
+.relatedconcepts li {
+	margin-bottom: 0.6em;
+}

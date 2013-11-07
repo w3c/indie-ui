@@ -37,9 +37,10 @@ function listActions(r, content) {
 
 // utility used by listMediaFeatures
 function allMediaFeatures() {
-	var selector = '', mediaFeatureList = [], nodeList = $$('.mediafeature');
+	var node, selector = '', mediaFeatureList = [], nodeList = $$('.media-feature');
 	for (var i=0; i < nodeList.length; i++) {
-		mediaFeatureList.push(nodeList[i].id);
+		node = nodeList[i].parentElement.id;
+		mediaFeatureList.push(node);
 	}
 	return mediaFeatureList.sort();
 }
@@ -49,16 +50,17 @@ function listMediaFeatures(r, content) {
 	var s = '<ul>', mediaFeatureName = '', linkId = '', mediaFeatureList = allMediaFeatures();
 	for (var i = 0; i < mediaFeatureList.length; i++){
 		mediaFeatureName = mediaFeatureList[i];
-		// FIXME: this regex probably needs updating now that media features can contain hyphens
-		linkId = mediaFeatureName.replace(/([a-z]+)-([a-z]+)/i, 'widl-$2-$1'); // regex: hardcoded ID 'fooBar-bazBop' becomes ReSpec-generated ID 'widl-bazBop-fooBar'
-		mediaFeatureName = mediaFeatureName.substring(0, mediaFeatureName.indexOf('-'));
-		//console.log(mediaFeatureList[i] + ' : ' + mediaFeatureName + ' : ' + linkId);
+		linkId = mediaFeatureName;
 		s += '<li><code><a href="#' + linkId + '">' + mediaFeatureName + '</a></code></li>';
 	}
 	s += '</ul>';
 	return content + s;
 }
 
+/* Turns <el>myId</el> into <el><a href="myId">myId</a></el> */ 
+function linkId(r, content) {
+	return ['<a href="#', r.xmlEscape(content), '">', content, '</a>'].join('');	
+}
 
 /* syntax highlighting for JavaScript examples */
 function syntaxJavaScript(r, content) {
