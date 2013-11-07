@@ -35,24 +35,25 @@ function listActions(r, content) {
 }
 
 
-// utility used by listKeys
-function allKeys() {
-	var selector = '', keyList = [], nodeList = $$('.key');
-	for (var i=0; i<nodeList.length; i++) {
-		keyList.push(nodeList[i].id);
+// utility used by listMediaFeatures
+function allMediaFeatures() {
+	var selector = '', mediaFeatureList = [], nodeList = $$('.mediafeature');
+	for (var i=0; i < nodeList.length; i++) {
+		mediaFeatureList.push(nodeList[i].id);
 	}
-	return keyList.sort();
+	return mediaFeatureList.sort();
 }
 
-/* listKeys: alphabetical list generated from user context keys. */
-function listKeys(r, content) {
-	var s = '<ul>', keyName = '', linkId = '', keyList = allKeys();
-	for (var i=0; i<keyList.length; i++){
-		keyName = keyList[i];
-		linkId = keyName.replace(/([a-z]+)-([a-z]+)/i, 'widl-$2-$1'); // regex: hardcoded ID 'fooBar-bazBop' becomes ReSpec-generated ID 'widl-bazBop-fooBar'
-		keyName = keyName.substring(0, keyName.indexOf('-'));
-		//console.log(keyList[i] + ' : ' + keyName + ' : ' + linkId);
-		s += '<li><code><a href="#' + linkId + '">' + keyName + '</a></code></li>';
+/* listMediaFeatures: alphabetical list generated from user context media features. */
+function listMediaFeatures(r, content) {
+	var s = '<ul>', mediaFeatureName = '', linkId = '', mediaFeatureList = allMediaFeatures();
+	for (var i = 0; i < mediaFeatureList.length; i++){
+		mediaFeatureName = mediaFeatureList[i];
+		// FIXME: this regex probably needs updating now that media features can contain hyphens
+		linkId = mediaFeatureName.replace(/([a-z]+)-([a-z]+)/i, 'widl-$2-$1'); // regex: hardcoded ID 'fooBar-bazBop' becomes ReSpec-generated ID 'widl-bazBop-fooBar'
+		mediaFeatureName = mediaFeatureName.substring(0, mediaFeatureName.indexOf('-'));
+		//console.log(mediaFeatureList[i] + ' : ' + mediaFeatureName + ' : ' + linkId);
+		s += '<li><code><a href="#' + linkId + '">' + mediaFeatureName + '</a></code></li>';
 	}
 	s += '</ul>';
 	return content + s;

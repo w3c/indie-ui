@@ -26,6 +26,10 @@ div.ednote:before, p.ednote:before{
 	border:solid 1px #c00;
 }
 
+[hidden] {
+	display: none;
+}
+
 .todo, .todo:before {
 	color:#c00 !important;
 	border-color:#c00 !important;
