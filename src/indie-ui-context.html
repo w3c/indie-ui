@@ -109,6 +109,15 @@
 		</section>
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 		
+		<!-- :::::::::::::::::::: MediaQueryList :::::::::::::::::::: -->
+		<section>
+			<h2>The Privacy Model</h2>
+			<p class="todo">Todo: Spec partial interface for MediaQueryList and matchMedia.</p>
+			<p class="todo">Todo: Explain how the privacy model works: when user prompted, matchMedia returns false immediately, and only provides the updated match ansynchronously through matchMedia().addEventListener or subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." @media never prompts unless bother @media block and an included selector matches.</p>
+			<p class="todo">Todo: Add justiffication interface on a per-cateory setting (possibly meta tag).</p> 
+		</section>
+		<!-- :::::::::::::::::::: END MediaQueryList :::::::::::::::::::: -->
+
 		<!-- :::::::::::::::::::: Media Features :::::::::::::::::::: -->
 		<section id="MediaFeatures">
 			<h2>Media Features</h2>
@@ -380,7 +389,7 @@
 					<p>Returns a boolean value indicating whether subtitles or captions are displayed (on) or not displayed (off) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom subtitle view SHOULD display the custom-rendered subtitles based on this setting.</p>
 				</section>
 
-				<p class="todo">Need to determine how to expose list of preferred subtitle languages, which will likely require an object interface rather than a media feature. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect. (Note: previously exposed in IndieUI UC draft as DOMString? subtitleLanguages)</p>
+				<p class="todo">Todo: Need to determine how to expose list of preferred subtitle languages, which will likely require an object interface rather than a media feature. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect. (Note: previously exposed in IndieUI UC draft as DOMString? subtitleLanguages)</p>
 
 				<section id="subtitle-type">
 					<h4 class="media-feature"><code>subtitle-type</code></h4>
