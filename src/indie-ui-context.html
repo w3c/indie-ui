@@ -134,14 +134,14 @@
 					<h4>Example restricted call to matchMedia</h4>
 					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.matchMedia to enable the audio description track at load time.</p>
 					<pre class="example javascript" data-transform="syntaxJavaScript">
-						// Author defines a media query list to determine if the user needs a descriptive audio track.
+						// Author defines a media query list to determine if the user wants descriptive audio.
 						var audioDescriptionQuery = window.matchMedia('(audio-description: on)');
 
 						// and defines and function to handle changes of this setting.
 						function handleAudioDescriptionChanged(mql) {
 						    if (mql.matches) {
 						        // User has shared that audio descriptions should be presented.
-						        // Enable the "described audio" track in the video. 
+						        // Enable the "descriptive audio" track in the video. 
 						    } else {
 						        // Set to default. Audio descriptions are off, 
 						        // or the user has chosen to not share this setting.
@@ -149,22 +149,24 @@
 						}
 
 						/*
-						  When the author first attempts to check the 'matches' property of the query, the user
-						  agent will determine that this is a restricted setting, and immediately return false,
-						  so the first call to this function on the initial page load will never result in
-						  audio descriptions being enabled.
-						   
-						  Note: The immediate return is critical to prevent abuse via timing attacks.
+						When the author first attempts to check the 'matches' property of the query, the user
+						agent will determine that this is a restricted setting, and immediately return false,
+						so the first call to this function on the initial page load will never result in
+						audio descriptions being enabled.
+
+						Note: The immediate return is critical to prevent blocking threads, as well as
+						eliminating potential abuse by fingerprinting scripts attempting to determine 
+						uniqueness using execution time of the synchronous call to mql.matches.
 						*/
 						
 						handleAudioDescriptionChanged(audioDescriptionQuery);
 
 						/*
-						  However, at the same time, the user will be prompted to decide whether or not to share 
-						  their media alternative settings with the requesting web site. 
-						  
-						  The web author can register for a change listener on this media query list, and the event
-						  handler will be called asynchronously when the user agrees to share their media settings.
+						However, at the same time, the user will be prompted to decide whether or not to share 
+						their media alternative settings with the requesting web site. 
+
+						The web author can register for a change listener on this media query list, and the event
+						handler will be called asynchronously when the user agrees to share their media settings.
 						*/
 
 						audioDescriptionQuery.addListener(handleAudioDescriptionChanged);
@@ -192,15 +194,17 @@
 					<dt>none</dt><dd>No restriction. Default for most media queries.</dd>
 					<dt>prompt</dt><dd>Prompt the user. Justification string is optional.</dd>
 					<dt>justification</dt><dd>Prompt the user with a required justification string provided by the requesting web page.</dd>
+					<dt>disallow</dt><dd>Not the default for any category, but a user agent may allow the used to choose to always disallow certain settings across-the-board or on a per-site basis.</dd>
 				</dl>
 			</section>
 
 			<section class="informative">
 				<h4>Example MediaQueryRestrictionType</h4>
 				<pre class="example javascript" data-transform="syntaxJavaScript">
-					var mql = window.matchMedia('(subtitles: on) and (screenreader: on)');
+					// Query matches if both audio descriptions and screen reader are enabled.
+					var mql = window.matchMedia('(audio-description: on) and (screenreader: on)');
 				</pre>
-				<p>By default, <code>mql.restriction</code> will return <code>"justification"</code> because the matched categories are mediaAlternativeSettings (which has a default restriction of "prompt") and screenReaderSettings (which has the default restriction of "justification"). Since justification is more strict of the two restriction types, it is used.</p>
+				<p>In the previous example, <code>mql.restriction</code> will return <code>"justification"</code> because the matched categories are mediaAlternativeSettings (which has a default restriction of "prompt") and screenReaderSettings (which has the default restriction of "justification"). Since justification is more strict of the two restriction types, it is used.</p>
 				<p>However, if a user were to change their browser settings and allow all sites to access any media feature in the screenReaderSettings category without restriction, <code>mql.restriction</code> will return <code>"prompt"</code> because the matched categories are mediaAlternativeSettings (which has a default restriction of "prompt") and screenReaderSettings (which now has the user-overridden restriction of "none"). Since "prompt" is more strict of the two restriction types, it is used.</p>
 			</section>
 
@@ -303,7 +307,7 @@
 
 					<p class="note">Note: Privacy and fingerprinting concerns related to this media feature are minimal, since it is unlikely that most individuals will have this setting enabled all the time. For example, due to personal preference or situational context, some individuals use this as a manual quick toggle to temporarily view text content in a light-on-dark color scheme as opposed to a dark-on-light default.</p>
 
-					<section class="relatedconcepts">
+					<div class="relatedconcepts">
 						<h5>Concepts related to display-colors-inverted</h5>
 						<ul>
 							<li>
@@ -319,7 +323,7 @@
 							<li>Mac OS X and other platforms have similar features to invert display colors. <span class="todo">Todo: list them here.</span></li>
 							
 						</ul>
-					</section>
+					</div>
 
 				</section>
 
@@ -644,6 +648,10 @@
 
 			</section>
 			<!-- :::::::::::::::::::: END screenReaderSettings :::::::::::::::::::: -->
+
+			<p class="todo">Todo: Probably need additional categories for screen magnifier (on/off, scale factor), switch control (on/off), and the more general "api-interoperable" key which could be used automation scripts in addition to real assistive technology.</p>
+			<p class="todo">Todo: Need a mockup of an example user prompt with displayed justification string.</p>
+
 
 		</section>
 		<!-- :::::::::::::::::::: END Media Features :::::::::::::::::::: -->
