@@ -111,10 +111,53 @@
 		
 		<!-- :::::::::::::::::::: MediaQueryList :::::::::::::::::::: -->
 		<section>
-			<h2>The Privacy Model</h2>
-			<p class="todo">Todo: Spec partial interface for MediaQueryList and matchMedia.</p>
+			<h2>Privacy Model</h2>
 			<p class="todo">Todo: Explain how the privacy model works: when user prompted, matchMedia returns false immediately, and only provides the updated match ansynchronously through matchMedia().addEventListener or subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." @media never prompts unless bother @media block and an included selector matches.</p>
-			<p class="todo">Todo: Add justiffication interface on a per-cateory setting (possibly meta tag).</p> 
+			<p class="todo">Todo: Add justification interface on a per-category setting (possibly meta tag or a partial interface on document).</p> 
+
+
+			<section id="MediaQueryListExtensions">
+				<h4>Extensions to MediaQueryList</h4>
+				<dl title="partial interface MediaQueryList" class="idl">
+					
+					<dt>readonly attribute MediaQueryRestrictionType restriction</dt>
+					<dd>Returns the strictest MediaQueryRestrictionType defined in the user's settings for each MediaQueryRestrictionCategory matched by the current MediaQueryList. Defaults to <code>none</code></dd>
+
+					<dt>readonly attribute MediaQueryRestrictionCategory category</dt>
+					<dd><p class="ednote">Probably need to make this an array with multiple values, since you could have a media query that matched multiple restriction categories. e.g. <code>(subtitles: on) and (screenreader: on)</code> would match both <code>MediaAlternativeSettings</code> and <code>ScreenReaderSettings</code>.</p></dd>
+
+				</dl>
+				<section>
+					<h4>Example MediaQueryRestrictionType</h4>
+					<pre class="example javascript" data-transform="syntaxJavaScript">
+						var mql = window.matchMedia('(subtitles: on) and (screenreader: on)');
+					</pre>
+					<p>By default, <code>mql.restriction</code> will return <code>"justification"</code> because the matched categories are MediaAlternativeSettings (which has a default restriction of "prompt") and ScreenReaderSettings (which has the default restriction of "justification"). Since justification is more strict of the two restriction types, it is used.</p>
+					<p>However, if a user were to change their browser settings and allow all sites to access any media feature in the ScreenReaderSettings category without restriction, <code>mql.restriction</code> will return <code>"prompt"</code> because the matched categories are MediaAlternativeSettings (which has a default restriction of "prompt") and ScreenReaderSettings (which now has the user-overridden restriction of "none"). Since "prompt" is more strict of the two restriction types, it is used.</p>
+				</section>
+
+			</section>
+
+			<section id="MediaQueryRestrictionType">
+				<h4>Enumeration MediaQueryRestrictionType</h4>
+				<dl title="enum MediaQueryRestrictionType" class="idl">
+					<dt>none</dt><dd>No restriction. Default for most media queries.</dd>
+					<dt>prompt</dt><dd>Prompt the user. Justification string is optional.</dd>
+					<dt>justification</dt><dd>Prompt the user with a required justification string provided by the requesting web page.</dd>
+				</dl>
+			</section>
+
+			<section id="MediaQueryRestrictionCategory">
+				<h4>Enumeration MediaQueryRestrictionCategory</h4>
+				<dl title="enum MediaQueryRestrictionCategory" class="idl">
+					<dt>none</dt><dd>No category defined.</dd>
+					<dt>ColorSettings</dt><dd>User settings related to color preferences. No default restriction.</dd>
+					<dt>TypeSettings</dt><dd>User settings related to type and font preferences. No default restriction.</dd>
+					<dt>MediaAlternativeSettings</dt><dd>User settings related to media alternatives such as captions/subtitles, audio description, etc. Default restriction is to <code>prompt</code> the user for permission.</dd>
+					<dt>ScreenReaderSettings</dt><dd>User settings related to screen readers. Default restriction is to prompt the user with a <code>justification</code> provided by the requesting web site.</dd>
+				</dl>
+			</section>
+
 		</section>
 		<!-- :::::::::::::::::::: END MediaQueryList :::::::::::::::::::: -->
 
@@ -131,7 +174,7 @@
 				<dl class="properties">
 					
 					<dt>Default restriction</dt>
-					<dd>none</dd>
+					<dd data-transform="linkId">none</dd>
 					
 					<dt>Allow from</dt>
 					<dd>domain (e.g. not advertisers and third-party sites)</dd>
@@ -146,7 +189,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;color&gt;</dd>
+						<dd>&lt;color&gt; | [<code>undefined</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -166,7 +209,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;color&gt;</dd>
+						<dd>&lt;color&gt; | [<code>undefined</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -186,7 +229,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>inverted | off</dd>
+						<dd><code>inverted</code> | [<code>off</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -230,7 +273,7 @@
 								</code>
 							</li>
 
-							<li>Mac OS X and other platforms have similar features to invert display colors.</li>
+							<li>Mac OS X and other platforms have similar features to invert display colors. <span class="todo">Todo: list them here.</span></li>
 							
 						</ul>
 					</section>
@@ -247,7 +290,7 @@
 				<dl class="properties">
 					
 					<dt>Default restriction</dt>
-					<dd>none</dd>
+					<dd data-transform="linkId">none</dd>
 					
 					<dt>Allow from</dt>
 					<dd>domain (e.g. not advertisers and third-party sites)</dd>
@@ -261,7 +304,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;Number&gt; (All values converted to finite CSS pixels)</dd>
+						<dd>&lt;number&gt; | [<code>undefined</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -297,7 +340,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;Number&gt; (All values converted to finite CSS pixels)</dd>
+						<dd>&lt;number&gt; | [<code>undefined</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -316,7 +359,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;Number&gt; (All values converted to finite CSS pixels)</dd>
+						<dd>&lt;number&gt; | [<code>undefined</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -335,7 +378,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;Number&gt; (All values converted to finite CSS pixels)</dd>
+						<dd>&lt;number&gt; | [<code>undefined</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -362,7 +405,7 @@
 				<dl class="properties">
 					
 					<dt>Default restriction</dt>
-					<dd>prompt</dd>
+					<dd data-transform="linkId">prompt</dd>
 					
 					<dt>Allow from</dt>
 					<dd>domain (e.g. not advertisers and third-party sites)</dd>
@@ -374,7 +417,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>on | off</dd>
+						<dd><code>on</code> | [<code>off</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>continuous, visual media</dd>
@@ -386,7 +429,7 @@
 						<dd data-transform="linkId">MediaAlternativeSettings</dd>
 						
 					</dl>
-					<p>Returns a boolean value indicating whether subtitles or captions are displayed (on) or not displayed (off) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom subtitle view SHOULD display the custom-rendered subtitles based on this setting.</p>
+					<p>Matches depending on whether subtitles/captions are displayed (on) or not displayed (off) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom subtitle view SHOULD display the custom-rendered subtitles based on this setting.</p>
 				</section>
 
 				<p class="todo">Todo: Need to determine how to expose list of preferred subtitle languages, which will likely require an object interface rather than a media feature. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect. (Note: previously exposed in IndieUI UC draft as DOMString? subtitleLanguages)</p>
@@ -396,7 +439,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>sdh | cc | default</dd>
+						<dd><code>sdh</code> | <code>cc</code> | [<code>default</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>continuous, visual media</dd>
@@ -411,12 +454,52 @@
 					<p class="ednote">This key is necessary to indicate a preference for subtitles for the deaf and hard of hearing (SDH) over standard spoken-language-only subtitles, but the preference for closed captions (CC) versus SDH may not be necessary. SDH appears to be generally preferred over CC when available, and a preference for SDH could indicate an implicit preference for CC over standard when CC is available but SDH is not.</p>
 				</section>
 
+				<section id="user-subtitle-color">
+					<h4 class="media-feature"><code>user-subtitle-color</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>&lt;color&gt; | [<code>undefined</code>]</dd>
+						
+						<dt>Applies to</dt>
+						<dd>continuous, visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						
+					</dl>
+					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
+				</section>
+
+				<section id="user-subtitle-background-color">
+					<h4 class="media-feature"><code>user-subtitle-background-color</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>&lt;color&gt; | [<code>undefined</code>]</dd>
+						
+						<dt>Applies to</dt>
+						<dd>continuous, visual media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						
+					</dl>
+					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
+				</section>
+
 				<section id="audio-description">
 					<h4 class="media-feature"><code>audio-description</code></h4>
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>on | off</dd>
+						<dd><code>on</code> | [<code>off</code>]</dd>
 						
 						<dt>Applies to</dt>
 						<dd>continuous, audio media</dd>
@@ -428,18 +511,18 @@
 						<dd data-transform="linkId">MediaAlternativeSettings</dd>
 						
 					</dl>
-					<p>Returns a boolean indicating a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</p>
+					<p>Matches a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</p>
 				</section>
 
 				<!-- todo: work these in when possible -->
 				<!--
 				<dt class="key" id="transcript-MediaAlternativeSettings">boolean? transcript = null</dt>
-				<dd>Returns a boolean indicating a user's preference to be presented with a transcript if available. Web authors MAY provide concatenated subtitles in static form, if no other transcript exists.
+				<dd>Matches a user's preference to be presented with a transcript if available. Web authors MAY provide concatenated subtitles in static form, if no other transcript exists.
 					<p class="ednote">There is some concern within the working group regarding this preference because no known operating system or user agent currently includes a way for a user to set this preference. The IndieUI working group is actively seeking comment on the perceived necessity or feasibility of this preference. It may be that this is already covered by <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html">WCAG 2.0 SC 1.2.1</a> which indicates sites should offer transcripts when available.</p>
 				</dd>
 				
 				<dt class="key" id="signLanguage-MediaAlternativeSettings">boolean? signLanguage = null</dt>
-				<dd>Returns a boolean indicates a user's preference to be presented with a video of sign language if available.
+				<dd>Matches a user's preference to be presented with a video of sign language if available.
 				<p class="ednote">Do we need a language order preference for type of sign? ASL, etc? Worried this feature will be at-risk due to lack of available signed alternatives.</p>
 				</dd>
 				-->
@@ -454,7 +537,7 @@
 				<dl class="properties">
 					
 					<dt>Default restriction</dt>
-					<dd>prompt with justification</dd>
+					<dd data-transform="linkId">justification</dd>
 					
 					<dt>Allow from</dt>
 					<dd>domain (e.g. not advertisers and third-party sites)</dd>
@@ -468,10 +551,10 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>on | off</dd>
+						<dd><code>on</code> | [<code>off</code>]</dd>
 						
 						<dt>Applies to</dt>
-						<dd>continuous, visual media</dd>
+						<dd>interactive media</dd>
 						
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
@@ -480,8 +563,50 @@
 						<dd data-transform="linkId">ScreenReaderSettings</dd>
 						
 					</dl>
-					<p>Returns a boolean value indicating whether a screen reader is currently active (on) or not (off).</p>
+					<p>Matches whether a screen reader is currently active (on) or not (off).</p>
 				</section>
+
+				<!-- need to consider these a bit more
+				<section id="screenreader-typing-echo">
+					<h4 class="media-feature"><code>screenreader-typing-echo</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd><code>words</code> | <code>characters</code> | <code>both</code> | [<code>undefined</code>]</dd>
+						
+						<dt>Applies to</dt>
+						<dd>interactive media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>No</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">ScreenReaderSettings</dd>
+						
+					</dl>
+					<p>Returns a value indicating whether typed speech from a screen reader echos words, characters, or both.</p>
+				</section>
+
+				<section id="screenreader-words-per-minute">
+					<h4 class="media-feature"><code>screenreader-words-per-minute</code></h4>
+					<dl class="properties">
+						
+						<dt>Value</dt>
+						<dd>&lt;number&gt; | [<code>undefined</code>]</dd>
+						
+						<dt>Applies to</dt>
+						<dd>interactive media</dd>
+						
+						<dt>Accepts min/max prefixes</dt>
+						<dd>Yes</dd>
+						
+						<dt>Restriction Category</dt>
+						<dd data-transform="linkId">ScreenReaderSettings</dd>
+						
+					</dl>
+					<p>Returns a number indicating the approximate words-per-minute rate of a screen reader user's text-to-speech settings.</p>
+				</section>
+				-->
 
 			</section>
 			<!-- :::::::::::::::::::: END ScreenReaderSettings :::::::::::::::::::: -->
