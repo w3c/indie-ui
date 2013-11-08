@@ -32,6 +32,7 @@ div.ednote::before, p.ednote::before{
 
 
 p.todo, div.todo {
+	position: relative;
 	border-style: solid;
 	border-width: 1px;
 	padding: 0.25em 0.5em 0.3em;
@@ -40,7 +41,7 @@ p.todo, div.todo {
 	color: #c00 !important;
 	border-color: #c00 !important;
 }
-.todo::before{
+p.todo::before, div.todo::before{
 	content: 'To-do'; /* todo: localize as attr(data-label) */
 	position: absolute;
 	top: 0;
