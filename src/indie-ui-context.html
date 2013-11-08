@@ -112,7 +112,7 @@
 		<!-- :::::::::::::::::::: MediaQueryList :::::::::::::::::::: -->
 		<section>
 			<h2>Privacy Model</h2>
-			<p class="todo">Todo: Explain how the privacy model works: when user prompted, matchMedia returns false immediately, and only provides the updated match ansynchronously through matchMedia().addEventListener or subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." @media never prompts unless bother @media block and an included selector matches.</p>
+			<p class="todo">Todo: Explain how the privacy model works: when user prompted, matchMedia returns false immediately, and only provides the updated match ansynchronously through matchMedia().addEventListener or subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." A restricted @media block never prompts unless both the @media block and an included selector matches.</p>
 			<p class="todo">Todo: Add justification interface on a per-category setting (possibly meta tag or a partial interface on document). Justification string may be defined by an new JavaScript interface, or perhaps by a meta tag in the document head, such as:<br><code class="html" data-transform="syntaxMarkup">&lt;meta name="mediaAlternativeSettings" value="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
 
 
