@@ -174,6 +174,7 @@
 						// Note: Subsequent page loads should not cause the user to be prompted again.
 
 					</pre>
+				</section>
 
 			</section>
 
@@ -228,8 +229,8 @@
 					<dd data-transform="linkMediaQueryRestrictionType">none</dd>
 				</dl>
 
-				<p class="note">Color settings are not be restricted by default from the requesting page, primarily because a site can figure out most of this information using some creative CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users. The display inversion feature is not currently detectable, but does not represent a major concern for privacy or fingerprinting.</p>
-				<p class="ednote">Note: An generalized equivalent to Microsoft's <a href="http://msdn.microsoft.com/en-us/library/windows/apps/hh465764.aspx">-ms-high-contrast</a> proposal will be needed (and possibly implemented as <code>display-contrast-increased: &lt;percent&gt;</code> in combination with the color settings below), but the contrast setting may end up in a restricted category if it's determined to expose the user to privacy or fingerprinting implications.</p>
+				<p class="note">Color settings are not be restricted by default from the requesting page, primarily because a site can figure out most of this information using some creative CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users. The display inversion feature is not currently detectable, but does not represent a major concern for privacy or fingerprinting since it is unlikely that most individuals will have this setting enabled all the time.</p>
+				<p class="ednote">Note: A generalized equivalent to Microsoft's <a href="http://msdn.microsoft.com/en-us/library/windows/apps/hh465764.aspx">-ms-high-contrast</a> proposal will be needed (and possibly implemented as <code>display-contrast-increased: &lt;percent&gt;</code> in combination with the color settings below), but the contrast setting may end up in a restricted category if it's determined to expose the user to privacy or fingerprinting implications.</p>
 
 				<section id="user-color">
 					<h4 class="media-feature"><code>user-color</code></h4>
@@ -665,8 +666,11 @@
 			<h2>Media Features List (alphabetical)</h2>
 			<div data-transform="listMediaFeatures"><!-- dynamically generates media feature list --></div>
 		</section>
-		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
-		<p class="ednote">Glossary currently includes all terms in Events Module and User Context Module. Need to remove the ones that are not used in the current document.</p>
+		
+		<!-- Todo: Glossary currently includes all terms in Events Module and User Context Module. -->
+		<!-- Need to remove the ones that are not used in the current document. -->
+		<section id="terms" class="appendix" data-DISABLE-include="./include/terms.html"></section>
+
 		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>
 		
 	</body>
