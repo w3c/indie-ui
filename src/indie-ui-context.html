@@ -113,7 +113,7 @@
 		<section>
 			<h2>Privacy Model</h2>
 			<p class="todo">Todo: Explain how the privacy model works: when user prompted, matchMedia returns false immediately, and only provides the updated match ansynchronously through matchMedia().addEventListener or subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." @media never prompts unless bother @media block and an included selector matches.</p>
-			<p class="todo">Todo: Add justification interface on a per-category setting (possibly meta tag or a partial interface on document).</p> 
+			<p class="todo">Todo: Add justification interface on a per-category setting (possibly meta tag or a partial interface on document). Justification string may be defined by an new JavaScript interface, or perhaps by a meta tag in the document head, such as:<br><code class="html" data-transform="syntaxMarkup">&lt;meta name="mediaAlternativeSettings" value="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
 
 
 			<section id="MediaQueryListExtensions">
@@ -124,18 +124,66 @@
 					<dd>Returns the strictest MediaQueryRestrictionType defined in the user's settings for each MediaQueryRestrictionCategory matched by the current MediaQueryList. Defaults to <code>none</code></dd>
 
 					<dt>readonly attribute MediaQueryRestrictionCategory category</dt>
-					<dd><p class="ednote">Probably need to make this an array with multiple values, since you could have a media query that matched multiple restriction categories. e.g. <code>(subtitles: on) and (screenreader: on)</code> would match both <code>MediaAlternativeSettings</code> and <code>ScreenReaderSettings</code>.</p></dd>
+					<dd><p class="ednote">Probably need to make this an array with multiple values, since you could have a media query that matched multiple restriction categories. e.g. <code>(subtitles: on) and (screenreader: on)</code> would match both <code>mediaAlternativeSettings</code> and <code>screenReaderSettings</code>.</p></dd>
 
 				</dl>
-				<section>
-					<h4>Example MediaQueryRestrictionType</h4>
-					<pre class="example javascript" data-transform="syntaxJavaScript">
-						var mql = window.matchMedia('(subtitles: on) and (screenreader: on)');
-					</pre>
-					<p>By default, <code>mql.restriction</code> will return <code>"justification"</code> because the matched categories are MediaAlternativeSettings (which has a default restriction of "prompt") and ScreenReaderSettings (which has the default restriction of "justification"). Since justification is more strict of the two restriction types, it is used.</p>
-					<p>However, if a user were to change their browser settings and allow all sites to access any media feature in the ScreenReaderSettings category without restriction, <code>mql.restriction</code> will return <code>"prompt"</code> because the matched categories are MediaAlternativeSettings (which has a default restriction of "prompt") and ScreenReaderSettings (which now has the user-overridden restriction of "none"). Since "prompt" is more strict of the two restriction types, it is used.</p>
-				</section>
 
+				<p>To avoid privacy concerns and abusive uses such fingerprinting, User Agents MUST <em>immediately</em> match the default value of the media query for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can receive a mediaQueryListChanged event, and make a subsequent request of the <code>matches</code> property of the MediaQueryList.</p>
+
+				<section class="informative">
+					<h4>Example restricted call to matchMedia</h4>
+					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.matchMedia to enable the audio description track at load time.</p>
+					<pre class="example javascript" data-transform="syntaxJavaScript">
+						// Author defines a media query list to determine if the user needs a descriptive audio track.
+						var audioDescriptionQuery = window.matchMedia('(audio-description: on)');
+
+						// and defines and function to handle changes of this setting.
+						function handleAudioDescriptionChanged(mql) {
+						    if (mql.matches) {
+						        // User has shared that audio descriptions should be presented.
+						        // Enable the "described audio" track in the video. 
+						    } else {
+						        // Set to default. Audio descriptions are off, 
+						        // or the user has chosen to not share this setting.
+						    }
+						}
+
+						/*
+						  When the author first attempts to check the 'matches' property of the query, the user
+						  agent will determine that this is a restricted setting, and immediately return false,
+						  so the first call to this function on the initial page load will never result in
+						  audio descriptions being enabled.
+						   
+						  Note: The immediate return is critical to prevent abuse via timing attacks.
+						*/
+						
+						handleAudioDescriptionChanged(audioDescriptionQuery);
+
+						/*
+						  However, at the same time, the user will be prompted to decide whether or not to share 
+						  their media alternative settings with the requesting web site. 
+						  
+						  The web author can register for a change listener on this media query list, and the event
+						  handler will be called asynchronously when the user agrees to share their media settings.
+						*/
+
+						audioDescriptionQuery.addListener(handleAudioDescriptionChanged);
+
+						// Note: Subsequent page loads should not cause the user to be prompted again.
+
+					</pre>
+
+			</section>
+
+			<section id="MediaQueryRestrictionCategory">
+				<h4>Enumeration MediaQueryRestrictionCategory</h4>
+				<dl title="enum MediaQueryRestrictionCategory" class="idl">
+					<dt>none</dt><dd>No category defined.</dd>
+					<dt>colorSettings</dt><dd>User settings related to color preferences. No default restriction.</dd>
+					<dt>typeSettings</dt><dd>User settings related to type and font preferences. No default restriction.</dd>
+					<dt>mediaAlternativeSettings</dt><dd>User settings related to media alternatives such as captions/subtitles, audio description, etc. Default restriction is to <code>prompt</code> the user for permission.</dd>
+					<dt>screenReaderSettings</dt><dd>User settings related to screen readers. Default restriction is to prompt the user with a <code>justification</code> provided by the requesting web site.</dd>
+				</dl>
 			</section>
 
 			<section id="MediaQueryRestrictionType">
@@ -147,15 +195,13 @@
 				</dl>
 			</section>
 
-			<section id="MediaQueryRestrictionCategory">
-				<h4>Enumeration MediaQueryRestrictionCategory</h4>
-				<dl title="enum MediaQueryRestrictionCategory" class="idl">
-					<dt>none</dt><dd>No category defined.</dd>
-					<dt>ColorSettings</dt><dd>User settings related to color preferences. No default restriction.</dd>
-					<dt>TypeSettings</dt><dd>User settings related to type and font preferences. No default restriction.</dd>
-					<dt>MediaAlternativeSettings</dt><dd>User settings related to media alternatives such as captions/subtitles, audio description, etc. Default restriction is to <code>prompt</code> the user for permission.</dd>
-					<dt>ScreenReaderSettings</dt><dd>User settings related to screen readers. Default restriction is to prompt the user with a <code>justification</code> provided by the requesting web site.</dd>
-				</dl>
+			<section class="informative">
+				<h4>Example MediaQueryRestrictionType</h4>
+				<pre class="example javascript" data-transform="syntaxJavaScript">
+					var mql = window.matchMedia('(subtitles: on) and (screenreader: on)');
+				</pre>
+				<p>By default, <code>mql.restriction</code> will return <code>"justification"</code> because the matched categories are mediaAlternativeSettings (which has a default restriction of "prompt") and screenReaderSettings (which has the default restriction of "justification"). Since justification is more strict of the two restriction types, it is used.</p>
+				<p>However, if a user were to change their browser settings and allow all sites to access any media feature in the screenReaderSettings category without restriction, <code>mql.restriction</code> will return <code>"prompt"</code> because the matched categories are mediaAlternativeSettings (which has a default restriction of "prompt") and screenReaderSettings (which now has the user-overridden restriction of "none"). Since "prompt" is more strict of the two restriction types, it is used.</p>
 			</section>
 
 		</section>
@@ -167,18 +213,15 @@
 			<p>This section defines media features using syntax defined in the CSS3 Media Queries specification, but adds a RestrictionCategory parameter used by the access control extension to the MediaQueryList interface and the @media selector. <span class="todo">Todo: link these the the relevant portions of the access control extension.</span></p>
 			<p>The media features are grouped by restriction categories (e.g. type settings, media settings, etc.) that define related media features, and recommended default restriction levels.</p>
 
-			<!-- :::::::::::::::::::: ColorSettings :::::::::::::::::::: -->
-			<section id="ColorSettings" class="restriction-category">
-				<h3><code>ColorSettings</code></h3>
+			<!-- :::::::::::::::::::: colorSettings :::::::::::::::::::: -->
+			<section id="colorSettings" class="restriction-category">
+				<h3>Color Settings</h3>
 
 				<dl class="properties">
-					
-					<dt>Default restriction</dt>
-					<dd data-transform="linkId">none</dd>
-					
-					<dt>Allow from</dt>
-					<dd>domain (e.g. not advertisers and third-party sites)</dd>
-
+					<dt>Restriction Category (IDL)</dt>
+					<dd data-transform="linkMediaQueryRestrictionCategory">colorSettings</dd>
+					<dt>Default Restriction Type (IDL)</dt>
+					<dd data-transform="linkMediaQueryRestrictionType">none</dd>
 				</dl>
 
 				<p class="note">Color settings are not be restricted by default from the requesting page, primarily because a site can figure out most of this information using some creative CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users. The display inversion feature is not currently detectable, but does not represent a major concern for privacy or fingerprinting.</p>
@@ -189,7 +232,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;color&gt; | [<code>undefined</code>]</dd>
+						<dd>&lt;color&gt;</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -197,8 +240,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">ColorSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">colorSettings</dd>
 						
 					</dl>
 					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
@@ -209,7 +252,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;color&gt; | [<code>undefined</code>]</dd>
+						<dd>&lt;color&gt;</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -217,8 +260,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">ColorSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">colorSettings</dd>
 						
 					</dl>
 					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
@@ -237,8 +280,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">ColorSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">colorSettings</dd>
 						
 					</dl>
 
@@ -281,20 +324,17 @@
 				</section>
 
 			</section>
-			<!-- :::::::::::::::::::: END ColorSettings :::::::::::::::::::: -->
+			<!-- :::::::::::::::::::: END colorSettings :::::::::::::::::::: -->
 
-			<!-- :::::::::::::::::::: TypeSettings :::::::::::::::::::: -->
-			<section id="TypeSettings" class="restriction-category">
-				<h3><code>TypeSettings</code></h3>
+			<!-- :::::::::::::::::::: typeSettings :::::::::::::::::::: -->
+			<section id="typeSettings" class="restriction-category">
+				<h3>Type Settings</h3>
 
 				<dl class="properties">
-					
-					<dt>Default restriction</dt>
-					<dd data-transform="linkId">none</dd>
-					
-					<dt>Allow from</dt>
-					<dd>domain (e.g. not advertisers and third-party sites)</dd>
-
+					<dt>Restriction Category (IDL)</dt>
+					<dd data-transform="linkMediaQueryRestrictionCategory">typeSettings</dd>
+					<dt>Default Restriction Type (IDL)</dt>
+					<dd data-transform="linkMediaQueryRestrictionType">none</dd>
 				</dl>
 
 				<p class="note">Type settings are not restricted by default from the requesting page, because a site can figure out all of this information by creatively using CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users.</p>
@@ -304,7 +344,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;number&gt; | [<code>undefined</code>]</dd>
+						<dd>&lt;number&gt;</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -312,8 +352,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>Yes</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">TypeSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">typeSettings</dd>
 						
 					</dl>
 
@@ -340,7 +380,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;number&gt; | [<code>undefined</code>]</dd>
+						<dd>&lt;number&gt;</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -348,8 +388,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>Yes</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">TypeSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">typeSettings</dd>
 						
 					</dl>
 				</section>
@@ -359,7 +399,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;number&gt; | [<code>undefined</code>]</dd>
+						<dd>&lt;number&gt;</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -367,8 +407,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>Yes</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">TypeSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">typeSettings</dd>
 						
 					</dl>
 				</section>
@@ -378,7 +418,7 @@
 					<dl class="properties">
 						
 						<dt>Value</dt>
-						<dd>&lt;number&gt; | [<code>undefined</code>]</dd>
+						<dd>&lt;number&gt;</dd>
 						
 						<dt>Applies to</dt>
 						<dd>visual media</dd>
@@ -386,8 +426,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>Yes</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">TypeSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">typeSettings</dd>
 						
 					</dl>
 					
@@ -396,20 +436,17 @@
 				<p class="note">In addition to font-size, which is commonly adjusted by mainstream users, line-height, letter-spacing, and word-spacing can be especially important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p>
 
 			</section>
-			<!-- :::::::::::::::::::: END TypeSettings :::::::::::::::::::: -->
+			<!-- :::::::::::::::::::: END typeSettings :::::::::::::::::::: -->
 
-			<!-- :::::::::::::::::::: MediaAlternativeSettings :::::::::::::::::::: -->
-			<section id="MediaAlternativeSettings" class="restriction-category">
-				<h3><code>MediaAlternativeSettings</code></h3>
+			<!-- :::::::::::::::::::: mediaAlternativeSettings :::::::::::::::::::: -->
+			<section id="mediaAlternativeSettings" class="restriction-category">
+				<h3>Media Alternative Settings</h3>
 
 				<dl class="properties">
-					
-					<dt>Default restriction</dt>
-					<dd data-transform="linkId">prompt</dd>
-					
-					<dt>Allow from</dt>
-					<dd>domain (e.g. not advertisers and third-party sites)</dd>
-
+					<dt>Restriction Category (IDL)</dt>
+					<dd data-transform="linkMediaQueryRestrictionCategory">mediaAlternativeSettings</dd>
+					<dt>Default Restriction Type (IDL)</dt>
+					<dd data-transform="linkMediaQueryRestrictionType">prompt</dd>
 				</dl>
 
 				<section id="subtitle">
@@ -425,8 +462,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">mediaAlternativeSettings</dd>
 						
 					</dl>
 					<p>Matches depending on whether subtitles/captions are displayed (on) or not displayed (off) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom subtitle view SHOULD display the custom-rendered subtitles based on this setting.</p>
@@ -447,11 +484,11 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">mediaAlternativeSettings</dd>
 						
 					</dl>
-					<p class="ednote">This key is necessary to indicate a preference for subtitles for the deaf and hard of hearing (SDH) over standard spoken-language-only subtitles, but the preference for closed captions (CC) versus SDH may not be necessary. SDH appears to be generally preferred over CC when available, and a preference for SDH could indicate an implicit preference for CC over standard when CC is available but SDH is not.</p>
+					<p class="ednote">Necessary to match preference for subtitles for the deaf and hard of hearing (SDH) over default dialogue-only subtitles, but the preference for closed captions (CC) versus SDH may not be necessary. SDH appears to be generally preferred over CC when available, and a preference for SDH could indicate an implicit preference for CC over dialogue-only subtitles when CC is available but SDH is not.</p>
 				</section>
 
 				<section id="user-subtitle-color">
@@ -467,8 +504,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">mediaAlternativeSettings</dd>
 						
 					</dl>
 					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
@@ -487,8 +524,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">mediaAlternativeSettings</dd>
 						
 					</dl>
 					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
@@ -507,8 +544,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">MediaAlternativeSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">mediaAlternativeSettings</dd>
 						
 					</dl>
 					<p>Matches a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</p>
@@ -516,32 +553,29 @@
 
 				<!-- todo: work these in when possible -->
 				<!--
-				<dt class="key" id="transcript-MediaAlternativeSettings">boolean? transcript = null</dt>
+				<dt class="key" id="transcript-mediaAlternativeSettings">boolean? transcript = null</dt>
 				<dd>Matches a user's preference to be presented with a transcript if available. Web authors MAY provide concatenated subtitles in static form, if no other transcript exists.
 					<p class="ednote">There is some concern within the working group regarding this preference because no known operating system or user agent currently includes a way for a user to set this preference. The IndieUI working group is actively seeking comment on the perceived necessity or feasibility of this preference. It may be that this is already covered by <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html">WCAG 2.0 SC 1.2.1</a> which indicates sites should offer transcripts when available.</p>
 				</dd>
 				
-				<dt class="key" id="signLanguage-MediaAlternativeSettings">boolean? signLanguage = null</dt>
+				<dt class="key" id="signLanguage-mediaAlternativeSettings">boolean? signLanguage = null</dt>
 				<dd>Matches a user's preference to be presented with a video of sign language if available.
 				<p class="ednote">Do we need a language order preference for type of sign? ASL, etc? Worried this feature will be at-risk due to lack of available signed alternatives.</p>
 				</dd>
 				-->
 
 			</section>
-			<!-- :::::::::::::::::::: END MediaAlternativeSettings :::::::::::::::::::: -->
+			<!-- :::::::::::::::::::: END mediaAlternativeSettings :::::::::::::::::::: -->
 
-			<!-- :::::::::::::::::::: ScreenReaderSettings :::::::::::::::::::: -->
-			<section id="ScreenReaderSettings" class="restriction-category">
-				<h3><code>ScreenReaderSettings</code></h3>
+			<!-- :::::::::::::::::::: screenReaderSettings :::::::::::::::::::: -->
+			<section id="screenReaderSettings" class="restriction-category">
+				<h3>Screen Reader Settings</h3>
 
 				<dl class="properties">
-					
-					<dt>Default restriction</dt>
-					<dd data-transform="linkId">justification</dd>
-					
-					<dt>Allow from</dt>
-					<dd>domain (e.g. not advertisers and third-party sites)</dd>
-
+					<dt>Restriction Category (IDL)</dt>
+					<dd data-transform="linkMediaQueryRestrictionCategory">screenReaderSettings</dd>
+					<dt>Default Restriction Type (IDL)</dt>
+					<dd data-transform="linkMediaQueryRestrictionType">justification</dd>
 				</dl>
 
 				<p>Web authors SHOULD NOT request any keys in this category unless the knowledge is essential to the operation of the web application, and web authors MUST provide a justification for the request as defined in @@ section.</p>
@@ -559,8 +593,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">ScreenReaderSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">screenReaderSettings</dd>
 						
 					</dl>
 					<p>Matches whether a screen reader is currently active (on) or not (off).</p>
@@ -580,8 +614,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>No</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">ScreenReaderSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">screenReaderSettings</dd>
 						
 					</dl>
 					<p>Returns a value indicating whether typed speech from a screen reader echos words, characters, or both.</p>
@@ -600,8 +634,8 @@
 						<dt>Accepts min/max prefixes</dt>
 						<dd>Yes</dd>
 						
-						<dt>Restriction Category</dt>
-						<dd data-transform="linkId">ScreenReaderSettings</dd>
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkMediaQueryRestrictionCategory">screenReaderSettings</dd>
 						
 					</dl>
 					<p>Returns a number indicating the approximate words-per-minute rate of a screen reader user's text-to-speech settings.</p>
@@ -609,7 +643,7 @@
 				-->
 
 			</section>
-			<!-- :::::::::::::::::::: END ScreenReaderSettings :::::::::::::::::::: -->
+			<!-- :::::::::::::::::::: END screenReaderSettings :::::::::::::::::::: -->
 
 		</section>
 		<!-- :::::::::::::::::::: END Media Features :::::::::::::::::::: -->

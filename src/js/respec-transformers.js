@@ -58,9 +58,17 @@ function listMediaFeatures(r, content) {
 }
 
 /* Turns <el>myId</el> into <el><a href="myId">myId</a></el> */ 
-function linkId(r, content) {
-	return ['<a href="#', r.xmlEscape(content), '">', content, '</a>'].join('');	
+function linkId(r, content, optLink) {
+	var link = optLink || content;
+	return ['<a href="#', r.xmlEscape(link), '">', content, '</a>'].join('');	
 }
+function linkMediaQueryRestrictionCategory(r, content) {
+	return linkId(r, content, ("idl-def-MediaQueryRestrictionCategory." + content));
+}
+function linkMediaQueryRestrictionType(r, content) {
+	return linkId(r, content, ("idl-def-MediaQueryRestrictionType." + content));
+}
+
 
 /* syntax highlighting for JavaScript examples */
 function syntaxJavaScript(r, content) {
