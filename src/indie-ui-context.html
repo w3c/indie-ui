@@ -118,17 +118,21 @@
 
 			<section id="MediaQueryListExtensions">
 				<h4>Extensions to MediaQueryList</h4>
-				<dl title="partial interface MediaQueryList" class="idl">
-					
-					<dt>readonly attribute MediaQueryRestrictionType restriction</dt>
-					<dd>Returns the strictest MediaQueryRestrictionType defined in the user's settings for each MediaQueryRestrictionCategory matched by the current MediaQueryList. Defaults to <code>none</code>.
-					<p class="ednote">It's possible this property doesn't need to be in the IDL interface, as it may end up being a user agent implementation detail. There's probably no need for web authors to know how restricted a setting group is. They only need to know the setting value if the user has shared this information.</p>
-					</dd>
 
-					<dt>readonly attribute MediaQueryRestrictionCategory category</dt>
-					<dd><p class="ednote">Probably need to make this an array with multiple values, since you could have a media query that matched multiple restriction categories. e.g. <code>(subtitles) and (screenreader)</code> would match both <code>userMediaSettings</code> and <code>userScreenReaderSettings</code>.</p></dd>
+				<section id="MediaQueryList-idl">
+					<h5>Partial Interface for MediaQueryList (IDL)</h5>
+					<dl title="partial interface MediaQueryList" class="idl">
+						
+						<dt>readonly attribute MediaQueryRestrictionType restriction</dt>
+						<dd>Returns the strictest MediaQueryRestrictionType defined in the user's settings for each MediaQueryRestrictionCategory matched by the current MediaQueryList. Defaults to <code>none</code>.
+						<p class="ednote">It's possible this property doesn't need to be in the IDL interface, as it may end up being a user agent implementation detail. There's probably no need for web authors to know how restricted a setting group is. They only need to know the setting value if the user has shared this information.</p>
+						</dd>
 
-				</dl>
+						<dt>readonly attribute MediaQueryRestrictionCategory category</dt>
+						<dd><p class="ednote">Probably need to make this an array with multiple values, since you could have a media query that matched multiple restriction categories. e.g. <code>(subtitles) and (screenreader)</code> would match both <code>userMediaSettings</code> and <code>userScreenReaderSettings</code>.</p></dd>
+
+					</dl>
+				</section>
 
 				<p>To avoid privacy concerns and abusive uses such fingerprinting, User Agents MUST <em>immediately</em> match the default value of the media query for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can receive a mediaQueryListChanged event, and make a subsequent request of the <code>matches</code> property of the MediaQueryList.</p>
 
@@ -137,7 +141,7 @@
 					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.matchMedia to enable the audio description track at load time.</p>
 					<pre class="example javascript" data-transform="syntaxJavaScript">
 						// Author defines a media query list to determine if the user wants descriptive audio.
-						var audioDescriptionQuery = window.matchMedia('(audio-description: on)');
+						var audioDescriptionQuery = window.matchMedia('(audio-description)');
 
 						// and defines and function to handle changes of this setting.
 						function handleAudioDescriptionChanged(mql) {
