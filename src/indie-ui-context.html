@@ -299,7 +299,7 @@
 					<div class="ex" title="Informative">
 						<p>In this example, the hardware display rendering is inverted, so the web app could <em>double-invert</em> foreground image and video content, which usually looks strange while inverted. This would leave text foreground color, all background colors, and background styles inverted to adhere to user setting.</p>
 						<pre class="example css" data-transform="syntaxCSS">
-							@media (colors-inverted: inverted) {
+							@media (colors-inverted) {
 							    img, video {
 							        filter: invert(100%);
 							    }
@@ -311,8 +311,23 @@
 							<figcaption>Everything in the first screen shot, including the user profile image, is inverted so skin tones are unnatural. A web application could choose to double-invert content images, as is done in the second screen shot.</figcaption>
 						</figure>
 					</div>
+					<div class="ex" title="Informative">
+						<p>In this example, the hardware display rendering is inverted, so the web app could hide elements styles that resemble "shadows" of physical light, which by default look like white glows while inverted. This media query allows authors to disable settings that don't make sense when the physical display pixels are inverted.</p>
+						<pre class="example css" data-transform="syntaxCSS">
+							@media (colors-inverted) {
+							    .page {
+							        box-shadow: none;
+							    }
+							    .pagecurl {
+							        background-image: none;
+							    }
+							}
+						</pre> 
+					</div>
 
 					<p class="note">Note: Privacy and fingerprinting concerns related to this media feature are minimal, since it is unlikely that most individuals will have this setting enabled all the time. For example, due to personal preference or situational context, some individuals use this as a manual quick toggle to temporarily view text content in a light-on-dark color scheme as opposed to a dark-on-light default.</p>
+
+					<p class="note">Additional anecdotal evidence of how useful this could be as a media query can be found on <a href="http://ux.stackexchange.com/questions/26331/why-are-inverted-colors-considered-an-accessibility-feature">Stack Exchange UX</a>.</p>
 
 					<div class="relatedconcepts">
 						<h5>Concepts related to colors-inverted</h5>
