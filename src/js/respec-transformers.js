@@ -3,7 +3,7 @@
 function events() {
 	var eventList = [], nodeList = $$('code.event');
 	for (var i=0; i<nodeList.length; i++) {
-		var title = nodeList[i].innerText;
+		var title = nodeList[i].innerText || nodeList[i].textContent;
 		if ($$('#'+title).length) eventList.push(title);
 	}
 	return eventList.sort();
@@ -16,7 +16,7 @@ function listEvents(r, content) {
 		var title = eventList[i];
 		var description = '';
 		var els = $$('#'+title+'+dd>p'); // get the paragraph children of the dd that follows the dt event element.
-		if (els.length) description = els[0].innerText; // use its text value as the short description
+		if (els.length) description = els[0].innerText || els[0].textContent; // use its text value as the short description
 		s += '<li><a href="#' +title+ '">' +title+ '</a>: ' +description+ '</li>';
 	}
 	s += '</ul>';
