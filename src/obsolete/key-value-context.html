@@ -1,7 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>IndieUI 1.0: User Context</title>
+		<link href="./css/screen.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" class="remove" src="./loc/en/strings.js"></script>
+		<script type="text/javascript" class="remove" src="./js/utils.js"></script>
+		<script type="text/javascript" class="remove" src="./js/respec-transformers.js"></script>
+		
+		<!-- 
+      === NOTA BENE ===
+      For the three scripts below, if your spec resides on dev.w3 you can check them
+      out in the same tree and use relative links so that they'll work offline,
+     -->
+		<script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
+		<script class="remove">
+      var respecConfig = {
+          // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
+          specStatus:           "ED",
+          
+          // the specification's short name, as in http://www.w3.org/TR/short-name/
+          shortName:            "indie-ui-context",
 
+          // if your specification has a subtitle that goes below the main
+          // formal title, define it here
+          subtitle   :  "Contextual Information for User Interface Independence",
+
+          // if you wish the publication date to be other than today, set this
+          // publishDate:  "2009-08-06",
+
+          // if the specification's copyright date is a range of years, specify
+          // the start date here:
+          // copyrightStart: "2012",
+
+          // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
+          // and its maturity status
+          // previousPublishDate:  "1977-03-15",
+          // previousMaturity:  "WD",
+
+          // if there a publicly available Editor's Draft, this is the link
+          edDraftURI:           "http://dvcs.w3.org/hg/IndieUI/raw-file/default/src/indie-ui-context.html",
+
+          // if this is a LCWD, uncomment and set the end of its review period
+          // lcEnd: "2009-08-05",
+
+          // if you want to have extra CSS, append them to this list
+          // it is recommended that the respec.css stylesheet be kept
+          // extraCSS:             [
+          //   "http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css",
+          //   "./css/screen.css"
+          // ],
+
+          // editors, add as many as you like
+          // only "name" is required, also can have url, company, companyURL in comma separated list
+          editors:  [
+              { name: "James Craig", company: "Apple Inc.", companyURL: "http://www.apple.com/" },
+              // Commenting Michael's name for now, since this document is in need of serious work, and that's no fault of his.
+              // { name: "Michael Cooper", company: "W3C", companyURL: "http://www.w3.org/" },
+          ],
+
+          // authors, add as many as you like. 
+          // This is optional, uncomment if you have authors as well as editors.
+          // only "name" is required. Same format as editors.
+
+          //authors:  [
+          //  { name: "James Craig", company: "Apple Inc.", companyURL: "http://www.apple.com/" },
+          //],
+          
+          // name of the WG
+          wg:           "Independent User Interface (Indie UI) and Web Events Working Groups",
+          
+          // URI of the public WG page
+          wgURI:        "http://www.w3.org/WAI/IndieUI/",
+          
+          // name (without the @w3c.org) of the public mailing to which comments are due
+          wgPublicList: "public-indie-ui-comments",
+          
+          // URI of the patent status for this WG, for Rec-track documents
+          // !!!! IMPORTANT !!!!
+          // This is important for Rec-track documents, do not copy a patent URI from a random
+          // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
+          // Team Contact.
+          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/54953/status",
+      };
+    </script>
+		
+	</head>
+	<body>
 		<!-- :::::::::::::::::::: window.settings :::::::::::::::::::: -->
-		<!-- obsolete, marking as hidden -->
-		<section id="UserSettings" hidden>
+		<section id="UserSettings">
 			<h3>Interface UserSettings</h3>
 			<p>The <code>settings</code> attribute of the Window interface MUST return an instance of the UserSettings interface. The same object must be returned each time.</p>
 
@@ -15,10 +102,10 @@
 					<pre class="example" data-transform="syntaxJavaScript">
 						// example of a preference defined within the IndieUI User Context specification.
 						window.settings.valueForKey('fontSize'); // e.g. '16px'
-						window.settings.valueForKey('subtitle'); // e.g. returns true if the user wants to see subtitles or captions by default
+						window.settings.valueForKey('subtitles'); // e.g. returns true if the user wants to see subtitles or captions by default
 						
 						// example of an vendor-proposed preference, intended for standardization.
-						window.settings.valueForKey('foo', 'webkit');
+						window.settings.valueForKey('someVendorSpecificPreference', 'vendor');
 						
 					</pre>
 					<dl class="parameters">
@@ -165,7 +252,6 @@
 
 		
 		<!-- :::::::::::::::::::: window.accessibility :::::::::::::::::::: -->
-		<!-- Commented b/c this section is mostly overcome by other features or specs. Leaving comments as some of these may be pulled back in but reformatted.
 		<section id="identification">
 			<h2>Assistive Technology Identification and Notification</h2>
 			<p class="ednote">Most of this section is out-of-date. Please don't put too much effort into change requests yet.</p>
@@ -317,13 +403,11 @@ interface MagnifierNotifications {
   <span class="comment">// potential method: speech.recognition.updateDictionary() to capture correct pronunciation of uncommon or app-specific words</span>
 };</code></pre>
 			</div>
-			-->
 		</section>
 		<!-- :::::::::::::::::::: END window.accessibility :::::::::::::::::::: -->
 		
 		
 		<!-- :::::::::::::::::::: Accessibility Event Interfaces :::::::::::::::::::: -->
-		<!--
 		<section id="AccessibilityEvents">
 			<h2>Accessibility Events</h2>
 			
@@ -363,7 +447,7 @@ interface MagnifierNotifications {
 				</section>
 			</section>
 		</section>
-		-->
 		<!-- :::::::::::::::::::: END Accessibility Event Interfaces :::::::::::::::::::: -->
 		
-		
+	</body>
+</html>

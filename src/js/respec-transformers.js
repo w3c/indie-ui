@@ -37,10 +37,10 @@ function listActions(r, content) {
 
 // utility used by listMediaFeatures
 function allMediaFeatures() {
-	var node, selector = '', mediaFeatureList = [], nodeList = $$('.media-feature');
+	var mf, mediaFeatureList = [], nodeList = $$('.media-feature code');
 	for (var i=0; i < nodeList.length; i++) {
-		node = nodeList[i].parentElement.id;
-		mediaFeatureList.push(node);
+		mf = nodeList[i].innerText || nodeList[i].textContent;
+		mediaFeatureList.push(mf);
 	}
 	return mediaFeatureList.sort();
 }
@@ -62,11 +62,8 @@ function linkId(r, content, optLink) {
 	var link = optLink || content;
 	return ['<a href="#', r.xmlEscape(link), '">', content, '</a>'].join('');	
 }
-function linkMediaQueryRestrictionCategory(r, content) {
-	return linkId(r, content, ("idl-def-MediaQueryRestrictionCategory." + content));
-}
-function linkMediaQueryRestrictionType(r, content) {
-	return linkId(r, content, ("idl-def-MediaQueryRestrictionType." + content));
+function linkRestrictionCategory(r, content) {
+	return linkId(r, content, ("idl-def-RestrictionCategory." + content));
 }
 
 
