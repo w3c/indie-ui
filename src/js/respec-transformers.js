@@ -51,7 +51,29 @@ function listMediaFeatures(r, content) {
 	for (var i = 0; i < mediaFeatureList.length; i++){
 		mediaFeatureName = mediaFeatureList[i];
 		linkId = mediaFeatureName;
-		s += '<li><code><a href="#' + linkId + '">' + mediaFeatureName + '</a></code></li>';
+		s += '<li><code><a href="#media-feature-' + linkId + '">' + mediaFeatureName + '</a></code></li>';
+	}
+	s += '</ul>';
+	return content + s;
+}
+
+// utility used by listSettingsKeys
+function allSettingsKeys() {
+	var key, keyList = [], nodeList = $$('.settings-key code');
+	for (var i=0; i < nodeList.length; i++) {
+		key = nodeList[i].innerText || nodeList[i].textContent;
+		keyList.push(key);
+	}
+	return keyList.sort();
+}
+
+/* listSettingsKeys: alphabetical list generated from user context settings keys. */
+function listSettingsKeys(r, content) {
+	var s = '<ul>', key = '', linkId = '', keyList = allSettingsKeys();
+	for (var i = 0; i < keyList.length; i++){
+		key = keyList[i];
+		linkId = key;
+		s += '<li><code><a href="#' + linkId + '">' + key + '</a></code></li>';
 	}
 	s += '</ul>';
 	return content + s;

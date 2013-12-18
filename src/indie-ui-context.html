@@ -113,6 +113,8 @@
 		<!-- :::::::::::::::::::: Window Interface :::::::::::::::::::: -->
 		<section id="UserSettings">
 			<h3>Extension to the Window Interface</h3>
+
+			<p class="ednote">Need to note why we could not use the standard <code>addEventListener</code> here. It would have either required a new event for every key (onUserFontSizeChanged, etc) or it would have not allowed authors to scope the preferences they were interested in (onUserSettingChange), and therefore prompted excessive callbacks, user prompts, etc.</p>
 			<dl title="partial interface Window" class="idl">
 
 				<dt>DOMstring? userSetting()</dt>
@@ -120,32 +122,31 @@
 					<p class="ednote">Description TBD (esp re: privacy and fingerprinting, and prompt access for certain parameters on a per-domain basis, similar to location sharing)</p>
 					
 					<pre class="example" data-transform="syntaxJavaScript">
-						// example of preferences defined within the IndieUI User Context specification.
-						window.userSetting('fontSize'); // e.g. '16px'
+						// example of settings keys defined within the IndieUI User Context specification.
+						window.userSetting('user-font-size'); // returns computed value in CSS pixels, e.g. '16px'
 						window.userSetting('subtitles'); // e.g. returns 'display' if the user wants to see subtitles/captions; otherwise returns 'none'
 						
-						// example of an taxonomy- or vendor-prefixed settings proposals, intended for standardization.
-						window.userSetting('webkitFoo');
-						window.userSetting('mozFoo');
+						// example of taxonomy- or vendor-prefixed settings proposals, intended for standardization.
+						window.userSetting('-webkit-foo');
+						window.userSetting('-moz-foo');
 						
 					</pre>
 					<dl class="parameters">
-						
-						<dt>DOMString setting</dt>
+						<dt>DOMString key</dt>
 						<dd>Identifying key for the preference value to be returned. User Agents MAY support prefixed keys for vendor-proposed or implementation-specific settings, or another external taxonomy.</dd>
 					</dl>
 				</dd>
 				<dt>void addUserSettingListener()</dt>
 				<dd>
 					<dl class="parameters">
-						<dt>DOMString setting</dt><dd></dd>
+						<dt>DOMString key</dt><dd></dd>
 						<dt>UserSettingListener callback</dt><dd></dd>
 					</dl>
 				</dd>
 				<dt>void removeUserSettingListener()</dt>
 				<dd>
 					<dl class="parameters">
-						<dt>DOMString setting</dt><dd></dd>
+						<dt>DOMString key</dt><dd></dd>
 						<dt>UserSettingListener callback</dt><dd></dd>
 					</dl>
 				</dd>
@@ -163,9 +164,8 @@
 				<dt>void handleUserSettingChanged()</dt>
 				<dd>
 					<dl class="parameters">
-						<dt>DOMString setting</dt><dd></dd>
-						<dt>optional DOMString? value</dt><dd></dd>
-						<dt>optional DOMString? previousValue</dt><dd></dd>
+						<dt>DOMString key</dt><dd>Key name for the requested user setting. E.g. 'user-font-size' or 'screenreader'</dd>
+						<dt>optional DOMString? value</dt><dd>Current value of the user setting, after the setting change.</dd>
 					</dl>
 				</dd>
 			</pre>
@@ -173,29 +173,10 @@
 		</section>
 		<!-- :::::::::::::::::::: END UserSettingListener :::::::::::::::::::: -->
 
-		<!-- :::::::::::::::::::: MediaQueryList :::::::::::::::::::: -->
-		<section id="MediaQueryListExtensions">
-			<h4>Extension to the MediaQueryList Interface</h4>
-			<p class="ednote">It is likely that this will be an implementation detail, rather than something that needs to be specified as an IDL extension to MQL.</p>
-			<section id="MediaQueryList-idl">
-				<h5>Partial Interface for MediaQueryList (IDL)</h5>
-				<dl title="partial interface MediaQueryList" class="idl">
-					
-					<dt>readonly attribute RestrictionCategory[] categories</dt>
-					<dd>One or more matched restriction categories. e.g. <code>(subtitles) and (screenreader)</code> would match both <code>userMediaSettings</code> and <code>userScreenReaderSettings</code>.</dd>
-
-				</dl>
-			</section>
-
-			<p>To avoid privacy concerns and abusive uses such as fingerprinting, User Agents MUST <em>immediately</em> match the default value of the media query for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can receive a mediaQueryListChanged event, and make a subsequent request of the <code>matches</code> property of the MediaQueryList.</p>
-
-
-		</section>
-		<!-- :::::::::::::::::::: END MediaQueryList :::::::::::::::::::: -->
-
 		<!-- :::::::::::::::::::: Privacy Model :::::::::::::::::::: -->
 		<section>
 			<h2>Privacy Model</h2>
+
 			<p class="todo">Todo: Explain how the privacy model works: when user prompted, window.userSetting() or window.matchMedia() return the default value or null immediately, and only provides the updated match ansynchronously through matchMedia().addEventListener or on subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." A restricted @media block never prompts unless both the @media block and an included selector matches.</p>
 			<p class="todo">Todo: Add justification interface on a per-category setting (possibly meta tag or a partial interface on document). Justification string may be defined by an new JavaScript interface, or perhaps by a meta tag in the document head, such as:<br><code class="html" data-transform="syntaxMarkup">&lt;meta name="userMediaSettings" content="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
 		
@@ -211,83 +192,106 @@
 			</section>
 
 			<section class="informative">
-				<h4>Example Restriction</h4>
-				<p>In the following example, the web author attempts to query two restricted user settings using two different techniques. For the sake of the example, assume the user's setting do match the specified query.</p>
+				<h4>Example Restriction UI</h4>
+				<p>In the following example, the web author attempts to query two restricted user settings using two different techniques. For the sake of the example, assume the user's setting do match the specified queries.</p>
 				<pre class="example javascript" data-transform="syntaxJavaScript">
-					// Query matches if both audio descriptions and screen reader are enabled
-					// and the user's privacy settings allow the match.
-					var mediaMatch = matchMedia('(audio-description) and (screenreader)').matches;
+					// Query matches if screen reader is enabled and user's privacy settings allow the match.
+					var mediaQueryList = window.matchMedia('screen and (screenreader)');
+					var mediaMatch = mediaQueryList.matches;
 
-					// The following is equivalent to the previous MQ approach, but uses the UserSettings interface.
-					var settingsMatch = (userSetting('audioDescription') &amp;&amp; userSetting('screenreader'));
+					// The following is equivalent to the previous MQ approach, but uses the window.userSetting().
+					// window.userSetting will likely be the preferred interface for accessibing these settings 
+					// through JavaScript, but the matchMedia syntax can be more terse for complex queries.
+					var setting = window.userSetting('screenreader');
+					var settingMatch = (setting === 'active') ? true : false;
 
-					if (mediaMatch || settingsMatch) {
-					  console.log('A screen reader is active and the user prefers audio descriptions.');
+					// Note: in conforming implementations, these boolean values will either both be true, or both be false.
+					if (mediaMatch || settingMatch) {
+					    console.log('A screen reader is active and the user prefers audio descriptions.');
 					} else {
-					  console.log('The settings do not match, or the user has chosen to not share that information.');
+					    console.log('The settings do not match, or the user has chosen to not share that information.');
 					}
 
 				</pre>
 				<p>Depending on the user's privacy settings and implementation details of the user agent, there are a number of outcomes:</p>
 				<ul>
-					<li>If the user has previously allowed access for these settings, the Media Query will <em>match</em> the value immediately.</li>
-					<li>If the user has a general 'prompt' restriction for these settings, the Media Query will <em>not match</em> the value, and the user agent MAY prompt the user with a generic dialog similar to that for location sharing.</li>
-					<li>If the user requires a 'justification' restriction for these settings, the Media Query will <em>not match</em> the value, and the user agent MAY prompt the user with a dialog that includes the author-provided justification string.</li>
-					<li>If the user has disallowed access for these settings, the Media Query will never match the value.</li>
+					<li>If the user has previously allowed access for this site to access screen reader settings, or if the user has allowed all sites to access screen reader settings without restriction, the User Agent SHOULD return the correct value immediately.</li>
+					<li>If the user has a general 'prompt' restriction enabled for this setting, the User Agent will return the default, incorrect value, and the user agent SHOULD prompt the user with a generic dialog similar to that for location sharing.</li>
+					<li>If the user requires a 'justification' restriction for these settings (recommended default for screen reader settings), User Agent will return the default, incorrect value, and the user agent SHOULD prompt the user with a dialog that includes the author-provided justification string. If no author-provided justification string is defined, User Agents should not prompt the user, and never return the correct value.</li>
+					<li>If the user has disallowed access for this setting to this site or all sites, the User Agent MUST always return the default, incorrect value.</li>
 				</ul>
+				<p class="ednote">Turn the previous informative list into normative statements.</p>
 
 			</section>
 
-			<section class="informative">
-				<h4>Example restricted call to <code>window.userSettings()</code></h4>
-				<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.settings to enable the audio description track at load time.</p>
-				<p class="todo">Todo: Add code example.</p>
+			<section id="RequirementsForUserSettings">
+				<h3>User Agent Requirements for Restricted User Settings</h3>
+				<p>To avoid privacy concerns, User Agents MUST <em>immediately</em> return the default value for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can handle a user setting change callback, or make a subsequent request to the <code>userSetting()</code> method of the Window object.</p>
+				<section class="informative">
+					<h4>Example restricted call to <code>window.userSettings()</code></h4>
+					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.userSetting() to automatically enable the secondary audio track at load time.</p>
+					<pre class="example javascript" data-transform="syntaxJavaScript">
+						
+						// Author defines a function to handle changes of the audioDescription setting.
+						function handleAudioDescriptionChanged(key, value) {
+						    if (key === 'audio-description' &amp;&amp; value !=== 'none') {
+						        // User has shared that audio descriptions should be presented.
+						        // Enable the "descriptive audio" track in the video. 
+						    } else {
+						        // Set to default. Audio descriptions are off, 
+						        // or the user has chosen to not share this setting.
+						        // Authors should still provide a way to enable the
+						        // audio description track in the video player interface.
+						    }
+						}
+
+						/*
+						When the author first attempts to check the setting, the user agent will 
+						determine that this is a restricted setting, and immediately return false, so 
+						the first call to this method on the initial page load will never result in
+						audio descriptions being enabled.
+
+						Note: The immediate return is critical to prevent blocking threads, as well as
+						eliminating potential abuse by fingerprinting scripts attempting to determine 
+						uniqueness using execution time of the synchronous call to window.userSetting().
+						*/
+
+						// get the setting value
+						var audioDescriptionSetting = window.userSetting('audio-description');
+
+						// and explicitly call the handler the first time, because there is no callback yet
+						handleAudioDescriptionChanged('audio-description', audioDescriptionSetting);
+
+						/*
+						Even though the setting returns the default value immediately, the user will be 
+						prompted to decide whether or not to share their media alternative settings with 
+						the requesting web site. 
+
+						The web author can register for a change listener on this setting, and the handler 
+						will be called asynchronously once the user agrees to share their media settings.
+						*/
+						window.addSettingListener('audio-description', handleAudioDescriptionChanged);
+
+						// Note: Subsequent page loads should not cause the user to be prompted again.
+
+					</pre>
+				</section>
 			</section>
 
-			<section class="informative">
-				<h4>Example restricted call to <code>window.matchMedia()</code></h4>
-				<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.matchMedia to enable the audio description track at load time.</p>
-				<pre class="example javascript" data-transform="syntaxJavaScript">
-					// Author defines a media query list to determine if the user wants descriptive audio.
-					var audioDescriptionQuery = window.matchMedia('(audio-description)');
+			<section id="RequirementsForMediaQueries">
+				<h3>User Agent Requirements for Restricted Media Queries</h3>
+				<p>To avoid privacy concerns, User Agents MUST <em>immediately</em> match the default value of the media query for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can receive a mediaQueryListChanged event, and make a subsequent request of the <code>matches</code> property of the MediaQueryList.</p>
 
-					// and defines and function to handle changes of this setting.
-					function handleAudioDescriptionChanged(mql) {
-					    if (mql.matches) {
-					        // User has shared that audio descriptions should be presented.
-					        // Enable the "descriptive audio" track in the video. 
-					    } else {
-					        // Set to default. Audio descriptions are off, 
-					        // or the user has chosen to not share this setting.
-					    }
-					}
+				<section class="informative">
+					<h4>Example restricted call to <code>window.matchMedia()</code></h4>
+					<p class="todo">Todo: Add code example.</p>
+				</section>
 
-					/*
-					When the author first attempts to check the 'matches' property of the query, the user
-					agent will determine that this is a restricted setting, and immediately return false,
-					so the first call to this function on the initial page load will never result in
-					audio descriptions being enabled.
+				<section class="informative">
+					<h4>Example restricted use of <code>@media</code> block in CSS</h4>
+					<p class="todo">Todo: Add code example.</p>
+				</section>
 
-					Note: The immediate return is critical to prevent blocking threads, as well as
-					eliminating potential abuse by fingerprinting scripts attempting to determine 
-					uniqueness using execution time of the synchronous call to mql.matches.
-					*/
-					
-					handleAudioDescriptionChanged(audioDescriptionQuery);
-
-					/*
-					However, at the same time, the user will be prompted to decide whether or not to share 
-					their media alternative settings with the requesting web site. 
-
-					The web author can register for a change listener on this media query list, and the event
-					handler will be called asynchronously when the user agrees to share their media settings.
-					*/
-
-					audioDescriptionQuery.addListener(handleAudioDescriptionChanged);
-
-					// Note: Subsequent page loads should not cause the user to be prompted again.
-
-				</pre>
 			</section>
 
 		</section>
@@ -298,6 +302,8 @@
 			<h2>Settings Keys and Related Media Feature counterparts</h2>
 			<p>This section defines feature keys for user settings for use with the UserSettings interface. Some keys can also be accessed as Media Features using syntax defined in the CSS Media Queries specification. User Agents SHOULD implement an access control mechanism that allows users to restrict access to senesitive information requested via the <code>userSettings()</code> or <code>matchMedia()</code> methods of the Window interface, or from the @media selector in CSS. <span class="todo">Todo: link these the the relevant portions of the access control extension.</span></p>
 			<p>The features are grouped by restriction categories (e.g. type settings, media settings, etc.) that define related media features and recommended default restriction levels.</p>
+
+			<p class="ednote">Need a setting for whether full keyboard access is enabled (e.g. related to Safari "focus all controls" setting, or any touch screen device without a keyboard or Tab-like capability)</p>
 
 			<!-- :::::::::::::::::::: userColors :::::::::::::::::::: -->
 			<section id="userColors" class="restriction-category">
@@ -314,114 +320,270 @@
 				<p class="ednote">Note: A generalized equivalent to Microsoft's <a href="http://msdn.microsoft.com/en-us/library/windows/apps/hh465764.aspx">-ms-high-contrast</a> proposal will be needed (and possibly implemented as <code>contrast-increased: &lt;percent&gt;</code> in combination with the color settings below), but the contrast setting may end up in a restricted category if it's determined to expose the user to privacy or fingerprinting implications.</p>
 
 				<section id="user-color">
-					<h4 class="media-feature">Media Feature: <code>user-color</code></h4>
+					<h4 class="settings-key">Key: <code>user-color</code></h4>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd>&lt;color&gt;</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>Yes</dd>
 						
-						<dt>Applies to</dt>
-						<dd>visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>No</dd>
+						<dt>Returns</dt>
+						<dd>String values matching the associated media feature values.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userColors</dd>
 						
 					</dl>
-					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
+
+					<section id="media-feature-user-color">
+						<h5 class="media-feature">Associated Media Feature: <code>user-color</code></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;HSLA Color&gt;</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+
+							<dt>Accepts hue/saturation/luminosity/alpha suffixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd data-transform="linkRestrictionCategory">userColors</dd>
+							
+						</dl>
+						<p class="note">See <a href="#user-background-color"><code>user-background-color</code></a> and <a href="#user-subtitle-background-color"><code>user-subtitle-background-color</code></a> for examples of how the color media queries might be used with HSLA suffixes.</p>
+					</section>
 				</section>
 
 				<section id="user-background-color">
-					<h4 class="media-feature">Media Feature: <code>user-background-color</code></h4>
+					<h4 class="settings-key">Key: <code>user-background-color</code></h4>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd>&lt;color&gt;</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>Yes</dd>
 						
-						<dt>Applies to</dt>
-						<dd>visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>No</dd>
+						<dt>Returns</dt>
+						<dd>String values matching the associated media feature values.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userColors</dd>
 						
 					</dl>
-					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
+
+					<section id="media-feature-user-background-color">
+						<h5 class="media-feature">Associated Media Feature: <code>user-background-color</code></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;HSLA Color&gt;</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+							
+							<dt>Accepts hue/saturation/luminosity/alpha suffixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd data-transform="linkRestrictionCategory">userColors</dd>
+							
+						</dl>
+						<div class="ex" title="Informative">
+							<p>In this example, the user-defined color and background color are defined through a user style sheet or other means, so override the site theme to respect the user's colors.</p>
+							<pre class="example css" data-transform="syntaxCSS">
+								@media (user-color) and (user-background-color) {
+								    html, body {
+								        /* Syntax for the user-pref variables to be specified in one of the CSS 4 modules. */
+								        color: user-pref(color);
+								        background-color: user-pref(background-color);
+								    }
+								}
+							</pre> 
+						</div>
+						<div class="ex" title="Informative">
+							<p>In this example, the user-defined background color is dark (luminosity less than 40%), so the author adjusts the site logo element to use an image that looks better on darker background colors.</p>
+							<pre class="example css" data-transform="syntaxCSS">
+								/* Use default logo that looks good on lighter background colors. */
+								.logo { background-image: url(./img/logo_light.png);}
+
+								/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */
+								@media (user-background-color-luminosity &lt; 40) {
+								    /* User background color is dark; use logo variant that looks better on dark colors. */
+								    .logo { background-image: url(./img/logo_dark.png); }
+								}
+							</pre> 
+						</div>
+						<div class="ex" title="Informative">
+							<p>In this example, the user-defined background color matches a warm palette (hue is not between 100 and 280; a.k.a. not green, blue, or blue-violet), so the author could adjust the rest of the site theme to be complementary.</p>
+							<pre class="example css" data-transform="syntaxCSS">
+								/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */
+								@media (user-background-color-hue &lt; 100) or (user-background-color-hue &gt; 280) {
+								    /* User background color palette is red-violet, red, orange, or yellow. */
+								    /* This is example is admittedly contrived, and exists mainly to show possibilities. */
+								}
+							</pre> 
+						</div>
+					</section>
 				</section>
 
 				<section id="colors-inverted">
-					<h4 class="media-feature">Media Feature: <code>colors-inverted</code></h4>
+					<h4 class="settings-key">Key: <code>colors-inverted</code></h4>
+					<p>Web authors SHOULD NOT re-invert foreground and background colors based on this setting, but MAY choose to double-invert some content, such as photographs.</p>
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd><code>inverted</code> | [<code>none</code>]</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>Yes</dd>
 						
-						<dt>Applies to</dt>
-						<dd>visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>No</dd>
+						<dt>Returns</dt>
+						<dd>Boolean indicating whether the display colors are currently inverted by the operating system or user agent.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userColors</dd>
 						
 					</dl>
 
-					<div class="ex" title="Informative">
-						<p>In this example, the hardware display rendering is inverted, so the web app could <em>double-invert</em> foreground image and video content, which usually looks strange while inverted. This would leave text foreground color, all background colors, and background styles inverted to adhere to user setting.</p>
-						<pre class="example css" data-transform="syntaxCSS">
-							@media (colors-inverted) {
-							    img, video {
-							        filter: invert(100%);
-							    }
-							}
-						</pre> 
-						<figure>
-							<img src="./img/uc-inverted.png" alt="Screen shot of Twitter mobile web site displayed on iOS with screen colors inverted." height="320" width="181">
-							<img src="./img/uc-double-inverted.png" alt="Mock up of previous screen shot with user profile images double-inverted, to achieve a more natural rendering and skin color." height="320" width="181">
-							<figcaption>Everything in the first screen shot, including the user profile image, is inverted so skin tones are unnatural. A web application could choose to double-invert content images, as is done in the second screen shot.</figcaption>
-						</figure>
-					</div>
-					<div class="ex" title="Informative">
-						<p>In this example, the hardware display rendering is inverted, so the web app could hide elements styles that resemble "shadows" of physical light, which by default look like white glows while inverted. This media query allows authors to disable settings that don't make sense when the physical display pixels are inverted.</p>
-						<pre class="example css" data-transform="syntaxCSS">
-							@media (colors-inverted) {
-							    .page {
-							        box-shadow: none;
-							    }
-							    .pagecurl {
-							        background-image: none;
-							    }
-							}
-						</pre> 
-					</div>
-
-					<p class="note">Note: Privacy and fingerprinting concerns related to this media feature are minimal, since it is unlikely that most individuals will have this setting enabled all the time. For example, due to personal preference or situational context, some individuals use this as a manual quick toggle to temporarily view text content in a light-on-dark color scheme as opposed to a dark-on-light default.</p>
-
-					<p class="note">Additional anecdotal evidence of how useful this could be as a media query can be found on <a href="http://ux.stackexchange.com/questions/26331/why-are-inverted-colors-considered-an-accessibility-feature">Stack Exchange UX</a>.</p>
-
-					<div class="relatedconcepts">
-						<h5>Concepts related to colors-inverted</h5>
-						<ul>
-							<li>
-								Apple UIKit API for detecting color inversion on iOS<br>
-								<code class="ex">
-									// From &lt;UIKit/UIAccessibility.h&gt;<br>
-									// Returns whether the system preference for invert colors is enabled.<br>
-									UIKIT_EXTERN BOOL <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKitFunctionReference/Reference/reference.html#//apple_ref/c/func/UIAccessibilityIsInvertColorsEnabled">UIAccessibilityIsInvertColorsEnabled()</a> NS_AVAILABLE_IOS(6_0);<br>
-									UIKIT_EXTERN NSString *const <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIAccessibility_Protocol/Introduction/Introduction.html#//apple_ref/c/data/UIAccessibilityInvertColorsStatusDidChangeNotification">UIAccessibilityInvertColorsStatusDidChangeNotification</a> NS_AVAILABLE_IOS(6_0);<br>
-								</code>
-							</li>
-
-							<li>Mac OS X and other platforms have similar features to invert display colors. <span class="todo">Todo: list them here.</span></li>
+					<section id="media-feature-colors-inverted">
+						<h5 class="media-feature">Associated Media Feature: <code>colors-inverted</code></h5>
+						<dl class="properties">
 							
-						</ul>
-					</div>
+							<dt>Value</dt>
+							<dd><code>inverted</code> | [<code>none</code>]</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd data-transform="linkRestrictionCategory">userColors</dd>
+							
+						</dl>
 
+						<div class="ex" title="Informative">
+							<p>In this example, the hardware display rendering is inverted, so the web app could <em>double-invert</em> foreground image and video content, which usually looks strange while inverted. This would leave text foreground color, all background colors, and background styles inverted to adhere to user setting.</p>
+							<pre class="example css" data-transform="syntaxCSS">
+								@media (colors-inverted) {
+								    img, video {
+								        filter: invert(100%);
+								    }
+								}
+							</pre> 
+							<figure>
+								<img src="./img/uc-inverted.png" alt="Screen shot of Twitter mobile web site displayed on iOS with screen colors inverted." height="320" width="181">
+								<img src="./img/uc-double-inverted.png" alt="Mock up of previous screen shot with user profile images double-inverted, to achieve a more natural rendering and skin color." height="320" width="181">
+								<figcaption>Everything in the first screen shot, including the user profile image, is inverted so skin tones are unnatural. A web application could choose to double-invert content images, as is done in the second screen shot.</figcaption>
+							</figure>
+						</div>
+						<div class="ex" title="Informative">
+							<p>In this example, the hardware display rendering is inverted, so the web app could hide elements styles that resemble "shadows" of physical light, which by default look like white glows while inverted. This media query allows authors to disable settings that don't make sense when the physical display pixels are inverted.</p>
+							<pre class="example css" data-transform="syntaxCSS">
+								@media (colors-inverted) {
+								    .page {
+								        box-shadow: none;
+								    }
+								    .pagecurl {
+								        background-image: none;
+								    }
+								}
+							</pre> 
+						</div>
+
+						<p class="note">Note: Privacy and fingerprinting concerns related to this media feature are minimal, since it is unlikely that most individuals will have this setting enabled all the time. For example, due to personal preference or situational context, some individuals use this as a manual quick toggle to temporarily view text content in a light-on-dark color scheme as opposed to a dark-on-light default.</p>
+
+						<p class="note">Additional anecdotal evidence of how useful this could be as a media query can be found on <a href="http://ux.stackexchange.com/questions/26331/why-are-inverted-colors-considered-an-accessibility-feature">Stack Exchange UX</a>.</p>
+
+						<div class="relatedconcepts">
+							<h5>Concepts related to colors-inverted</h5>
+							<ul>
+								<li>
+									Apple UIKit API for detecting color inversion on iOS<br>
+									<code class="ex">
+										// From &lt;UIKit/UIAccessibility.h&gt;<br>
+										// Returns whether the system preference for invert colors is enabled.<br>
+										UIKIT_EXTERN BOOL <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKitFunctionReference/Reference/reference.html#//apple_ref/c/func/UIAccessibilityIsInvertColorsEnabled">UIAccessibilityIsInvertColorsEnabled()</a> NS_AVAILABLE_IOS(6_0);<br>
+										UIKIT_EXTERN NSString *const <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIAccessibility_Protocol/Introduction/Introduction.html#//apple_ref/c/data/UIAccessibilityInvertColorsStatusDidChangeNotification">UIAccessibilityInvertColorsStatusDidChangeNotification</a> NS_AVAILABLE_IOS(6_0);<br>
+									</code>
+								</li>
+
+								<li>Mac OS X and other platforms have similar features to invert display colors. <span class="todo">Todo: list them here.</span></li>
+								
+							</ul>
+						</div>
+					</section>
+				</section>
+
+				<section id="user-contrast">
+					<h4 class="settings-key">Key: <code>user-contrast</code></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Query</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Floating point number value between -1.0 and 1.0, representing the software contrast setting of the user's operating system. A value of 0.0 represents no contrast modification to the display (normal), and 1.0 represents the highest possible contrast modification (could be used to Microsoft's "high contrast" mode). A negative number (uncommon) represents a lower-than-average contrast. User Agents SHOULD NOT use a positive value to represent hardware display contrast, as this value is reserved for assistive contrast modes. User Agents MAY use a negative value to represent lower-than-average contrast in a hardware display.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkRestrictionCategory">userColors</dd>
+						
+					</dl>
+
+					<section id="media-feature-user-contrast">
+						<h5 class="media-feature">Associated Media Feature: <code>user-contrast</code></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;Number&gt; between -1.0 and 1.0</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd data-transform="linkRestrictionCategory">userColors</dd>
+							
+						</dl>
+
+						<pre class="example css" data-transform="syntaxCSS">
+							/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */
+							@media (user-contrast > 50) { 
+							    /* high contrast mode */
+							}
+						</pre>
+						<p class="ednote">Need to note how Microsoft's "high contrast mode" and other contrast modes fit in here. Microsoft would currently only ever return 0.0 or 1.0, but other platforms support variable contrast increases that would result in a intermediary value like 0.42, or 0.7.</p>
+					</section>
+				</section>
+
+				<section id="monochrome">
+					<h4 class="settings-key">Key: <code>monochrome</code></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Query</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Integer representing number of bits per pixel in a monochrome frame buffer. If the device is not a monochrome device, the output device value will be 0.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkRestrictionCategory">userColors</dd>
+						
+					</dl>
+
+					<section id="media-feature-monochrome">
+						<h5 class="media-feature">Associated Media Feature: <code>monochrome</code></h5>
+						<p>The <a href="http://www.w3.org/TR/css3-mediaqueries/#monochrome"><code>monochrome</code> media feature</a> is defined in CSS3.</p>
+					</section>
 				</section>
 
 			</section>
@@ -441,53 +603,106 @@
 				<p class="note">Type settings are not restricted by default from the requesting page, because a site can figure out all of this information by creatively using CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users.</p>
 
 				<section id="user-font-size">
-					<h4 class="media-feature">Media Feature: <code>user-font-size</code></h4>
+					<h4 class="settings-key">Key: <code>user-font-size</code></h4>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd>&lt;number&gt;</dd>
-						
-						<dt>Applies to</dt>
-						<dd>visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
+						<dt>Has Associated Media Query</dt>
 						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Number representing the user's current default font size of root element, prior to applying page styles. User Agents MUST return the value translated to CSS pixels, e.g. 14, not '14px' or '1.4em'</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userFonts</dd>
 						
 					</dl>
 
-					<pre class="example css" data-transform="syntaxCSS">
-						/* Default layout uses 2 columns */
-						main {
-						    columns: 2;
-						}
+					<section id="media-feature-user-font-size">
+						<h5 class="media-feature">Associated Media Feature: <code>user-font-size</code></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;number&gt;</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd data-transform="linkRestrictionCategory">userFonts</dd>
+							
+						</dl>
 
-						/* But if the user's default font size (from browser text zoom setting or... */
-						/* user style sheet...) is larger than 32px, drop the columns. */
-						/* Note: syntax might be more understandable as (user-font-size > 32px) */
-						@media (min-user-font-size: 32px) { 
-						    main {
-						        columns: auto;
-						    }
-						}
-					</pre> 
+						<pre class="example css" data-transform="syntaxCSS">
+							/* Default layout uses 2 columns */
+							main {
+							    columns: 2;
+							}
 
+							/* But if the user's default font size (from browser text zoom setting or... */
+							/* user style sheet...) is larger than 32px, drop the columns. */
+							/* Note: the CSS3 syntax is (min-user-font-size: 32) */
+							/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */
+							@media (user-font-size > 32) { 
+							    main {
+							        columns: auto;
+							    }
+							}
+						</pre>
+
+					</section>
+				</section>
+
+				<section id="user-minimum-font-size">
+					<h4 class="settings-key">Key: <code>user-minimum-font-size</code></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Query</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Number representing the user's minimum allowed font size. User Agents MUST return the value translated to CSS pixels, e.g. 9, not '9px' or '0.9em'</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkRestrictionCategory">userFonts</dd>
+						
+					</dl>
+
+					<section id="media-feature-user-minimum-font-size">
+						<h5 class="media-feature">Associated Media Feature: <code>user-minimum-font-size</code></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;number&gt;</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd data-transform="linkRestrictionCategory">userFonts</dd>
+							
+						</dl>
+
+					</section>
 				</section>
 
 				<section id="user-line-height">
-					<h4 class="media-feature">Media Feature: <code>user-line-height</code></h4>
+					<h4 class="settings-key">Key: <code>user-line-height</code></h4>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd>&lt;number&gt;</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>No</dd>
 						
-						<dt>Applies to</dt>
-						<dd>visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>Yes</dd>
+						<dt>Returns</dt>
+						<dd>Number as a unitless multiplier; equivalent to unitless 'Number' value for CSS 'line-height' property. e.g. 1.2, not '1.2em' or '12px' </dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userFonts</dd>
@@ -496,42 +711,39 @@
 				</section>
 
 				<section id="user-letter-spacing">
-					<h4 class="media-feature">Media Feature: <code>user-letter-spacing</code></h4>
+					<h4 class="settings-key">Key: <code>user-letter-spacing</code></h4>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd>&lt;number&gt;</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>No</dd>
 						
-						<dt>Applies to</dt>
-						<dd>visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>Yes</dd>
+						<dt>Returns</dt>
+						<dd>Unit TBD; this should probably also be a calculated CSS pixel value equivalent to default or user value for CSS 'letter-spacing' property.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userFonts</dd>
 						
 					</dl>
+
 				</section>
 
 				<section id="user-word-spacing">
-					<h4 class="media-feature">Media Feature: <code>user-word-spacing</code></h4>
+					<h4 class="settings-key">Key: <code>user-word-spacing</code></h4>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd>&lt;number&gt;</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>No</dd>
 						
-						<dt>Applies to</dt>
-						<dd>visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>Yes</dd>
+						<dt>Returns</dt>
+						<dd>Unit TBD; this should probably also be a calculated CSS pixel value equivalent to default or user value for CSS 'word-spacing' property.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userFonts</dd>
 						
 					</dl>
-					
+
 				</section>
 
 				<p class="note">In addition to font-size, which is commonly adjusted by mainstream users, line-height, letter-spacing, and word-spacing can be especially important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p>
@@ -551,39 +763,51 @@
 				</dl>
 
 				<section id="subtitles">
-					<h4 class="media-feature">Media Feature: <code>subtitles</code></h4>
+					<h4 class="settings-key">Key: <code>subtitles</code></h4>
+					<p>Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom subtitle view SHOULD display the custom-rendered subtitles based on this setting.</p>
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd><code>display</code> | [<code>none</code>]</dd>
-						
-						<dt>Applies to</dt>
-						<dd>continuous, visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
+						<dt>Has Associated Media Query</dt>
 						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>Boolean value indicating whether subtitles or captions are displayed (true) or not displayed (false) in native video players.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userMediaSettings</dd>
 						
 					</dl>
-					<p>Matches depending on whether subtitles/captions are displayed (display) or not displayed (none) in native video players. Web authors using a native video player SHOULD allow subtitles to be displayed natively. Web authors using a custom subtitle view SHOULD display the custom-rendered subtitles based on this setting.</p>
+					
 				</section>
 
-				<p class="todo">Todo: Need to determine how to expose list of preferred subtitle languages, which will likely require an object interface rather than a media feature. For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect. (Note: previously exposed in IndieUI UC draft as DOMString? subtitleLanguages)</p>
+				<section id="subtitle-languages">
+					<h4 class="settings-key">Key: <code>subtitle-languages</code></h4>
 
-				<section id="subtitle-type">
-					<h4 class="media-feature">Media Feature: <code>subtitle-type</code></h4>
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd><code>sdh</code> | <code>cc</code> | [<code>none</code>]</dd>
-						
-						<dt>Applies to</dt>
-						<dd>continuous, visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
+						<dt>Has Associated Media Query</dt>
 						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>DOMString of languages in order of preference. Users Agents MUST format the string as a space-separated list of ISO-639 language codes, that may be optionally hyphenated to include ISO-3166 country codes.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkRestrictionCategory">userMediaSettings</dd>
+						
+					</dl>
+					<p class="note">For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect.</p>
+				</section>
+
+				<section id="subtitle-type">
+					<h4 class="settings-key">Key: <code>subtitle-type</code></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Query</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>DOMString of type of subtitles or captions in order of preference. Users Agents MUST format the string as a space-separated list of the following tokens: <code>sdh</code>, <code>cc</code>, or <code>standard</code></dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userMediaSettings</dd>
@@ -593,63 +817,116 @@
 				</section>
 
 				<section id="user-subtitle-color">
-					<h4 class="media-feature">Media Feature: <code>user-subtitle-color</code></h4>
+					<h4 class="settings-key">Key: <code>user-subtitle-color</code></h4>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd>&lt;color&gt; | [<code>none</code>]</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>Yes</dd>
 						
-						<dt>Applies to</dt>
-						<dd>continuous, visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>No</dd>
+						<dt>Returns</dt>
+						<dd>String values matching the associated media feature values.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userMediaSettings</dd>
 						
 					</dl>
-					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
+
+					<section id="media-feature-user-subtitle-color">
+						<h5 class="media-feature">Associated Media Feature: <code>user-subtitle-color</code></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;HSLA Color&gt; | [<code>none</code>]</dd>
+							
+							<dt>Applies to</dt>
+							<dd>continuous, visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+
+							<dt>Accepts hue/saturation/luminosity/alpha suffixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd data-transform="linkRestrictionCategory">userMediaSettings</dd>
+							
+						</dl>
+						<p class="note">See <a href="#user-background-color"><code>user-background-color</code></a> and <a href="#user-subtitle-background-color"><code>user-subtitle-background-color</code></a> for examples of how the color media queries might be used with HSLA suffixes.</p>
+					</section>
 				</section>
 
 				<section id="user-subtitle-background-color">
-					<h4 class="media-feature">Media Feature: <code>user-subtitle-background-color</code></h4>
+					<h4 class="settings-key">Key: <code>user-subtitle-background-color</code></h4>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd>&lt;color&gt; | [<code>none</code>]</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>Yes</dd>
 						
-						<dt>Applies to</dt>
-						<dd>continuous, visual media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>No</dd>
+						<dt>Returns</dt>
+						<dd>String values matching the associated media feature values.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userMediaSettings</dd>
 						
 					</dl>
-					<p class="ednote">Need to determine how to match color hue or value ranges (potentially via HSL) so that we could expose min/max on colors. Otherwise, this may not be usable.</p>
+
+					<section id="media-feature-user-subtitle-background-color">
+						<h5 class="media-feature">Associated Media Feature: <code>user-subtitle-background-color</code></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;HSLA Color&gt; | [<code>none</code>]</dd>
+							
+							<dt>Applies to</dt>
+							<dd>continuous, visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+							
+							<dt>Accepts hue/saturation/luminosity/alpha suffixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd data-transform="linkRestrictionCategory">userMediaSettings</dd>
+							
+						</dl>
+						<div class="ex" title="Informative">
+							<p>In this example, the user-defined subtitle background color is not sufficiently opaque to to prevent the video noise from making the captions difficult to read, so add a text shadow.</p>
+							<pre class="example css" data-transform="syntaxCSS">
+								/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */
+								@media (user-subtitle-background-color-alpha &lt; 20) and (user-subtitle-color-luminosity &gt; 50) {
+								    .customRenderedCaptions {
+								    	text-shadow: 1px 1px 2px black; 
+								    }
+								}
+							</pre> 
+						</div>
+						<p class="note">See <a href="#user-background-color"><code>user-background-color</code></a> and <a href="#user-subtitle-background-color"><code>user-subtitle-background-color</code></a> for examples of how the color media queries might be used with HSLA suffixes.</p>
+					</section>
 				</section>
 
 				<section id="audio-description">
-					<h4 class="media-feature">Media Feature: <code>audio-description</code></h4>
+					<h4 class="settings-key">Key: <code>audio-description</code></h4>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd><code>display</code> | [<code>none</code>]</dd>
-						
-						<dt>Applies to</dt>
-						<dd>continuous, audio media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
+						<dt>Has Associated Media Query</dt>
 						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd><code>display</code> | [<code>none</code>]</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userMediaSettings</dd>
 						
 					</dl>
-					<p>Matches a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</p>
+
+					<p>Returns a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</p>
+					<p class="note">Audio descriptions are also sometimes referred to as "descriptive audio" tracks.</p>
+					<p class="ednote">Need a more appropriate true value than "display"; possibly "prefer", "selected", etc.</p>
+				
 				</section>
 
 				<!-- todo: work these in when possible -->
@@ -682,71 +959,85 @@
 				<p>Web authors SHOULD NOT request any keys in this category unless the knowledge is essential to the operation of the web application, and web authors MUST provide a justification for the request as defined in @@ section.</p>
 
 				<section id="screenreader">
-					<h4 class="media-feature">Media Feature: <code>screenreader</code></h4>
+					<h4 class="settings-key">Key: <code>screenreader</code></h4>
+					<p>Returns whether a screen reader is currently active (active) or not (none).</p>
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd><code>active</code> | [<code>none</code>]</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>Yes</dd>
 						
-						<dt>Applies to</dt>
-						<dd>interactive media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>No</dd>
+						<dt>Returns</dt>
+						<dd>Boolean indicating whether or not a screen reader is currently active or in use (<code>true</code>), or <code>false</code> otherwise.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userScreenReaderSettings</dd>
 						
 					</dl>
-					<p>Matches whether a screen reader is currently active (active) or not (none).</p>
+
+					<section id="media-feature-screenreader">
+						<h5 class="media-feature">Associated Media Feature: <code>screenreader</code></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd><code>active</code> | [<code>none</code>]</dd>
+							
+							<dt>Applies to</dt>
+							<dd>interactive media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd data-transform="linkRestrictionCategory">userScreenReaderSettings</dd>
+							
+						</dl>
+						
+					</section>
 				</section>
 
 				<!-- need to consider these a bit more
 				<section id="screenreader-typing-echo">
-					<h4 class="media-feature">Media Feature: <code>screenreader-typing-echo</code></h4>
+					<h4 class="settings-key">Key: <code>screenreader-typing-echo</code></h4>
+					<p>Returns a value indicating whether typed speech from a screen reader echos words, characters, both, or none.</p>
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd><code>words</code> | <code>characters</code> | <code>both</code> | [<code>none</code>]</dd>
-						
-						<dt>Applies to</dt>
-						<dd>interactive media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
+						<dt>Has Associated Media Query</dt>
 						<dd>No</dd>
 						
+						<dt>Returns</dt>
+						<dd><code>words</code> | <code>characters</code> | <code>both</code> | [<code>none</code>]</dd>
+						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userScreenReaderSettings</dd>
 						
 					</dl>
-					<p>Returns a value indicating whether typed speech from a screen reader echos words, characters, or both.</p>
-				</section>
+
+				</section
 
 				<section id="screenreader-words-per-minute">
-					<h4 class="media-feature">Media Feature: <code>screenreader-words-per-minute</code></h4>
+					<h4 class="settings-key">Key: <code>screenreader-words-per-minute</code></h4>
+					<p>Returns a number indicating the approximate words-per-minute rate of a screen reader user's text-to-speech settings.</p>
+
 					<dl class="properties">
 						
-						<dt>Value</dt>
-						<dd>&lt;number&gt; | [<code>none</code>]</dd>
+						<dt>Has Associated Media Query</dt>
+						<dd>No</dd>
 						
-						<dt>Applies to</dt>
-						<dd>interactive media</dd>
-						
-						<dt>Accepts min/max prefixes</dt>
-						<dd>Yes</dd>
+						<dt>Returns</dt>
+						<dd>&lt;number&gt; | [<code>null</code>]</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userScreenReaderSettings</dd>
 						
 					</dl>
-					<p>Returns a number indicating the approximate words-per-minute rate of a screen reader user's text-to-speech settings.</p>
+
 				</section>
 				-->
 
 			</section>
 			<!-- :::::::::::::::::::: END userScreenReaderSettings :::::::::::::::::::: -->
 
-			<p class="todo">Todo: Probably need additional categories for screen magnifier (active/none, scale factor), switch control (active/none), and the more general "api-compatible" key which could be used automation scripts in addition to real assistive technology.</p>
+			<p class="todo">Todo: Probably need additional categories for screen magnifiers (active/none, scale factor), switch control software (active/none), and the more general "api-compatible" key which could be used for automation scripts in addition to real assistive technology.</p>
 			<p class="todo">Todo: Need a mockup of an example user prompt with displayed justification string.</p>
 
 
@@ -758,7 +1049,12 @@
 		<script type="text/javascript">function xmp(r, content) { return content.replace(/</g,'&lt;').replace(/>/g,'&gt;'); } </script>
 		<pre data-transform='xmp'>This markup is <b>escaped</b> like an <code>xmp</code>.</pre>
 		-->
-		<section id="keyslist" class="appendix">
+		<section id="settingskeyslist" class="appendix">
+			<h2>Settings Keys List (alphabetical)</h2>
+			<div data-transform="listSettingsKeys"><!-- dynamically generates settings keys list --></div>
+		</section>
+
+		<section id="mediafeatureslist" class="appendix">
 			<h2>Media Features List (alphabetical)</h2>
 			<div data-transform="listMediaFeatures"><!-- dynamically generates media feature list --></div>
 		</section>
