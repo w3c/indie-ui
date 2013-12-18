@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en-us" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
+		<title>Requirements for IndieUI: Events 1.0</title>
+		<link href="./css/screen.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="./loc/en/strings.js" class="remove"></script>
+		<script type="text/javascript" src="./js/utils.js" class="remove"></script>
+		<script type="text/javascript" src="./js/respec-transformers.js" class="remove"></script>
+		
+		<!-- 
+      === NOTA BENE ===
+      For the three scripts below, if your spec resides on dev.w3 you can check them
+      out in the same tree and use relative links so that they'll work offline,
+     -->
+		<script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
+		<script class="remove">
+      var respecConfig = {
+          // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
+          specStatus:           "ED",
+          
+          // the specification's short name, as in http://www.w3.org/TR/short-name/
+          shortName:            "indie-ui-requirements",
+
+          // if your specification has a subtitle that goes below the main
+          // formal title, define it here
+          // subtitle   :  "Events for User Interface Independence",
+
+          // if you wish the publication date to be other than today, set this
+          //publishDate:  "2013-01-22",
+
+          // if the specification's copyright date is a range of years, specify
+          // the start date here:
+          // copyrightStart: "2013",
+
+          // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
+          // and its maturity status
+          // previousPublishDate:  "2013-01-22",
+          // previousMaturity:  "WD",
+
+          // if there a publicly available Editor's Draft, this is the link
+          edDraftURI:           "https://dvcs.w3.org/hg/IndieUI/raw-file/default/src/indie-ui-requirements.html",
+
+          // if this is a LCWD, uncomment and set the end of its review period
+          // lcEnd: "2009-08-05",
+
+          // if you want to have extra CSS, append them to this list
+          // it is recommended that the respec.css stylesheet be kept
+          /*
+          extraCSS:             [
+            "http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css",
+            "./css/screen.css"
+          ],
+          */
+
+          // editors, add as many as you like
+          // only "name" is required, also can have url, company, companyURL in comma separated list
+          editors:  [
+              { name: "James Craig", company: "Apple Inc.", companyURL: "http://www.apple.com/" },
+              { name: "Michael Cooper", company: "W3C", companyURL: "http://www.w3.org/" },
+          ],
+
+          // authors, add as many as you like. 
+          // This is optional, uncomment if you have authors as well as editors.
+          // only "name" is required. Same format as editors.
+
+          //authors:  [
+          //  { name: "James Craig", company: "Apple Inc.", companyURL: "http://www.apple.com/" },
+          //],
+          
+          // name of the WG
+          wg:           "Independent User Interface (Indie UI) Working Group",
+          
+          // URI of the public WG page
+          wgURI:        "http://www.w3.org/WAI/IndieUI/",
+          
+          // name (without the @w3c.org) of the public mailing to which comments are due
+          wgPublicList: "public-indie-ui-comments",
+          
+          // URI of the patent status for this WG, for Rec-track documents
+          // !!!! IMPORTANT !!!!
+          // This is important for Rec-track documents, do not copy a patent URI from a random
+          // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
+          // Team Contact.
+          wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/54953/status",
+      };
+    </script>
+		
+		
+	</head>
+	<body>
+
+		<section id="abstract">
+			<p>@@</p>
+		</section>
+
+		<section id="sotd">
+		</section>
+		
+		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
+		<section id="intro">
+			<h2>Introduction</h2>
+			<p>@@Why IndieUI, might take some intro material from spec</p>
+			
+		</section>
+		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: USE CASES :::::::::::::::::::: -->
+		<section id="use-cases">
+			<h2>Use Cases and Scenarios</h2>
+			
+			<section id="scenario_map">
+				<h3>Manipulate a map</h3>
+				<p>A person is using a map to find the location and layout of a local park in a web-based mapping application so they can print it out, using their touch-screen laptop. They know the general location, and see the green area on the lower-left-hand corner of the map on the screen. They touch that part of the screen, and use a zooming gesture to center and zoom in on that section of the screen, then fine-tune the centering using the arrow keys on their keyboard and zoom in further using the context menu on their laptop's trackpad. Finally, they use a rotation gesture on the touchscreen to re-orient the map around the point of interest. Once they have the view they want, they use the browser's control menu to print the map. </p>
+			</section>
+			<section id="scenario_popup">
+				<h3>Execute a popup</h3>
+				<p>A user whose point of regard (focus) is on a UI object that support popups performs an action that causes the web application to render the popup. A popup could be a popup dialog box or a popup menu. The user would like to be made aware that either of these popup options are available and be able to cause the popup to render using a variety of device input interaction methods such as a keyboard command, a gesture, a voice command, or a right mouse click. </p>
+				<p class="note">WAI-ARIA provides a property, aria-haspopup, that indicates the UI Widget supports a popup.</p>
+			</section>
+			<section id="scenario_expand-collapse">
+				<h3>Open or collapse a tree branch, menu, expandable grid cell, or expandable section</h3>
+				<p>A user whose point of regard (focus) is on a UI object that indicates the UI object is expandable / collapsible to reveal / hide subordinate content would like to perform an action to cause the web application to reveal / hide the content. Common UI objects that support this function are tree items in tree controls, gridcells in treegrids that expand to reveal new rows, accordion tabs which reveal / hide panels of content, or expandable and collapsible regions (e.g. portlets). The user would like to be made aware that these options are available and be able to reveal / hide the content using a variety of device input interaction methods such as a keyboard command, a gesture, a voice command, or possibly a mouse click.</p>
+				<p class="note">WAI-ARIA provides an aria-expanded property that indicates that is expandable when it is set to false. </p>
+				<p class="note">WAI-ARIA has a container role of dialog that this could be applied to. Essentially this would be equivalent to an escape key .</p>
+			</section>
+			<section id="scenario_activate">
+				<h3>Activate a UI component</h3>
+				<p>A user whose point of regard (focus) is on a UI object, that can be activated, and would like to perform an action to activate it. Example UI objects that support activation are push buttons, radio buttons, checkboxes, and menu items. The action could be in the form of a tap, a gesture, a voice command, a mouse click, a keyboard key, or a command from an alternative input device. </p>
+				<p class="note">This has been proposed in the past and the legacy "click" was used instead - DOMActivate. </p>
+			</section>
+			<section id="scenario_internal-move">
+				<h3>Move the focus point within a UI component down to the next / visual right / visual down, or previous / visual left / visual up item within a UI component </h3>
+				<p>A user whose focus is on a UI object that supports next and previous navigation within the UI component would like to control the UI to move its current active item (usually rendered visibly as its point of regard) to the next or previous item within its internal navigation sequence. This might be the next or previous item within a listbox, tree widget, menu, menubar, or grid, treegrid, select, or any other type of UI Component supporting this function. Visually the next item is usually right or down, and the previous item is usually left or above. The action could be in the form of a gesture, a voice command, a right mouse click, a keyboard key, or an alternative input device. Some UI components may choose to force an item selection in response to the action. </p>
+				<ul class="note">
+					<li>We cannot assume we know all UI components capable of supporting this function.</li>
+					<li>Some UI components may move its internal point of regard back to the beginning of its navigation sequence after it reaches the end.</li>
+					<li>This movement is not response to a tab notification which should be designed to move among widgets and interactive controls that are not managed by another UI component.</li>
+					<li>This would not be applicable to Dialogs or form elements that intended to be in the tab sequence.</li>
+					<li>"Visual right" vs "next element" / "visual left" vs "previous element" are two different things. Right and left are locale-independent. Next / previous element would change direction based on locale, for example, in RTL languages like Arabic.</li>
+					<li>We cannot assume that moving the point of the regard to the right will not move the point of regard back to the left-most managed object when starting from the right-most managed UI object. </li>
+				</ul>
+			</section>
+			<section id="scenario_play">
+				<h3>Direct a media player to start, stop, or pause playing</h3>
+				<p>A user whose point of regard (focus) is within a media player would like to notify the application to start, stop, or pause the playing of the video, audio, or animation. When a notification to start, stop, or pause the player is received the rendering starts, stops, or pauses. Start starts playing form the current time in the media play sequence. Stop moves the current time in the media play back to the start of the media sequence. Pause stops playback but does not move the time pointer. Example UI components would be a video player or audio player. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<p class="note">Do we want to include animation such as SVG animation? This would require the user agent to respond to the notification. </p>
+			</section>
+			<section id="scenario_captions">
+				<h3>Toggle rendering captions</h3>
+				<p>A user whose point of regard (focus) is within a media player would like to notify the application to toggle the rendering of video or audio captions. When a notification to toggle captions is received the player the toggles the rendering of the caption track at the synchronization point within the video or audio stream play. Example UI components would be a video player or audio player. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device.</p>
+				<p class="note">HTML5 has a a new media controller API that could be used to facilitate this happening. </p>
+			</section>
+			<section id="scenario_volume">
+				<h3>Increase or decrease the volume</h3>
+				<p>A user whose point of regard (focus) is within a media player would like to notify the application to increase or decrease the video or audio volume. When a notification to increase or decrease the volume is received the player increases or decreases the rendering volume. Example UI components would be a video player or audio player. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<ul class="note">
+					<li>The increments would need to depend on the granularity of the player</li>
+					<li>Do we want to be able to change the volume increments?</li>
+					<li>Should we make this more generic to increase a control - such as a modifiable range object (slider)? </li>
+				</ul>
+			</section>
+			<section id="scenario_zoom">
+				<h3>Zoom in or out</h3>
+				<p>A user whose point of regard (focus) is within a zoomable object would like to notify the application to zoom in on the object. When a notification to zoom in a particular factor is received, the object zooms in by that factor and optionally provides more detail. Example UI components would be an SVG rendering of a CAD drawing or a key component of a scatter plot. The notification could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<ul class="note">
+					<li>Do we want to separate Drill Down from Zoom Out or should we leave that up to the applications? A drill down might provide more information. An end user may think zoom simply enlarges an area vs. providing more detail.</li>
+					<li>Is this distinct in any way from the zoom operation discussed in the map scenario? Should we just have zoom, pan and rotate as separate scenarios (or even just a single combined scenario)? </li>
+				</ul>
+			</section>
+			<section id="scenario_pan">
+				<h3>Pan right, left, up, or down</h3>
+				<p>A user whose point of regard (focus) is within a media player would like to direct the ui object to pan up, down, left, or right so that more information can be revealed to the user in the direction of the pan. Example UI components would be a chart, subway map, CAD drawing, etc. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<p class="note">Do we want to include animation such as SVG animation? This would require the user agent to respond to the notification. </p>
+			</section>
+			<section id="scenario_por-limit">
+				<h3>Move point of regard to the beginning or end of its navigation sequence</h3>
+				<p>A user whose point of regard is rendered within a focused UI Object that manages its own navigation and would like to direct the ui object to move the point of regard to the beginning or end of the navigation sequence similar to a "Home" or "End" button. Example UI components would be a listbox, video player, audio player, tree widget, contenteditable area, tree widget, gridd, treegrid, or tablist. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+			</section>
+			<section id="scenario_drag-drop">
+				<h3>Grab, move, and release grabbable UI object</h3>
+				<p>A user whose point of regard is non a UI object would like to grab the object for the purposes of moving it such as in a drag operation. After moving the point of regard, they drop the currently grabbed object on the object with focus at the current point of regard location. Example UI components to grab and move would be a light box, a lisbox item, a tree item, or a drawing object. Example UI components on which an item could be dropped would be a light box empty box or a line indicating a location between light box items, a lisbox item to drop the item before or after the current listbox item, a tree item to add a new item in a subtree, or a region of the web application or a drawing object. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<ul class="note">
+					<li>WAI-ARIA has an aria-grabbed property such that when set to false indicates that it may be grabbed for the purposes of moving it.</li>
+					<li>WAI-ARiA defines roles for objects such as regions</li>
+					<li>Should this be left up to the user agent?</li>
+					<li>Should the drop occur if the target does not have aria-dropeffect set? </li>
+				</ul>
+			</section>
+			<section id="scenario_selection">
+				<h3>Continuous or discontinuous multi-slection within a UI object</h3>
+				<p>A user whose point of regard is on a UI object would like to select multiple continuous or discontinuous items within a supporting UI control. Once initiated it would tell the UI component to start a run of either continuous or discontinuous item selections with in the UI control. For continuous selection, as the user navigates the items within the UI Object container each item navigated to is automatically selected until the multi-selection process terminates. For discontinuous selection, a separate command would be given to actually select individual items within the UI object but navigation among items in the UI object would not cause an actual selection to occur. When selection is complete, the user directs the UI object either to save the currently selected items and exit the selection process, or to cancel the selection process and clear the selection. Examples are options in a listbox, gridcells withing a gridd, or treeitems within a tree. This action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<p class="note">WAI-ARIA has an aria-selected state that can be used to reflect the selected state of the item within a UI object.</p>
+			</section>
+			<section id="scenario_resize">
+				<h3>Increase or Decrease Size of UI object by a small or large increment</h3>
+				<p>A user whose point of regard is on a UI object would like to ask it to increase or decrease its size by a small or large increment. This is very common in drawing objects such as drawing objects in a flow diagram or presentation tool where the user is attempting to create a visual UI. For people with mobility impairments this is very hard to do with a pointing device and alternate forms of input are necessary. This action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<p class="note">We should provide an ARIA property for ARIA 2.0 that conveys that an object is resizeable.</p>
+			</section>
+			<section id="scenario_move">
+				<h3>Move a UI object</h3>
+				<p>A user whose point of regard is on a UI object would like to be able to move the object in different directions by both small and large ingrements. This is very common in drawing objects such as drawing objects in a flow diagram or presentation tool where the user is attempting to create a visual UI. For people with mobility impairments this is very hard to do with a pointing device and alternate forms of input are necessary. This action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<ul class="note">
+					<li>We should provide an ARIA property for ARIA 2.0 that conveys that an object is moveable.</li>
+					<li>We need to decide how we can do this in terms of the number of different types of events we use. This requires more group discussion. </li>
+				</ul>
+			</section>
+			<section id="scenario_show-hide">
+				<h3>Reveal or hide additional text without selection</h3>
+				<p>User indicates that further information about an object is desired and should be shown, or once seen, no longer needed and should be hidden. This further information may be a hint similar to Hover on a mouse based system. Content may be timed or something that completes display. This action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<ul>
+					<li>Should we use a hover device independent event instead and leave this up the developer?</li>
+					<li>This is related to S32, S33, and S34 </li>
+				</ul>
+			</section>
+			<section id="scenario_selectable">
+				<h3>Change nearness indication without selection</h3>
+				<p>User safely tests whether an object is active and can be selected. This further information may be a change in visual appearance, but not an actual selection or activation. (Similar to MouseOver on a mouse based system)</p>
+				<ul class="note">
+					<li>Should we use a hover device independent event instead and leave this up the developer?</li>
+					<li>This is related to S31, S32, and S34 </li>
+				</ul>
+			</section>
+			<section id="scenario_deactivate">
+				<h3>Cause a non-selection active state indicator to disable</h3>
+				<p>The result is an a dormant state indication. (Similar to Mouse Exit on a mouse based system)</p>
+				<ul class="note">
+					<li>Should we use a hover device independent event instead and leave this up the developer?</li>
+					<li>This is related to S31, S32, and S34 </li>
+				</ul>
+			</section>
+			<section id="scenario_updates">
+				<h3>Cause a suspend/resume of live updates to the page. Can very from live regions, live blogging, twitter stream, live download.</h3>
+				<p class="note">Discussed at November 1, 2012 TPAC Face to Face? </p>
+			</section>
+		</section>
+		<!-- :::::::::::::::::::: END USE CASES :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: EVENTS REQUIREMENTS :::::::::::::::::::: -->
+		<section id="requirements_events">
+			<h2>Events Requirements</h2>
+			<p>Requirements in this section are expected to be met by <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/default/src/indie-ui-events.html">IndieUI: Events</a>.</p>
+			<section id="requirements_events_api">
+				<h3>API</h3>
+				<p>Provide an API layer to define user intended events that is agnostic of the specific input methodology and independent of a user's particular platform, hardware, locale, and preferences.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-goals">Goals</a></p>
+			</section>
+			<section id="requirements_events_layer">
+				<h3>Input Device Independence</h3>
+				<p>Allow the API to support user commands without requiring specific physical events.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-goals">Goals</a></p>
+			</section>
+			<section id="requirements_events_independence">
+				<h3>Interaction Independence</h3>
+				<p>Do not require specific physical user interactions (keyboard combinations, gestures, speech, etc.) to trigger particular IndieUI events.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-scope">Scope</a></p>
+			</section>
+			<section id="requirements_events_compatibility">
+				<h3>Backwards Compatibility</h3>
+				<p>Structure the events such that they are only triggered if the application registers an interest in them, to optimize performance and allow backwards compatibility.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-backwards-compatibility">Backwards Compatibility</a></p>
+			</section>
+			<section id="requirements_events_handled">
+				<h3>Events Handled</h3>
+				<p>Provide a way for applications to communicate that a given event request was or was not handled so the host OS or UA can attempt fallback behaviour.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-backwards-compatibility">Backwards Compatibility</a></p>
+			</section>
+			<section id="requirements_events_non-interference">
+				<h3>Non-Interference</h3>
+				<p>Do not block standard events when listening for IndieUI events.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/15">ISSUE-15</a> may impact this.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-backwards-compatibility">Backwards Compatibility</a></p>
+			</section>
+			<section id="requirements_events_reset">
+				<h3>Reset</h3>
+				<p>Provide a way to "reset" ui-actions on descendant node.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/15">ISSUE-15</a> may impact this.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-backwards-compatibility">Backwards Compatibility</a></p>
+			</section>
+			<section id="requirements_events_delegation">
+				<h3>Event Delegation</h3>
+				<p>Allow event delegation without affecting performance and scoping of events.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/16">ISSUE-16</a> may impact this.</p>
+				<p class="ednote">There may be additional requirements related to Section 2 UI Actions after we clarify implications of this structure.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#actions">UI Actions</a></p>
+			</section>
+			<section id="requirements_events_order">
+				<h3>Event Order</h3>
+				<p>There will be a requirement for how IndieUI events fit in with the order of other events.</p>
+				<p class="ednote">This needs rewording.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/15">ISSUE-15</a> may impact this.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#RequestEvents">UI Request Events</a></p>
+			</section>
+			<section id="requirements_events_association">
+				<h3>Physical Event Association</h3>
+				<p>Might need a requirement to be able to associate an IndieUI event with other related physical events</p>
+				<p class="ednote">This needs rewording.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/15">ISSUE-15</a> may impact this.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#RequestEvents">UI Request Events</a></p>
+			</section>
+			<section id="requirements_events_uievents">
+				<h3>Extend UI Events</h3>
+				<p>IndieUI Events must extend UIEvents unless the IndieUI requirements are met directly in UI Events.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIRequestEvent">UIRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_userinput">
+				<h3>User Input Functions</h3>
+				<p>IndieUI must support the following functions unless supported by other technologies:</p>
+				<ul>
+					<li>undo</li>
+					 <li>redo</li>
+					 <li>expand</li>
+					 <li>collapse</li>
+					 <li>dismiss</li>
+					 <li>delete</li>
+					 <li>move</li>
+					 <li>pan</li>
+					 <li>rotation</li>
+					 <li>scroll</li>
+					 <li>valuechange</li>
+					 <li>zoom</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): <a href="#scenario_expand-collapse"></a>, <a href="#scenario_zoom"></a>, <a href="#scenario_pan"></a>, <a href="#scenario_move"></a></p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIRequestEvent">UIRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_keyboard-mouse">
+				<h3>Keyboard and Mouse compatibility</h3>
+				<p>The properties of IndieUI request events must be a superset of the events from at least both keyboard and mouse events in the UI Events specification.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIRequestEvent">UIRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_linear-navigation">
+				<h3>Linear Navigation</h3>
+				<p>Support linear navigation for first, previous, next, and last.</p>
+				<ul>
+					<li>first</li>
+					<li>previous</li>
+					<li>next</li>
+					<li>last</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): <a href="#scenario_internal-move"></a>, <a href="#scenario_por-limit"></a>?</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_directional-navigation">
+				<h3>Directional Navigation</h3>
+				<p>Support directional navigation for:</p>
+				<ul>
+					<li>up</li>
+					<li>down</li>
+					<li>left</li>
+					<li>right</li>
+					<li>up and right</li>
+					<li>up and left</li>
+					<li>down and right</li>
+					<li>down and left</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): <a href="#scenario_internal-move"></a></p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_nonlinear-navigation">
+				<h3>Non-Linear Navigation</h3>
+				<p>Provide a mechanism for users to move focus non-linearly to other sections of the document such as toolbar, palette, and windows.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/actions/57">Action-57</a>: also help (main covered by landmark)</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_landmark">
+				<h3>Landmark Navigation</h3>
+				<p>Provide a way to navigate amongst landmark regions.</p>
+				<p class="ednote">This may be at risk in 1.0 and could be pushed to future version. Might be a11y specific.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_return">
+				<h3>Return to Previous Point of Regard</h3>
+				<p>Provide a way for users to return to their previous point of regard, like emacs and vid and IDEs support. </p>
+				<p class="ednote">Need to remove the tool-specific examples.</p>
+				<p class="ednote">This does not have consensus yet. Need to determine if it is just keyboard or others as well. Could be pushed to future version. Seems to have general use cases.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_manipulate">
+				<h3>Manipulate Objects</h3>
+				<p>Provide a mechanism to perform the following manipulations on objects or the screen:</p>
+				<ul>
+					<li>move</li>
+					<li>pan</li>
+					<li>rotate</li>
+					<li>zoom</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): <a href="#scenario_zoom"></a>, <a href="#scenario_pan"></a>, <a href="#scenario_move"></a></p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIManipulationRequestEvent">UIManipulationRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_scroll ">
+				<h3>Scroll</h3>
+				<p>Provide a mechanism for custom scroll views to scroll the view in the following manners:</p>
+				<ul>
+					<li>by increments</li>
+					<li>entire screens</li>
+					<li>to the limit</li>
+				</ul>
+				<p>in the following directions:</p>
+				<ul>
+					<li>up</li>
+					<li>down</li>
+					<li>left</li>
+					<li>right</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIScrollRequestEvent">UIScrollRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_range">
+				<h3>Range Controls</h3>
+				<p>Provide a mechanism to adjust numeric values of custom range controls by small and large increments, or to minimum and maximum values.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href=""></a></p>
+			</section>
+			<section id="requirements_events_features">
+				<h3>Feature Detection</h3>
+				<p>Provide a mechanism for content authors to determine if the user agent has support for specific events.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIValueChangeRequestEvent">UIValueChangeRequestEvent</a></p>
+			</section>
+			<section id="requirements_events_context-menu">
+				<h3>Context Menus</h3>
+				<p>Provide a mechanism to access context menus and perhaps other secondary actions.</p>
+				<p class="addresses">Addresses scenario(s): <a href="#scenario_popup"></a></p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/issues/3">ISSUE-3</a>. This might be a future requirement.</p>
+			</section>
+			<section id="requirements_events_media">
+				<h3>Media Controls</h3>
+				<p>Provide a mechanism for standard media controls including:</p>
+				<ul>
+					<li>play</li>
+					<li>pause</li>
+					<li>stop</li>
+					<li>fast forward</li>
+					<li>rewind</li>
+					<li>move to start</li>
+					<li>move to end</li>
+					<li>increase volume</li>
+					<li>decrease volume</li>
+					<li>set volume to minimum</li>
+					<li>set volume to maximum</li>
+					<li>mute</li>
+					<li>unmute</li>
+					<li>move to next track</li>
+					<li>move to previous track</li>
+				</ul>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/16">ACTION-16</a>, <a href="https://www.w3.org/WAI/IndieUI/track/actions/19">ACTION-19</a>, and <a href="https://www.w3.org/WAI/IndieUI/track/actions/20">ACTION-20</a>. Some of these might be future requirements.</p>
+				<p class="addresses">Addresses scenario(s): <a href="#scenario_play"></a>, <a href="#scenario_volume"></a></p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section id="requirements_events_suspend">
+				<h3>Suspend and Resume</h3>
+				<p>Provide a mechanism to suspend or resume an activity</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/17">ACTION-17</a>. This might be a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): <a href="#scenario_updates"></a></p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section id="requirements_events_select">
+				<h3>Selection</h3>
+				<p>Provide a mechanism to select one or more objects (contiguously or discontiguously) for the purpose of performing an action.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/25">ACTION-25</a></p>
+				<p class="ednote">Contiguous and discontiguous selection might be separate requirements.</p>
+				<p class="addresses">Addresses scenario(s): <a href="#scenario_selection"></a></p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section id="requirements_events_noclick">
+				<h3>No Implied Click</h3>
+				<p>Provide a mechanism to activate an object without implying a click event.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/53">ACTION-53</a>. Scenario is slide to unlock screen on FirefoxOS. Need to coordinate with Webapps.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section id="requirements_events_por">
+				<h3>Point of Regard</h3>
+				<p>Provide an event that reacts to gain or loss of point of regard.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/58">ACTION-58</a>. Still need a better name than Point of Regard.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section id="requirements_events_editing">
+				<h3>Text Editing</h3>
+				<p>Provide a mechanism to support text editing.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/issues/9">ISSUE-9</a>. This is probably a future requirement.</p>
+				<p class="todo">need to spell out specific events required</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section id="requirements_events_search">
+				<h3>Quick Search</h3>
+				<p>Provide a mechanism to support quick search functionality directly within the web application.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/issues/12">ISSUE-12</a>. This is probably a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section id="requirements_events_resize">
+				<h3>Resize Object</h3>
+				<p>Provide a mechanism to resize objects in graphical editing applications with ability to constrain proportions.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/26">ACTION-26</a>. This is probably a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): <a href="#scenario_resize"></a></p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section id="requirements_events_centerpoint">
+				<h3>Set Rotation Centerpoint</h3>
+				<p>Provide a mechanism to set the centerpoint of a rotation request.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/26">ACTION-26</a>. This is probably a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section id="requirements_events_table-sort">
+				<h3>Table Sort</h3>
+				<p>Provide a mechanism to request grid sort by columns</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/31">ACTION-31</a>. This is probably a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+		</section>
+		<!-- :::::::::::::::::::: END EVENTS REQUIREMENTS :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: USER CONTEXT REQUIREMENTS :::::::::::::::::::: -->
+		<section id="requirements_context">
+			<h2>User Context Requirements</h2>
+			<p>Requirements in this section are expected to be met by <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/default/src/indie-ui-context.html">IndieUI: User Context</a>.</p>
+		</section>
+		<!-- :::::::::::::::::::: END USER CONTEXT REQUIREMENTS :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: OTHER REQUIREMENTS :::::::::::::::::::: -->
+		<section id="requirements_other">
+			<h2>Other Requirements</h2>
+			<p>Requirements in this section address the IndieUI space but are expected to be met by other current and future work than IndieUI. They are included here to help provide a complete picture of the IndieUI requirements space.</p>
+		</section>
+		<!-- :::::::::::::::::::: END OTHER REQUIREMENTS :::::::::::::::::::: -->
+		
+		<!--
+		<section id="changelog" class="appendix">
+			<h2>Normative changes since the <a href="@@">last public working draft</a></h2>
+			<ul>
+				<li>@@</li>
+			</ul>
+		</section>
+		-->
+		
+		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>
+		
+	</body>
+</html>
