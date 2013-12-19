@@ -317,7 +317,6 @@
 				</dl>
 
 				<p class="note">Color settings are not be restricted by default from the requesting page, primarily because a site can figure out most of this information using some creative CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users. The display inversion feature is not currently detectable, but does not represent a major concern for privacy or fingerprinting since it is unlikely that most individuals will have this setting enabled all the time.</p>
-				<p class="ednote">Note: A generalized equivalent to Microsoft's <a href="http://msdn.microsoft.com/en-us/library/windows/apps/hh465764.aspx">-ms-high-contrast</a> proposal will be needed (and possibly implemented as <code>contrast-increased: &lt;percent&gt;</code> in combination with the color settings below), but the contrast setting may end up in a restricted category if it's determined to expose the user to privacy or fingerprinting implications.</p>
 
 				<section id="user-color">
 					<h4 class="settings-key">Key: <code>user-color</code></h4>
@@ -554,13 +553,46 @@
 							
 						</dl>
 
-						<pre class="example css" data-transform="syntaxCSS">
-							/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */
-							@media (user-contrast > 50) { 
-							    /* high contrast mode */
-							}
-						</pre>
-						<p class="ednote">Need to note how Microsoft's "high contrast mode" and other contrast modes fit in here. Microsoft would currently only ever return 0.0 or 1.0, but other platforms support variable contrast increases that would result in a intermediary value like 0.42, or 0.7.</p>
+						<div class="ex" title="Informative">
+							<p>This example illustrates how Microsoft's implementation-specific <a href="http://msdn.microsoft.com/en-us/library/windows/apps/hh465764.aspx"><code>-ms-high-contrast</code></a> proposal can be replaced by three media features that are not implementation-specific.</p> 
+							<p class="ednote">Currently Microsoft does not impose any restrictions on the <code>-ms-high-contrast</code> media feature, but it's possible the <code>user-contrast</code> setting may end up in a restricted category if it's determined to expose the user to privacy or fingerprinting implications.</p>
+
+							<pre class="example css" data-transform="syntaxCSS">
+								/*
+								adjusting to cover both the Microsoft proposal as well 
+								as other platforms that have a slider value for color variants 
+								*/
+
+								/* -ms-high-contrast: active; would be equivalent to: */
+								@media (user-contrast: 1) {}
+
+								/* a variant query of the same media feature would match both Microsoft's */
+								/* binary setting and other platform's variable contrast settings */
+								/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */
+								@media (user-contrast > 0) {}
+
+								/* -ms-high-contrast: black-on-white; would be equivalent to: */
+								@media (user-contrast: 1) {}
+								       and (user-color: black)
+								       and (user-background-color: white) {}
+
+								/* -ms-high-contrast: white-on-black; would be equivalent to: */
+								@media (user-contrast: 1) 
+								       and (user-color: white) 
+								       and (user-background-color: black) {}
+
+								/* -ms-high-contrast: white-on-black; could also be written to use the HSLA color suffixes: */
+								@media (user-contrast: 1) 
+								       and (user-color-luminosity: 100) 
+								       and (user-background-color-luminosity: 0) {}
+
+								/* -ms-high-contrast: none; would be equivalent to the default value: */
+								/* No media query is required here b/c it's already the default value. */
+								/* @media (user-contrast: 0) {} */
+							</pre>
+						</div>
+
+						<p class="note">Microsoft's current implementation of "high contrast" would only ever return <code>0.0</code> or <code>1.0</code>, but other platforms support variable contrast increases that would result in a intermediary value like <code>0.42</code>, or <code>0.7</code>, which could be matched using the CSS3 min/max prefixes, or the CSS4 greater-than/less-than syntax.</p>
 					</section>
 				</section>
 
