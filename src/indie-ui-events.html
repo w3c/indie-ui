@@ -556,9 +556,9 @@ partial interface UIEvent {
 				</section>
 
 				<section id="UIManipulationRequestEvents">
-					<h4><!-- Discrete  -->UIManipulationRequestEvent Types</h4>
+					<h4>Discrete UIManipulationRequestEvent Types</h4>
 					<p class="note">Move and Pan request events are functionally identical, but are specified individually to aid in authoring clarity when using similar concepts like 1) moving an object on a layout canvas, and 2) panning a continuous view like a map.</p>
-					<p>The <!-- <em>discrete</em>  -->types of UIManipulationRequestEvents that can occur are:</p>
+					<p>The <em>discrete</em> types of UIManipulationRequestEvents that can occur are:</p>
 					<dl>
 						<dt id="moverequest">Move Request (<code class="event">moverequest</code>)</dt>
 						<dd>
@@ -594,7 +594,7 @@ partial interface UIEvent {
 						<!-- zoom changes (e.g. maps or custom layout views) -->
 						<dt id="zoomrequest">Zoom Request (<code class="event">zoomrequest</code>)</dt>
 						<dd>
-							<p>Initiated when the user agent sends a zoom request to the web application with accompanying origin x/y values and the zoom scale factor.</p>
+							<p>Initiated when the user agent sends a zoom request to the web application with accompanying origin x/y values and the zoom scale factor. This may be used, for example, with a map view or custom layout view.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -607,10 +607,8 @@ partial interface UIEvent {
 					</dl>
 				</section>
 
-                <p class="ednote">There may be a need for a combined, continuous manipulation events (e.g. Pan+Zoom simultaneously) in addition to the discrete events listed above, but specification ideas are incomplete. Currently an author could achieve the same result by listening for the series of discrete Zoom and Pan events.</p>
+                <p class="ednote">There may be a need for a combined, continuous manipulation events (e.g. Pan+Zoom simultaneously) in addition to the discrete events listed above, but the following specification ideas are incomplete. For example, we're currently missing a feature to associate related events, and a description of what 'canceling' implies.</p>
 
-<!-- Commenting the continuous events to avoid confusion, as they are not ready (for example, missing feature to associate related events, and a description of what 'canceling' implies). It's possible they may not even be necessary, given that one can get the same behavior from a series of discrete events. -->
-<!--
 				<section id="ContinuousUIManipulationRequestEvents">
 					<h4>Continuous UIManipulationRequestEvent Types</h4>
 					<p class="ednote">These continuous events may need an identifier per manipulation, for example, to associate a manipulationcancelrequest with the originating manipulationstartrequest that needs to be canceled.</p>
@@ -654,7 +652,6 @@ partial interface UIEvent {
 						</dd>
 					</dl>
 				</section>
--->				
 				
 			</section>
 			<!-- :::::::::::::::::::: END UIManipulationRequestEvent :::::::::::::::::::: -->
@@ -705,6 +702,10 @@ partial interface UIEvent {
 						<dt>EventTarget receiver = null</dt><dd></dd>
 
 						<!-- Attributes from UIScrollRequestEventInit  -->
+						<dt>double? originX = 0.0</dt>
+						<dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+						<dt>double? originY = 0.0</dt>
+						<dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
 						<dt>double? deltaX = 0.0</dt><dd>The cartesian X coordinate delta, in CSS pixels.</dd>
 						<dt>double? deltaY = 0.0</dt><dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
 
@@ -715,11 +716,11 @@ partial interface UIEvent {
 
 				<section id="UIScrollRequestEvents">
 					<h4>UIScrollRequestEvent Types</h4>
-					<p>The single type of UIScrollRequestEvent that can occur is:</p>
+					<p>The discrete type of UIScrollRequestEvent that can occur is:</p>
 					<dl>
 						<dt id="scrollrequest">Scroll Request (<code class="event">scrollrequest</code>)</dt>
 						<dd>
-							<p>Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values or one of the other defined scrollType values. Authors SHOULD only use this event and uiaction with custom scroll views.</p>
+							<p>Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values or one of the other defined scrollType values. Authors SHOULD only use this event and uiaction with custom scroll views that cannot be acheieved with native scroll views, because the hardware-accellerated scrolling of native views will always outperform these events.</p>
 							<p class="ednote">Need an example here and clarifying text to indicate UAs "must" either send a non-default scrollType, or non-default deltas, but not both.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
@@ -729,6 +730,51 @@ partial interface UIEvent {
 						</dd>
 					</dl>
 				</section>
+
+				<section id="ContinuousUIScrollRequestEvents">
+					<h4>Continuous UIScrollRequestEvent Types</h4>
+					<p class="ednote">These continuous events may need an identifier per scroll, for example, to associate a scrollcancelrequest with the originating scrollstartrequest that needs to be canceled.</p>
+					<p>The <em>continuous</em> types of UIScrollRequestEvents that can occur are:</p>
+					<dl>
+						<dt id="scrollstartrequest">Scroll Start Request (<code class="event">scrollstartrequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+						<dt id="scrollmoverequest">Scroll Move Request (<code class="event">scrollmoverequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+						<dt id="scrollendrequest">Scroll End Request (<code class="event">scrollendrequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+						<dt id="scrollcancelrequest">Scroll Cancel Request (<code class="event">scrollcancelrequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
+
 			</section>
 			<!-- :::::::::::::::::::: END UIScrollRequestEvent :::::::::::::::::::: -->
 
