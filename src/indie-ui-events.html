@@ -537,14 +537,14 @@ partial interface UIEvent {
 						<!-- Attributes from UIManipulationRequestEventInit -->
 						
 						<dt>double? originX = null</dt>
-						<dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+						<dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the inside(?) left edge of element border box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
 						<dt>double? originY = null</dt>
-						<dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+						<dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the inside(?) top edge of element border box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
 
 						<dt>double deltaX = 0.0</dt>
-						<dd>The cartesian X coordinate delta, in CSS pixels.</dd>
+						<dd>The cartesian X coordinate delta from the event origin, measured in CSS pixels.</dd>
 						<dt>double deltaY = 0.0</dt>
-						<dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
+						<dd>The cartesian Y coordinate delta from the event origin, measured in CSS pixels.</dd>
 
 						<dt>double scaleFactor = 1.0</dt>
 						<dd>Scale factor, used in zoom manipulations, where 1.0 is the original scale factor. For example, a value of 2.0 or 3.0 indicates the element should enlarge to 2 or 3 times its original scale, respectively. A value of 0.5 indicates the element should decrease to one-half its original scale.</dd>
@@ -703,13 +703,13 @@ partial interface UIEvent {
 
 						<!-- Attributes from UIScrollRequestEventInit  -->
 						<dt>double? originX = 0.0</dt>
-						<dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the left edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+						<dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the inside(?) left edge of element border box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
 						<dt>double? originY = 0.0</dt>
-						<dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the top edge of element box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
-						<dt>double? deltaX = 0.0</dt><dd>The cartesian X coordinate delta, in CSS pixels.</dd>
-						<dt>double? deltaY = 0.0</dt><dd>The cartesian Y coordinate delta, in CSS pixels.</dd>
+						<dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the inside(?) top edge of element border box for the <a href="#def_request_event_receiver">receiver element</a>.</dd>
+						<dt>double? deltaX = 0.0</dt><dd>The cartesian X coordinate delta from the event origin, measured in CSS pixels.</dd>
+						<dt>double? deltaY = 0.0</dt><dd>The cartesian Y coordinate delta from the event origin, measured in CSS pixels.</dd>
 
-						<dt>ScrollRequestScrollType scrollType = "DELTAS"</dt><dd></dd>
+						<dt>ScrollRequestScrollType scrollType = "deltas"</dt><dd></dd>
 
 					</dl>
 				</section>
@@ -878,11 +878,12 @@ partial interface UIEvent {
 			<div data-transform="listEvents"><!-- dynamically generates event list --></div>
 		</section>
 		<section id="changelog" class="appendix">
-			<h2>Normative changes since the <a href="http://www.w3.org/TR/2013/WD-indie-ui-events-20130730/#changelog">last public working draft</a></h2>
+			<h2>Substantive, normative changes since the <a href="http://www.w3.org/TR/2013/WD-indie-ui-events-20130730/#changelog">last public working draft</a></h2>
 			<ul>
 				<li>18-Aug-2013: Enum constants formerly defined in <a href="#UIScrollRequestEvent">UIScrollRequestEvent</a>, <a href="#UIValueChangeRequestEvent">UIValueChangeRequestEvent</a>, and <a href="#UIFocusRequestEvent">UIFocusRequestEvent</a> have been changed to WebIDL enumeration identifier strings. (<a href="https://www.w3.org/WAI/IndieUI/track/actions/64">ACTION-64</a>)</li>
 				<li>18-Aug-2013: Event initializer dictionaries (e.g. <a href="#UIRequestEventInit">UIRequestEventInit</a>, <a href="#UIFocusRequestEventInit">UIFocusRequestEventInit</a>) were missing inheritance declarations in the IDL.</li>
 				<li>22-Aug-2013: <a href="#feature-detection">Feature detection section</a> recommends direct object detection now rather than using DOMImplementation.hasFeature().</li>
+				<li>5-Mar-2014: Added continuous events for <a href="#ContinuousUIManipulationRequestEvents">Manipulation Requests (zoom, pan, move, rotate)</a> as well as for <a href="#ContinuousUIScrollRequestEvents">Scroll Requests</a>.</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
