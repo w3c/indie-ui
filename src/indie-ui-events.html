@@ -179,7 +179,8 @@
 				<section id="intro-example-valuechangerequest">
 					<h4>Changing the Value of a Custom Slider</h4>
 					<p>The following example uses a 'valuechangerequest' event to modify the value of a custom ARIA slider.</p>
-					<pre class="example">
+					<p class="ednote">This example was cut. It needs to be rewritten once we add support for composite widgets with triggers or controllers (so the slider thumb can update the value via pointer-based events). See <a href="https://www.w3.org/WAI/IndieUI/track/actions/79">IndieUI-action-79</a>.</p>
+					<pre class="example" hidden>
 						<span class="markup" data-transform="syntaxMarkup">
 						&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;
 						&lt;canvas <strong>uiactions="valuechange"</strong> id="slider" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="42"&gt;&lt;/canvas&gt;
