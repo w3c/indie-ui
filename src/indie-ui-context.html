@@ -121,7 +121,7 @@
 				<dd>
 					<p class="ednote">Description TBD (esp re: privacy and fingerprinting, and prompt access for certain parameters on a per-domain basis, similar to location sharing)</p>
 					
-					<pre class="example" data-transform="syntaxJavaScript">
+					<pre class="example highlight">
 						// example of settings keys defined within the IndieUI User Context specification.
 						window.userSetting('user-font-size'); // returns computed value in CSS pixels, e.g. '16px'
 						window.userSetting('subtitles'); // e.g. returns 'display' if the user wants to see subtitles/captions; otherwise returns 'none'
@@ -178,7 +178,7 @@
 			<h2>Privacy Model</h2>
 
 			<p class="todo">Todo: Explain how the privacy model works: when user prompted, window.userSetting() or window.matchMedia() return the default value or null immediately, and only provides the updated match ansynchronously through matchMedia().addEventListener or on subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." A restricted @media block never prompts unless both the @media block and an included selector matches.</p>
-			<p class="todo">Todo: Add justification interface on a per-category setting (possibly meta tag or a partial interface on document). Justification string may be defined by an new JavaScript interface, or perhaps by a meta tag in the document head, such as:<br><code class="html" data-transform="syntaxMarkup">&lt;meta name="userMediaSettings" content="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
+			<p class="todo">Todo: Add justification interface on a per-category setting (possibly meta tag or a partial interface on document). Justification string may be defined by an new JavaScript interface, or perhaps by a meta tag in the document head, such as:<br><code class="highlight">&lt;meta name="userMediaSettings" content="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
 		
 			<section id="RestrictionCategory">
 				<h4>Restriction Categories</h4>
@@ -194,7 +194,7 @@
 			<section class="informative">
 				<h4>Example Restriction UI</h4>
 				<p>In the following example, the web author attempts to query two restricted user settings using two different techniques. For the sake of the example, assume the user's setting do match the specified queries.</p>
-				<pre class="example javascript" data-transform="syntaxJavaScript">
+				<pre class="example highlight">
 					// Query matches if screen reader is enabled and user's privacy settings allow the match.
 					var mediaQueryList = window.matchMedia('screen and (screenreader)');
 					var mediaMatch = mediaQueryList.matches;
@@ -230,7 +230,7 @@
 				<section class="informative">
 					<h4>Example restricted call to <code>window.userSettings()</code></h4>
 					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.userSetting() to automatically enable the secondary audio track at load time.</p>
-					<pre class="example javascript" data-transform="syntaxJavaScript">
+					<pre class="example highlight">
 						
 						// Author defines a function to handle changes of the audioDescription setting.
 						function handleAudioDescriptionChanged(key, value) {
@@ -396,7 +396,7 @@
 						</dl>
 						<div class="ex" title="Informative">
 							<p>In this example, the user-defined color and background color are defined through a user style sheet or other means, so override the site theme to respect the user's colors.</p>
-							<pre class="example css" data-transform="syntaxCSS">
+							<pre class="example highlight">
 								@media (user-color) and (user-background-color) {
 								    html, body {
 								        /* Syntax for the user-pref variables to be specified in one of the CSS 4 modules. */
@@ -408,7 +408,7 @@
 						</div>
 						<div class="ex" title="Informative">
 							<p>In this example, the user-defined background color is dark (luminosity less than 40%), so the author adjusts the site logo element to use an image that looks better on darker background colors.</p>
-							<pre class="example css" data-transform="syntaxCSS">
+							<pre class="example highlight">
 								/* Use default logo that looks good on lighter background colors. */
 								.logo { background-image: url(./img/logo_light.png);}
 
@@ -421,7 +421,7 @@
 						</div>
 						<div class="ex" title="Informative">
 							<p>In this example, the user-defined background color matches a warm palette (hue is not between 100 and 280; a.k.a. not green, blue, or blue-violet), so the author could adjust the rest of the site theme to be complementary.</p>
-							<pre class="example css" data-transform="syntaxCSS">
+							<pre class="example highlight">
 								/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */
 								@media (user-background-color-hue &lt; 100) or (user-background-color-hue &gt; 280) {
 								    /* User background color palette is red-violet, red, orange, or yellow. */
@@ -468,7 +468,7 @@
 
 						<div class="ex" title="Informative">
 							<p>In this example, the hardware display rendering is inverted, so the web app could <em>double-invert</em> foreground image and video content, which usually looks strange while inverted. This would leave text foreground color, all background colors, and background styles inverted to adhere to user setting.</p>
-							<pre class="example css" data-transform="syntaxCSS">
+							<pre class="example highlight">
 								@media (colors-inverted) {
 								    img, video {
 								        filter: invert(100%);
@@ -483,7 +483,7 @@
 						</div>
 						<div class="ex" title="Informative">
 							<p>In this example, the hardware display rendering is inverted, so the web app could hide elements styles that resemble "shadows" of physical light, which by default look like white glows while inverted. This media query allows authors to disable settings that don't make sense when the physical display pixels are inverted.</p>
-							<pre class="example css" data-transform="syntaxCSS">
+							<pre class="example highlight">
 								@media (colors-inverted) {
 								    .page {
 								        box-shadow: none;
@@ -557,7 +557,7 @@
 							<p>This example illustrates how Microsoft's implementation-specific <a href="http://msdn.microsoft.com/en-us/library/windows/apps/hh465764.aspx"><code>-ms-high-contrast</code></a> proposal can be replaced by three media features that are not implementation-specific.</p> 
 							<p class="ednote">Currently Microsoft does not impose any restrictions on the <code>-ms-high-contrast</code> media feature, but it's possible the <code>user-contrast</code> setting may end up in a restricted category if it's determined to expose the user to privacy or fingerprinting implications.</p>
 
-							<pre class="example css" data-transform="syntaxCSS">
+							<pre class="example highlight">
 								/*
 								adjusting to cover both the Microsoft proposal as well 
 								as other platforms that have a slider value for color variants 
@@ -668,7 +668,7 @@
 							
 						</dl>
 
-						<pre class="example css" data-transform="syntaxCSS">
+						<pre class="example highlight">
 							/* Default layout uses 2 columns */
 							main {
 							    columns: 2;
@@ -926,7 +926,7 @@
 						</dl>
 						<div class="ex" title="Informative">
 							<p>In this example, the user-defined subtitle background color is not sufficiently opaque to to prevent the video noise from making the captions difficult to read, so add a text shadow.</p>
-							<pre class="example css" data-transform="syntaxCSS">
+							<pre class="example highlight">
 								/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */
 								@media (user-subtitle-background-color-alpha &lt; 20) and (user-subtitle-color-luminosity &gt; 50) {
 								    .customRenderedCaptions {

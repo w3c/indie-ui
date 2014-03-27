@@ -142,15 +142,13 @@
 				<section id="intro-example-dismissrequest">
 					<h4>Dismissing a Modal Dialog</h4>
 					<p>The following example uses a 'dismissrequest' event to close or cancel out of a modal application dialog.</p>
-					<pre class="example">
-						<span class="markup" data-transform="syntaxMarkup">
+					<pre class="example highlight">
 						&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;
 						&lt;dialog <strong>uiactions="dismiss"</strong> id="myDialog"&gt;
 						  ...
 						&lt;/dialog&gt;
 						
-						&lt;script type="text/javascript"&gt;</span><!--
-						--><span class="javascript" data-transform="syntaxJavaScript">
+						&lt;script type="text/javascript"&gt;
 						  
 						  var myDialog = document.getElementById('myDialog');
 						  
@@ -169,10 +167,8 @@
 						    e.stopPropagation(); // stop the event from bubbling.
 						    <strong>e.preventDefault();</strong> // let the UA/AT know the event was intercepted successfully.
 
-						  }</span>
-						<span class="markup" data-transform="syntaxMarkup">
+						  }
 						&lt;/script&gt;
-						</span>
 					</pre>
 				</section>
 				
@@ -180,13 +176,11 @@
 					<h4>Changing the Value of a Custom Slider</h4>
 					<p>The following example uses a 'valuechangerequest' event to modify the value of a custom ARIA slider.</p>
 					<p class="ednote">This example was cut. It needs to be rewritten once we add support for composite widgets with triggers or controllers (so the slider thumb can update the value via pointer-based events). See <a href="https://www.w3.org/WAI/IndieUI/track/actions/79">IndieUI-action-79</a>.</p>
-					<pre class="example" hidden>
-						<span class="markup" data-transform="syntaxMarkup">
+					<pre class="example highlight" hidden>
 						&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;
 						&lt;canvas <strong>uiactions="valuechange"</strong> id="slider" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="42"&gt;&lt;/canvas&gt;
 						
-						&lt;script type="text/javascript"&gt;</span><!--
-						--><span class="javascript" data-transform="syntaxJavaScript">
+						&lt;script type="text/javascript"&gt;
 						  
 						  // register the event at initialization
 						  // <strong>Option #2:</strong> Using event delegation on any node (such as the body) that is higher in the DOM than the receiver element...
@@ -208,10 +202,8 @@
 						    e.stopPropagation(); // stop the event from bubbling 
 						    <strong>e.preventDefault();</strong> // let the UA/AT know the event was intercepted successfully
 						
-						  }</span>
-						<span class="markup" data-transform="syntaxMarkup">
+						  }
 						&lt;/script&gt;
-						</span>
 					</pre>
 				</section>
 				
@@ -245,8 +237,7 @@
 				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>uiactions</code> content attribute in the <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
 				<div data-transform="listActions"><!-- dynamically generates event list --></div>
                 <!-- <p class="ednote">We could probably combine the 'manipulation' events into a single 'manipulation' action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p> -->
-				<pre class="example">
-					<span class="markup" data-transform="syntaxMarkup">
+				<pre class="example highlight">
 					&lt;!-- body element is event listener for all events, but event receiver only for 'delete' actions. --&gt;
 					&lt;body <strong>uiactions="delete"</strong>&gt;
 					
@@ -258,17 +249,14 @@
 					
 					&lt;/body&gt;
 					
-					&lt;script type="text/javascript"&gt;</span>
-					  <span class="javascript" data-transform="syntaxJavaScript">
+					&lt;script type="text/javascript"&gt;
 					  // registered all of these on the body as an example of event delegation to help illustrate the difference between event
 					  // target (document.activeElement or other point-of-regard), receiver (element with defined actions), and listener (body)
 					  document.body.addEventListener(<strong>'dismissrequest'</strong>, handleDismiss);
 					  document.body.addEventListener(<strong>'panrequest'</strong>, handlePan);
 					  document.body.addEventListener(<strong>'deleterequest'</strong>, handleDelete);
 					  document.body.addEventListener(<strong>'zoomrequest'</strong>, handleZoom);
-					</span><span class="markup" data-transform="syntaxMarkup">
 					&lt;/script&gt;
-					</span>
 				</pre>
 				<p class="note">In the previous example, the 'deleterequest' event may be fired any time the user's point-of-regard was inside the document, presumably when the user triggered their platform's physical event to initiate a deletion, such as pressing the <kbd>DELETE</kbd> key. However, the 'dismissrequest' would only be fired when the user's point-of-regard was inside the dialog. Likewise, the 'panrequest' and 'zoomrequest' would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.</p>
 			</section>
@@ -855,14 +843,14 @@ partial interface UIEvent {
 			<section id="feature-detection-example-dismissrequest">
 				<h4>Conditionally Assigning a UI Request Event</h4>
 					<p>The following example conditionally assigns a 'dismissrequest' event based on whether the user agent has support for the feature.</p>
-					<pre class="example">
-						<span class="javascript" data-transform="syntaxJavaScript">if (typeof document.body.ondismissrequest !== 'undefined') {
+					<pre class="example highlight">
+						if (typeof document.body.ondismissrequest !== 'undefined') {
 						  // okay to use 'dismissrequest'
 						  document.body.addEventListener('dismissrequest', dismissHandler);
 						} else {
 						  // otherwise catch the ESC key or another platform-specific equivalent event
 						  document.body.addEventListener('keyup', keyHandler);
-						}</span>
+						}
 					</pre>
 				</section>
 			<p class="ednote">Note: need to double-check that the above code sample is really the best approach.</p>

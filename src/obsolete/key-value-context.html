@@ -99,7 +99,7 @@
 					<p class="ednote">Description TBD (esp re: privacy and fingerprinting, and prompt access for certain parameters on a per-domain basis, similar to location sharing)</p>
 					<p class="ednote">May need an additional "silent fail" parameter when keys are nice-to-have but not important enough to prompt if the user or platform specifies "prompt for access" to a particular key.</p>
 					<p class="note">An undefined or empty value for the <var>taxonomy</var> parameter indicates the <var>key</var> matches a preference defined in <a href="#UserSettingsKeys">User Settings Keys</a> section of this document. Standard vendor prefixes (<code>ie</code>, <code>moz</code>, <code>o</code>, <code>webkit</code>) are reserved for the <var>taxonomy</var> parameter, and any additional implementation or external taxonomy identifiers will be defined in a supplemental, informative document.</p>
-					<pre class="example" data-transform="syntaxJavaScript">
+					<pre class="example highlight">
 						// example of a preference defined within the IndieUI User Context specification.
 						window.settings.valueForKey('fontSize'); // e.g. '16px'
 						window.settings.valueForKey('subtitles'); // e.g. returns true if the user wants to see subtitles or captions by default
