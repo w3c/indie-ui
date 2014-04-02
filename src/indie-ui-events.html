@@ -385,7 +385,56 @@ partial interface UIEvent {
 								<li>Cancelable: Yes</li>
 							</ul>
 						</dd>
+						<dt id="mediapauserequest">Pause Media Playback Request (<code class="event">mediapauserequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to pause media playback.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="mediastartrequest">Start Media Playback Request (<code class="event">mediastartrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to start media playback.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="mediastoprequest">Stop Media Playback Request (<code class="event">mediastoprequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to stop media playback.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="mediatogglerequest">Toggle Media Playback Request (<code class="event">mediatogglerequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to toggle the play/pause state of media playback.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="mediapreviousrequest">Previous Track Request (<code class="event">mediapreviousrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to skip media to the previous track boundary.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="medianextrequest">Next Track Request (<code class="event">medianextrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to skip media to the next track boundary.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
 					</dl>
+					<p class="ednote">There may be a need for continuous media request events to support fast-forward or rewind via press-and-hold, or double-click-and-hold, etc.</p>
 				</section>
 			</section>
 			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
