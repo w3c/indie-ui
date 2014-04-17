@@ -2,7 +2,7 @@
 <html lang="en-us" xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
-		<title>Requirements for IndieUI 1.0</title>
+		<title>Requirements for IndieUI: Events 1.0 and IndieUI: User Context 1.0</title>
 		<link href="./css/screen.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="./loc/en/strings.js" class="remove"></script>
 		<script type="text/javascript" src="./js/utils.js" class="remove"></script>
@@ -27,7 +27,7 @@
           // subtitle   :  "Events for User Interface Independence",
 
           // if you wish the publication date to be other than today, set this
-          publishDate:  "2014-04-17",
+          publishDate:  "2014-04-22",
 
           // if the specification's copyright date is a range of years, specify
           // the start date here:
@@ -94,13 +94,15 @@
 
 		<section id="abstract">
 			<p>This document outlines the requirements that the IndieUI Working Group has set for development
-				of IndieUI 1.0. These requirements will be used to determine if the IndieUI WG has met its
-				goals as IndieUI 1.0 advances through the <a
+				of <strong>IndieUI: Events 1.0</strong> and <strong>IndieUI: User Context 1.0</strong>.
+				These requirements will be used to determine if the IndieUI WG has met its goals as these
+				specifications advance through the <a
 					href="http://www.w3.org/2005/10/Process-20051014/tr.html#Reports">W3C Recommendation Track
-					Process</a>. This document introduces a series of user scenarios and a list of technical
-				requirements needed to meet those scenarios. It also provides information about how the
-				requirements are addressed in <a href="http://www.w3.org/TR/indie-ui-events/">IndieUI:
-					Events 1.0</a> and IndieUI: User Context 1.0.</p>
+					Process</a>. This document introduces a series of user scenarios common to the two
+				specifications, and a list of technical requirements needed to meet those scenarios for each
+				specification. It also provides information about how the requirements are addressed in. For
+				background information on IndieUI: Events and IndieUI: User Context see the <a
+					href="http://www.w3.org/WAI/intro/indieui">IndieUI Overview</a>.</p>
 		</section>
 
 		<section id="sotd">
@@ -112,9 +114,13 @@
 				<li>Are there scenarios or requirements that should not be addressed in the 1.0 version of IndieUI?</li>
 			</ul>
 			<p>To comment on this document, send email to <a
-					href="mailto:public-indie-ui-comments@w3.org?subject=Comment%20on%20IndieUI%20Requirements%2017%20April%202014">public-indie-ui-comments@w3.org</a> (<a
-					href="http://lists.w3.org/Archives/Public/public-indie-ui-comments/">comment archive</a>). Comments are requested by <strong>16 May 2014</strong>. In-progress updates to the document may be viewed in the <a
-					href="https://dvcs.w3.org/hg/IndieUI/raw-file/default/src/indie-ui-requirements.html">publicly visible editors' draft</a>.</p>
+					href="mailto:public-indie-ui-comments@w3.org?subject=Comment%20on%20IndieUI%20Requirements%2017%20April%202014"
+					>public-indie-ui-comments@w3.org</a> (<a
+					href="http://lists.w3.org/Archives/Public/public-indie-ui-comments/">comment archive</a>).
+				Comments are requested by <strong>23 May 2014</strong>. In-progress updates to the document
+				may be viewed in the <a
+					href="https://dvcs.w3.org/hg/IndieUI/raw-file/default/src/indie-ui-requirements.html"
+					>publicly visible editors' draft</a>.</p>
 		</section>
 		
 		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
@@ -122,8 +128,21 @@
 			<h2>Introduction</h2>
 			<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be further customized based on personal preference. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's preferred interface. Some complex web applications can provide a much better experience if given access to information such as a user's preferred color, font, screen, and even <em>restricted</em> assistive technology settings such as a preference to render captions, or whether a screen reader is on. </p>
 			<p>Custom interfaces often don't take into account users who access web content via assistive technologies that use alternate forms of input such as screen readers, switch interfaces, or speech-based command and control interfaces. For example, a web page author may script a custom interface to look like a slider (e.g. one styled to look like an <abbr title="Hypertext Markup Language">HTML</abbr> "range" input) and behave like a slider when using standard mouse-based input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
-			<p>IndieUI defines a way for web authors to register for these <em>request events</em>. Authors declaritively define which actions or behaviors a view responds to, and when it is appropriate for browsers to initiate these events. It also provides authorized web applications access to information about a user's relevant settings and preferences, to provide the best possible user experience to all users. General web pages developed using best practices may never need access to restricted user settings, but complex web applications can utilize this information to enhance the performance and user interface.</p>
-			<p>One of the core principles behind IndieUI is that that it operates on a backwards-compatible, opt-in basis. In other words, the web application author has to first be aware of these events, then explicitly declare each event receiver and register an event listener, or user agents behave as normal and do not initiate these events. If a web application does not respond to the event, the user agent may attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
+			<p>IndieUI: Events defines a way for web authors to register for these <em>request events</em>.
+				Authors declaritively define which actions or behaviors a view responds to, and when it is
+				appropriate for browsers to initiate these events. IndieUI: User Context provides authorized
+				web applications access to information about a user's relevant settings and preferences, to
+				provide the best possible user experience to all users. General web pages developed using
+				best practices may never need access to restricted user settings, but complex web
+				applications can utilize this information to enhance the performance and user interface.</p>
+			<p>One of the core principles behind these specifications is that that it operates on a
+				backwards-compatible, opt-in basis. In other words, the web application author has to first
+				be aware of these events, then explicitly declare each event receiver and register an event
+				listener, or user agents behave as normal and do not initiate these events. If a web
+				application does not respond to the event, the user agent may attempt fallback behavior or
+				communicate to the user that the input has not been recognized.</p>
+			<p>For further background information on IndieUI: Events and IndieUI: User Context see the <a
+					href="http://www.w3.org/WAI/intro/indieui">IndieUI Overview</a>.</p>
 			
 			
 		</section>
@@ -558,6 +577,8 @@
 		<section id="requirements_context">
 			<h2>User Context Requirements</h2>
 			<p>Requirements in this section are expected to be met by <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/default/src/indie-ui-context.html">IndieUI: User Context</a>.</p>
+			<p class="ednote">This version of the document does not yet elaborate requirements for
+				IndieUI: User Context.</p>
 		</section>
 		<!-- :::::::::::::::::::: END USER CONTEXT REQUIREMENTS :::::::::::::::::::: -->
 		
