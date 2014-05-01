@@ -247,9 +247,9 @@
 
 						/*
 						When the author first attempts to check the setting, the user agent will 
-						determine that this is a restricted setting, and immediately return false, so 
-						the first call to this method on the initial page load will never result in
-						audio descriptions being enabled.
+						determine that this is a restricted setting, and immediately return the default 
+						value or null, so the first call to this method on the initial page load will 
+						never result in audio descriptions being enabled.
 
 						Note: The immediate return is critical to prevent blocking threads, as well as
 						eliminating potential abuse by fingerprinting scripts attempting to determine 
@@ -999,7 +999,7 @@
 						<dd>Yes</dd>
 						
 						<dt>Returns</dt>
-						<dd>Boolean indicating whether or not a screen reader is currently active or in use (<code>true</code>), or <code>false</code> otherwise.</dd>
+						<dd>Boolean value indicating whether or not a screen reader is currently active or in use (<code>true</code>), or <code>false</code> otherwise.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userScreenReaderSettings</dd>
