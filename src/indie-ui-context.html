@@ -177,8 +177,8 @@
 		<section>
 			<h2>Privacy Model</h2>
 
-			<p class="todo">Todo: Explain how the privacy model works: when user prompted, window.userSetting() or window.matchMedia() return the default value or null immediately, and only provides the updated match ansynchronously through matchMedia().addEventListener or on subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." A restricted @media block never prompts unless both the @media block and an included selector matches.</p>
-			<p class="todo">Todo: Add justification interface on a per-category setting (possibly meta tag or a partial interface on document). Justification string may be defined by an new JavaScript interface, or perhaps by a meta tag in the document head, such as:<br><code class="highlight">&lt;meta name="userMediaSettings" content="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
+			<p class="todo">Todo: Further explain how the privacy model works: when user prompted, window.userSetting() or window.matchMedia() return the default value or null immediately, and only provide the updated match ansynchronously through handleUserSettingChanged() and matchMedia().addEventListener, or on subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." A restricted @media block never prompts unless both the @media block and an included selector matches.</p>
+			<p class="todo">Todo: Document way justification string may be defined by a meta tag in the document head, such as:<br><code class="highlight">&lt;meta name="userMediaSettings" content="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
 		
 			<section id="RestrictionCategory">
 				<h4>Restriction Categories</h4>
@@ -224,6 +224,18 @@
 					<li>If the user requires a 'prompt with justification' restriction for the requested settings, the User Agent MUST return the default, incorrect value, and the user agent SHOULD prompt the user with a dialog that includes the author-provided justification string. If no author-provided justification string is defined, User Agents MUST NOT prompt the user, and MUST return the default, incorrect value for any subsequent requests.</li>
 					<li>If the user has disallowed access for this setting to the site or all sites, the User Agent MUST always return the default, incorrect value.</li>
 				</ul>
+				<section class="informative">
+					<h4>Example "Prompt with Justification" Dialog</h4>
+					<p>In the following example dialog mockup, the web author has requested <code>subtitles</code> and/or <code>subtitle-languages</code> settings. The author has also provided a justification string for the <code>userMediaSettings</code> category using the following markup.</p>
+					<pre class="example highlight">
+						&lt;meta name="userMediaSettings" content="Example Site uses your media settings to automatically enable captions or subtitles in your preferred language."&gt;
+					</pre>
+					<p>A user agent may render the prompt a number of ways, such as a non-blocking notification or a modal dialog.</p>
+					<figure>
+						<figcaption>Example dialog prompting user to confirm or deny access to media player settings.</figcaption>
+						<img src="./img/example_dialog.svg" width="465" height="255" alt="Example dialog displaying site URL, details of the settings requested, an author-provided justification string, and buttons labeled Allow and Deny.">
+					</figure>
+				</section>
 				<section class="informative">
 					<h4>Example restricted call to <code>window.userSettings()</code></h4>
 					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.userSetting() to automatically enable the secondary audio track at load time.</p>
