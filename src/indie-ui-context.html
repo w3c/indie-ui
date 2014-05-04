@@ -213,20 +213,17 @@
 					}
 
 				</pre>
-				<p>Depending on the user's privacy settings and implementation details of the user agent, there are a number of outcomes:</p>
-				<ul>
-					<li>If the user has previously allowed access for this site to access screen reader settings, or if the user has allowed all sites to access screen reader settings without restriction, the User Agent SHOULD return the correct value immediately.</li>
-					<li>If the user has a general 'prompt' restriction enabled for this setting, the User Agent will return the default, incorrect value, and the user agent SHOULD prompt the user with a generic dialog similar to that for location sharing.</li>
-					<li>If the user requires a 'justification' restriction for these settings (recommended default for screen reader settings), User Agent will return the default, incorrect value, and the user agent SHOULD prompt the user with a dialog that includes the author-provided justification string. If no author-provided justification string is defined, User Agents should not prompt the user, and never return the correct value.</li>
-					<li>If the user has disallowed access for this setting to this site or all sites, the User Agent MUST always return the default, incorrect value.</li>
-				</ul>
-				<p class="ednote">Turn the previous informative list into normative statements.</p>
-
+				<p>Depending on the user's privacy settings and implementation details of the user agent, there are a number of outcomes, according to the following, normative requirements.</p>
 			</section>
-
 			<section id="RequirementsForUserSettings">
 				<h3>User Agent Requirements for Restricted User Settings</h3>
 				<p>To avoid privacy concerns, User Agents MUST <em>immediately</em> return the default value for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can handle a user setting change callback, or make a subsequent request to the <code>userSetting()</code> method of the Window object.</p>
+				<ul>
+					<li>If the user has previously allowed access for this site to access the requested settings, or if the user has allowed all sites to access requested settings without restriction, the User Agent SHOULD return the correct value immediately.</li>
+					<li>If the user has a general 'prompt' restriction enabled for the requested setting, the User Agent will return the default, incorrect value, and the user agent SHOULD prompt the user with a generic dialog similar to that for location sharing.</li>
+					<li>If the user requires a 'justification' restriction for the requested settings, the User Agent MUST return the default, incorrect value, and the user agent SHOULD prompt the user with a dialog that includes the author-provided justification string. If no author-provided justification string is defined, User Agents MUST NOT prompt the user, and MUST return the default, incorrect value.</li>
+					<li>If the user has disallowed access for this setting to this site or all sites, the User Agent MUST always return the default, incorrect value.</li>
+				</ul>
 				<section class="informative">
 					<h4>Example restricted call to <code>window.userSettings()</code></h4>
 					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.userSetting() to automatically enable the secondary audio track at load time.</p>
