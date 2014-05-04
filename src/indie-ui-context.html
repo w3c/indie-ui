@@ -219,10 +219,10 @@
 				<h3>User Agent Requirements for Restricted User Settings</h3>
 				<p>To avoid privacy concerns, User Agents MUST <em>immediately</em> return the default value for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can handle a user setting change callback, or make a subsequent request to the <code>userSetting()</code> method of the Window object.</p>
 				<ul>
-					<li>If the user has previously allowed access for this site to access the requested settings, or if the user has allowed all sites to access requested settings without restriction, the User Agent SHOULD return the correct value immediately.</li>
-					<li>If the user has a general 'prompt' restriction enabled for the requested setting, the User Agent will return the default, incorrect value, and the user agent SHOULD prompt the user with a generic dialog similar to that for location sharing.</li>
-					<li>If the user requires a 'justification' restriction for the requested settings, the User Agent MUST return the default, incorrect value, and the user agent SHOULD prompt the user with a dialog that includes the author-provided justification string. If no author-provided justification string is defined, User Agents MUST NOT prompt the user, and MUST return the default, incorrect value.</li>
-					<li>If the user has disallowed access for this setting to this site or all sites, the User Agent MUST always return the default, incorrect value.</li>
+					<li>If the user has previously allowed access for this site to access the requested settings, or if the user has allowed all sites to access requested settings without restriction, the User Agent MUST return the correct value.</li>
+					<li>If the user has a general 'prompt' restriction enabled for the requested setting, the User Agent MUST return the default, incorrect value, and the user agent SHOULD prompt the user with a generic dialog similar to that for location sharing.</li>
+					<li>If the user requires a 'prompt with justification' restriction for the requested settings, the User Agent MUST return the default, incorrect value, and the user agent SHOULD prompt the user with a dialog that includes the author-provided justification string. If no author-provided justification string is defined, User Agents MUST NOT prompt the user, and MUST return the default, incorrect value for any subsequent requests.</li>
+					<li>If the user has disallowed access for this setting to the site or all sites, the User Agent MUST always return the default, incorrect value.</li>
 				</ul>
 				<section class="informative">
 					<h4>Example restricted call to <code>window.userSettings()</code></h4>
@@ -993,19 +993,19 @@
 					<h5>Editorial Note on User Privacy</h3>
 					<p>Due to community feedback related to privacy, this feature may be marked as at-risk or removed. The working group acknowledges its usefulness in complex web applications such as enterprise document-editing suites, but also acknowledges the fact that its utility may be easily misunderstood or potentially misused.</p>
 					<p>For example, the typing echo or other verbosity settings would be useful today, for sites such as Google Docs and iWork for iCloud. These applications use custom display views that are not able to be made accessible through conventional means, so speech output is controlled via live region announcements. The web application does not otherwise have access to user settings such as typing echo, so without access to this feature, the web application could not mimic the user's preferred output.</p>
-					<p>One potential misuse is for user metric or tracking. Even with the <a href="http://www.marcozehe.de/2014/02/27/why-screen-reader-detection-on-the-web-is-a-bad-thing/comment-page-1/#comment-2466420">best of intentions</a>, this is a potentially harmful misuse of the API. There are currently very strict user <a href="#privacy-model">privacy model</a> requirements to implement this feature in a reasonably safe and secure way, but if the working group is not comfortable in the implementation's ability to sufficiently prevent this type of misuse, we will remove the feature.</p> 
+					<p>One potential misuse is for user metrics or tracking. Even with the <a href="http://www.marcozehe.de/2014/02/27/why-screen-reader-detection-on-the-web-is-a-bad-thing/comment-page-1/#comment-2466420">best of intentions</a>, this is a potentially harmful misuse of the API. There are currently very strict user <a href="#privacy-model">privacy model</a> requirements to implement this feature in a reasonably safe and secure way, but if the working group is not comfortable in the implementation's ability to sufficiently prevent this type of misuse, we will remove the feature.</p> 
 				</div>
 
 				<section id="screenreader">
 					<h4 class="settings-key">Key: <code>screenreader</code></h4>
-					<p>Returns whether a screen reader is currently active (active) or not (none).</p>
+					<p>Returns whether a screen reader is currently active or not (none).</p>
 					<dl class="properties">
 						
 						<dt>Has Associated Media Feature</dt>
 						<dd>Yes</dd>
 						
 						<dt>Returns</dt>
-						<dd>Boolean value indicating whether or not a screen reader is currently active or in use (<code>true</code>), or <code>false</code> otherwise.</dd>
+						<dd>Token value indicating whether or not a screen reader is currently active or in use (<code>active</code>), or <code>none</code> otherwise.</dd>
 						
 						<dt>Restriction Category (IDL)</dt>
 						<dd data-transform="linkRestrictionCategory">userScreenReaderSettings</dd>
