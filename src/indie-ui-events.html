@@ -236,7 +236,7 @@
 				<p>Every element may have a <code>uiactions</code> attribute specified, which is necessary to define the <a href="#def_request_event_receiver">receiver</a> of each type of request event. The attribute, if specified, must have a value that is a set of whitespace-separated tokens representing the various actions to which the web application responds on behalf of this element. The actions that an element has assigned to it consists of all the tokens returned when the value of the <code>uiactions</code> attribute is split on whitespace. (Duplicates are ignored.)</p>
 				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>uiactions</code> content attribute in the <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
 				<div data-transform="listActions"><!-- dynamically generates event list --></div>
-                <!-- <p class="ednote">We could probably combine the "manipulation" events into a single "manipulation" action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p> -->
+				<!-- <p class="ednote">We could probably combine the "manipulation" events into a single "manipulation" action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p> -->
 				<pre class="example highlight">
 					&lt;!-- Body element is event listener for all events, but event receiver only for "delete" actions. --&gt;
 					&lt;body <strong>uiactions="delete"</strong>&gt;
