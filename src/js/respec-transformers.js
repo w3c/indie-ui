@@ -1,7 +1,10 @@
 
 // utility used by both listEvents and listActions
-function events() {
-	var eventList = [], nodeList = $$('code.event');
+function events(query) {
+	if (typeof query == "undefined") {
+		var query = 'code.event';
+	}
+	var eventList = [], nodeList = $$(query);
 	for (var i=0; i<nodeList.length; i++) {
 		var title = nodeList[i].innerText || nodeList[i].textContent;
 		if ($$('#'+title).length) eventList.push(title);
@@ -25,15 +28,31 @@ function listEvents(r, content) {
 
 /* listActions: alphabetical list generated from trimmed event names. e.g. 'collapserequest, deleterequest, ...' becomes 'collapse, delete, ...' */
 function listActions(r, content) {
-	var s = '<ul>', eventList = events();
-	for (var i=0; i<eventList.length; i++){
-		var title = eventList[i];
-		s += '<li><code>' +title.replace('request','')+ '</code></li>';
-	}
-	s += '</ul>';
-	return content + s;
+	return content + actionLinkList(events());
 }
 
+/* listTriggerActions: subset of listActions, only includes those that can be used with @uitriggers. */
+function listTriggerActions(r, content) {
+	return content + actionLinkList(events("#UIRequestEvent code.event"));
+}
+
+function actionLinkList(eventList) {
+	// Sort order can change for between events list and actions list.
+	// E.g. scrollcancelrequest precedes scrollrequest, but scroll precedes scrollcancel.
+	// So we need to trim the event strings into action strings and then sort again.
+	for (var i in eventList) {
+		eventList[i] = eventList[i].replace("request", "");
+	}
+	var actionList = eventList.sort();
+	var s = "<ul>";
+	for (var i=0; i<actionList.length; i++){
+		var title = actionList[i];
+		s += "<li><code>" + title + "</code></li>";
+	}
+	s += "</ul>";
+
+	return s;
+}
 
 // utility used by listMediaFeatures
 function allMediaFeatures() {

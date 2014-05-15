@@ -145,17 +145,15 @@
 					<pre class="example highlight">
 						&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;
 						&lt;dialog <strong>uiactions="dismiss"</strong> id="myDialog"&gt;
-						  ...
+						  &lt;!-- Include an optional click trigger for the dismiss action. --&gt;
+					  	  &lt;button <strong>uitrigger="dismiss"</strong>&gt; Cancel &lt;/button&gt;
+						  ... other dialog contents ...
 						&lt;/dialog&gt;
 						
 						&lt;script type="text/javascript"&gt;
 						  
 						  var myDialog = document.getElementById("myDialog");
-						  
-						  // Register the event at initialization.
-						  // <strong>Option #1:</strong> On the receiver itself... See next example for Option #2.
-						  <strong>myDialog.addEventListener("dismissrequest", dismissHandler);</strong>
-						
+						  						
 						  // At some point during runtime, the handler will be called.
 						  // For example, if the user presses ESC key while focus is inside the dialog.
 						  function dismissHandler(e) {
@@ -168,6 +166,11 @@
 						    <strong>e.preventDefault();</strong> // Let the UA/AT know the event was intercepted successfully.
 
 						  }
+
+						  // Register the event at initialization.
+						  // Either on the receiver itself, or on an ancestor element like the body. 
+						  <strong>myDialog.addEventListener("dismissrequest", dismissHandler);</strong>
+
 						&lt;/script&gt;
 					</pre>
 				</section>
@@ -220,7 +223,7 @@
 		<!-- :::::::::::::::::::: UI Actions :::::::::::::::::::: -->
 		<section id="actions" class="normative">
 			<h2><abbr title="User Interface">UI</abbr> Actions</h2>
-			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using  <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents SHOULD NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
+			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents SHOULD NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
 			
 			<section id="uiactions-attribute">
 				<h2>The <code>uiactions</code> IDL Attribute</h2>
@@ -235,8 +238,9 @@
 				<h3>The <code>uiactions</code> Content Attribute</h3>
 				<p>Every element may have a <code>uiactions</code> attribute specified, which is necessary to define the <a href="#def_request_event_receiver">receiver</a> of each type of request event. The attribute, if specified, must have a value that is a set of whitespace-separated tokens representing the various actions to which the web application responds on behalf of this element. The actions that an element has assigned to it consists of all the tokens returned when the value of the <code>uiactions</code> attribute is split on whitespace. (Duplicates are ignored.)</p>
 				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>uiactions</code> content attribute in the <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
-				<div data-transform="listActions"><!-- dynamically generates event list --></div>
-				<!-- <p class="ednote">We could probably combine the "manipulation" events into a single "manipulation" action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events.</p> -->
+				<h4>All uiactions token values</h4>
+				<div data-transform="listActions"><!-- dynamically generates list of all actions --></div>
+				<p class="ednote">We could probably combine the "manipulation" events into a single "manipulation" action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events. Ditto for the other continuous event sets like scroll*.</p>
 				<pre class="example highlight">
 					&lt;!-- Body element is event listener for all events, but event receiver only for "delete" actions. --&gt;
 					&lt;body <strong>uiactions="delete"</strong>&gt;
@@ -263,6 +267,113 @@
 
 		</section>
 		<!-- :::::::::::::::::::: End UI Actions :::::::::::::::::::: -->
+
+		<!-- :::::::::::::::::::: UI Triggers :::::::::::::::::::: -->
+		<section id="triggers" class="normative">
+			<h2><abbr title="User Interface">UI</abbr> Triggers</h2>
+			<p>A user interface trigger is an element whose <a href="#def_default_behavior">default behavior</a> is to initiate a <em>discrete</em> <a href="#UIRequestEvent">UIRequestEvent</a>.</p>
+			<p>In order to trigger a request event, authors MUST also register for the event action using the <a href="#actions">UI Actions Interface</a> on the current element or and ancestor in the DOM. User agents MUST NOT initiate a request Event from a trigger element unless the corresponding action is defined on the current element or an ancester element using the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a> or <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
+			<p>Web authors MUST ensure trigger elements have an appropriate accessible label, as rendered text or a text alternative. Web authors MUST ensure trigger elements use an appropriate implicit or explicit role (usually <a href="http://www.w3.org/TR/wai-aria/complete#button"><code>button</code></a>).</p>
+			<p>Web authors SHOULD ensure trigger elements are focusable. Web authors MAY avoid making a trigger element focusable if the trigger provides redundant functionality already available through another physical interface. For example, a "delete" trigger may not need to be focusable if pressing the <kbd>Delete</kbd> key triggers the same request event.</p>
+			
+			<section id="uitrigger-attribute">
+				<h2>The <code>uitrigger</code> IDL Attribute</h2>
+				<p>The <code>uitrigger</code> attribute of each instance of the Element interface MUST return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#uitrigger-content-attribute"><code>uitrigger</code> content attribute</a>.</p>
+				<dl title="partial interface Element" class="idl">
+					<dt>attribute DOMString uitrigger</dt>
+					<dd>A DOM element attribute whose DOMString value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#uitrigger-content-attribute"><code>uitrigger</code> content attribute</a>. <p class="ednote">Consider making this attribute a single DOMToken rather than DOMString; this should be single action token value with whitespace trimmed.</p></dd>
+				</dl>
+			</section>
+			
+			<section id="uitrigger-content-attribute">
+				<h3>The <code>uitrigger</code> Content Attribute</h3>
+				<p>Every element may have a <code>uitrigger</code> attribute. The attribute, if specified, must have a value that is a single token representing the <a href="#UIRequestEvent">UIRequestEvent</a> which should be triggered when this element is clicked or otherwise <a href="#def_activated">activated</a>.</p>
+				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>uitrigger</code> content attribute in the <a href="#uitrigger-attribute"><code>uitrigger</code> IDL attribute</a>.</p>
+				<h4>All uitrigger token values</h4>
+				<div data-transform="listTriggerActions"><!-- dynamically generates list of UIRequestEvent actions, not those that extend UIRequestEvent, such as UIFocusEvent. --></div>
+				<p class="note">The uitrigger tokens list is a subset of the entire uiactions tokens list. It only lists actions associated with discrete <a href="#UIRequestEvent">UIRequestEvent</a> types. It does not list actions associated with interfaces that extend UIRequestEvent, such as <a href="#UIManipulationRequestEvent">UIManipulationRequestEvent</a> or <a href="#UIScrollRequestEvent">UIScrollRequestEvent</a>, because those require additional parameters that cannot be determined by a simple click or activate event on the trigger element.</p>
+			</section>
+
+			<section id="triggers-example-dismissrequest">
+				<h4>Example "Back" Button with Dismiss Request Trigger</h4>
+				<p>The following example demonstrates a view that can be "dismissed" with a "back" button trigger, the <kbd>ESC</kbd> key, or other appropriate physical events using a single event handler.</p>
+				<pre class="example highlight">
+					&lt;section <strong>uiactions="dismiss"</strong>&gt;
+					  &lt;!-- "Back" button acts as the dismiss trigger if clicked or activated. --&gt;
+					  &lt;button <strong>uitrigger="dismiss"</strong>&gt; Back &lt;/button&gt;
+					  ... other view contents ...
+					&lt;/section&gt;
+					
+					&lt;script type="text/javascript"&gt;
+					  // A single event handler for a number of user events.
+					  function handleDismiss(e) {
+					    // Dismiss the current view.
+					    dismissView(e.receiver); // Event.receiver is a readonly property like Event.target 
+					    // Then cancel the event.
+					    e.stopPropagation(); // Stop the event from bubbling.
+					    e.preventDefault(); // Let the UA/AT know the event was intercepted successfully.
+					  }
+					  document.body.addEventListener(<strong>"dismissrequest"</strong>, handleDismiss);
+					&lt;/script&gt;
+				</pre>
+				<p>The single event handler is called when a number of physical events occur:</p>
+				<ul>
+					<li>When the user presses the <kbd>ESC</kbd> key when focus is inside the view.</li>
+					<li>When the "back" button is clicked via a mouse or other pointing interface.</li>
+					<li>When the "back" button is focused and activated.</li>
+					<li>When other physical events are initiated, such as a screen reader command like VoiceOver's "scrub" gesture.</li>
+				</li>
+			</section>
+
+			<section id="triggers-example-deleterequest">
+				<h4>Media Player Example with Media Key Triggers</h4>
+				<p>The following example demonstrates a custom media player that uses the same event handler whether a button was activated, a keyboard media key was pressed, or a headphone remote was clicked.</p>
+				<pre class="example highlight">
+					&lt;body <strong>uiactions="mediaprevious mediatoggle medianext"</strong>&gt;
+					  &lt;button <strong>uitrigger="mediaprevious"</strong>&gt; Previous Track &lt;/button&gt;
+					  &lt;button <strong>uitrigger="mediatoggle"</strong>&gt; Play/Pause &lt;/button&gt;
+					  &lt;button <strong>uitrigger="medianext"</strong>&gt; Next Track &lt;/button&gt;
+					&lt;/body&gt;
+					
+					&lt;script type="text/javascript"&gt;
+					  // A single event handler for a number of user events.
+					  function handleMedia(e) {
+					    
+					    // Handle the media events from any physical event source.
+					    switch (e.type) {
+					      case "mediapreviousrequest":
+					        previousTrack();
+					        break;
+					      case "mediatogglerequest":
+					        togglePlayback();
+					        break;
+					      case "medianextrequest":
+					        nextTrack();
+					        break;
+					      default:
+					        return; // Event not handled, so return early to prevent canceling event.
+					    }
+
+					    // Then cancel the event.
+					    e.stopPropagation(); // Stop the event from bubbling.
+					    e.preventDefault(); // Let the UA/AT know the event was intercepted successfully.
+					  }
+					  document.body.addEventListener(<strong>"mediapreviousrequest"</strong>, handleMedia);
+					  document.body.addEventListener(<strong>"mediatogglerequest"</strong>, handleMedia);
+					  document.body.addEventListener(<strong>"medianextrequest"</strong>, handleMedia);
+					&lt;/script&gt;
+				</pre>
+				<p>The single event handler is called when a number of physical events occur:</p>
+				<ul>
+					<li>When the user presses the media keys on their physical keyboard.</li>
+					<li>When any of the buttons is clicked via a mouse or other pointing interface.</li>
+					<li>When any of the buttons is focused and activated.</li>
+					<li>When other physical events are initiated, such as a screen reader command.</li>
+				</li>
+			</section>
+
+		</section>
+		<!-- :::::::::::::::::::: End UI Triggers :::::::::::::::::::: -->
 		
 		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
 		<section id="RequestEvents" class="normative">
@@ -892,17 +1003,17 @@ partial interface UIEvent {
 			<p>Authors wishing to conditionally assign request event handlers based on whether the user agent supports these events can use standard objection detection for each event handler or property.</p>
 			<section id="feature-detection-example-dismissrequest">
 				<h4>Conditionally Assigning a UI Request Event</h4>
-					<p>The following example conditionally assigns a "dismissrequest" event based on whether the user agent has support for the feature.</p>
-					<pre class="example highlight">
-						if (typeof document.body.ondismissrequest !== "undefined") {
-						  // Okay to use "dismissrequest" event.
-						  document.body.addEventListener("dismissrequest", dismissHandler);
-						} else {
-						  // Otherwise catch the ESC key or another platform-specific equivalent event.
-						  document.body.addEventListener("keyup", keyHandler);
-						}
-					</pre>
-				</section>
+				<p>The following example conditionally assigns a "dismissrequest" event based on whether the user agent has support for the feature.</p>
+				<pre class="example highlight">
+					if (typeof document.body.ondismissrequest !== "undefined") {
+					  // Okay to use "dismissrequest" event.
+					  document.body.addEventListener("dismissrequest", dismissHandler);
+					} else {
+					  // Otherwise catch the ESC key or another platform-specific equivalent event.
+					  document.body.addEventListener("keyup", keyHandler);
+					}
+				</pre>
+			</section>
 			<p class="ednote">Note: need to double-check that the above code sample is really the best approach.</p>
 		</section>
 		<!-- :::::::::::::::::::: END DOM Feature Detection :::::::::::::::::::: -->
