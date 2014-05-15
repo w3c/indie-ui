@@ -517,13 +517,13 @@ partial interface UIEvent {
 						</dd>
 
 						<dt id="palettefocusrequest">Palette Focus Request (<code class="event">palettefocusrequest</code>)</dt>
-						<p class="ednote">Will possibly need an ARIA 1.1 or 2.0 role for palette. Note: palettes are sometimes referred to as non-modal dialogs or inspector windows, but not always, and the definition should not include "sometimes." If we can't come up with a less vague definition and common interaction that doesn't trample a native one (ex. Cmd+tilde on Mac), we may have to drop this event.</p>
 						<dd>
 							<p>Initiated when the user agent sends a "palette focus" request to the web application. Web app authors receiving this event SHOULD move focus to the first palette in the web application, or cycle focus between all available palettes.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
 							</ul>
+							<p class="ednote">Will possibly need an ARIA 1.1 or 2.0 role for palette. Note: palettes are sometimes referred to as non-modal dialogs or inspector windows, but not always, and the definition should not include "sometimes." If we can't come up with a less vague definition and common interaction that doesn't trample a native one (ex. Cmd+tilde on Mac), we may have to drop this event.</p>
 						</dd>
 
 						<dt id="toolbarfocusrequest">Toolbar Focus Request (<code class="event">toolbarfocusrequest</code>)</dt>
