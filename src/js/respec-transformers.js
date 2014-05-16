@@ -31,9 +31,14 @@ function listActions(r, content) {
 	return content + actionLinkList(events());
 }
 
-/* listTriggerActions: subset of listActions, only includes those that can be used with @uitriggers. */
+/* listTriggerActions: subset of listActions, only includes those that can be used with @uitrigger. */
 function listTriggerActions(r, content) {
 	return content + actionLinkList(events("#UIRequestEvent code.event"));
+}
+
+/* listManipulatorActions: subset of listActions, only includes those that can be used with @uimanipulator. */
+function listManipulatorActions(r, content) {
+	return content + actionLinkList(events("#UIManipulationRequestEvent code.event, #UIScrollRequestEvent code.event, #UIValueChangeRequestEvent code.event"));
 }
 
 function actionLinkList(eventList) {
