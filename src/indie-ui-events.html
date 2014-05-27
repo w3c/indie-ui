@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en-us" xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>IndieUI: Events 1.0 </title>
-		<link href="./css/screen.css" rel="stylesheet" type="text/css">
+		<link href="./css/screen.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" class="remove" src="./loc/en/strings.js"></script>
 		<script type="text/javascript" class="remove" src="./js/utils.js"></script>
 		<script type="text/javascript" class="remove" src="./js/respec-transformers.js"></script>
@@ -96,6 +96,7 @@
 		</section>
 
 		<section id="sotd">
+			<p>@@</p>
 		</section>
 		
 		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
@@ -179,7 +180,7 @@
 					<h4>Changing the Value of a Custom Slider</h4>
 					<p>The following example uses a "valuechangerequest" event to modify the value of a custom ARIA slider.</p>
 					<p class="ednote">This example was cut. It needs to be rewritten once we add support for composite widgets with @uimanipulator (so the slider thumb can update the value via pointer-based events). See <a href="https://www.w3.org/WAI/IndieUI/track/actions/79">ACTION-79</a>.</p>
-					<pre class="example highlight" hidden>
+					<pre class="example highlight" hidden="hidden">
 						&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;
 						&lt;canvas <strong>uiactions="valuechange"</strong> id="slider" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="42"&gt;&lt;/canvas&gt;
 						
@@ -322,7 +323,7 @@
 					<li>When the "back" button is clicked via a mouse or other pointing interface.</li>
 					<li>When the "back" button is focused and activated via a keyboard or other keyboard-like interface.</li>
 					<li>When other physical events are initiated that convey the user's desire to dismiss or escape from the current view, such as the VoiceOver screen reader's "two-finger scrub" gesture.</li>
-				</li>
+				</ul>
 			</section>
 
 			<section id="triggers-example-deleterequest">
@@ -371,7 +372,7 @@
 					<li>When any of the buttons is clicked via a mouse or other pointing interface.</li>
 					<li>When any of the buttons is focused and activated via a keyboard or other keyboard-like interface.</li>
 					<li>When other physical events are initiated that convey the user's desire toggle media playback, such as the VoiceOver screen reader's "two-finger double-tap" gesture.</li>
-				</li>
+				</ul>
 			</section>
 
 		</section>
