@@ -227,7 +227,7 @@
 			
 			<section id="uiactions-attribute">
 				<h2>The <code>uiactions</code> IDL Attribute</h2>
-				<p>The <code>uiactions</code> attribute of each instance of the Element interface MUST return a DOMTokenList <a href="#def_reflected_attribute">reflecting</a> the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>.</p>
+				<p>The <code>uiactions</code> attribute of each instance of the <code>Element</code> interface MUST return a DOMTokenList <a href="#def_reflected_attribute">reflecting</a> the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>.</p>
 				<dl title="partial interface Element" class="idl">
 					<dt>readonly attribute DOMTokenList uiactions</dt>
 					<dd>A DOM element attribute whose DOMTokenList value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>. <p class="ednote">This attribute is readonly b/c DOMTokenList values are modified by methods (e.g. <code>el.uiactions.add("pan");</code>) rather than by string assignment (e.g. NOT <code>el.uiactions = "pan";</code>). Need to make sure this is clear for authors.</p></dd>
@@ -278,7 +278,7 @@
 			
 			<section id="uitrigger-attribute">
 				<h2>The <code>uitrigger</code> IDL Attribute</h2>
-				<p>The <code>uitrigger</code> attribute of each instance of the Element interface MUST return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#uitrigger-content-attribute"><code>uitrigger</code> content attribute</a>.</p>
+				<p>The <code>uitrigger</code> attribute of each instance of the <code>Element</code> interface MUST return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#uitrigger-content-attribute"><code>uitrigger</code> content attribute</a>.</p>
 				<dl title="partial interface Element" class="idl">
 					<dt>attribute DOMString uitrigger</dt>
 					<dd>A DOM element attribute whose DOMString value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#uitrigger-content-attribute"><code>uitrigger</code> content attribute</a>. <p class="ednote">Consider making this attribute a single DOMToken rather than DOMString; this should be single action token value with whitespace trimmed.</p></dd>
@@ -389,7 +389,7 @@
 			
 			<section id="uimanipulator-attribute">
 				<h2>The <code>uimanipulator</code> IDL Attribute</h2>
-				<p>The <code>uimanipulator</code> attribute of each instance of the Element interface MUST return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#uimanipulator-content-attribute"><code>uimanipulator</code> content attribute</a>.</p>
+				<p>The <code>uimanipulator</code> attribute of each instance of the <code>Element</code> interface MUST return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#uimanipulator-content-attribute"><code>uimanipulator</code> content attribute</a>.</p>
 				<dl title="partial interface Element" class="idl">
 					<dt>attribute DOMString uimanipulator</dt><dd>TBD</dd>
 				</dl>
