@@ -100,9 +100,9 @@
 			<h2>Introduction</h2>
 			<p>The primary goal of IndieUI User Context is to provide authorized web applications access to information about a user's relevant settings and preferences, to provide the best possible experience to all users. Some complex web applications can provide a much better experience if given access to information such as a user's preferred color, font, screen, and even *restricted* assistive technology settings such as a preference to render captions, or whether a screen reader is active. General web pages developed using best practices may never need access to restricted user settings, but complex web applications can utilize this information to enhance the performance and user interface.</p>
 			<p>There are privacy implications to providing any user-specific information to a third-party such as a web site, so a critical part of this specification defines how user agents and web browsers must prevent unauthorized access to user information, including methods to prevent access from parties interested in abusive uses such as "fingerprinting" by marketers. The IndieUI Working Group members believe we've provided a reasonable level of privacy with an API that prevents web sites from being able to detect a difference between a default setting and non-default setting that is not shared with the requesting site.</p>
-			<p>This section defines feature keys for user settings for use with the UserSettings interface. Some keys can also be accessed as Media Features using syntax defined in the CSS Media Queries specification. User Agents SHOULD implement an access control mechanism that allows users to restrict access to senesitive information requested via the <code>userSettings()</code> or <code>matchMedia()</code> methods of the Window interface, or from the @media selector in CSS.
+			<p>This section defines feature keys for user settings for use with the UserSettings interface. Some keys can also be accessed as Media Features using syntax defined in the CSS Media Queries specification. User Agents SHOULD implement an access control mechanism that allows users to restrict access to senesitive information requested via the <code>userSettings()</code> method of the Navigator interface or <code>matchMedia()</code> method of the Window interface, or from the @media selector in CSS.
 
-			The specification below defines feature keys for user settings that can be requested through a new extension to the Window interface. Some keys can also be accessed as new "Media Features" to detect user settings, using existing syntax defined in the CSS Media Queries specification. Because this approach relies so heavily on features that overlap with work maintained by the CSS Working Group and Web Applications Working Group, it is possible that portions or all of this specification may move under the purview these other groups. At a minimum, the IndieUI Working Group requests guidance and a collaborative working relationship with CSS and WebApps.</p>
+			The specification below defines feature keys for user settings that can be requested through a new extension to the Navigator interface. Some keys can also be accessed as new "Media Features" to detect user settings, using existing syntax defined in the CSS Media Queries specification. Because this approach relies so heavily on features that overlap with work maintained by the CSS Working Group and Web Applications Working Group, it is possible that portions or all of this specification may move under the purview these other groups. At a minimum, the IndieUI Working Group requests guidance and a collaborative working relationship with CSS and WebApps.</p>
 			<p class="todo">
 				Todo: Move these to the refs section and link them here: <br>
 				http://www.w3.org/TR/css3-mediaqueries/
@@ -110,12 +110,12 @@
 		</section>
 		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
 
-		<!-- :::::::::::::::::::: Window Interface :::::::::::::::::::: -->
+		<!-- :::::::::::::::::::: Navigator interface :::::::::::::::::::: -->
 		<section id="UserSettings">
-			<h3>Extension to the Window Interface</h3>
+			<h3>Extension to the Navigator Interface</h3>
 
 			<p class="ednote">Need to note why we could not use the standard <code>addEventListener</code> here. It would have either required a new event for every key (onUserFontSizeChanged, etc) or it would have not allowed authors to scope the preferences they were interested in (onUserSettingChange), and therefore prompted excessive callbacks, user prompts, etc.</p>
-			<dl title="partial interface Window" class="idl">
+			<dl title="partial interface Navigator" class="idl">
 
 				<dt>DOMstring? userSetting()</dt>
 				<dd>
@@ -123,12 +123,12 @@
 					
 					<pre class="example highlight">
 						// example of settings keys defined within the IndieUI User Context specification.
-						window.userSetting('user-font-size'); // returns computed value in CSS pixels, e.g. '16px'
-						window.userSetting('subtitles'); // e.g. returns 'display' if the user wants to see subtitles/captions; otherwise returns 'none'
+						navigator.userSetting('user-font-size'); // returns computed value in CSS pixels, e.g. '16px'
+						navigator.userSetting('subtitles'); // e.g. returns 'display' if the user wants to see subtitles/captions; otherwise returns 'none'
 						
 						// example of taxonomy- or vendor-prefixed settings proposals, intended for standardization.
-						window.userSetting('-webkit-foo');
-						window.userSetting('-moz-foo');
+						navigator.userSetting('-webkit-foo');
+						navigator.userSetting('-moz-foo');
 						
 					</pre>
 					<dl class="parameters">
@@ -155,7 +155,7 @@
 			<p class="note">Standard vendor prefixes (<code>ie</code>, <code>moz</code>, <code>o</code>, <code>webkit</code>) are reserved. Any additional implementation, host language, or external taxonomy identifiers may be defined in a supplemental working group document.</p>
 
 		</section>
-		<!-- :::::::::::::::::::: END Window Interface :::::::::::::::::::: -->
+		<!-- :::::::::::::::::::: END Navigator Interface :::::::::::::::::::: -->
 
 		<!-- :::::::::::::::::::: UserSettingListener :::::::::::::::::::: -->
 		<section id="UserSettingListener">
@@ -177,7 +177,7 @@
 		<section>
 			<h2>Privacy Model</h2>
 
-			<p class="todo">Todo: Further explain how the privacy model works: when user prompted, window.userSetting() or window.matchMedia() return the default value or null immediately, and only provide the updated match ansynchronously through handleUserSettingChanged() and matchMedia().addEventListener, or on subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." A restricted @media block never prompts unless both the @media block and an included selector matches.</p>
+			<p class="todo">Todo: Further explain how the privacy model works: when user prompted, navigator.userSetting() or window.matchMedia() return the default value or null immediately, and only provide the updated match ansynchronously through handleUserSettingChanged() and matchMedia().addEventListener, or on subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." A restricted @media block never prompts unless both the @media block and an included selector matches.</p>
 			<p class="todo">Todo: Document way justification string may be defined by a meta tag in the document head, such as:<br><code class="highlight">&lt;meta name="userMediaSettings" content="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
 		
 			<section id="RestrictionCategory">
@@ -199,10 +199,10 @@
 					var mediaQueryList = window.matchMedia('screen and (screenreader)');
 					var mediaMatch = mediaQueryList.matches;
 
-					// The following is equivalent to the previous MQ approach, but uses the window.userSetting().
-					// window.userSetting will likely be the preferred interface for accessibing these settings 
+					// The following is equivalent to the previous MQ approach, but uses the navigator.userSetting().
+					// navigator.userSetting will likely be the preferred interface for accessibing these settings 
 					// through JavaScript, but the matchMedia syntax can be more terse for complex queries.
-					var setting = window.userSetting('screenreader');
+					var setting = navigator.userSetting('screenreader');
 					var settingMatch = (setting === 'active') ? true : false;
 
 					// Note: in conforming implementations, these boolean values will either both be true, or both be false.
@@ -217,7 +217,7 @@
 			</section>
 			<section id="RequirementsForUserSettings">
 				<h3>User Agent Requirements for Restricted User Settings</h3>
-				<p>To avoid privacy concerns, User Agents MUST <em>immediately</em> return the default value for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can handle a user setting change callback, or make a subsequent request to the <code>userSetting()</code> method of the Window object.</p>
+				<p>To avoid privacy concerns, User Agents MUST <em>immediately</em> return the default value for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can handle a user setting change callback, or make a subsequent request to the <code>userSetting()</code> method of the Navigator object.</p>
 				<ul>
 					<li>If the user has previously allowed access for this site to access the requested settings, or if the user has allowed all sites to access requested settings without restriction, the User Agent MUST return the correct value.</li>
 					<li>If the user has a general 'prompt' restriction enabled for the requested setting, the User Agent MUST return the default, incorrect value, and the user agent SHOULD prompt the user with a generic dialog similar to that for location sharing.</li>
@@ -268,8 +268,8 @@
 					</figure>
 				</section>
 				<section class="informative">
-					<h4>Example restricted call to <code>window.userSettings()</code></h4>
-					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.userSetting() to automatically enable the secondary audio track at load time.</p>
+					<h4>Example restricted call to <code>navigator.userSettings()</code></h4>
+					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses navigator.userSetting() to automatically enable the secondary audio track at load time.</p>
 					<pre class="example highlight">
 						
 						// Author defines a function to handle changes of the audioDescription setting.
@@ -293,11 +293,11 @@
 
 						Note: The immediate return is critical to prevent blocking threads, as well as
 						eliminating potential abuse by fingerprinting scripts attempting to determine 
-						uniqueness using execution time of the synchronous call to window.userSetting().
+						uniqueness using execution time of the synchronous call to navigator.userSetting().
 						*/
 
 						// get the setting value
-						var audioDescriptionSetting = window.userSetting('audio-description');
+						var audioDescriptionSetting = navigator.userSetting('audio-description');
 
 						// and explicitly call the handler the first time, because there is no callback yet
 						handleAudioDescriptionChanged('audio-description', audioDescriptionSetting);
@@ -310,7 +310,7 @@
 						The web author can register for a change listener on this setting, and the handler 
 						will be called asynchronously once the user agrees to share their media settings.
 						*/
-						window.addSettingListener('audio-description', handleAudioDescriptionChanged);
+						navigator.addSettingListener('audio-description', handleAudioDescriptionChanged);
 
 						// Note: Subsequent page loads should not cause the user to be prompted again.
 
@@ -340,7 +340,7 @@
 		<!-- :::::::::::::::::::: Settings and Media Features :::::::::::::::::::: -->
 		<section id="Settings">
 			<h2>Settings Keys and Related Media Feature counterparts</h2>
-			<p>This section defines feature keys for user settings for use with the UserSettings interface. Some keys can also be accessed as Media Features using syntax defined in the CSS Media Queries specification. User Agents SHOULD implement an access control mechanism that allows users to restrict access to senesitive information requested via the <code>userSettings()</code> or <code>matchMedia()</code> methods of the Window interface, or from the @media selector in CSS. <span class="todo">Todo: link these the the relevant portions of the access control extension.</span></p>
+			<p>This section defines feature keys for user settings for use with the UserSettings interface. Some keys can also be accessed as Media Features using syntax defined in the CSS Media Queries specification. User Agents SHOULD implement an access control mechanism that allows users to restrict access to senesitive information requested via the <code>userSettings()</code> method of the Navigator interface or <code>matchMedia()</code> method of the Window interface, or from the @media selector in CSS. <span class="todo">Todo: link these the the relevant portions of the access control extension.</span></p>
 			<p>The features are grouped by restriction categories (e.g. type settings, media settings, etc.) that define related media features and recommended default restriction levels.</p>
 
 			<p class="ednote">Need a setting for whether full keyboard access is enabled (e.g. related to Safari "focus all controls" setting, or any touch screen device without a keyboard or Tab-like capability)</p>
