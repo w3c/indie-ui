@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en-us" xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
 		<title>IndieUI: User Context 1.0</title>
-		<link href="./css/screen.css" rel="stylesheet" type="text/css">
+		<link href="./css/screen.css" rel="stylesheet" type="text/css"/>
 		<script type="text/javascript" class="remove" src="./loc/en/strings.js"></script>
 		<script type="text/javascript" class="remove" src="./js/utils.js"></script>
 		<script type="text/javascript" class="remove" src="./js/respec-transformers.js"></script>
@@ -104,7 +104,7 @@
 
 			The specification below defines feature keys for user settings that can be requested through a new extension to the Navigator interface. Some keys can also be accessed as new "Media Features" to detect user settings, using existing syntax defined in the CSS Media Queries specification. Because this approach relies so heavily on features that overlap with work maintained by the CSS Working Group and Web Applications Working Group, it is possible that portions or all of this specification may move under the purview these other groups. At a minimum, the IndieUI Working Group requests guidance and a collaborative working relationship with CSS and WebApps.</p>
 			<p class="todo">
-				Todo: Move these to the refs section and link them here: <br>
+				Todo: Move these to the refs section and link them here: <br/>
 				http://www.w3.org/TR/css3-mediaqueries/
 			</p>
 		</section>
@@ -178,7 +178,7 @@
 			<h2>Privacy Model</h2>
 
 			<p class="todo">Todo: Further explain how the privacy model works: when user prompted, navigator.userSetting() or window.matchMedia() return the default value or null immediately, and only provide the updated match ansynchronously through handleUserSettingChanged() and matchMedia().addEventListener, or on subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." A restricted @media block never prompts unless both the @media block and an included selector matches.</p>
-			<p class="todo">Todo: Document way justification string may be defined by a meta tag in the document head, such as:<br><code class="highlight">&lt;meta name="userMediaSettings" content="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
+			<p class="todo">Todo: Document way justification string may be defined by a meta tag in the document head, such as:<br/><code class="highlight">&lt;meta name="userMediaSettings" content="Used to enable captions and display them in your preferred font size and color."&gt;</code></p>
 		
 			<section id="RestrictionCategory">
 				<h4>Restriction Categories</h4>
@@ -522,8 +522,8 @@
 								}
 							</pre> 
 							<figure>
-								<img src="./img/uc-inverted.png" alt="Screen shot of Twitter mobile web site displayed on iOS with screen colors inverted." height="320" width="181">
-								<img src="./img/uc-double-inverted.png" alt="Mock up of previous screen shot with user profile images double-inverted, to achieve a more natural rendering and skin color." height="320" width="181">
+								<img src="./img/uc-inverted.png" alt="Screen shot of Twitter mobile web site displayed on iOS with screen colors inverted." height="320" width="181"/>
+								<img src="./img/uc-double-inverted.png" alt="Mock up of previous screen shot with user profile images double-inverted, to achieve a more natural rendering and skin color." height="320" width="181"/>
 								<figcaption>Everything in the first screen shot, including the user profile image, is inverted so skin tones are unnatural. A web application could choose to double-invert content images, as is done in the second screen shot.</figcaption>
 							</figure>
 						</div>
@@ -549,12 +549,12 @@
 							<h5>Concepts related to colors-inverted</h5>
 							<ul>
 								<li>
-									Apple UIKit API for detecting color inversion on iOS<br>
+									Apple UIKit API for detecting color inversion on iOS<br/>
 									<code class="ex">
-										// From &lt;UIKit/UIAccessibility.h&gt;<br>
-										// Returns whether the system preference for invert colors is enabled.<br>
-										UIKIT_EXTERN BOOL <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKitFunctionReference/Reference/reference.html#//apple_ref/c/func/UIAccessibilityIsInvertColorsEnabled">UIAccessibilityIsInvertColorsEnabled()</a> NS_AVAILABLE_IOS(6_0);<br>
-										UIKIT_EXTERN NSString *const <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIAccessibility_Protocol/Introduction/Introduction.html#//apple_ref/c/data/UIAccessibilityInvertColorsStatusDidChangeNotification">UIAccessibilityInvertColorsStatusDidChangeNotification</a> NS_AVAILABLE_IOS(6_0);<br>
+										// From &lt;UIKit/UIAccessibility.h&gt;<br/>
+										// Returns whether the system preference for invert colors is enabled.<br/>
+										UIKIT_EXTERN BOOL <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKitFunctionReference/Reference/reference.html#//apple_ref/c/func/UIAccessibilityIsInvertColorsEnabled">UIAccessibilityIsInvertColorsEnabled()</a> NS_AVAILABLE_IOS(6_0);<br/>
+										UIKIT_EXTERN NSString *const <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIAccessibility_Protocol/Introduction/Introduction.html#//apple_ref/c/data/UIAccessibilityInvertColorsStatusDidChangeNotification">UIAccessibilityInvertColorsStatusDidChangeNotification</a> NS_AVAILABLE_IOS(6_0);<br/>
 									</code>
 								</li>
 
@@ -1085,7 +1085,6 @@
 				<section id="screenreader-typing-echo">
 					<h4 class="settings-key">Key: <code>screenreader-typing-echo</code></h4>
 					<p>Returns a value indicating whether typing in text fields causes a screen reader echos whole words, characters, both, or none.</p>
-					<p>
 					<dl class="properties">
 						
 						<dt>Has Associated Media Feature</dt>
