@@ -446,10 +446,10 @@
 							<p>In this example, the user-defined color and background color are defined through a user style sheet or other means, so override the site theme to respect the user's colors.</p>
 							<pre class="example highlight">
 								@media (user-color) and (user-background-color) {
-								    html, body {
-								        /* Syntax for the user-pref variables to be specified in one of the CSS 4 modules. */
-								        color: user-pref(color);
-								        background-color: user-pref(background-color);
+								    main {
+								        /* Syntax for the user-setting variables to be specified in one of the CSS 4 modules. */
+								        color: user-setting(color);
+								        background-color: user-setting(background-color);
 								    }
 								}
 							</pre> 
@@ -1044,7 +1044,7 @@
 					<h4>Editorial Note on User Privacy</h4>
 					<p>Due to community feedback related to privacy, this feature may be marked as at-risk or removed. The working group acknowledges its usefulness in complex web applications such as enterprise document-editing suites, but also acknowledges the fact that its utility may be easily misunderstood or potentially misused.</p>
 					<p>For example, the typing echo or other verbosity settings would be useful today, for sites such as Google Docs and iWork for iCloud. These applications use custom display views that are not able to be made accessible through conventional means, so speech output is controlled via live region announcements. The web application does not otherwise have access to user settings such as typing echo, so without access to this feature, the web application could not mimic the user's preferred output.</p>
-					<p>One potential misuse is for user metrics or tracking. Even with the <a href="http://www.marcozehe.de/2014/02/27/why-screen-reader-detection-on-the-web-is-a-bad-thing/comment-page-1/#comment-2466420">best of intentions</a>, this is a potentially harmful misuse of the API. There are currently very strict user <a href="#privacy-model">privacy model</a> requirements to implement this feature in a reasonably safe and secure way, but if the working group is not comfortable in the implementation's ability to sufficiently prevent this type of misuse, we will remove the feature.</p> 
+					<p>One potential misuse is for user metrics or tracking. Even with the <a href="http://www.marcozehe.de/2014/02/27/why-screen-reader-detection-on-the-web-is-a-bad-thing/#comment-1701">best of intentions</a>, this is a potentially harmful misuse of the API. There are currently very strict user <a href="#privacy-model">privacy model</a> requirements to implement this feature in a reasonably safe and secure way, but if the working group is not comfortable in the implementation's ability to sufficiently prevent this type of misuse, we will remove the feature.</p> 
 				</div>
 
 				<section id="screenreader">
