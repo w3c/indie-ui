@@ -480,8 +480,8 @@
 					</section>
 				</section>
 
-				<section id="colors-inverted">
-					<h4 class="settings-key">Key: <code>colors-inverted</code></h4>
+				<section id="inverted-colors">
+					<h4 class="settings-key">Key: <code>inverted-colors</code></h4>
 					<p>Web authors SHOULD NOT re-invert foreground and background colors based on this setting, but MAY choose to double-invert some content, such as photographs.</p>
 					<dl class="properties">
 						
@@ -496,8 +496,10 @@
 						
 					</dl>
 
-					<section id="media-feature-colors-inverted">
-						<h5 class="media-feature">Associated Media Feature: <code>colors-inverted</code></h5>
+					<section id="media-feature-inverted-colors">
+						<h5 class="media-feature">Associated Media Feature: <code>inverted-colors</code></h5>
+
+						<p class="note">The <code>inverted-colors</code> media feature has being defined in <a href="http://dev.w3.org/csswg/mediaqueries-4/">CSS Media Queries Level 4</a>. Once that spec has reached W3C Recommendation status, the remainder of this section will be removed in favor of referencing the CSS specification directly.</p>
 						<dl class="properties">
 							
 							<dt>Value</dt>
@@ -517,7 +519,7 @@
 						<div class="ex" title="Informative">
 							<p>In this example, the hardware display rendering is inverted, so the web app could <em>double-invert</em> foreground image and video content, which usually looks strange while inverted. This would leave text foreground color, all background colors, and background styles inverted to adhere to user setting.</p>
 							<pre class="example highlight">
-								@media (colors-inverted) {
+								@media (inverted-colors) {
 								    img, video {
 								        filter: invert(100%);
 								    }
@@ -532,7 +534,7 @@
 						<div class="ex" title="Informative">
 							<p>In this example, the hardware display rendering is inverted, so the web app could hide elements styles that resemble "shadows" of physical light, which by default look like white glows while inverted. This media query allows authors to disable settings that don't make sense when the physical display pixels are inverted.</p>
 							<pre class="example highlight">
-								@media (colors-inverted) {
+								@media (inverted-colors) {
 								    .page {
 								        box-shadow: none;
 								    }
@@ -545,10 +547,8 @@
 
 						<p class="note">Note: Privacy and fingerprinting concerns related to this media feature are minimal, since it is unlikely that most individuals will have this setting enabled all the time. For example, due to personal preference or situational context, some individuals use this as a manual quick toggle to temporarily view text content in a light-on-dark color scheme as opposed to a dark-on-light default.</p>
 
-						<p class="note">Additional anecdotal evidence of how useful this could be as a media query can be found on <a href="http://ux.stackexchange.com/questions/26331/why-are-inverted-colors-considered-an-accessibility-feature">Stack Exchange UX</a>.</p>
-
 						<div class="relatedconcepts">
-							<h5>Concepts related to colors-inverted</h5>
+							<h5>Concepts related to inverted-colors</h5>
 							<ul>
 								<li>
 									Apple UIKit API for detecting color inversion on iOS<br/>
@@ -1146,14 +1146,12 @@
 			<div data-transform="listMediaFeatures"><!-- dynamically generates media feature list --></div>
 		</section>
 		
-		<!--
 		<section id="changelog" class="appendix">
 			<h2>Substantive, normative changes since the <a href="http://www.w3.org/TR/2014/WD-indie-ui-context-20140626/#changelog">last public working draft</a></h2>
 			<ul>
-				<li>DD-MMM-YYYY: @@</li>
+				<li>2014-09-24: Changed colors-inverted to inverted-colors to match its adoption into CSS4.</li>
 			</ul>
 		</section>
-		-->
 		
 		<!-- Todo: Glossary currently includes all terms in Events Module and User Context Module. -->
 		<!-- Need to remove the ones that are not used in the current document. -->
