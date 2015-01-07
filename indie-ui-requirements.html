@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en-us" typeof="bibo:Document " prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head><meta property="dc:language" content="en" lang="">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Requirements for IndieUI: Events 1.0 and IndieUI: User Context 1.0</title>
+		<style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title , div.warning-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title { color: #2b2; }
+div.warning-title { color: #f22; }
+div.issue-title span, div.note-title span, div.warning-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue, div.warning {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .issue > p:first-child, .warning > p:first-child { margin-top: 0 }
+.issue, .note, .warning {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note , div.warning {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.issue, span.warning { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+.warning {
+    border-color: #f11;
+    border-right-width: .2em;
+    border-top-width: .2em;
+    border-bottom-width: .2em;
+    border-style: solid;
+    background: #fbe9e9;
+}
+
+.warning-title:before{
+    content: "⚠"; /*U+26A0 WARNING SIGN*/
+    font-size: 3em;
+    float: left;
+    height: 100%;
+    padding-right: .3em;
+    vertical-align: top;
+    margin-top: -0.5em;
+}
+</style><link href="./css/screen.css" rel="stylesheet" type="text/css">
+		
+		
+		
+		
+		<!-- 
+      === NOTA BENE ===
+      For the three scripts below, if your spec resides on dev.w3 you can check them
+      out in the same tree and use relative links so that they'll work offline,
+     -->
+		
+		
+		
+		
+	<style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #C83500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><link href="https://www.w3.org/StyleSheets/TR/W3C-WD" rel="stylesheet"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
+	<body id="respecDocument" role="document" class="h-entry"><div id="respecHeader" role="contentinfo" class="head">
+  <p>
+      
+        
+            <a href="http://www.w3.org/"><img src="https://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a>
+        
+      
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title">Requirements for IndieUI: Events 1.0 and IndieUI: User Context 1.0</h1>
+  
+  <h2 id="w3c-first-public-working-draft-22-april-2014"><abbr title="World Wide Web Consortium">W3C</abbr> First Public Working Draft <time property="dcterms:issued" class="dt-published" datetime="2014-04-22">22 April 2014</time></h2>
+  <dl>
+    
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="http://www.w3.org/TR/2014/WD-indie-ui-requirements-20140422/">http://www.w3.org/TR/2014/WD-indie-ui-requirements-20140422/</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/indie-ui-requirements/">http://www.w3.org/TR/indie-ui-requirements/</a></dd>
+    
+    
+      <dt>Latest editor's draft:</dt>
+      <dd><a href="https://w3c.github.io/indie-ui/indie-ui-requirements.html">https://w3c.github.io/indie-ui/indie-ui-requirements.html</a></dd>
+    
+    
+    
+    
+    
+    
+    
+    <dt>Editor:</dt>
+    <dd class="p-author h-card vcard" property="bibo:editor" resource="_:editor0"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Michael Cooper</span>, <a property="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a></span>
+<span property="rdf:rest" resource="rdf:nil"></span>
+</dd>
+
+    
+    
+  </dl>
+  
+  
+  
+  
+    
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2014
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 
+        
+        All Rights Reserved.
+        
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        
+          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+        
+        rules apply.
+      </p>
+    
+  
+  <hr>
+</div>
+
+		<section property="dc:abstract" class="introductory" id="abstract"><h2 resource="#h-abstract" id="h-abstract"><span property="xhv:role" resource="xhv:heading">Abstract</span></h2>
+			<p>This document outlines the requirements that the IndieUI Working Group has set for development
+				of <strong>IndieUI: Events 1.0</strong> and <strong>IndieUI: User Context 1.0</strong>.
+				These requirements will be used to determine whether the IndieUI <abbr title="Working Group">WG</abbr> has met its goals as these specifications advance through the <a href="http://www.w3.org/2005/10/Process-20051014/tr.html#Reports"><abbr title="World Wide Web Consortium">W3C</abbr> Recommendation Track
+					Process</a>. This document introduces a series of user scenarios common to the two
+				specifications, and a list of technical requirements needed to meet those scenarios for each
+				specification. It also provides information about how the requirements are addressed. For
+				background information on IndieUI: Events and IndieUI: User Context see the <a href="http://www.w3.org/WAI/intro/indieui">IndieUI Overview</a>.</p>
+		</section><section id="sotd" class="introductory"><h2 resource="#h-sotd" id="h-sotd"><span property="xhv:role" resource="xhv:heading">Status of This Document</span></h2>
+  
+    
+      
+        <p>
+          <em>This section describes the status of this document at the time of its publication.
+          Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the
+          latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
+          http://www.w3.org/TR/.</em>
+        </p>
+        
+        
+			<p>This is a First Public Working Draft of "Requirements for IndieUI: Events 1.0 and IndieUI:
+				User Context 1.0" from the <a href="http://www.w3.org/WAI/IndieUI/">Independent User
+					Interface (Indie UI) Working Group</a>. The Working Group intends to develop this document
+				and publish it as a Working Group Note to support the Recommendation-track deliverables
+					<strong>IndieUI: Events 1.0</strong> and <strong>IndieUI: User Context 1.0</strong>.
+				"Requirements for IndieUI: Events 1.0 and IndieUI: User Context 1.0" addresses both those
+				specifications, although in this version only requirements for IndieUI: Events have been
+				elaborated. The document provides scenarios for web content interaction that need additional
+				standards support to optimize interaction by people with disabilities, followed by
+				requirements for the specifications to meet those scenarios. Where requirements are
+				currently met by the specification, an appropriate link is provided.</p>
+			<p>Feedback on this document is essential to success of these technologies. The IndieUI <abbr title="Working Group">WG</abbr> asks
+				in particular:</p>
+			<ul>
+				<li>Do the scenarios comprehensively describe situations that should be addressed in IndieUI:
+					Events and IndieUI: User Context?</li>
+				<li>Do the requirements sufficiently address the scenarios?</li>
+				<li>Are there scenarios or requirements that should not be addressed in the 1.0 version of these
+					specifications?</li>
+			</ul>
+			<p>To comment on this document, send email to <a href="mailto:public-indie-ui-comments@w3.org?subject=Comment%20on%20IndieUI%20Requirements%2017%20April%202014">public-indie-ui-comments@w3.org</a> (<a href="http://lists.w3.org/Archives/Public/public-indie-ui-comments/">comment archive</a>).
+				Comments are requested by <strong>23 May 2014</strong>. In-progress updates to the document
+				may be viewed in the <a href="https://w3c.github.io/indie-ui/indie-ui-requirements.html">publicly visible editors' draft</a>.</p>
+		
+        
+        <p>
+          This document was published by the <a href="http://www.w3.org/WAI/IndieUI/">Independent User Interface (Indie UI) Working Group</a> as a First Public Working Draft.
+          
+          
+            If you wish to make comments regarding this document, please send them to 
+            <a href="mailto:public-indie-ui-comments@w3.org">public-indie-ui-comments@w3.org</a> 
+            (<a href="mailto:public-indie-ui-comments-request@w3.org?subject=subscribe">subscribe</a>,
+            <a href="http://lists.w3.org/Archives/Public/public-indie-ui-comments/">archives</a>).
+          
+          
+          
+          
+          
+            
+            All comments are welcome.
+            
+          
+        </p>
+        
+        
+        
+          <p>
+            Publication as a First Public Working Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+            Membership. This is a draft document and may be updated, replaced or obsoleted by other
+            documents at any time. It is inappropriate to cite this document as other than work in
+            progress.
+          </p>
+        
+        
+        
+        <p>
+          
+            This document was produced by a group operating under the 
+            <a id="sotd_patent" property="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+            Policy</a>.
+          
+          
+            The group does not expect this document to become a <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation.
+          
+          
+            
+              <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="http://www.w3.org/2004/01/pp-impl/54953/status" rel="disclosure">public list of any patent
+              disclosures</a> 
+            
+            made in connection with the deliverables of the group; that page also includes
+            instructions for disclosing a patent. An individual who has actual knowledge of a patent
+            which the individual believes contains
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+            Claim(s)</a> must disclose the information in accordance with
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+          
+          
+        </p>
+        
+          <p>This document is governed by the <a id="w3c_process_revision" href="http://www.w3.org/2014/Process-20140801/">1 August 2014 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+          </p>
+        
+        
+      
+    
+  
+</section><section id="toc"><h2 resource="#h-toc" id="h-toc" class="introductory"><span property="xhv:role" resource="xhv:heading">Table of Contents</span></h2><ul id="respecContents" role="directory" class="toc"><li class="tocline"><a class="tocxref" href="#intro"><span class="secno">1. </span>Introduction</a></li><li class="tocline"><a class="tocxref" href="#use-cases"><span class="secno">2. </span>Use Cases and Scenarios</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#scenario_map"><span class="secno">2.1 </span>Manipulate a map</a></li><li class="tocline"><a class="tocxref" href="#scenario_popup"><span class="secno">2.2 </span>Execute a popup</a></li><li class="tocline"><a class="tocxref" href="#scenario_expand-collapse"><span class="secno">2.3 </span>Open or collapse a tree branch, menu, expandable grid cell, or expandable section</a></li><li class="tocline"><a class="tocxref" href="#scenario_activate"><span class="secno">2.4 </span>Activate a UI component</a></li><li class="tocline"><a class="tocxref" href="#scenario_internal-move"><span class="secno">2.5 </span>Move the focus point within a UI component down to the next / visual right / visual down, or previous / visual left / visual up item within a UI component </a></li><li class="tocline"><a class="tocxref" href="#scenario_play"><span class="secno">2.6 </span>Direct a media player to start, stop, or pause playing</a></li><li class="tocline"><a class="tocxref" href="#scenario_captions"><span class="secno">2.7 </span>Toggle rendering captions</a></li><li class="tocline"><a class="tocxref" href="#scenario_volume"><span class="secno">2.8 </span>Increase or decrease the volume</a></li><li class="tocline"><a class="tocxref" href="#scenario_zoom"><span class="secno">2.9 </span>Zoom in or out</a></li><li class="tocline"><a class="tocxref" href="#scenario_pan"><span class="secno">2.10 </span>Pan right, left, up, or down</a></li><li class="tocline"><a class="tocxref" href="#scenario_por-limit"><span class="secno">2.11 </span>Move point of regard to the beginning or end of its navigation sequence</a></li><li class="tocline"><a class="tocxref" href="#scenario_drag-drop"><span class="secno">2.12 </span>Grab, move, and release grabbable UI object</a></li><li class="tocline"><a class="tocxref" href="#scenario_selection"><span class="secno">2.13 </span>Continuous or discontinuous multi-slection within a UI object</a></li><li class="tocline"><a class="tocxref" href="#scenario_resize"><span class="secno">2.14 </span>Increase or Decrease Size of UI object by a small or large increment</a></li><li class="tocline"><a class="tocxref" href="#scenario_move"><span class="secno">2.15 </span>Move a UI object</a></li><li class="tocline"><a class="tocxref" href="#scenario_show-hide"><span class="secno">2.16 </span>Reveal or hide additional text without selection</a></li><li class="tocline"><a class="tocxref" href="#scenario_selectable"><span class="secno">2.17 </span>Change nearness indication without selection</a></li><li class="tocline"><a class="tocxref" href="#scenario_deactivate"><span class="secno">2.18 </span>Cause a non-selection active state indicator to disable</a></li><li class="tocline"><a class="tocxref" href="#scenario_updates"><span class="secno">2.19 </span>Cause a suspend/resume of live updates to the page. Can very from live regions, live blogging, twitter stream, live download.</a></li></ul></li><li class="tocline"><a class="tocxref" href="#requirements_events"><span class="secno">3. </span>Events Requirements</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#requirements_events_api"><span class="secno">3.1 </span>API</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_layer"><span class="secno">3.2 </span>Input Device Independence</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_independence"><span class="secno">3.3 </span>Interaction Independence</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_compatibility"><span class="secno">3.4 </span>Backwards Compatibility</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_handled"><span class="secno">3.5 </span>Events Handled</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_non-interference"><span class="secno">3.6 </span>Non-Interference</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_reset"><span class="secno">3.7 </span>Reset</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_delegation"><span class="secno">3.8 </span>Event Delegation</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_order"><span class="secno">3.9 </span>Event Order</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_association"><span class="secno">3.10 </span>Physical Event Association</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_uievents"><span class="secno">3.11 </span>Extend UI Events</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_userinput"><span class="secno">3.12 </span>User Input Functions</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_keyboard-mouse"><span class="secno">3.13 </span>Keyboard and Mouse compatibility</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_linear-navigation"><span class="secno">3.14 </span>Linear Navigation</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_directional-navigation"><span class="secno">3.15 </span>Directional Navigation</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_nonlinear-navigation"><span class="secno">3.16 </span>Non-Linear Navigation</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_landmark"><span class="secno">3.17 </span>Landmark Navigation</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_return"><span class="secno">3.18 </span>Return to Previous Point of Regard</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_manipulate"><span class="secno">3.19 </span>Manipulate Objects</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_scroll"><span class="secno">3.20 </span>Scroll</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_range"><span class="secno">3.21 </span>Range Controls</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_features"><span class="secno">3.22 </span>Feature Detection</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_context-menu"><span class="secno">3.23 </span>Context Menus</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_media"><span class="secno">3.24 </span>Media Controls</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_suspend"><span class="secno">3.25 </span>Suspend and Resume</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_select"><span class="secno">3.26 </span>Selection</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_noclick"><span class="secno">3.27 </span>No Implied Click</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_por"><span class="secno">3.28 </span>Point of Regard</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_editing"><span class="secno">3.29 </span>Text Editing</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_search"><span class="secno">3.30 </span>Quick Search</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_resize"><span class="secno">3.31 </span>Resize Object</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_centerpoint"><span class="secno">3.32 </span>Set Rotation Centerpoint</a></li><li class="tocline"><a class="tocxref" href="#requirements_events_table-sort"><span class="secno">3.33 </span>Table Sort</a></li></ul></li><li class="tocline"><a class="tocxref" href="#requirements_context"><span class="secno">4. </span>User Context Requirements</a></li><li class="tocline"><a class="tocxref" href="#requirements_other"><span class="secno">5. </span>Other Requirements</a></li><li class="tocline"><a class="tocxref" href="#acknowledgements"><span class="secno">A. </span>Acknowledgements</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#GroupMembership"><span class="secno">A.1 </span>Active IndieUI Members</a></li><li class="tocline"><a class="tocxref" href="#Contributors"><span class="secno">A.2 </span>Contributors</a></li><li class="tocline"><a class="tocxref" href="#ack-funders"><span class="secno">A.3 </span>Enabling funders</a></li></ul></li></ul></section>
+
+		
+		
+		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#intro" typeof="bibo:Chapter" id="intro">
+			<!--OddPage--><h2 resource="#h-intro" id="h-intro"><span property="xhv:role" resource="xhv:heading"><span class="secno">1. </span>Introduction</span></h2>
+			<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be further customized based on personal preference. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's preferred interface. Some complex web applications can provide a much better experience if given access to information such as a user's preferred color, font, screen, and even <em>restricted</em> assistive technology settings such as a preference to render captions, or whether a screen reader is on. </p>
+			<p>Custom interfaces often don't take into account users who access web content via assistive technologies that use alternate forms of input such as screen readers, switch interfaces, or speech-based command and control interfaces. For example, a web page author may script a custom interface to look like a slider (e.g. one styled to look like an <abbr title="Hypertext Markup Language">HTML</abbr> "range" input) and behave like a slider when using standard mouse-based input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
+			<p>IndieUI: Events defines a way for web authors to register for these <em>request events</em>.
+				Authors declaritively define which actions or behaviors a view responds to, and when it is
+				appropriate for browsers to initiate these events. IndieUI: User Context provides authorized
+				web applications access to information about a user's relevant settings and preferences, to
+				provide the best possible user experience to all users. General web pages developed using
+				best practices may never need access to restricted user settings, but complex web
+				applications can utilize this information to enhance the performance and user interface.</p>
+			<p>One of the core principles behind these specifications is that that it operates on a
+				backwards-compatible, opt-in basis. In other words, the web application author has to first
+				be aware of these events, then explicitly declare each event receiver and register an event
+				listener, or user agents behave as normal and do not initiate these events. If a web
+				application does not respond to the event, the user agent may attempt fallback behavior or
+				communicate to the user that the input has not been recognized.</p>
+			<p>For further background information on IndieUI: Events and IndieUI: User Context see the <a href="http://www.w3.org/WAI/intro/indieui">IndieUI Overview</a>.</p>
+			
+			
+		</section>
+		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: USE CASES :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#use-cases" typeof="bibo:Chapter" id="use-cases">
+			<!--OddPage--><h2 resource="#h-use-cases" id="h-use-cases"><span property="xhv:role" resource="xhv:heading"><span class="secno">2. </span>Use Cases and Scenarios</span></h2>
+			
+			<section property="bibo:hasPart" resource="#scenario_map" typeof="bibo:Chapter" id="scenario_map">
+				<h3 resource="#h-scenario_map" id="h-scenario_map"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.1 </span>Manipulate a map</span></h3>
+				<p>A person is using a map to find the location and layout of a local park in a web-based mapping application so they can print it out, using their touch-screen laptop. They know the general location, and see the green area on the lower-left-hand corner of the map on the screen. They touch that part of the screen, and use a zooming gesture to center and zoom in on that section of the screen, then fine-tune the centering using the arrow keys on their keyboard and zoom in further using the context menu on their laptop's trackpad. Finally, they use a rotation gesture on the touchscreen to re-orient the map around the point of interest. Once they have the view they want, they use the browser's control menu to print the map. </p>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_popup" typeof="bibo:Chapter" id="scenario_popup">
+				<h3 resource="#h-scenario_popup" id="h-scenario_popup"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.2 </span>Execute a popup</span></h3>
+				<p>A user whose point of regard (focus) is on a UI object that support popups performs an action that causes the web application to render the popup. A popup could be a popup dialog box or a popup menu. The user would like to be made aware that either of these popup options are available and be able to cause the popup to render using a variety of device input interaction methods such as a keyboard command, a gesture, a voice command, or a right mouse click. </p>
+				<div class="note"><div id="h-note1" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">WAI-ARIA provides a property, aria-haspopup, that indicates the UI Widget supports a popup.</p></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_expand-collapse" typeof="bibo:Chapter" id="scenario_expand-collapse">
+				<h3 resource="#h-scenario_expand-collapse" id="h-scenario_expand-collapse"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.3 </span>Open or collapse a tree branch, menu, expandable grid cell, or expandable section</span></h3>
+				<p>A user whose point of regard (focus) is on a UI object that indicates the UI object is expandable / collapsible to reveal / hide subordinate content would like to perform an action to cause the web application to reveal / hide the content. Common UI objects that support this function are tree items in tree controls, gridcells in treegrids that expand to reveal new rows, accordion tabs which reveal / hide panels of content, or expandable and collapsible regions (e.g. portlets). The user would like to be made aware that these options are available and be able to reveal / hide the content using a variety of device input interaction methods such as a keyboard command, a gesture, a voice command, or possibly a mouse click.</p>
+				<div class="note"><div id="h-note2" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">WAI-ARIA provides an aria-expanded property that indicates that is expandable when it is set to false. </p></div>
+				<div class="note"><div id="h-note3" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">WAI-ARIA has a container role of dialog that this could be applied to. Essentially this would be equivalent to an escape key .</p></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_activate" typeof="bibo:Chapter" id="scenario_activate">
+				<h3 resource="#h-scenario_activate" id="h-scenario_activate"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.4 </span>Activate a UI component</span></h3>
+				<p>A user whose point of regard (focus) is on a UI object, that can be activated, and would like to perform an action to activate it. Example UI objects that support activation are push buttons, radio buttons, checkboxes, and menu items. The action could be in the form of a tap, a gesture, a voice command, a mouse click, a keyboard key, or a command from an alternative input device. </p>
+				<div class="note"><div id="h-note4" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">This has been proposed in the past and the legacy "click" was used instead - DOMActivate. </p></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_internal-move" typeof="bibo:Chapter" id="scenario_internal-move">
+				<h3 resource="#h-scenario_internal-move" id="h-scenario_internal-move"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.5 </span>Move the focus point within a UI component down to the next / visual right / visual down, or previous / visual left / visual up item within a UI component </span></h3>
+				<p>A user whose focus is on a UI object that supports next and previous navigation within the UI component would like to control the UI to move its current active item (usually rendered visibly as its point of regard) to the next or previous item within its internal navigation sequence. This might be the next or previous item within a listbox, tree widget, menu, menubar, or grid, treegrid, select, or any other type of UI Component supporting this function. Visually the next item is usually right or down, and the previous item is usually left or above. The action could be in the form of a gesture, a voice command, a right mouse click, a keyboard key, or an alternative input device. Some UI components may choose to force an item selection in response to the action. </p>
+				<div class="note"><div id="h-note5" role="heading" aria-level="4" class="note-title"><span>Note</span></div><ul class="">
+					<li>We cannot assume we know all UI components capable of supporting this function.</li>
+					<li>Some UI components may move its internal point of regard back to the beginning of its navigation sequence after it reaches the end.</li>
+					<li>This movement is not response to a tab notification which should be designed to move among widgets and interactive controls that are not managed by another UI component.</li>
+					<li>This would not be applicable to Dialogs or form elements that intended to be in the tab sequence.</li>
+					<li>"Visual right" vs "next element" / "visual left" vs "previous element" are two different things. Right and left are locale-independent. Next / previous element would change direction based on locale, for example, in RTL languages like Arabic.</li>
+					<li>We cannot assume that moving the point of the regard to the right will not move the point of regard back to the left-most managed object when starting from the right-most managed UI object. </li>
+				</ul></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_play" typeof="bibo:Chapter" id="scenario_play">
+				<h3 resource="#h-scenario_play" id="h-scenario_play"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.6 </span>Direct a media player to start, stop, or pause playing</span></h3>
+				<p>A user whose point of regard (focus) is within a media player would like to notify the application to start, stop, or pause the playing of the video, audio, or animation. When a notification to start, stop, or pause the player is received the rendering starts, stops, or pauses. Start starts playing form the current time in the media play sequence. Stop moves the current time in the media play back to the start of the media sequence. Pause stops playback but does not move the time pointer. Example UI components would be a video player or audio player. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<div class="note"><div id="h-note6" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">Do we want to include animation such as SVG animation? This would require the user agent to respond to the notification. </p></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_captions" typeof="bibo:Chapter" id="scenario_captions">
+				<h3 resource="#h-scenario_captions" id="h-scenario_captions"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.7 </span>Toggle rendering captions</span></h3>
+				<p>A user whose point of regard (focus) is within a media player would like to notify the application to toggle the rendering of video or audio captions. When a notification to toggle captions is received the player the toggles the rendering of the caption track at the synchronization point within the video or audio stream play. Example UI components would be a video player or audio player. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device.</p>
+				<div class="note"><div id="h-note7" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">HTML5 has a a new media controller API that could be used to facilitate this happening. </p></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_volume" typeof="bibo:Chapter" id="scenario_volume">
+				<h3 resource="#h-scenario_volume" id="h-scenario_volume"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.8 </span>Increase or decrease the volume</span></h3>
+				<p>A user whose point of regard (focus) is within a media player would like to notify the application to increase or decrease the video or audio volume. When a notification to increase or decrease the volume is received the player increases or decreases the rendering volume. Example UI components would be a video player or audio player. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<div class="note"><div id="h-note8" role="heading" aria-level="4" class="note-title"><span>Note</span></div><ul class="">
+					<li>The increments would need to depend on the granularity of the player</li>
+					<li>Do we want to be able to change the volume increments?</li>
+					<li>Should we make this more generic to increase a control - such as a modifiable range object (slider)? </li>
+				</ul></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_zoom" typeof="bibo:Chapter" id="scenario_zoom">
+				<h3 resource="#h-scenario_zoom" id="h-scenario_zoom"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.9 </span>Zoom in or out</span></h3>
+				<p>A user whose point of regard (focus) is within a zoomable object would like to notify the application to zoom in on the object. When a notification to zoom in a particular factor is received, the object zooms in by that factor and optionally provides more detail. Example UI components would be an SVG rendering of a CAD drawing or a key component of a scatter plot. The notification could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<div class="note"><div id="h-note9" role="heading" aria-level="4" class="note-title"><span>Note</span></div><ul class="">
+					<li>Do we want to separate Drill Down from Zoom Out or should we leave that up to the applications? A drill down might provide more information. An end user may think zoom simply enlarges an area vs. providing more detail.</li>
+					<li>Is this distinct in any way from the zoom operation discussed in the map scenario? Should we just have zoom, pan and rotate as separate scenarios (or even just a single combined scenario)? </li>
+				</ul></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_pan" typeof="bibo:Chapter" id="scenario_pan">
+				<h3 resource="#h-scenario_pan" id="h-scenario_pan"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.10 </span>Pan right, left, up, or down</span></h3>
+				<p>A user whose point of regard (focus) is within a media player would like to direct the ui object to pan up, down, left, or right so that more information can be revealed to the user in the direction of the pan. Example UI components would be a chart, subway map, CAD drawing, etc. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<div class="note"><div id="h-note10" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">Do we want to include animation such as SVG animation? This would require the user agent to respond to the notification. </p></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_por-limit" typeof="bibo:Chapter" id="scenario_por-limit">
+				<h3 resource="#h-scenario_por-limit" id="h-scenario_por-limit"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.11 </span>Move point of regard to the beginning or end of its navigation sequence</span></h3>
+				<p>A user whose point of regard is rendered within a focused UI Object that manages its own navigation and would like to direct the ui object to move the point of regard to the beginning or end of the navigation sequence similar to a "Home" or "End" button. Example UI components would be a listbox, video player, audio player, tree widget, contenteditable area, tree widget, gridd, treegrid, or tablist. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_drag-drop" typeof="bibo:Chapter" id="scenario_drag-drop">
+				<h3 resource="#h-scenario_drag-drop" id="h-scenario_drag-drop"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.12 </span>Grab, move, and release grabbable UI object</span></h3>
+				<p>A user whose point of regard is non a UI object would like to grab the object for the purposes of moving it such as in a drag operation. After moving the point of regard, they drop the currently grabbed object on the object with focus at the current point of regard location. Example UI components to grab and move would be a light box, a lisbox item, a tree item, or a drawing object. Example UI components on which an item could be dropped would be a light box empty box or a line indicating a location between light box items, a lisbox item to drop the item before or after the current listbox item, a tree item to add a new item in a subtree, or a region of the web application or a drawing object. The action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<div class="note"><div id="h-note11" role="heading" aria-level="4" class="note-title"><span>Note</span></div><ul class="">
+					<li>WAI-ARIA has an aria-grabbed property such that when set to false indicates that it may be grabbed for the purposes of moving it.</li>
+					<li>WAI-ARiA defines roles for objects such as regions</li>
+					<li>Should this be left up to the user agent?</li>
+					<li>Should the drop occur if the target does not have aria-dropeffect set? </li>
+				</ul></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_selection" typeof="bibo:Chapter" id="scenario_selection">
+				<h3 resource="#h-scenario_selection" id="h-scenario_selection"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.13 </span>Continuous or discontinuous multi-slection within a UI object</span></h3>
+				<p>A user whose point of regard is on a UI object would like to select multiple continuous or discontinuous items within a supporting UI control. Once initiated it would tell the UI component to start a run of either continuous or discontinuous item selections with in the UI control. For continuous selection, as the user navigates the items within the UI Object container each item navigated to is automatically selected until the multi-selection process terminates. For discontinuous selection, a separate command would be given to actually select individual items within the UI object but navigation among items in the UI object would not cause an actual selection to occur. When selection is complete, the user directs the UI object either to save the currently selected items and exit the selection process, or to cancel the selection process and clear the selection. Examples are options in a listbox, gridcells withing a gridd, or treeitems within a tree. This action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<div class="note"><div id="h-note12" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">WAI-ARIA has an aria-selected state that can be used to reflect the selected state of the item within a UI object.</p></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_resize" typeof="bibo:Chapter" id="scenario_resize">
+				<h3 resource="#h-scenario_resize" id="h-scenario_resize"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.14 </span>Increase or Decrease Size of UI object by a small or large increment</span></h3>
+				<p>A user whose point of regard is on a UI object would like to ask it to increase or decrease its size by a small or large increment. This is very common in drawing objects such as drawing objects in a flow diagram or presentation tool where the user is attempting to create a visual UI. For people with mobility impairments this is very hard to do with a pointing device and alternate forms of input are necessary. This action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<div class="note"><div id="h-note13" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">We should provide an ARIA property for ARIA 2.0 that conveys that an object is resizeable.</p></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_move" typeof="bibo:Chapter" id="scenario_move">
+				<h3 resource="#h-scenario_move" id="h-scenario_move"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.15 </span>Move a UI object</span></h3>
+				<p>A user whose point of regard is on a UI object would like to be able to move the object in different directions by both small and large ingrements. This is very common in drawing objects such as drawing objects in a flow diagram or presentation tool where the user is attempting to create a visual UI. For people with mobility impairments this is very hard to do with a pointing device and alternate forms of input are necessary. This action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<div class="note"><div id="h-note14" role="heading" aria-level="4" class="note-title"><span>Note</span></div><ul class="">
+					<li>We should provide an ARIA property for ARIA 2.0 that conveys that an object is moveable.</li>
+					<li>We need to decide how we can do this in terms of the number of different types of events we use. This requires more group discussion. </li>
+				</ul></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_show-hide" typeof="bibo:Chapter" id="scenario_show-hide">
+				<h3 resource="#h-scenario_show-hide" id="h-scenario_show-hide"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.16 </span>Reveal or hide additional text without selection</span></h3>
+				<p>User indicates that further information about an object is desired and should be shown, or once seen, no longer needed and should be hidden. This further information may be a hint similar to Hover on a mouse based system. Content may be timed or something that completes display. This action could be in the form of a gesture, a voice command, a keyboard key combination, or an alternative input device. </p>
+				<ul>
+					<li>Should we use a hover device independent event instead and leave this up the developer?</li>
+					<li>This is related to S32, S33, and S34 </li>
+				</ul>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_selectable" typeof="bibo:Chapter" id="scenario_selectable">
+				<h3 resource="#h-scenario_selectable" id="h-scenario_selectable"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.17 </span>Change nearness indication without selection</span></h3>
+				<p>User safely tests whether an object is active and can be selected. This further information may be a change in visual appearance, but not an actual selection or activation. (Similar to MouseOver on a mouse based system)</p>
+				<div class="note"><div id="h-note15" role="heading" aria-level="4" class="note-title"><span>Note</span></div><ul class="">
+					<li>Should we use a hover device independent event instead and leave this up the developer?</li>
+					<li>This is related to S31, S32, and S34 </li>
+				</ul></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_deactivate" typeof="bibo:Chapter" id="scenario_deactivate">
+				<h3 resource="#h-scenario_deactivate" id="h-scenario_deactivate"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.18 </span>Cause a non-selection active state indicator to disable</span></h3>
+				<p>The result is an a dormant state indication. (Similar to Mouse Exit on a mouse based system)</p>
+				<div class="note"><div id="h-note16" role="heading" aria-level="4" class="note-title"><span>Note</span></div><ul class="">
+					<li>Should we use a hover device independent event instead and leave this up the developer?</li>
+					<li>This is related to S31, S32, and S34 </li>
+				</ul></div>
+			</section>
+			<section property="bibo:hasPart" resource="#scenario_updates" typeof="bibo:Chapter" id="scenario_updates">
+				<h3 resource="#h-scenario_updates" id="h-scenario_updates"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.19 </span>Cause a suspend/resume of live updates to the page. Can very from live regions, live blogging, twitter stream, live download.</span></h3>
+				<div class="note"><div id="h-note17" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">Discussed at November 1, 2012 TPAC Face to Face? </p></div>
+			</section>
+		</section>
+		<!-- :::::::::::::::::::: END USE CASES :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: EVENTS REQUIREMENTS :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#requirements_events" typeof="bibo:Chapter" id="requirements_events">
+			<!--OddPage--><h2 resource="#h-requirements_events" id="h-requirements_events"><span property="xhv:role" resource="xhv:heading"><span class="secno">3. </span>Events Requirements</span></h2>
+			<p>Requirements in this section are expected to be met by <a href="https://w3c.github.io/indie-ui/indie-ui-events.html">IndieUI: Events</a>.</p>
+			<section property="bibo:hasPart" resource="#requirements_events_api" typeof="bibo:Chapter" id="requirements_events_api">
+				<h3 resource="#h-requirements_events_api" id="h-requirements_events_api"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.1 </span>API</span></h3>
+				<p>Provide an API layer to define user intended events that is agnostic of the specific input methodology and independent of a user's particular platform, hardware, locale, and preferences.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-goals">Goals</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_layer" typeof="bibo:Chapter" id="requirements_events_layer">
+				<h3 resource="#h-requirements_events_layer" id="h-requirements_events_layer"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.2 </span>Input Device Independence</span></h3>
+				<p>Allow the API to support user commands without requiring specific physical events.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-goals">Goals</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_independence" typeof="bibo:Chapter" id="requirements_events_independence">
+				<h3 resource="#h-requirements_events_independence" id="h-requirements_events_independence"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.3 </span>Interaction Independence</span></h3>
+				<p>Do not require specific physical user interactions (keyboard combinations, gestures, speech, etc.) to trigger particular IndieUI events.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-scope">Scope</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_compatibility" typeof="bibo:Chapter" id="requirements_events_compatibility">
+				<h3 resource="#h-requirements_events_compatibility" id="h-requirements_events_compatibility"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.4 </span>Backwards Compatibility</span></h3>
+				<p>Structure the events such that they are only triggered if the application registers an interest in them, to optimize performance and allow backwards compatibility.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-backwards-compatibility">Backwards Compatibility</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_handled" typeof="bibo:Chapter" id="requirements_events_handled">
+				<h3 resource="#h-requirements_events_handled" id="h-requirements_events_handled"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.5 </span>Events Handled</span></h3>
+				<p>Provide a way for applications to communicate that a given event request was or was not handled so the host OS or UA can attempt fallback behaviour.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-backwards-compatibility">Backwards Compatibility</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_non-interference" typeof="bibo:Chapter" id="requirements_events_non-interference">
+				<h3 resource="#h-requirements_events_non-interference" id="h-requirements_events_non-interference"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.6 </span>Non-Interference</span></h3>
+				<p>Do not block standard events when listening for IndieUI events.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/15">ISSUE-15</a> may impact this.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-backwards-compatibility">Backwards Compatibility</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_reset" typeof="bibo:Chapter" id="requirements_events_reset">
+				<h3 resource="#h-requirements_events_reset" id="h-requirements_events_reset"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.7 </span>Reset</span></h3>
+				<p>Provide a way to "reset" ui-actions on descendant node.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/15">ISSUE-15</a> may impact this.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#intro-backwards-compatibility">Backwards Compatibility</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_delegation" typeof="bibo:Chapter" id="requirements_events_delegation">
+				<h3 resource="#h-requirements_events_delegation" id="h-requirements_events_delegation"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.8 </span>Event Delegation</span></h3>
+				<p>Allow event delegation without affecting performance and scoping of events.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/16">ISSUE-16</a> may impact this.</p>
+				<p class="ednote">There may be additional requirements related to Section 2 UI Actions after we clarify implications of this structure.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#actions">UI Actions</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_order" typeof="bibo:Chapter" id="requirements_events_order">
+				<h3 resource="#h-requirements_events_order" id="h-requirements_events_order"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.9 </span>Event Order</span></h3>
+				<p>There will be a requirement for how IndieUI events fit in with the order of other events.</p>
+				<p class="ednote">This needs rewording.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/15">ISSUE-15</a> may impact this.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#RequestEvents">UI Request Events</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_association" typeof="bibo:Chapter" id="requirements_events_association">
+				<h3 resource="#h-requirements_events_association" id="h-requirements_events_association"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.10 </span>Physical Event Association</span></h3>
+				<p>Might need a requirement to be able to associate an IndieUI event with other related physical events</p>
+				<p class="ednote">This needs rewording.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/issues/15">ISSUE-15</a> may impact this.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#RequestEvents">UI Request Events</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_uievents" typeof="bibo:Chapter" id="requirements_events_uievents">
+				<h3 resource="#h-requirements_events_uievents" id="h-requirements_events_uievents"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.11 </span>Extend UI Events</span></h3>
+				<p>IndieUI Events must extend UIEvents unless the requirements are met directly in UI
+					Events.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIRequestEvent">UIRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_userinput" typeof="bibo:Chapter" id="requirements_events_userinput">
+				<h3 resource="#h-requirements_events_userinput" id="h-requirements_events_userinput"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.12 </span>User Input Functions</span></h3>
+				<p>IndieUI must support the following functions unless supported by other technologies:</p>
+				<ul>
+					<li>undo</li>
+					 <li>redo</li>
+					 <li>expand</li>
+					 <li>collapse</li>
+					 <li>dismiss</li>
+					 <li>delete</li>
+					 <li>move</li>
+					 <li>pan</li>
+					 <li>rotation</li>
+					 <li>scroll</li>
+					 <li>valuechange</li>
+					 <li>zoom</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): <a class="sec-ref" href="#scenario_expand-collapse"><span class="secno">2.3</span> <span class="sec-title">Open or collapse a tree branch, menu, expandable grid cell, or expandable section</span></a>, <a class="sec-ref" href="#scenario_zoom"><span class="secno">2.9</span> <span class="sec-title">Zoom in or out</span></a>, <a class="sec-ref" href="#scenario_pan"><span class="secno">2.10</span> <span class="sec-title">Pan right, left, up, or down</span></a>, <a class="sec-ref" href="#scenario_move"><span class="secno">2.15</span> <span class="sec-title">Move a UI object</span></a></p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIRequestEvent">UIRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_keyboard-mouse" typeof="bibo:Chapter" id="requirements_events_keyboard-mouse">
+				<h3 resource="#h-requirements_events_keyboard-mouse" id="h-requirements_events_keyboard-mouse"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.13 </span>Keyboard and Mouse compatibility</span></h3>
+				<p>The properties of IndieUI request events must be a superset of the events from at least both keyboard and mouse events in the UI Events specification.</p>
+				<p class="addresses">Addresses scenario(s):</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIRequestEvent">UIRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_linear-navigation" typeof="bibo:Chapter" id="requirements_events_linear-navigation">
+				<h3 resource="#h-requirements_events_linear-navigation" id="h-requirements_events_linear-navigation"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.14 </span>Linear Navigation</span></h3>
+				<p>Support linear navigation for first, previous, next, and last.</p>
+				<ul>
+					<li>first</li>
+					<li>previous</li>
+					<li>next</li>
+					<li>last</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): <a class="sec-ref" href="#scenario_internal-move"><span class="secno">2.5</span> <span class="sec-title">Move the focus point within a UI component down to the next / visual right / visual down, or previous / visual left / visual up item within a UI component </span></a>, <a class="sec-ref" href="#scenario_por-limit"><span class="secno">2.11</span> <span class="sec-title">Move point of regard to the beginning or end of its navigation sequence</span></a>?</p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_directional-navigation" typeof="bibo:Chapter" id="requirements_events_directional-navigation">
+				<h3 resource="#h-requirements_events_directional-navigation" id="h-requirements_events_directional-navigation"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.15 </span>Directional Navigation</span></h3>
+				<p>Support directional navigation for:</p>
+				<ul>
+					<li>up</li>
+					<li>down</li>
+					<li>left</li>
+					<li>right</li>
+					<li>up and right</li>
+					<li>up and left</li>
+					<li>down and right</li>
+					<li>down and left</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): <a class="sec-ref" href="#scenario_internal-move"><span class="secno">2.5</span> <span class="sec-title">Move the focus point within a UI component down to the next / visual right / visual down, or previous / visual left / visual up item within a UI component </span></a></p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_nonlinear-navigation" typeof="bibo:Chapter" id="requirements_events_nonlinear-navigation">
+				<h3 resource="#h-requirements_events_nonlinear-navigation" id="h-requirements_events_nonlinear-navigation"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.16 </span>Non-Linear Navigation</span></h3>
+				<p>Provide a mechanism for users to move focus non-linearly to other sections of the document such as toolbar, palette, and windows.</p>
+				<p class="ednote"><a href="https://www.w3.org/WAI/IndieUI/track/actions/57">Action-57</a>: also help (main covered by landmark)</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_landmark" typeof="bibo:Chapter" id="requirements_events_landmark">
+				<h3 resource="#h-requirements_events_landmark" id="h-requirements_events_landmark"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.17 </span>Landmark Navigation</span></h3>
+				<p>Provide a way to navigate amongst landmark regions.</p>
+				<p class="ednote">This may be at risk in 1.0 and could be pushed to future version. Might be a11y specific.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_return" typeof="bibo:Chapter" id="requirements_events_return">
+				<h3 resource="#h-requirements_events_return" id="h-requirements_events_return"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.18 </span>Return to Previous Point of Regard</span></h3>
+				<p>Provide a way for users to return to their previous point of regard, like emacs and vid and IDEs support. </p>
+				<p class="ednote">Need to remove the tool-specific examples.</p>
+				<p class="ednote">This does not have consensus yet. Need to determine if it is just keyboard or others as well. Could be pushed to future version. Seems to have general use cases.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIFocusRequestEvent">UIFocusRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_manipulate" typeof="bibo:Chapter" id="requirements_events_manipulate">
+				<h3 resource="#h-requirements_events_manipulate" id="h-requirements_events_manipulate"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.19 </span>Manipulate Objects</span></h3>
+				<p>Provide a mechanism to perform the following manipulations on objects or the screen:</p>
+				<ul>
+					<li>move</li>
+					<li>pan</li>
+					<li>rotate</li>
+					<li>zoom</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): <a class="sec-ref" href="#scenario_zoom"><span class="secno">2.9</span> <span class="sec-title">Zoom in or out</span></a>, <a class="sec-ref" href="#scenario_pan"><span class="secno">2.10</span> <span class="sec-title">Pan right, left, up, or down</span></a>, <a class="sec-ref" href="#scenario_move"><span class="secno">2.15</span> <span class="sec-title">Move a UI object</span></a></p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIManipulationRequestEvent">UIManipulationRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_scroll" typeof="bibo:Chapter" id="requirements_events_scroll">
+				<h3 resource="#h-requirements_events_scroll" id="h-requirements_events_scroll"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.20 </span>Scroll</span></h3>
+				<p>Provide a mechanism for custom scroll views to scroll the view in the following manners:</p>
+				<ul>
+					<li>by increments</li>
+					<li>entire screens</li>
+					<li>to the limit</li>
+				</ul>
+				<p>in the following directions:</p>
+				<ul>
+					<li>up</li>
+					<li>down</li>
+					<li>left</li>
+					<li>right</li>
+				</ul>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIScrollRequestEvent">UIScrollRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_range" typeof="bibo:Chapter" id="requirements_events_range">
+				<h3 resource="#h-requirements_events_range" id="h-requirements_events_range"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.21 </span>Range Controls</span></h3>
+				<p>Provide a mechanism to adjust numeric values of custom range controls by small and large increments, or to minimum and maximum values.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href=""></a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_features" typeof="bibo:Chapter" id="requirements_events_features">
+				<h3 resource="#h-requirements_events_features" id="h-requirements_events_features"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.22 </span>Feature Detection</span></h3>
+				<p>Provide a mechanism for content authors to determine if the user agent has support for specific events.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: <a href="https://dvcs.w3.org/hg/IndieUI/raw-file/tip/src/indie-ui-events.html#UIValueChangeRequestEvent">UIValueChangeRequestEvent</a></p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_context-menu" typeof="bibo:Chapter" id="requirements_events_context-menu">
+				<h3 resource="#h-requirements_events_context-menu" id="h-requirements_events_context-menu"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.23 </span>Context Menus</span></h3>
+				<p>Provide a mechanism to access context menus and perhaps other secondary actions.</p>
+				<p class="addresses">Addresses scenario(s): <a class="sec-ref" href="#scenario_popup"><span class="secno">2.2</span> <span class="sec-title">Execute a popup</span></a></p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/issues/3">ISSUE-3</a>. This might be a future requirement.</p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_media" typeof="bibo:Chapter" id="requirements_events_media">
+				<h3 resource="#h-requirements_events_media" id="h-requirements_events_media"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.24 </span>Media Controls</span></h3>
+				<p>Provide a mechanism for standard media controls including:</p>
+				<ul>
+					<li>play</li>
+					<li>pause</li>
+					<li>stop</li>
+					<li>fast forward</li>
+					<li>rewind</li>
+					<li>move to start</li>
+					<li>move to end</li>
+					<li>increase volume</li>
+					<li>decrease volume</li>
+					<li>set volume to minimum</li>
+					<li>set volume to maximum</li>
+					<li>mute</li>
+					<li>unmute</li>
+					<li>move to next track</li>
+					<li>move to previous track</li>
+				</ul>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/16">ACTION-16</a>, <a href="https://www.w3.org/WAI/IndieUI/track/actions/19">ACTION-19</a>, and <a href="https://www.w3.org/WAI/IndieUI/track/actions/20">ACTION-20</a>. Some of these might be future requirements.</p>
+				<p class="addresses">Addresses scenario(s): <a class="sec-ref" href="#scenario_play"><span class="secno">2.6</span> <span class="sec-title">Direct a media player to start, stop, or pause playing</span></a>, <a class="sec-ref" href="#scenario_volume"><span class="secno">2.8</span> <span class="sec-title">Increase or decrease the volume</span></a></p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_suspend" typeof="bibo:Chapter" id="requirements_events_suspend">
+				<h3 resource="#h-requirements_events_suspend" id="h-requirements_events_suspend"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.25 </span>Suspend and Resume</span></h3>
+				<p>Provide a mechanism to suspend or resume an activity</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/17">ACTION-17</a>. This might be a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): <a class="sec-ref" href="#scenario_updates"><span class="secno">2.19</span> <span class="sec-title">Cause a suspend/resume of live updates to the page. Can very from live regions, live blogging, twitter stream, live download.</span></a></p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_select" typeof="bibo:Chapter" id="requirements_events_select">
+				<h3 resource="#h-requirements_events_select" id="h-requirements_events_select"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.26 </span>Selection</span></h3>
+				<p>Provide a mechanism to select one or more objects (contiguously or discontiguously) for the purpose of performing an action.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/25">ACTION-25</a></p>
+				<p class="ednote">Contiguous and discontiguous selection might be separate requirements.</p>
+				<p class="addresses">Addresses scenario(s): <a class="sec-ref" href="#scenario_selection"><span class="secno">2.13</span> <span class="sec-title">Continuous or discontinuous multi-slection within a UI object</span></a></p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_noclick" typeof="bibo:Chapter" id="requirements_events_noclick">
+				<h3 resource="#h-requirements_events_noclick" id="h-requirements_events_noclick"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.27 </span>No Implied Click</span></h3>
+				<p>Provide a mechanism to activate an object without implying a click event.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/53">ACTION-53</a>. Scenario is slide to unlock screen on FirefoxOS. Need to coordinate with Webapps.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_por" typeof="bibo:Chapter" id="requirements_events_por">
+				<h3 resource="#h-requirements_events_por" id="h-requirements_events_por"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.28 </span>Point of Regard</span></h3>
+				<p>Provide an event that reacts to gain or loss of point of regard.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/58">ACTION-58</a>. Still need a better name than Point of Regard.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_editing" typeof="bibo:Chapter" id="requirements_events_editing">
+				<h3 resource="#h-requirements_events_editing" id="h-requirements_events_editing"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.29 </span>Text Editing</span></h3>
+				<p>Provide a mechanism to support text editing.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/issues/9">ISSUE-9</a>. This is probably a future requirement.</p>
+				<p class="todo">need to spell out specific events required</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_search" typeof="bibo:Chapter" id="requirements_events_search">
+				<h3 resource="#h-requirements_events_search" id="h-requirements_events_search"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.30 </span>Quick Search</span></h3>
+				<p>Provide a mechanism to support quick search functionality directly within the web application.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/issues/12">ISSUE-12</a>. This is probably a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_resize" typeof="bibo:Chapter" id="requirements_events_resize">
+				<h3 resource="#h-requirements_events_resize" id="h-requirements_events_resize"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.31 </span>Resize Object</span></h3>
+				<p>Provide a mechanism to resize objects in graphical editing applications with ability to constrain proportions.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/26">ACTION-26</a>. This is probably a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): <a class="sec-ref" href="#scenario_resize"><span class="secno">2.14</span> <span class="sec-title">Increase or Decrease Size of UI object by a small or large increment</span></a></p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_centerpoint" typeof="bibo:Chapter" id="requirements_events_centerpoint">
+				<h3 resource="#h-requirements_events_centerpoint" id="h-requirements_events_centerpoint"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.32 </span>Set Rotation Centerpoint</span></h3>
+				<p>Provide a mechanism to set the centerpoint of a rotation request.</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/26">ACTION-26</a>. This is probably a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+			<section property="bibo:hasPart" resource="#requirements_events_table-sort" typeof="bibo:Chapter" id="requirements_events_table-sort">
+				<h3 resource="#h-requirements_events_table-sort" id="h-requirements_events_table-sort"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.33 </span>Table Sort</span></h3>
+				<p>Provide a mechanism to request grid sort by columns</p>
+				<p class="ednote">See <a href="https://www.w3.org/WAI/IndieUI/track/actions/31">ACTION-31</a>. This is probably a future requirement.</p>
+				<p class="addresses">Addresses scenario(s): </p>
+				<p class="metby">Met by: </p>
+			</section>
+		</section>
+		<!-- :::::::::::::::::::: END EVENTS REQUIREMENTS :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: USER CONTEXT REQUIREMENTS :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#requirements_context" typeof="bibo:Chapter" id="requirements_context">
+			<!--OddPage--><h2 resource="#h-requirements_context" id="h-requirements_context"><span property="xhv:role" resource="xhv:heading"><span class="secno">4. </span>User Context Requirements</span></h2>
+			<p>Requirements in this section are expected to be met by <a href="https://w3c.github.io/indie-ui/indie-ui-context.html">IndieUI: User Context</a>.</p>
+			<p class="ednote">This version of the document does not yet elaborate requirements for
+				IndieUI: User Context.</p>
+		</section>
+		<!-- :::::::::::::::::::: END USER CONTEXT REQUIREMENTS :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: OTHER REQUIREMENTS :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#requirements_other" typeof="bibo:Chapter" id="requirements_other">
+			<!--OddPage--><h2 resource="#h-requirements_other" id="h-requirements_other"><span property="xhv:role" resource="xhv:heading"><span class="secno">5. </span>Other Requirements</span></h2>
+			<p>Requirements in this section address goals fo the IndieUI Working Group but are expected to be
+				met by current and future work from other efforts. They are included here to help provide a
+				complete picture of the requirements space addressed by the IndieUI Working Group.</p>
+		</section>
+		<!-- :::::::::::::::::::: END OTHER REQUIREMENTS :::::::::::::::::::: -->
+		
+		<!--
+		<section id="changelog" class="appendix">
+			<h2>Normative changes since the <a href="@@">last public working draft</a></h2>
+			<ul>
+				<li>@@</li>
+			</ul>
+		</section>
+		-->
+		
+		<section property="bibo:hasPart" resource="#acknowledgements" typeof="bibo:Chapter" id="acknowledgements" class="appendix"><!--OddPage--><h2 resource="#h-acknowledgements" id="h-acknowledgements"><span property="xhv:role" resource="xhv:heading"><span class="secno">A. </span>Acknowledgements</span></h2>
+<section property="bibo:hasPart" resource="#GroupMembership" typeof="bibo:Chapter" id="GroupMembership">
+	<h3 resource="#h-groupmembership" id="h-groupmembership"><span property="xhv:role" resource="xhv:heading"><span class="secno">A.1 </span>Active IndieUI Members</span></h3>
+	<p>At the time of publishing, the following individuals were active, participating members of the IndieUI Working Group.</p>
+	<ul>
+		<li>Michael Cooper, Staff Contact, <abbr title="World Wide Web Consortium">W3C</abbr> Staff</li>
+		<li>James Craig, Apple Inc.</li>
+		<li>Katie Haritos-Shea, Invited Expert</li>
+		<li>Andy Heath, Invited Expert</li>
+		<li>Takeshi Kurosawa, Mitsue-Links Co., Ltd.</li>
+		<li>Dominic Mazzoni, Google, Inc.</li>
+		<li>Edward O'Connor, Apple Inc.</li>
+		<li>Janina Sajka, Chair, Invited Expert</li>
+		<li>Joseph Scheuhammer, Invited Expert</li>
+		<li>Richard Schwerdtfeger, IBM Corporation</li>
+		<li>Jason White, Invited Expert</li>
+	</ul>
+</section>
+<section property="bibo:hasPart" resource="#Contributors" typeof="bibo:Chapter" id="Contributors">
+	<h3 resource="#h-contributors" id="h-contributors"><span property="xhv:role" resource="xhv:heading"><span class="secno">A.2 </span>Contributors</span></h3>
+	<p>The following individual(s) were previously active members of the working group or otherwise significant contributors.</p>
+	<p>Tab Atkins, Jesse Bunch, Chris Fleizach, Lachlan Hunt, Bradley Meck, Sangwhan Moon, Ryosuke Niwa, Rich Simpson.</p>
+</section>
+<!-- todo: Add link to original proposal by James/Chris at http://lists.w3.org/Archives/Public/www-dom/2010JulSep/att-0106/UserInterfaceIndependence.html -->
+<section property="bibo:hasPart" resource="#ack-funders" typeof="bibo:Chapter" id="ack-funders">
+	<h3 resource="#h-ack-funders" id="h-ack-funders"><span property="xhv:role" resource="xhv:heading"><span class="secno">A.3 </span>Enabling funders</span></h3>
+	<p>This publication has been funded in part with Federal funds from the U.S. Department of Education, National Institute on Disability, Independent Living, and Rehabilitation Research (NIDILRR) under contract number ED-OSE-10-C-0067. The content of this publication does not necessarily reflect the views or policies of the U.S. Department of Education, nor does mention of trade names, commercial products, or organizations imply endorsement by the U.S. Government.</p>
+</section></section>
+		
+	
+
+</body></html>

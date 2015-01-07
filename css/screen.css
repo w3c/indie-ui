@@ -1,0 +1,137 @@
+
+.note {
+	border-color: #585;
+}
+.note-title span {
+	color: #585;
+	font-weight: bold;
+}
+
+.ednote {
+	color: #c00 !important;
+	font-style: italic;
+	position: relative;
+}
+div.ednote, p.ednote{
+	padding-right: 150px;
+}
+div.ednote::before, p.ednote::before{
+	content: 'Editorial Note'; /* todo: localize as attr(data-label) */
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 11px;
+	padding: 0.2em 0.5em;
+	margin: 0;
+	border: solid 1px #c00;
+}
+
+[hidden] {
+	display: none;
+}
+
+
+p.todo, div.todo {
+	position: relative;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0.25em 0.5em 0.3em;
+}
+.todo, .todo::before {
+	color: #c00 !important;
+	border-color: #c00 !important;
+}
+p.todo::before, div.todo::before{
+	content: 'To-do'; /* todo: localize as attr(data-label) */
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 11px;
+	padding: 0.2em 0.5em;
+	margin: 0;
+	border:solid 1px #c00;
+	border-width: 0 0 1px 1px;
+}
+
+/* .ex class for example containers b/c .example is reserved by ReSpec */
+.ex {
+	margin: 1em 0;
+	padding: 0.7em 1em 0.2em;
+	border: solid 1px #999;
+	position: relative;
+	color: inherit;
+	background-color: inherit;
+	display: block;
+}
+.ex[title]::before{
+	content: attr(title);
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 11px;
+	padding: 0.2em 0.5em;
+	margin: 0;
+	border: solid 1px #999;
+	border-width: 0 1px 1px 0;
+}
+.ex h4, .note h4{
+	margin: 0.5em 0;
+}
+.ex ol li, .note ol li{
+	margin: 0 0 0.5em;
+}
+
+html code, html pre, html kbd{ /* more specific selector than the default W3C style sheet */
+	/* Most browsers default 'monospace' to Courier, which has an ex-height of about 60% normal size. */
+	/* Monaco has a normal ex-height so font sizes appear more consistent with surrounding non-monospaced text. */
+	font-family: "Monaco", "Courier New", "Courier", monospace;
+	font-family: "Monaco", "Courier New", "Courier"; /* declare as separate rule to account for browser font-size inconsistencies, monospace fallback from previous rule should still work in the [almost non-existant] case that a user system does not have Courier */
+	font-size:0.9em;
+}
+html kbd {
+	text-transform: lowercase;
+	font-variant: small-caps;
+	font-weight: bold;
+	font-size:1em; 
+}
+html pre { /* more specific selector than the default W3C style sheet */
+	font-size:0.75em; /* text in blocks code blocks looked too big now that font is back to normal size */
+	line-height:1.4; /* [sic] unitless multiplier, not EM size */
+}
+code sup {
+	font-size:0.73em;
+}
+.placeholder {
+	color:#999;
+	font-style:italic;
+}
+
+#eventslist li {
+	margin-bottom:0.6em;
+}
+ol li {
+	margin-bottom:1em;
+}
+
+
+/* Example syntax highlighting */
+pre.example {
+	color: #000;
+}
+pre.example .comment {
+	color: #808080; /* 50% gray */
+}
+
+dl.properties dt {
+	float: left;
+	margin-right: 0.5em;
+	font-weight: normal;
+	font-style: italic;
+}
+dl.properties dt::after {
+	content: ":";
+}
+
+.relatedconcepts li {
+	margin-bottom: 0.6em;
+}

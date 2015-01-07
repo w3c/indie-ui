@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="144 230 310 170" width="310pt" height="170pt">
+	<g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
+		<title>Example Prompt Dialog</title>
+		<g role="dialog" aria-labelledby="heading_id">
+			<rect x="155.88672" y="237.66406" width="287.0625" height="146.38281" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+			<g role="heading" aria-level="1" id="heading_id">
+				<rect x="155.91406" y="237.60938" width="287.03516" height="47.789062" fill="#dad7dd" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+				<text transform="translate(184.71875 248.91406)" fill="black" role="text">
+					<tspan font-family="Helvetica" font-size="12" font-weight="bold" x="0" y="11" textLength="187">Share media player settings with</tspan>
+					<tspan font-family="Helvetica" font-size="12" font-weight="bold" x="0" y="25" textLength="154">https://www.example.com?</tspan>
+				</text>	
+			</g>
+			<text transform="translate(184.71875 294.91406)" fill="black" role="text">
+				<tspan font-family="Helvetica" font-size="12" font-weight="500" x="0" y="11" textLength="223">Example Site uses your media settings to </tspan>
+				<tspan font-family="Helvetica" font-size="12" font-weight="500" x="0" y="25" textLength="235">automatically enable captions or subtitles in </tspan>
+				<tspan font-family="Helvetica" font-size="12" font-weight="500" x="0" y="39" textLength="131">your preferred language.</tspan>
+			</text>
+			<g role="button" id="allow_button" tabindex="0">
+				<path d="M 381 344 L 417 344 C 421.97055 344 426 348.02945 426 353 L 426 360.53906 C 426 365.50961 421.97055 369.53906 417 369.53906 L 381 369.53906 C 376.02945 369.53906 372 365.50961 372 360.53906 C 372 360.53906 372 360.53906 372 360.53906 L 372 353 C 372 348.02945 376.02945 344 381 344 Z" fill="#81bbff" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+				<text transform="translate(377 349.76953)" fill="black" role="text">
+					<tspan font-family="Helvetica" font-size="12" font-weight="500" fill="black" x="7.6621094" y="11" textLength="28.675781">Allow</tspan>
+				</text>
+			</g>
+			<g role="button" id="deny_button" tabindex="0">
+				<path d="M 318 344 L 354 344 C 358.97055 344 363 348.02945 363 353 L 363 360.53906 C 363 365.50961 358.97055 369.53906 354 369.53906 L 318 369.53906 C 313.02945 369.53906 309 365.50961 309 360.53906 C 309 360.53906 309 360.53906 309 360.53906 L 309 353 C 309 348.02945 313.02945 344 318 344 Z" fill="#d9d9d9" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+				<text transform="translate(314 349.76953)" fill="black" role="text">
+					<tspan font-family="Helvetica" font-size="12" font-weight="500" x="7.993164" y="11" textLength="28.013672">Deny</tspan>
+				</text>
+			</g>
+		</g>
+	</g>
+</svg>

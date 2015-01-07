@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en-us" typeof="bibo:Document " prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head><meta property="dc:language" content="en" lang="">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>IndieUI: Events 1.0 </title>
+		<style>/* --- EXAMPLES --- */
+div.example-title {
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.example-title span {
+    text-transform: uppercase;   
+}
+aside.example, div.example, div.illegal-example {
+    padding: 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+div.illegal-example { color: red }
+div.illegal-example p { color: black }
+aside.example, div.example {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+    border-color: #e0cb52;
+    background: #fcfaee;    
+}
+
+aside.example div.example {
+    border-left-width: .1em;
+    border-color: #999;
+    background: #fff;
+}
+aside.example div.example div.example-title {
+    color: #999;
+}
+</style><style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title , div.warning-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title { color: #2b2; }
+div.warning-title { color: #f22; }
+div.issue-title span, div.note-title span, div.warning-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue, div.warning {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .issue > p:first-child, .warning > p:first-child { margin-top: 0 }
+.issue, .note, .warning {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note , div.warning {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.issue, span.warning { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+.warning {
+    border-color: #f11;
+    border-right-width: .2em;
+    border-top-width: .2em;
+    border-bottom-width: .2em;
+    border-style: solid;
+    background: #fbe9e9;
+}
+
+.warning-title:before{
+    content: "⚠"; /*U+26A0 WARNING SIGN*/
+    font-size: 3em;
+    float: left;
+    height: 100%;
+    padding-right: .3em;
+    vertical-align: top;
+    margin-top: -0.5em;
+}
+</style><style>/* HIGHLIGHTS */
+code.prettyprint {
+    color:  inherit;
+}
+
+/* this from google-code-prettify */
+.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
+</style><style>/* --- WEB IDL --- */
+pre.idl {
+    border-top: 1px solid #90b8de;
+    border-bottom: 1px solid #90b8de;
+    padding:    1em;
+    line-height:    120%;
+}
+
+pre.idl::before {
+    content:    "WebIDL";
+    display:    block;
+    width:      150px;
+    background: #90b8de;
+    color:  #fff;
+    font-family:    initial;
+    padding:    3px;
+    font-weight:    bold;
+    margin: -1em 0 1em -1em;
+}
+
+.idlType {
+    color:  #ff4500;
+    font-weight:    bold;
+    text-decoration:    none;
+}
+
+/*.idlModule*/
+/*.idlModuleID*/
+/*.idlInterface*/
+.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {
+    font-weight:    bold;
+    color:  #005a9c;
+}
+a.idlEnumItem {
+    color:  #000;
+    border-bottom:  1px dotted #ccc;
+    text-decoration: none;
+}
+
+.idlSuperclass {
+    font-style: italic;
+    color:  #005a9c;
+}
+
+/*.idlAttribute*/
+.idlAttrType, .idlFieldType, .idlMemberType {
+    color:  #005a9c;
+}
+.idlAttrName, .idlFieldName, .idlMemberName {
+    color:  #ff4500;
+}
+.idlAttrName a, .idlFieldName a, .idlMemberName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlMethod*/
+.idlMethType, .idlCallbackType {
+    color:  #005a9c;
+}
+.idlMethName {
+    color:  #ff4500;
+}
+.idlMethName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlCtor*/
+.idlCtorName {
+    color:  #ff4500;
+}
+.idlCtorName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlParam*/
+.idlParamType {
+    color:  #005a9c;
+}
+.idlParamName, .idlDefaultValue {
+    font-style: italic;
+}
+
+.extAttr {
+    color:  #666;
+}
+
+/*.idlSectionComment*/
+.idlSectionComment {
+    color: gray;
+}
+
+/*.idlConst*/
+.idlConstType {
+    color:  #005a9c;
+}
+.idlConstName {
+    color:  #ff4500;
+}
+.idlConstName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlException*/
+.idlExceptionID {
+    font-weight:    bold;
+    color:  #c00;
+}
+
+.idlTypedefID, .idlTypedefType {
+    color:  #005a9c;
+}
+
+.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {
+    color:  #c00;
+    font-weight:    normal;
+}
+
+.excName a {
+    font-family:    monospace;
+}
+
+.idlRaises a.idlType, .excName a.idlType {
+    border-bottom:  1px dotted #c00;
+}
+
+.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {
+    width:  45px;
+    text-align: center;
+}
+.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }
+.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }
+
+.idlImplements a {
+    font-weight:    bold;
+}
+
+dl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {
+    margin-left:    2em;
+}
+
+.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {
+    font-weight:    normal;
+}
+
+.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {
+    font-weight:    bold;
+    color:  #000;
+    font-family:    monospace;
+}
+
+.attributes dt code, .fields dt code, .dictionary-members dt code {
+    background:  #ffffd2;
+}
+
+.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {
+    color:  #005a9c;
+    background:  transparent;
+    font-family:    inherit;
+    font-weight:    normal;
+    font-style: italic;
+}
+
+.methods dt code {
+    background:  #d9e6f8;
+}
+
+.constants dt code {
+    background:  #ddffd2;
+}
+
+.constructors dt code {
+    background:  #cfc;
+}
+
+.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {
+    margin-bottom:  1em;
+}
+
+table.parameters, table.exceptions {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    margin: 0.5em 0;
+    width:  100%;
+}
+table.parameters { border-bottom:  1px solid #90b8de; }
+table.exceptions { border-bottom:  1px solid #deb890; }
+
+.parameters th, .exceptions th {
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+    font-family:    initial;
+    font-weight:    normal;
+    text-shadow:    #666 1px 1px 0;
+}
+.parameters th { background: #90b8de; }
+.exceptions th { background: #deb890; }
+
+.parameters td, .exceptions td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.parameters tr:first-child td, .exceptions tr:first-child td {
+    border-top: none;
+}
+
+.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+    width:  100px;
+}
+
+.parameters td.prmType {
+    width:  120px;
+}
+
+table.exceptions table {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    width:  100%;
+}
+</style><link href="./css/screen.css" rel="stylesheet" type="text/css">
+		
+		
+		
+		
+		<!-- 
+      === NOTA BENE ===
+      For the three scripts below, if your spec resides on dev.w3 you can check them
+      out in the same tree and use relative links so that they'll work offline,
+     -->
+		
+		
+		
+		
+	<style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #C83500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><link href="https://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
+	<body id="respecDocument" role="document" class="h-entry"><div id="respecHeader" role="contentinfo" class="head">
+  <p>
+      
+        
+            <a href="http://www.w3.org/"><img src="https://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a>
+        
+      
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title">IndieUI: Events 1.0</h1>
+  
+    <h2 property="bibo:subtitle" id="subtitle">Events for User Interface Independence</h2>
+  
+  <h2 id="w3c-editor-s-draft-07-january-2015"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time property="dcterms:issued" class="dt-published" datetime="2015-01-07">07 January 2015</time></h2>
+  <dl>
+    
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="https://w3c.github.io/indie-ui/indie-ui-events.html">https://w3c.github.io/indie-ui/indie-ui-events.html</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/indie-ui-events/">http://www.w3.org/TR/indie-ui-events/</a></dd>
+    
+    
+      <dt>Latest editor's draft:</dt>
+      <dd><a href="https://w3c.github.io/indie-ui/indie-ui-events.html">https://w3c.github.io/indie-ui/indie-ui-events.html</a></dd>
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    <dt>Editors:</dt>
+    <dd class="p-author h-card vcard" property="bibo:editor" resource="_:editor0"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">James Craig</span>, <a property="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.apple.com/">Apple Inc.</a></span>
+<span property="rdf:rest" resource="_:editor1"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor1"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Michael Cooper</span>, <a property="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a></span>
+<span property="rdf:rest" resource="rdf:nil"></span>
+</dd>
+
+    
+    
+  </dl>
+  
+  
+  
+  
+    
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2015
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 
+        
+        All Rights Reserved.
+        
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        
+          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+        
+        rules apply.
+      </p>
+    
+  
+  <hr>
+</div>
+
+		<section property="dc:abstract" class="introductory" id="abstract"><h2 resource="#h-abstract" id="h-abstract"><span property="xhv:role" resource="xhv:heading">Abstract</span></h2>
+			<p>IndieUI: Events 1.0 is an abstraction between physical, device-specific user interaction events and inferred user intent such as scrolling or changing values. This provides an intermediate layer between device- and modality-specific user interaction events, and the basic user interface functionality used by web applications. IndieUI: Events focuses on granular user interface interactions such as scrolling the view, canceling an action, changing the value of a user input widget, selecting a range, placing focus on an object, etc. Implementing platforms will combine modality-specific user input, user idiosyncratic heuristics to determine the specific corresponding Indie <abbr title="User Interface">UI</abbr> event, and send that to the web application in addition to the modality-specific input such as mouse or keyboard events, should applications wish to process it.</p>
+			<p>See the <a href="#intro">introduction</a> for background and usage examples. Also see the <a href="http://www.w3.org/WAI/intro/indieui">IndieUI Overview</a>. </p>
+		</section><section id="sotd" class="introductory"><h2 resource="#h-sotd" id="h-sotd"><span property="xhv:role" resource="xhv:heading">Status of This Document</span></h2>
+  
+    
+      
+        <p>
+          <em>This section describes the status of this document at the time of its publication.
+          Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the
+          latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
+          http://www.w3.org/TR/.</em>
+        </p>
+        
+        
+			<p>@@</p>
+		
+        
+        <p>
+          This document was published by the <a href="http://www.w3.org/WAI/IndieUI/">Independent User Interface (Indie <abbr title="User Interface">UI</abbr>) Working Group</a> as an Editor's Draft.
+          
+          
+            If you wish to make comments regarding this document, please send them to 
+            <a href="mailto:public-indie-ui-comments@w3.org">public-indie-ui-comments@w3.org</a> 
+            (<a href="mailto:public-indie-ui-comments-request@w3.org?subject=subscribe">subscribe</a>,
+            <a href="http://lists.w3.org/Archives/Public/public-indie-ui-comments/">archives</a>).
+          
+          
+          
+          
+          
+            
+            All comments are welcome.
+            
+          
+        </p>
+        
+        
+        
+          <p>
+            Publication as an Editor's Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+            Membership. This is a draft document and may be updated, replaced or obsoleted by other
+            documents at any time. It is inappropriate to cite this document as other than work in
+            progress.
+          </p>
+        
+        
+        
+        <p>
+          
+            This document was produced by a group operating under the 
+            <a id="sotd_patent" property="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+            Policy</a>.
+          
+          
+          
+            
+              <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="http://www.w3.org/2004/01/pp-impl/54953/status" rel="disclosure">public list of any patent
+              disclosures</a> 
+            
+            made in connection with the deliverables of the group; that page also includes
+            instructions for disclosing a patent. An individual who has actual knowledge of a patent
+            which the individual believes contains
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+            Claim(s)</a> must disclose the information in accordance with
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+          
+          
+        </p>
+        
+          <p>This document is governed by the <a id="w3c_process_revision" href="http://www.w3.org/2014/Process-20140801/">1 August 2014 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+          </p>
+        
+        
+      
+    
+  
+</section><section id="toc"><h2 resource="#h-toc" id="h-toc" class="introductory"><span property="xhv:role" resource="xhv:heading">Table of Contents</span></h2><ul id="respecContents" role="directory" class="toc"><li class="tocline"><a class="tocxref" href="#intro"><span class="secno">1. </span>Introduction</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#intro-background"><span class="secno">1.1 </span>Background</a></li><li class="tocline"><a class="tocxref" href="#intro-goals"><span class="secno">1.2 </span>Goals</a></li><li class="tocline"><a class="tocxref" href="#intro-scope"><span class="secno">1.3 </span>Document Scope</a></li><li class="tocline"><a class="tocxref" href="#intro-usage"><span class="secno">1.4 </span>Usage Examples</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#intro-example-dismissrequest"><span class="secno">1.4.1 </span>Dismissing a Modal Dialog</a></li><li class="tocline"><a class="tocxref" href="#intro-example-valuechangerequest"><span class="secno">1.4.2 </span>Changing the Value of a Custom Slider</a></li></ul></li><li class="tocline"><a class="tocxref" href="#intro-backwards-compatibility"><span class="secno">1.5 </span>Backwards-Compatibility</a></li></ul></li><li class="tocline"><a class="tocxref" href="#actions"><span class="secno">2. </span><abbr title="User Interface">UI</abbr> Actions</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#uiactions-attribute"><span class="secno">2.1 </span>The <code>uiactions</code> IDL Attribute</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#attributes"><span class="secno">2.1.1 </span>Attributes</a></li></ul></li><li class="tocline"><a class="tocxref" href="#uiactions-content-attribute"><span class="secno">2.2 </span>The <code>uiactions</code> Content Attribute</a></li></ul></li><li class="tocline"><a class="tocxref" href="#triggers"><span class="secno">3. </span><abbr title="User Interface">UI</abbr> Triggers</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#uitrigger-attribute"><span class="secno">3.1 </span>The <code>uitrigger</code> IDL Attribute</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#attributes-1"><span class="secno">3.1.1 </span>Attributes</a></li></ul></li><li class="tocline"><a class="tocxref" href="#uitrigger-content-attribute"><span class="secno">3.2 </span>The <code>uitrigger</code> Content Attribute</a></li><li class="tocline"><a class="tocxref" href="#triggers-example-dismissrequest"><span class="secno">3.3 </span>Example "Back" Button with Dismiss Request Trigger</a></li><li class="tocline"><a class="tocxref" href="#triggers-example-deleterequest"><span class="secno">3.4 </span>Media Player Example with Media Key Triggers</a></li></ul></li><li class="tocline"><a class="tocxref" href="#manipulators"><span class="secno">4. </span><abbr title="User Interface">UI</abbr> Manipulators</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#uimanipulator-attribute"><span class="secno">4.1 </span>The <code>uimanipulator</code> IDL Attribute</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#attributes-2"><span class="secno">4.1.1 </span>Attributes</a></li></ul></li><li class="tocline"><a class="tocxref" href="#uimanipulator-content-attribute"><span class="secno">4.2 </span>The <code>uimanipulator</code> Content Attribute</a></li></ul></li><li class="tocline"><a class="tocxref" href="#RequestEvents"><span class="secno">5. </span><abbr title="User Interface">UI</abbr> Request Events</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#UIRequestEvent"><span class="secno">5.1 </span>Interface UIRequestEvent</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#attributes-3"><span class="secno">5.1.1 </span>Attributes</a></li><li class="tocline"><a class="tocxref" href="#determining_event_receiver"><span class="secno">5.1.2 </span>Determining the Event Receiver</a></li><li class="tocline"><a class="tocxref" href="#UIRequestEventInit"><span class="secno">5.1.3 </span>UIRequestEventInit</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#dictionary-uirequesteventinit-members"><span class="secno">5.1.3.1 </span>Dictionary <span class="formerLink"><code>UIRequestEventInit</code></span> Members</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UIRequestEvents"><span class="secno">5.1.4 </span>UIRequestEvent Types</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UIFocusRequestEvent"><span class="secno">5.2 </span>Interface UIFocusRequestEvent</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#attributes-4"><span class="secno">5.2.1 </span>Attributes</a></li><li class="tocline"><a class="tocxref" href="#FocusRequestFocusType"><span class="secno">5.2.2 </span>Enumeration FocusRequestFocusType</a></li><li class="tocline"><a class="tocxref" href="#UIFocusRequestEventInit"><span class="secno">5.2.3 </span>UIFocusRequestEventInit</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#dictionary-uifocusrequesteventinit-members"><span class="secno">5.2.3.1 </span>Dictionary <span class="formerLink"><code>UIFocusRequestEventInit</code></span> Members</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UIFocusRequestEvents"><span class="secno">5.2.4 </span>UIFocusRequestEvent Types</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UIManipulationRequestEvent"><span class="secno">5.3 </span>Interface UIManipulationRequestEvent</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#attributes-5"><span class="secno">5.3.1 </span>Attributes</a></li><li class="tocline"><a class="tocxref" href="#UIManipulationRequestEventInit"><span class="secno">5.3.2 </span>UIManipulationRequestEventInit</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#dictionary-uimanipulationrequesteventinit-members"><span class="secno">5.3.2.1 </span>Dictionary <span class="formerLink"><code>UIManipulationRequestEventInit</code></span> Members</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UIManipulationRequestEvents"><span class="secno">5.3.3 </span>Discrete UIManipulationRequestEvent Types</a></li><li class="tocline"><a class="tocxref" href="#ContinuousUIManipulationRequestEvents"><span class="secno">5.3.4 </span>Continuous UIManipulationRequestEvent Types</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UIScrollRequestEvent"><span class="secno">5.4 </span>Interface UIScrollRequestEvent</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#attributes-6"><span class="secno">5.4.1 </span>Attributes</a></li><li class="tocline"><a class="tocxref" href="#ScrollRequestScrollType"><span class="secno">5.4.2 </span>Enumeration ScrollRequestScrollType</a></li><li class="tocline"><a class="tocxref" href="#UIScrollRequestEventInit"><span class="secno">5.4.3 </span>UIScrollRequestEventInit</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#dictionary-uiscrollrequesteventinit-members"><span class="secno">5.4.3.1 </span>Dictionary <span class="formerLink"><code>UIScrollRequestEventInit</code></span> Members</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UIScrollRequestEvents"><span class="secno">5.4.4 </span>UIScrollRequestEvent Types</a></li><li class="tocline"><a class="tocxref" href="#ContinuousUIScrollRequestEvents"><span class="secno">5.4.5 </span>Continuous UIScrollRequestEvent Types</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UIValueChangeRequestEvent"><span class="secno">5.5 </span>Interface UIValueChangeRequestEvent</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#attributes-7"><span class="secno">5.5.1 </span>Attributes</a></li><li class="tocline"><a class="tocxref" href="#ValueChangeRequestChangeType"><span class="secno">5.5.2 </span>Enumeration ValueChangeRequestChangeType</a></li><li class="tocline"><a class="tocxref" href="#UIValueChangeRequestEventInit"><span class="secno">5.5.3 </span>UIValueChangeRequestEventInit</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#dictionary-uivaluechangerequesteventinit-members"><span class="secno">5.5.3.1 </span>Dictionary <span class="formerLink"><code>UIValueChangeRequestEventInit</code></span> Members</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UIValueChangeRequestEvents"><span class="secno">5.5.4 </span>UIValueChangeRequestEvent Types</a></li></ul></li></ul></li><li class="tocline"><a class="tocxref" href="#feature-detection"><span class="secno">6. </span>Feature Detection</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#feature-detection-example-dismissrequest"><span class="secno">6.1 </span>Conditionally Assigning a <abbr title="User Interface">UI</abbr> Request Event</a></li></ul></li><li class="tocline"><a class="tocxref" href="#eventslist"><span class="secno">A. </span>Events List (alphabetical)</a></li><li class="tocline"><a class="tocxref" href="#changelog"><span class="secno">B. </span>Substantive, normative changes since the <span class="formerLink">last public working draft</span></a></li><li class="tocline"><a class="tocxref" href="#terms"><span class="secno">C. </span>Glossary</a></li><li class="tocline"><a class="tocxref" href="#acknowledgements"><span class="secno">D. </span>Acknowledgements</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#GroupMembership"><span class="secno">D.1 </span>Active IndieUI Members</a></li><li class="tocline"><a class="tocxref" href="#Contributors"><span class="secno">D.2 </span>Contributors</a></li><li class="tocline"><a class="tocxref" href="#ack-funders"><span class="secno">D.3 </span>Enabling funders</a></li></ul></li></ul></section>
+
+		
+		
+		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#intro" typeof="bibo:Chapter" id="intro" class="informative">
+			<!--OddPage--><h2 resource="#h-intro" id="h-intro"><span property="xhv:role" resource="xhv:heading"><span class="secno">1. </span>Introduction</span></h2><p><em>This section is non-normative.</em></p>
+			
+			<section property="bibo:hasPart" resource="#intro-background" typeof="bibo:Chapter" id="intro-background">
+				<h3 resource="#h-intro-background" id="h-intro-background"><span property="xhv:role" resource="xhv:heading"><span class="secno">1.1 </span>Background</span></h3>
+				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be further customized based on personal preference. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's preferred interface.</p>
+				<p>For example, web application authors, wishing to intercept a user's intent to "zoom in" on a custom image viewer or map view, need to "listen" for all of the following events:</p>
+				<ul>
+					<li><kbd>Control+PLUS</kbd> on Windows and Linux.</li>
+					<li><kbd>Command+PLUS</kbd> on Mac OS X.</li>
+					<li>Scroll events initiated by a trackpad or mouse scroll wheel.</li>
+					<li>Multiple touch or pointer events on some devices.</li>
+					<li>Additional gestures or speech commands on implementations that may not currently be detectable.</li>
+				</ul>
+				<p>In addition to the general user interface challenges, custom interfaces often don't take into account users who access web content via assistive technologies that use alternate forms of input such as screen readers, switch interfaces, or speech-based command and control interfaces.</p>
+				<p>For example, a web page author may script a custom interface to look like a slider (e.g. one styled to look like an <abbr title="Hypertext Markup Language">HTML</abbr> "range" input) and behave like a slider when using standard mouse-based input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
+				<p>It would be simpler to listen for a normalized request to "zoom in" on the current view, whereby the web application could determine the new scale factor and update its custom view accordingly. Whether through continuous physical events like a scroll wheel or discrete physical events like the keyboard shortcuts, a user could indicate his intent to "zoom in" and the web application author would only need to listen for a single type of event: <code>zoomrequest</code>.</p>
+				<p>IndieUI Events defines a way for web authors to register for these <em>request events</em> on a leaf node element or on a ancestor element acting as an event delegate. Authors also declaritively define which actions or behaviors a view responds to, and when it is appropriate for browsers to initiate these events.</p>
+			</section>
+			
+			<section property="bibo:hasPart" resource="#intro-goals" typeof="bibo:Chapter" id="intro-goals" class="informative">
+				<h3 resource="#h-intro-goals" id="h-intro-goals"><span property="xhv:role" resource="xhv:heading"><span class="secno">1.2 </span>Goals</span></h3><p><em>This section is non-normative.</em></p>
+				<p>The primary goals of the Events Module specification are declared as the following:</p>
+				<ol>
+					<li>Make it easier for web developers to author consistently usable interfaces that are input-agnostic and independent of a user's particular platform, hardware, locale, and preferences.</li>
+					<li>Enable every type of control in these interfaces to be programmatically determinable and controllable by both mainstream and alternate forms of user input.</li>
+				</ol>
+				<p>The IndieUI Working Group also hopes to provide a clear path for web developers to smoothly transition from currently existing physical events to IndieUI events, during the period when implementations of IndieUI are incomplete. This will likely be achieved through polyfill implementations in common JavaScript libraries, though such implementations are not a required deliverable of the IndieUI Working Group, and documentation of this development path is not a requirement of this Events Module specification.</p>
+			</section>
+
+			<section property="bibo:hasPart" resource="#intro-scope" typeof="bibo:Chapter" id="intro-scope" class="informative">
+				<h3 resource="#h-intro-scope" id="h-intro-scope"><span property="xhv:role" resource="xhv:heading"><span class="secno">1.3 </span>Document Scope</span></h3><p><em>This section is non-normative.</em></p>
+				<p>Decisions regarding which specific physical user interactions (keyboard combinations, gestures, speech, etc.) initiate IndieUI events are explicitly listed as out-of-scope in the Working Group charter. User interface interaction patterns should be designed and defined by each operating system, rather than defined as part of any technical specification.</p>
+				<p>However, this document lists informative examples of certain keyboard and mouse events that <em>may</em> initiate each IndieUI event. They are listed here purely to aid in clarifying the reader's conceptual understanding of each event, as well as illustrating certain <abbr title="User Interface">UI</abbr> differences between platforms. These informative examples are primarily limited to keyboard and mouse events, because those physical modalities have been common in software interaction for decades, and their use is familiar to most readers.</p>
+				<p>For example, it may be common for the <kbd>ESC</kbd> key to trigger a "dismissrequest" event to close a dialog on most systems, but the specification does not require the user agent to use any particular physical event. It is an implementation detail, and left for the developers of each platform or assistive technology to determine whether <kbd>ESC</kbd> or some other interaction is the most appropriate way to initiate the "dismissrequest" event. As long as there is a documented way for end users to initiate each event, the user agent will be considered a conforming implementation.</p>
+			</section>
+
+			<section property="bibo:hasPart" resource="#intro-usage" typeof="bibo:Chapter" id="intro-usage">
+				<h3 resource="#h-intro-usage" id="h-intro-usage"><span property="xhv:role" resource="xhv:heading"><span class="secno">1.4 </span>Usage Examples</span></h3>
+				
+				<section property="bibo:hasPart" resource="#intro-example-dismissrequest" typeof="bibo:Chapter" id="intro-example-dismissrequest">
+					<h4 resource="#h-intro-example-dismissrequest" id="h-intro-example-dismissrequest"><span property="xhv:role" resource="xhv:heading"><span class="secno">1.4.1 </span>Dismissing a Modal Dialog</span></h4>
+					<p>The following example uses a "dismissrequest" event to close or cancel out of a modal application dialog.</p>
+					<div class="example"><div class="example-title"><span>Example 1</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;</span><span class="pln">
+</span><span class="tag">&lt;dialog</span><span class="pln"> </span><strong><span class="atn">uiactions</span><span class="pun">=</span><span class="atv">"dismiss"</span></strong><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"myDialog"</span><span class="tag">&gt;</span><span class="pln">
+  </span><span class="com">&lt;!-- Include an optional click trigger for the dismiss action. --&gt;</span><span class="pln">
+					  	  </span><span class="tag">&lt;button</span><span class="pln"> </span><strong><span class="atn">uitrigger</span><span class="pun">=</span><span class="atv">"dismiss"</span></strong><span class="tag">&gt;</span><span class="pln"> Cancel </span><span class="tag">&lt;/button&gt;</span><span class="pln">
+  ... other dialog contents ...
+</span><span class="tag">&lt;/dialog&gt;</span><span class="pln">
+
+</span><span class="tag">&lt;script</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"text/javascript"</span><span class="tag">&gt;</span><span class="pln">
+  
+  </span><span class="kwd">var</span><span class="pln"> myDialog </span><span class="pun">=</span><span class="pln"> document</span><span class="pun">.</span><span class="pln">getElementById</span><span class="pun">(</span><span class="str">"myDialog"</span><span class="pun">);</span><span class="pln">
+  						
+  </span><span class="com">// At some point during runtime, the handler will be called.</span><span class="pln">
+  </span><span class="com">// For example, if the user presses ESC key while focus is inside the dialog.</span><span class="pln">
+  </span><span class="kwd">function</span><span class="pln"> dismissHandler</span><span class="pun">(</span><span class="pln">e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  
+    </span><span class="com">// Cancel and close the dialog. Don't forget to move focus before closing.</span><span class="pln">
+    closeDialog</span><span class="pun">(</span><strong><span class="pln">e</span><span class="pun">.</span><span class="pln">receiver</span></strong><span class="pun">);</span><span class="pln"> </span><span class="com">// Event.receiver is a readonly property like Event.target </span><span class="pln">
+    
+    </span><span class="com">// Then cancel the event.</span><span class="pln">
+    e</span><span class="pun">.</span><span class="pln">stopPropagation</span><span class="pun">();</span><span class="pln"> </span><span class="com">// Stop the event from bubbling.</span><span class="pln">
+    </span><strong><span class="pln">e</span><span class="pun">.</span><span class="pln">preventDefault</span><span class="pun">();</span></strong><span class="pln"> </span><span class="com">// Let the UA/AT know the event was intercepted successfully.</span><span class="pln">
+
+  </span><span class="pun">}</span><span class="pln">
+
+  </span><span class="com">// Register the event at initialization.</span><span class="pln">
+  </span><span class="com">// Either on the receiver itself, or on an ancestor element like the body. </span><span class="pln">
+  </span><strong><span class="pln">myDialog</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><span class="str">"dismissrequest"</span><span class="pun">,</span><span class="pln"> dismissHandler</span><span class="pun">);</span></strong><span class="pln">
+
+</span><span class="tag">&lt;/script&gt;</span></pre></div>
+				</section>
+				
+				<section property="bibo:hasPart" resource="#intro-example-valuechangerequest" typeof="bibo:Chapter" id="intro-example-valuechangerequest">
+					<h4 resource="#h-intro-example-valuechangerequest" id="h-intro-example-valuechangerequest"><span property="xhv:role" resource="xhv:heading"><span class="secno">1.4.2 </span>Changing the Value of a Custom Slider</span></h4>
+					<p>The following example uses a "valuechangerequest" event to modify the value of a custom ARIA slider.</p>
+					<p class="ednote">This example was cut. It needs to be rewritten once we add support for composite widgets with @uimanipulator (so the slider thumb can update the value via pointer-based events). See <a href="https://www.w3.org/WAI/IndieUI/track/actions/79">ACTION-79</a>.</p>
+					<div class="example"><div class="example-title"><span>Example 2</span></div><pre style="" class="example highlight prettyprint prettyprinted" hidden="hidden"><span class="com">&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;</span><span class="pln">
+</span><span class="tag">&lt;canvas</span><span class="pln"> </span><strong><span class="atn">uiactions</span><span class="pun">=</span><span class="atv">"valuechange"</span></strong><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"slider"</span><span class="pln"> </span><span class="atn">role</span><span class="pun">=</span><span class="atv">"slider"</span><span class="pln"> </span><span class="atn">aria-valuemin</span><span class="pun">=</span><span class="atv">"0"</span><span class="pln"> </span><span class="atn">aria-valuemax</span><span class="pun">=</span><span class="atv">"100"</span><span class="pln"> </span><span class="atn">aria-valuenow</span><span class="pun">=</span><span class="atv">"42"</span><span class="tag">&gt;&lt;/canvas&gt;</span><span class="pln">
+
+</span><span class="tag">&lt;script</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"text/javascript"</span><span class="tag">&gt;</span><span class="pln">
+  
+  </span><span class="com">// Register the event at initialization.</span><span class="pln">
+  </span><span class="com">// </span><strong><span class="com">Option #2:</span></strong><span class="com"> Using event delegation on any node (such as the body) that is higher in the DOM than the receiver element...</span><span class="pln">
+  </span><strong><span class="pln">document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><span class="str">"valuechangerequest"</span><span class="pun">,</span><span class="pln"> valueChangeHandler</span><span class="pun">);</span></strong><span class="pln">
+
+  </span><span class="com">// At some point during runtime, the handler will be called.</span><span class="pln">
+  </span><span class="kwd">function</span><span class="pln"> valueChangeHandler</span><span class="pun">(</span><span class="pln">e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    
+    </span><span class="com">// Find the event receiver element.</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> slider </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">.</span><span class="pln">receiver</span><span class="pun">;</span><span class="pln">
+    
+    </span><span class="com">// Grab context info from the Event object.</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> changeType </span><span class="pun">=</span><span class="pln"> </span><strong><span class="pln">e</span><span class="pun">.</span><span class="pln">changeType</span></strong><span class="pun">;</span><span class="pln">
+    
+    </span><span class="com">// Update the model and display.</span><span class="pln">
+    myApp</span><span class="pun">.</span><span class="pln">requestValueChangeForElement</span><span class="pun">(</span><span class="pln">changeType</span><span class="pun">,</span><span class="pln"> slider</span><span class="pun">);</span><span class="pln">
+
+    </span><span class="com">// Cancel the event.</span><span class="pln">
+    e</span><span class="pun">.</span><span class="pln">stopPropagation</span><span class="pun">();</span><span class="pln"> </span><span class="com">// Stop the event from bubbling.</span><span class="pln">
+    </span><strong><span class="pln">e</span><span class="pun">.</span><span class="pln">preventDefault</span><span class="pun">();</span></strong><span class="pln"> </span><span class="com">// Let the UA/AT know the event was intercepted successfully.</span><span class="pln">
+
+  </span><span class="pun">}</span><span class="pln">
+</span><span class="tag">&lt;/script&gt;</span></pre></div>
+				</section>
+				
+			</section>
+			
+			<section property="bibo:hasPart" resource="#intro-backwards-compatibility" typeof="bibo:Chapter" id="intro-backwards-compatibility" class="informative">
+				<h3 resource="#h-intro-backwards-compatibility" id="h-intro-backwards-compatibility"><span property="xhv:role" resource="xhv:heading"><span class="secno">1.5 </span>Backwards-Compatibility</span></h3><p><em>This section is non-normative.</em></p>
+				<p>One of the core principles behind <abbr title="User Interface">UI</abbr> Change Request Events is that they operate on a backwards-compatible, opt-in basis. In other words, the web application author has to first be aware of these events, then explicitly declare each event receiver and register an event listener, or user agents behave as normal and do not initiate these events.</p>
+				<p>Change request events do not cause any direct manipulation or mutation of the <abbr title="Document Object Model">DOM</abbr>, and do not have any "default action" in the context of a web view. Instead, the event conveys the user's intent to the web application, and allows the web application to perform the appropriate action on behalf of the user, including making potential changes to the <abbr title="Document Object Model">DOM</abbr>. If a web application is authored to understand the change request event, it can cancel the event, which informs the user agent that the event has been captured and understood. If a web application does not cancel the event, the user agent may attempt fallback behavior or communicate to the user that the input has not been recognized.</p>
+			</section>
+		</section>
+		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
+		
+		<!-- :::::::::::::::::::: UI Actions :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#actions" typeof="bibo:Chapter" id="actions" class="normative">
+			<!--OddPage--><h2 resource="#h-actions" id="h-actions"><span property="xhv:role" resource="xhv:heading"><span class="secno">2. </span><abbr title="User Interface">UI</abbr> Actions</span></h2>
+			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents"><abbr title="User Interface">UI</abbr> Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors <em title="MUST" class="rfc2119">MUST</em> also register for the event using <code>Element.addEventListener()</code> at this node or higher in the <abbr title="Document Object Model">DOM</abbr>. User agents <em title="SHOULD NOT" class="rfc2119">SHOULD NOT</em> initiate a <a href="#RequestEvents"><abbr title="User Interface">UI</abbr> Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
+			
+			<section property="bibo:hasPart" resource="#uiactions-attribute" typeof="bibo:Chapter" id="uiactions-attribute">
+				<h3 resource="#h-uiactions-attribute" id="h-uiactions-attribute"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.1 </span>The <code>uiactions</code> IDL Attribute</span></h3>
+				<p>The <code>uiactions</code> attribute of each instance of the <code>Element</code> interface <em title="MUST" class="rfc2119">MUST</em> return a DOMTokenList <a href="#def_reflected_attribute">reflecting</a> the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>.</p>
+				<pre class="idl"><span class="idlInterface" id="idl-def-Element">partial interface <span class="idlInterfaceID">Element</span> {
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">DOMTokenList</span> <span class="idlAttrName"><a href="#widl-Element-uiactions">uiactions</a></span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#attributes" typeof="bibo:Chapter" id="attributes"><h4 resource="#h-attributes" id="h-attributes"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.1.1 </span>Attributes</span></h4><dl class="attributes"><dt id="widl-Element-uiactions"><code>uiactions</code> of type <span class="idlAttrType">DOMTokenList</span>, readonly   </dt><dd>A <abbr title="Document Object Model">DOM</abbr> element attribute whose DOMTokenList value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>. <p class="ednote">This attribute is readonly b/c DOMTokenList values are modified by methods (e.g. <code>el.uiactions.add("pan");</code>) rather than by string assignment (e.g. NOT <code>el.uiactions = "pan";</code>). Need to make sure this is clear for authors.</p></dd></dl></section>
+			</section>
+			
+			<section property="bibo:hasPart" resource="#uiactions-content-attribute" typeof="bibo:Chapter" id="uiactions-content-attribute">
+				<h3 resource="#h-uiactions-content-attribute" id="h-uiactions-content-attribute"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.2 </span>The <code>uiactions</code> Content Attribute</span></h3>
+				<p>Every element may have a <code>uiactions</code> attribute specified, which is necessary to define the <a href="#def_request_event_receiver">receiver</a> of each type of request event. The attribute, if specified, must have a value that is a set of whitespace-separated tokens representing the various actions to which the web application responds on behalf of this element. The actions that an element has assigned to it consists of all the tokens returned when the value of the <code>uiactions</code> attribute is split on whitespace. (Duplicates are ignored.)</p>
+				<p>User agents <em title="MUST" class="rfc2119">MUST</em> <a href="#def_reflected_attribute">reflect</a> the <code>uiactions</code> content attribute in the <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
+				<h3 id="all-uiactions-token-values">All uiactions token values</h3>
+				<div><!-- dynamically generates list of all actions --><ul><li><code>collapse</code></li><li><code>delete</code></li><li><code>directionalfocus</code></li><li><code>dismiss</code></li><li><code>expand</code></li><li><code>linearfocus</code></li><li><code>manipulationcancel</code></li><li><code>manipulationchange</code></li><li><code>manipulationend</code></li><li><code>manipulationstart</code></li><li><code>medianext</code></li><li><code>mediapause</code></li><li><code>mediaprevious</code></li><li><code>mediastart</code></li><li><code>mediastop</code></li><li><code>mediatoggle</code></li><li><code>move</code></li><li><code>palettefocus</code></li><li><code>pan</code></li><li><code>redo</code></li><li><code>rotation</code></li><li><code>scroll</code></li><li><code>scrollcancel</code></li><li><code>scrollend</code></li><li><code>scrollmove</code></li><li><code>scrollstart</code></li><li><code>toolbarfocus</code></li><li><code>undo</code></li><li><code>valuechange</code></li><li><code>zoom</code></li></ul></div>
+				<p class="ednote">We could probably combine the "manipulation*" event types into a single "manipulation" action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events. Ditto for the other continuous event sets like scroll*.</p>
+				<div class="example"><div class="example-title"><span>Example 3</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">&lt;!-- Body element is event listener for all events, but event receiver only for "delete" actions. --&gt;</span><span class="pln">
+</span><span class="tag">&lt;body</span><span class="pln"> </span><strong><span class="atn">uiactions</span><span class="pun">=</span><span class="atv">"delete"</span></strong><span class="tag">&gt;</span><span class="pln">
+
+  </span><span class="com">&lt;!-- Element container for custom "mapview" is the event receiver for "pan" and "zoom" actions. --&gt;</span><span class="pln">
+  </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"mapview"</span><span class="pln"> </span><strong><span class="atn">uiactions</span><span class="pun">=</span><span class="atv">"pan zoom"</span></strong><span class="tag">&gt;</span><span class="pln"> ... </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+  </span><span class="com">&lt;!-- This Dialog is the event receiver for "dismiss" actions initiated on any lower-level event target. --&gt;</span><span class="pln">
+  </span><span class="tag">&lt;dialog</span><span class="pln"> </span><strong><span class="atn">uiactions</span><span class="pun">=</span><span class="atv">"dismiss"</span></strong><span class="tag">&gt;</span><span class="pln"> ... </span><span class="tag">&lt;/dialog&gt;</span><span class="pln">
+
+</span><span class="tag">&lt;/body&gt;</span><span class="pln">
+
+</span><span class="tag">&lt;script</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"text/javascript"</span><span class="tag">&gt;</span><span class="pln">
+  </span><span class="com">// Registered all of these on the body as an example of event delegation to help illustrate the difference between event...</span><span class="pln">
+  </span><span class="com">// ...target (document.activeElement or other point-of-regard), receiver (element with defined actions), and listener (body).</span><span class="pln">
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><strong><span class="str">"dismissrequest"</span></strong><span class="pun">,</span><span class="pln"> handleDismiss</span><span class="pun">);</span><span class="pln">
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><strong><span class="str">"panrequest"</span></strong><span class="pun">,</span><span class="pln"> handlePan</span><span class="pun">);</span><span class="pln">
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><strong><span class="str">"deleterequest"</span></strong><span class="pun">,</span><span class="pln"> handleDelete</span><span class="pun">);</span><span class="pln">
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><strong><span class="str">"zoomrequest"</span></strong><span class="pun">,</span><span class="pln"> handleZoom</span><span class="pun">);</span><span class="pln">
+</span><span class="tag">&lt;/script&gt;</span></pre></div>
+				<div class="note"><div id="h-note1" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">In the previous example, the "deleterequest" event may be fired any time the user's point-of-regard was inside the document, presumably when the user initiateded their platform's physical event to initiate a deletion, such as pressing the <kbd>DELETE</kbd> key. However, the "dismissrequest" would only be fired when the user's point-of-regard was inside the dialog. Likewise, the "panrequest" and "zoomrequest" would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.</p></div>
+			</section>
+
+		</section>
+		<!-- :::::::::::::::::::: End UI Actions :::::::::::::::::::: -->
+
+		<!-- :::::::::::::::::::: UI Triggers :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#triggers" typeof="bibo:Chapter" id="triggers" class="normative">
+			<!--OddPage--><h2 resource="#h-triggers" id="h-triggers"><span property="xhv:role" resource="xhv:heading"><span class="secno">3. </span><abbr title="User Interface">UI</abbr> Triggers</span></h2>
+			<p>A user interface trigger is an element whose <a href="#def_default_behavior">default behavior</a> is to initiate a <em>discrete</em> <a href="#UIRequestEvent">UIRequestEvent</a> for the current element or an ancestor element.</p>
+			<p>In order to define a trigger element, authors <em title="MUST" class="rfc2119">MUST</em> set the value of the <a href="#uitrigger-attribute">uitrigger</a> attribute as a single token value corresponding to an action defined on the current or an ancestor node. User agents <em title="MUST NOT" class="rfc2119">MUST NOT</em> initiate a request Event from a trigger element unless the corresponding action is defined on the current element or an ancester element using the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a> or <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
+			<p>Web authors <em title="MUST" class="rfc2119">MUST</em> ensure trigger elements have an appropriate accessible label, as rendered text or a text alternative. Web authors <em title="MUST" class="rfc2119">MUST</em> ensure trigger elements use an appropriate implicit or explicit role (usually <a href="http://www.w3.org/TR/wai-aria/complete#button"><code>button</code></a>).</p>
+			<p>Web authors <em title="SHOULD" class="rfc2119">SHOULD</em> ensure trigger elements are focusable. Web authors <em title="MAY" class="rfc2119">MAY</em> forego making a trigger element focusable if the trigger provides redundant functionality already available through another physical interface. For example, a "delete" trigger may not need to be focusable if pressing the <kbd>Delete</kbd> key triggers the same request event.</p>
+			
+			<section property="bibo:hasPart" resource="#uitrigger-attribute" typeof="bibo:Chapter" id="uitrigger-attribute">
+				<h3 resource="#h-uitrigger-attribute" id="h-uitrigger-attribute"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.1 </span>The <code>uitrigger</code> IDL Attribute</span></h3>
+				<p>The <code>uitrigger</code> attribute of each instance of the <code>Element</code> interface <em title="MUST" class="rfc2119">MUST</em> return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#uitrigger-content-attribute"><code>uitrigger</code> content attribute</a>.</p>
+				<pre class="idl"><span class="idlInterface" id="idl-def-Element-1">partial interface <span class="idlInterfaceID">Element</span> {
+<span class="idlAttribute">                attribute <span class="idlAttrType">DOMString</span> <span class="idlAttrName"><a href="#widl-Element-uitrigger">uitrigger</a></span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#attributes-1" typeof="bibo:Chapter" id="attributes-1"><h4 resource="#h-attributes-1" id="h-attributes-1"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.1.1 </span>Attributes</span></h4><dl class="attributes"><dt id="widl-Element-uitrigger"><code>uitrigger</code> of type <span class="idlAttrType">DOMString</span>,            </dt><dd>A <abbr title="Document Object Model">DOM</abbr> element attribute whose DOMString value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#uitrigger-content-attribute"><code>uitrigger</code> content attribute</a>. <p class="ednote">Consider making this attribute a single DOMToken rather than DOMString; this should be single action token value with whitespace trimmed.</p></dd></dl></section>
+			</section>
+			
+			<section property="bibo:hasPart" resource="#uitrigger-content-attribute" typeof="bibo:Chapter" id="uitrigger-content-attribute">
+				<h3 resource="#h-uitrigger-content-attribute" id="h-uitrigger-content-attribute"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.2 </span>The <code>uitrigger</code> Content Attribute</span></h3>
+				<p>Every element may have a <code>uitrigger</code> attribute. The attribute, if specified, must have a value that is a single token representing the <a href="#UIRequestEvent">UIRequestEvent</a> which should be triggered when this element is clicked or otherwise <a href="#def_activated">activated</a>.</p>
+				<p>User agents <em title="MUST" class="rfc2119">MUST</em> <a href="#def_reflected_attribute">reflect</a> the <code>uitrigger</code> content attribute in the <a href="#uitrigger-attribute"><code>uitrigger</code> IDL attribute</a>.</p>
+				<h3 id="all-uitrigger-token-values">All <code>uitrigger</code> token values</h3>
+				<div><!-- dynamically generates list of UIRequestEvent actions, not those that extend UIRequestEvent, such as UIFocusEvent. --><ul><li><code>collapse</code></li><li><code>delete</code></li><li><code>dismiss</code></li><li><code>expand</code></li><li><code>medianext</code></li><li><code>mediapause</code></li><li><code>mediaprevious</code></li><li><code>mediastart</code></li><li><code>mediastop</code></li><li><code>mediatoggle</code></li><li><code>redo</code></li><li><code>undo</code></li></ul></div>
+				<div class="note"><div id="h-note2" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">The uitrigger tokens list is a subset of the entire uiactions tokens list. It only lists actions associated with discrete <a href="#UIRequestEvent">UIRequestEvent</a> types. It does not list actions associated with interfaces that extend UIRequestEvent, such as <a href="#UIManipulationRequestEvent">UIManipulationRequestEvent</a> or <a href="#UIScrollRequestEvent">UIScrollRequestEvent</a>, because those require additional parameters that cannot be determined by a simple click or activate event on the trigger element.</p></div>
+			</section>
+
+			<section property="bibo:hasPart" resource="#triggers-example-dismissrequest" typeof="bibo:Chapter" id="triggers-example-dismissrequest">
+				<h3 resource="#h-triggers-example-dismissrequest" id="h-triggers-example-dismissrequest"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.3 </span>Example "Back" Button with Dismiss Request Trigger</span></h3>
+				<p>The following example demonstrates a view that can be "dismissed" with a "back" button trigger, the <kbd>ESC</kbd> key, or other appropriate physical events using a single event handler.</p>
+				<div class="example"><div class="example-title"><span>Example 4</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="tag">&lt;section</span><span class="pln"> </span><strong><span class="atn">uiactions</span><span class="pun">=</span><span class="atv">"dismiss"</span></strong><span class="tag">&gt;</span><span class="pln">
+  </span><span class="com">&lt;!-- "Back" button acts as the dismiss trigger if clicked or activated. --&gt;</span><span class="pln">
+  </span><span class="tag">&lt;button</span><span class="pln"> </span><strong><span class="atn">uitrigger</span><span class="pun">=</span><span class="atv">"dismiss"</span></strong><span class="tag">&gt;</span><span class="pln"> Back </span><span class="tag">&lt;/button&gt;</span><span class="pln">
+  ... other view contents ...
+</span><span class="tag">&lt;/section&gt;</span><span class="pln">
+
+</span><span class="tag">&lt;script</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"text/javascript"</span><span class="tag">&gt;</span><span class="pln">
+  </span><span class="com">// A single event handler for a number of user events.</span><span class="pln">
+  </span><span class="kwd">function</span><span class="pln"> handleDismiss</span><span class="pun">(</span><span class="pln">e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="com">// Dismiss the current view.</span><span class="pln">
+    dismissView</span><span class="pun">(</span><span class="pln">e</span><span class="pun">.</span><span class="pln">receiver</span><span class="pun">);</span><span class="pln"> </span><span class="com">// Event.receiver is a readonly property like Event.target </span><span class="pln">
+    </span><span class="com">// Then cancel the event.</span><span class="pln">
+    e</span><span class="pun">.</span><span class="pln">stopPropagation</span><span class="pun">();</span><span class="pln"> </span><span class="com">// Stop the event from bubbling.</span><span class="pln">
+    e</span><span class="pun">.</span><span class="pln">preventDefault</span><span class="pun">();</span><span class="pln"> </span><span class="com">// Let the UA/AT know the event was intercepted successfully.</span><span class="pln">
+  </span><span class="pun">}</span><span class="pln">
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><strong><span class="str">"dismissrequest"</span></strong><span class="pun">,</span><span class="pln"> handleDismiss</span><span class="pun">);</span><span class="pln">
+</span><span class="tag">&lt;/script&gt;</span></pre></div>
+				<p>The single event handler is called when a number of physical events occur:</p>
+				<ul>
+					<li>When the user presses the <kbd>ESC</kbd> key while focus is inside the view.</li>
+					<li>When the "back" button is clicked via a mouse or other pointing interface.</li>
+					<li>When the "back" button is focused and activated via a keyboard or other keyboard-like interface.</li>
+					<li>When other physical events are initiated that convey the user's desire to dismiss or escape from the current view, such as the VoiceOver screen reader's "two-finger scrub" gesture.</li>
+				</ul>
+			</section>
+
+			<section property="bibo:hasPart" resource="#triggers-example-deleterequest" typeof="bibo:Chapter" id="triggers-example-deleterequest">
+				<h3 resource="#h-triggers-example-deleterequest" id="h-triggers-example-deleterequest"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.4 </span>Media Player Example with Media Key Triggers</span></h3>
+				<p>The following example demonstrates a custom media player that uses the same event handler whether a button was activated, a keyboard media key was pressed, or a headphone remote was clicked.</p>
+				<div class="example"><div class="example-title"><span>Example 5</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="tag">&lt;body</span><span class="pln"> </span><strong><span class="atn">uiactions</span><span class="pun">=</span><span class="atv">"mediaprevious mediatoggle medianext"</span></strong><span class="tag">&gt;</span><span class="pln">
+  </span><span class="tag">&lt;button</span><span class="pln"> </span><strong><span class="atn">uitrigger</span><span class="pun">=</span><span class="atv">"mediaprevious"</span></strong><span class="tag">&gt;</span><span class="pln"> Previous Track </span><span class="tag">&lt;/button&gt;</span><span class="pln">
+  </span><span class="tag">&lt;button</span><span class="pln"> </span><strong><span class="atn">uitrigger</span><span class="pun">=</span><span class="atv">"mediatoggle"</span></strong><span class="tag">&gt;</span><span class="pln"> Play/Pause </span><span class="tag">&lt;/button&gt;</span><span class="pln">
+  </span><span class="tag">&lt;button</span><span class="pln"> </span><strong><span class="atn">uitrigger</span><span class="pun">=</span><span class="atv">"medianext"</span></strong><span class="tag">&gt;</span><span class="pln"> Next Track </span><span class="tag">&lt;/button&gt;</span><span class="pln">
+</span><span class="tag">&lt;/body&gt;</span><span class="pln">
+
+</span><span class="tag">&lt;script</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"text/javascript"</span><span class="tag">&gt;</span><span class="pln">
+  </span><span class="com">// A single event handler for a number of user events.</span><span class="pln">
+  </span><span class="kwd">function</span><span class="pln"> handleMedia</span><span class="pun">(</span><span class="pln">e</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    
+    </span><span class="com">// Handle the media events from any physical event source.</span><span class="pln">
+    </span><span class="kwd">switch</span><span class="pln"> </span><span class="pun">(</span><span class="pln">e</span><span class="pun">.</span><span class="pln">type</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+      </span><span class="kwd">case</span><span class="pln"> </span><span class="str">"mediapreviousrequest"</span><span class="pun">:</span><span class="pln">
+        previousTrack</span><span class="pun">();</span><span class="pln">
+        </span><span class="kwd">break</span><span class="pun">;</span><span class="pln">
+      </span><span class="kwd">case</span><span class="pln"> </span><span class="str">"mediatogglerequest"</span><span class="pun">:</span><span class="pln">
+        togglePlayback</span><span class="pun">();</span><span class="pln">
+        </span><span class="kwd">break</span><span class="pun">;</span><span class="pln">
+      </span><span class="kwd">case</span><span class="pln"> </span><span class="str">"medianextrequest"</span><span class="pun">:</span><span class="pln">
+        nextTrack</span><span class="pun">();</span><span class="pln">
+        </span><span class="kwd">break</span><span class="pun">;</span><span class="pln">
+      </span><span class="kwd">default</span><span class="pun">:</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pun">;</span><span class="pln"> </span><span class="com">// Event not handled, so return early to prevent canceling event.</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="com">// Then cancel the event.</span><span class="pln">
+    e</span><span class="pun">.</span><span class="pln">stopPropagation</span><span class="pun">();</span><span class="pln"> </span><span class="com">// Stop the event from bubbling.</span><span class="pln">
+    e</span><span class="pun">.</span><span class="pln">preventDefault</span><span class="pun">();</span><span class="pln"> </span><span class="com">// Let the UA/AT know the event was intercepted successfully.</span><span class="pln">
+  </span><span class="pun">}</span><span class="pln">
+  
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><strong><span class="str">"mediapreviousrequest"</span></strong><span class="pun">,</span><span class="pln"> handleMedia</span><span class="pun">);</span><span class="pln">
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><strong><span class="str">"mediatogglerequest"</span></strong><span class="pun">,</span><span class="pln"> handleMedia</span><span class="pun">);</span><span class="pln">
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><strong><span class="str">"medianextrequest"</span></strong><span class="pun">,</span><span class="pln"> handleMedia</span><span class="pun">);</span><span class="pln">
+</span><span class="tag">&lt;/script&gt;</span></pre></div>
+				<p>The single event handler is called when a number of physical events occur:</p>
+				<ul>
+					<li>When the user presses the media keys on their physical keyboard.</li>
+					<li>When the user clicks the cable remote on on their headphones.</li>
+					<li>When any of the buttons is clicked via a mouse or other pointing interface.</li>
+					<li>When any of the buttons is focused and activated via a keyboard or other keyboard-like interface.</li>
+					<li>When other physical events are initiated that convey the user's desire toggle media playback, such as the VoiceOver screen reader's "two-finger double-tap" gesture.</li>
+				</ul>
+			</section>
+
+		</section>
+		<!-- :::::::::::::::::::: End UI Triggers :::::::::::::::::::: -->
+
+		<!-- :::::::::::::::::::: UI Manipulator :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#manipulators" typeof="bibo:Chapter" id="manipulators" class="normative">
+			<!--OddPage--><h2 resource="#h-manipulators" id="h-manipulators"><span property="xhv:role" resource="xhv:heading"><span class="secno">4. </span><abbr title="User Interface">UI</abbr> Manipulators</span></h2>
+			<p class="ednote">This section is woefilly incomplete. This is to cover pointer-based manipulation of sub-view elements, like the slider "thumb" inside a slider. Deltas and other details will be included in the request event object.</p>
+
+			<p class="ednote">We may need to extend UIRequestEvent to be a superset of MouseEvent, KeyEvent, FocusEvent, etc. so that we can include all the additional values in the event object.</p>
+
+			<p>A user interface manipulator is ... TBD.</p>
+			<p>In order to define a manipulator element, authors <em title="MUST" class="rfc2119">MUST</em> set the value of the <a href="#uimanipulator-attribute">manipulator</a> attribute as a single token value corresponding to an action defined on the current or an ancestor node. User agents <em title="MUST NOT" class="rfc2119">MUST NOT</em> initiate a request Event from a manipulator element unless the corresponding action is defined on the current element or an ancester element using the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a> or <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
+			
+			<section property="bibo:hasPart" resource="#uimanipulator-attribute" typeof="bibo:Chapter" id="uimanipulator-attribute">
+				<h3 resource="#h-uimanipulator-attribute" id="h-uimanipulator-attribute"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.1 </span>The <code>uimanipulator</code> IDL Attribute</span></h3>
+				<p>The <code>uimanipulator</code> attribute of each instance of the <code>Element</code> interface <em title="MUST" class="rfc2119">MUST</em> return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#uimanipulator-content-attribute"><code>uimanipulator</code> content attribute</a>.</p>
+				<pre class="idl"><span class="idlInterface" id="idl-def-Element-2">partial interface <span class="idlInterfaceID">Element</span> {
+<span class="idlAttribute">                attribute <span class="idlAttrType">DOMString</span> <span class="idlAttrName"><a href="#widl-Element-uimanipulator">uimanipulator</a></span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#attributes-2" typeof="bibo:Chapter" id="attributes-2"><h4 resource="#h-attributes-2" id="h-attributes-2"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.1.1 </span>Attributes</span></h4><dl class="attributes"><dt id="widl-Element-uimanipulator"><code>uimanipulator</code> of type <span class="idlAttrType">DOMString</span>,            </dt><dd>TBD</dd></dl></section>
+			</section>
+			
+			<section property="bibo:hasPart" resource="#uimanipulator-content-attribute" typeof="bibo:Chapter" id="uimanipulator-content-attribute">
+				<h3 resource="#h-uimanipulator-content-attribute" id="h-uimanipulator-content-attribute"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.2 </span>The <code>uimanipulator</code> Content Attribute</span></h3>
+				<p>TBD</p>
+				<p>User agents <em title="MUST" class="rfc2119">MUST</em> <a href="#def_reflected_attribute">reflect</a> the <code>uimanipulator</code> content attribute in the <a href="#uimanipulator-attribute"><code>uimanipulator</code> IDL attribute</a>.</p>
+				<h3 id="all-uimanipulator-token-values">All <code>uimanipulator</code> token values</h3>
+				<div><!-- dynamically generates list of UIManipulationRequestEvent, UIScrollRequestEvent, UIValueChangeRequestEvent actions --><ul><li><code>manipulationcancel</code></li><li><code>manipulationchange</code></li><li><code>manipulationend</code></li><li><code>manipulationstart</code></li><li><code>move</code></li><li><code>pan</code></li><li><code>rotation</code></li><li><code>scroll</code></li><li><code>scrollcancel</code></li><li><code>scrollend</code></li><li><code>scrollmove</code></li><li><code>scrollstart</code></li><li><code>valuechange</code></li><li><code>zoom</code></li></ul></div>
+
+				<p class="ednote">We could probably combine the "manipulation*" event types into a single "manipulation" action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events. Ditto for the other continuous event sets like scroll*.</p>
+				
+			</section>
+
+		</section>
+		<!-- :::::::::::::::::::: End UI Manipulator :::::::::::::::::::: -->
+
+		
+		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#RequestEvents" typeof="bibo:Chapter" id="RequestEvents" class="normative">
+			<!--OddPage--><h2 resource="#h-requestevents" id="h-requestevents"><span property="xhv:role" resource="xhv:heading"><span class="secno">5. </span><abbr title="User Interface">UI</abbr> Request Events</span></h2>
+			
+			<p class="ednote">There is purposefully no request event for activating the default action. Authors are encouraged to use a standard <code>click</code> event for default actions. Update: Eitan (Mozilla) requested <a href="https://www.w3.org/WAI/IndieUI/track/actions/53">ACTION-53</a>: activate request event to augment default action trigger when click handlers are inappropriate.</p>
+			<p class="ednote">Event fires on point-of-regard (<code>document.activeElement</code>, clicked element, or AT equivalent) if applicable, or otherwise <code>document.body</code>.</p>
+			<p class="ednote">Event order: These events should be asynchronous, but when used in conjunction with keyboard events, we need to define where each IndieUI event fires in the chain of <code>keydown</code>, <code>keyup</code>, and <code>keypress</code>. Probably also need an identifier to associate each event with other related physical events: e.g. This <code>dismissrequest</code> event is associated with the keyboard events <code>keydown</code>, <code>keyup</code>, and <code>keypress</code> of the <kbd>ESC</kbd> key.</p>
+
+			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
+			<section property="bibo:hasPart" resource="#UIRequestEvent" typeof="bibo:Chapter" id="UIRequestEvent" class="normative">
+				<h3 resource="#h-uirequestevent" id="h-uirequestevent"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1 </span>Interface UIRequestEvent</span></h3>
+				<p class="ednote">Separate interface from UIEvent because the @uiactions attribute will 1) affect when and where these events are fired, and 2) adds the distinction of an event <a href="#def_request_event_receiver">receiver</a> element (element declaring the uiactions attribute) in addition to the "target" element where the event initiates and the "listener" element where the event is registered for and handled.</p>
+				<p>The <code>receiver</code> attribute of each instance of the UIRequestEvent interface <em title="MUST" class="rfc2119">MUST</em> return an EventTarget matching the DOMElement where the corresponding event's action is declared via the <a href="#uiactions-attribute"><code>uiactions</code> attribute</a>.</p>
+				<pre class="idl"><span class="idlInterface" id="idl-def-UIRequestEvent">[<span class="extAttr">Constructor(DOMString typeArg, optional UIRequestEventInit dictUIRequestEventInit)</span>]
+interface <span class="idlInterfaceID">UIRequestEvent</span> : <span class="idlSuperclass">UIEvent</span> {
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">EventTarget</span> <span class="idlAttrName"><a href="#widl-UIRequestEvent-receiver">receiver</a></span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#attributes-3" typeof="bibo:Chapter" id="attributes-3"><h4 resource="#h-attributes-3" id="h-attributes-3"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.1 </span>Attributes</span></h4><dl class="attributes"><dt id="widl-UIRequestEvent-receiver"><code>receiver</code> of type <span class="idlAttrType">EventTarget</span>, readonly   </dt><dd>In addition to the event target, each <abbr title="User Interface">UI</abbr> Request Event has a receiver element, which is declared via the <a href="#uiactions-content-attribute"><code>uiactions</code></a> content attribute on an ancestor node of the event target. </dd></dl></section>
+				
+				<section property="bibo:hasPart" resource="#determining_event_receiver" typeof="bibo:Chapter" id="determining_event_receiver">
+					<h4 resource="#h-determining_event_receiver" id="h-determining_event_receiver"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.2 </span>Determining the Event Receiver</span></h4>
+					<p>The event receiver is determined using the following steps:</p>
+					<ol>
+						<li>For each event name literal (<code>"dismissrequest"</code>), determine the corresponding uiactions token (<code>"dismiss"</code>).</li>
+						<li>Starting with the event's target element, determine if the element's actions list contains the corresponding action for the event (<code>el.uiactions.contains("dismiss")</code>). If the current element's action list contains the corresponding uiactions token, the event target is also the event receiver.</li>
+						<li>If the current element's action list does not contain the corresponding uiactions token, move up to the parent element and try again. Continue until reaching the root element. The closest ancestor to match the corresponding action token is the event receiver.</li>
+						<li>If the event receiver is still undetermined upon reaching the root element, stop. There is no valid event receiver and the user agent <em title="MUST NOT" class="rfc2119">MUST NOT</em> initiate the event.</li>
+					</ol>
+				</section>
+
+				<div class="ednote">
+					<p>May also need a way to associate IndieUI events with their physical event counterparts.</p>
+					<pre>[Example]
+partial interface UIEvent {
+  readonly attribute EventID id; // UID of current event
+  readonly attribute EventList relatedEvents; // List of related events, with ID and potentially type of each event. 
+  // This "dismissrequest" event is associated with the previous "keydown" and "keyup" events.
+}</pre>
+				</div>
+				
+				<section property="bibo:hasPart" resource="#UIRequestEventInit" typeof="bibo:Chapter" id="UIRequestEventInit">
+					<h4 resource="#h-uirequesteventinit" id="h-uirequesteventinit"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.3 </span>UIRequestEventInit</span></h4>
+					
+					<pre class="idl"><span class="idlDictionary" id="idl-def-UIRequestEventInit">dictionary <span class="idlDictionaryID">UIRequestEventInit</span> : <span class="idlSuperclass">UIEventInit</span> {
+<span class="idlMember">    <span class="idlMemberType">boolean</span>      <span class="idlMemberName"><a href="#widl-UIRequestEventInit-bubbles">bubbles</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">boolean</span>      <span class="idlMemberName"><a href="#widl-UIRequestEventInit-cancelable">cancelable</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">WindowProxy?</span> <span class="idlMemberName"><a href="#widl-UIRequestEventInit-view">view</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">long</span>         <span class="idlMemberName"><a href="#widl-UIRequestEventInit-detail">detail</a></span> = <span class="idlMemberValue">0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">EventTarget</span>  <span class="idlMemberName"><a href="#widl-UIRequestEventInit-receiver">receiver</a></span> = <span class="idlMemberValue">null</span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#dictionary-uirequesteventinit-members" typeof="bibo:Chapter" id="dictionary-uirequesteventinit-members"><h5 resource="#h-dictionary-uirequesteventinit-members" id="h-dictionary-uirequesteventinit-members"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.3.1 </span>Dictionary <a href="#idl-def-UIRequestEventInit" class="idlType"><code>UIRequestEventInit</code></a> Members</span></h5><dl class="dictionary-members"><dt id="widl-UIRequestEventInit-bubbles"><code>bubbles</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIRequestEventInit-cancelable"><code>cancelable</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIRequestEventInit-detail"><code>detail</code> of type <span class="idlMemberType">long</span>, defaulting to <code>0</code></dt><dd></dd><dt id="widl-UIRequestEventInit-receiver"><code>receiver</code> of type <span class="idlMemberType">EventTarget</span>, defaulting to <code>null</code></dt><dd></dd><dt id="widl-UIRequestEventInit-view"><code>view</code> of type <span class="idlMemberType">WindowProxy</span>, nullable, defaulting to <code>null</code></dt><dd></dd></dl></section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#UIRequestEvents" typeof="bibo:Chapter" id="UIRequestEvents">
+					<h4 resource="#h-uirequestevents" id="h-uirequestevents"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.4 </span>UIRequestEvent Types</span></h4>
+					<p>The different types of UIRequestEvents that can occur are:</p>
+					<dl>
+						<dt id="undorequest">Undo Request (<code class="event">undorequest</code>)</dt>
+						<dd>
+							<p>Indicates the user desires to "undo" the previous action.</p>
+							<p class="ednote">May be superseded by the <a href="https://dvcs.w3.org/hg/undomanager/raw-file/tip/undomanager.html">UndoManager</a> interface.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+							<div class="ex" title="Informative Example">
+								<p>Users, wanting to "undo" a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices.</p>
+							</div>
+						</dd>
+						<dt id="redorequest">Redo Request (<code class="event">redorequest</code>)</dt>
+						<dd>
+							<p>Indicates the user desires to "redo" the previously "undone" action.</p>
+							<p class="ednote">May be superseded by the <a href="https://dvcs.w3.org/hg/undomanager/raw-file/tip/undomanager.html">UndoManager</a> interface.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+							<div class="ex" title="Informative Example">
+								<p>Users, wanting to "redo" a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Shift+Z</kbd> on Windows or Linux, <kbd>Command+Shift+Z</kbd> on Mac OS X.</p>
+							</div>
+						</dd>
+						<dt id="expandrequest">Expand Request (<code class="event">expandrequest</code>)</dt>
+						<dd>
+							<p>Indicates the user desires to to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="collapserequest">Collapse Request (<code class="event">collapserequest</code>)</dt>
+						<dd>
+							<p>Indicates the user desires to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="dismissrequest">Dismiss Request (<code class="event">dismissrequest</code>)</dt>
+						<dd>
+							<p>Indicates the user desires "dismiss" the current view (e.g. canceling a dialog, or closing a popup menu).</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+							<div class="ex" title="Informative Example">
+								<p>Users, wanting to "escape from" or "dismiss" a web application state (for example, closing a modal dialog), can indicate their intent a number of ways, most commonly by pressing <kbd>Escape</kbd> on keyboard-controlled operating systems. Web authors who have registered for this event should process the event to determine whether to cancel the event. If the "dismiss" action is understood in the context of the web application, web authors should perform the appropriate action (such as closing the dialog), and cancel the event using the event object's <code>preventDefault()</code> method.</p>
+							</div>
+						</dd>
+						<dt id="deleterequest">Delete Request (<code class="event">deleterequest</code>)</dt>
+						<dd>
+							<p>Indicates the user wants to initiate a "delete" action on the <a href="#def_marked_element">marked element</a> or current view.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="mediapauserequest">Pause Media Playback Request (<code class="event">mediapauserequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to pause media playback.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="mediastartrequest">Start Media Playback Request (<code class="event">mediastartrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to start media playback.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="mediastoprequest">Stop Media Playback Request (<code class="event">mediastoprequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to stop media playback.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="mediatogglerequest">Toggle Media Playback Request (<code class="event">mediatogglerequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to toggle the play/pause state of media playback.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="mediapreviousrequest">Previous Track Request (<code class="event">mediapreviousrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to skip media to the previous track boundary.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+						<dt id="medianextrequest">Next Track Request (<code class="event">medianextrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a request to the web application to skip media to the next track boundary.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+					</dl>
+					<p class="ednote">There may be a need for continuous media request events to support fast-forward or rewind via press-and-hold, or double-click-and-hold, etc.</p>
+				</section>
+			</section>
+			<!-- :::::::::::::::::::: END UIRequestEvent :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: UIFocusRequestEvent :::::::::::::::::::: -->
+			<section property="bibo:hasPart" resource="#UIFocusRequestEvent" typeof="bibo:Chapter" id="UIFocusRequestEvent" class="normative">
+				<h3 resource="#h-uifocusrequestevent" id="h-uifocusrequestevent"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2 </span>Interface UIFocusRequestEvent</span></h3>
+
+				<pre class="idl"><span class="idlInterface" id="idl-def-UIFocusRequestEvent">[<span class="extAttr">Constructor(DOMString typeArg, optional UIFocusRequestEventInit dictUIFocusRequestEventInit)</span>]
+interface <span class="idlInterfaceID">UIFocusRequestEvent</span> : <span class="idlSuperclass"><a class="idlType" href="#idl-def-UIRequestEvent"><code>UIRequestEvent</code></a></span> {
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType"><a class="idlType" href="#idl-def-FocusRequestFocusType"><code>FocusRequestFocusType</code></a></span> <span class="idlAttrName"><a href="#widl-UIFocusRequestEvent-focusType">focusType</a></span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#attributes-4" typeof="bibo:Chapter" id="attributes-4"><h4 resource="#h-attributes-4" id="h-attributes-4"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.1 </span>Attributes</span></h4><dl class="attributes"><dt id="widl-UIFocusRequestEvent-focusType"><code>focusType</code> of type <span class="idlAttrType"><a class="idlType" href="#idl-def-FocusRequestFocusType"><code>FocusRequestFocusType</code></a></span>, readonly   </dt><dd></dd></dl></section>
+				
+				<section property="bibo:hasPart" resource="#FocusRequestFocusType" typeof="bibo:Chapter" id="FocusRequestFocusType">
+					<h4 resource="#h-focusrequestfocustype" id="h-focusrequestfocustype"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.2 </span>Enumeration FocusRequestFocusType</span></h4>
+					<pre class="idl"><span class="idlEnum" id="idl-def-FocusRequestFocusType">enum <span class="idlEnumID">FocusRequestFocusType</span> {
+    "<a href="#idl-def-FocusRequestFocusType.none" class="idlEnumItem">none</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navFirst" class="idlEnumItem">navFirst</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navPrevious" class="idlEnumItem">navPrevious</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navNext" class="idlEnumItem">navNext</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navLast" class="idlEnumItem">navLast</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navUp" class="idlEnumItem">navUp</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navUpRight" class="idlEnumItem">navUpRight</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navRight" class="idlEnumItem">navRight</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navDownRight" class="idlEnumItem">navDownRight</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navDown" class="idlEnumItem">navDown</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navDownLeft" class="idlEnumItem">navDownLeft</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navLeft" class="idlEnumItem">navLeft</a>",
+    "<a href="#idl-def-FocusRequestFocusType.navUpLeft" class="idlEnumItem">navUpLeft</a>"
+};</span></pre><table class="simple"><tbody><tr><th colspan="2">Enumeration description</th></tr><tr><td><code id="idl-def-FocusRequestFocusType.none">none</code></td><td>Not applicable. Event is not a linear or directional focus event.</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navFirst">navFirst</code></td><td>linear first</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navPrevious">navPrevious</code></td><td>linear previous</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navNext">navNext</code></td><td>linear next</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navLast">navLast</code></td><td>linear last</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navUp">navUp</code></td><td>directional "North"</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navUpRight">navUpRight</code></td><td>directional "Northeast"</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navRight">navRight</code></td><td>directional "East"</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navDownRight">navDownRight</code></td><td>directional "Southeast"</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navDown">navDown</code></td><td>directional "South"</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navDownLeft">navDownLeft</code></td><td>directional "Southwest"</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navLeft">navLeft</code></td><td>directional "West"</td></tr><tr><td><code id="idl-def-FocusRequestFocusType.navUpLeft">navUpLeft</code></td><td>directional "Northwest"</td></tr></tbody></table>
+				</section>
+
+				<section property="bibo:hasPart" resource="#UIFocusRequestEventInit" typeof="bibo:Chapter" id="UIFocusRequestEventInit">
+					<h4 resource="#h-uifocusrequesteventinit" id="h-uifocusrequesteventinit"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.3 </span>UIFocusRequestEventInit</span></h4>
+					<pre class="idl"><span class="idlDictionary" id="idl-def-UIFocusRequestEventInit">dictionary <span class="idlDictionaryID">UIFocusRequestEventInit</span> : <span class="idlSuperclass"><a class="idlType" href="#idl-def-UIRequestEventInit"><code>UIRequestEventInit</code></a></span> {
+<span class="idlMember">    <span class="idlMemberType">boolean</span>               <span class="idlMemberName"><a href="#widl-UIFocusRequestEventInit-bubbles">bubbles</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">boolean</span>               <span class="idlMemberName"><a href="#widl-UIFocusRequestEventInit-cancelable">cancelable</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">WindowProxy?</span>          <span class="idlMemberName"><a href="#widl-UIFocusRequestEventInit-view">view</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">long</span>                  <span class="idlMemberName"><a href="#widl-UIFocusRequestEventInit-detail">detail</a></span> = <span class="idlMemberValue">0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">EventTarget</span>           <span class="idlMemberName"><a href="#widl-UIFocusRequestEventInit-receiver">receiver</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType"><a class="idlType" href="#idl-def-FocusRequestFocusType"><code>FocusRequestFocusType</code></a></span> <span class="idlMemberName"><a href="#widl-UIFocusRequestEventInit-focusType">focusType</a></span> = <span class="idlMemberValue">"NONE"</span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#dictionary-uifocusrequesteventinit-members" typeof="bibo:Chapter" id="dictionary-uifocusrequesteventinit-members"><h5 resource="#h-dictionary-uifocusrequesteventinit-members" id="h-dictionary-uifocusrequesteventinit-members"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.3.1 </span>Dictionary <a href="#idl-def-UIFocusRequestEventInit" class="idlType"><code>UIFocusRequestEventInit</code></a> Members</span></h5><dl class="dictionary-members"><dt id="widl-UIFocusRequestEventInit-bubbles"><code>bubbles</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIFocusRequestEventInit-cancelable"><code>cancelable</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIFocusRequestEventInit-detail"><code>detail</code> of type <span class="idlMemberType">long</span>, defaulting to <code>0</code></dt><dd></dd><dt id="widl-UIFocusRequestEventInit-focusType"><code>focusType</code> of type <span class="idlMemberType"><a class="idlType" href="#idl-def-FocusRequestFocusType"><code>FocusRequestFocusType</code></a></span>, defaulting to <code>"NONE"</code></dt><dd>Type of linear or directional focus requested, as defined in the FocusRequestFocusType enumeration definition. Value remains "NONE" except when used for directionalfocusrequest or linearfocusrequest.</dd><dt id="widl-UIFocusRequestEventInit-receiver"><code>receiver</code> of type <span class="idlMemberType">EventTarget</span>, defaulting to <code>null</code></dt><dd></dd><dt id="widl-UIFocusRequestEventInit-view"><code>view</code> of type <span class="idlMemberType">WindowProxy</span>, nullable, defaulting to <code>null</code></dt><dd></dd></dl></section>
+				</section>
+				
+				<section property="bibo:hasPart" resource="#UIFocusRequestEvents" typeof="bibo:Chapter" id="UIFocusRequestEvents">
+					<h4 resource="#h-uifocusrequestevents" id="h-uifocusrequestevents"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.4 </span>UIFocusRequestEvent Types</span></h4>
+					<p class="ednote">FIXME: explain these can cover focus changes when the element to focus is not yet loaded in the <abbr title="Document Object Model">DOM</abbr> or yet focusable (for example, in list or table views where the entire dataset is not displayed), or non-linear focus shortcuts or overrides when linear focus is not possible (for example, jumping directly from a contenteditable region to the editing toolbar, when Tab and Shift+Tab mean other things).</p>
+					<p>The types of UIFocusRequestEvents that can occur are:</p>
+					<dl>
+						
+						<dt id="directionalfocusrequest">Directional Focus Request (<code class="event">directionalfocusrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a "direction focus" request to the web application. Web authors <em title="SHOULD NOT" class="rfc2119">SHOULD NOT</em> use or register for <code>directionalfocusrequest</code> events when standard browser focus and blur events are sufficient. Using these events unnecessarily could result is reduced performance or an other negative user experience.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>focusType</code> (one of directional focusType string)</li>
+							</ul>
+							<div class="note"><div id="h-note3" role="heading" aria-level="5" class="note-title"><span>Note</span></div><p class="">On most desktop platforms, directional focus may be triggered by keyboard arrow keys. For example, in a spread sheet or other grid-based application, arrow keys allow the user to navigate vertically within a column, or horizontally within a row.</p></div>
+						</dd>
+
+						<dt id="linearfocusrequest">Linear Focus Request (<code class="event">linearfocusrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a "linear focus" request to the web application. Web authors <em title="SHOULD NOT" class="rfc2119">SHOULD NOT</em> use or register for <code>linearfocusrequest</code> events when standard browser focus and blur events are sufficient. This event type is only necessary on specialized control types such as data grids where the logical "next" or "previous" element may not be focusable or even in the <abbr title="Document Object Model">DOM</abbr> until requested. Using these events unnecessarily could result is reduced performance or an other negative user experience.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>focusType</code> (one of linear focusType strings)</li>
+							</ul>
+							<div class="note"><div id="h-note4" role="heading" aria-level="5" class="note-title"><span>Note</span></div><p class="">On most desktop platforms, linear focus may be triggered by <kbd>Tab</kbd> (focus next in linear order) and <kbd>Shift+Tab</kbd> (focus previous in linear order). </p></div>
+						</dd>
+
+						<dt id="palettefocusrequest">Palette Focus Request (<code class="event">palettefocusrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a "palette focus" request to the web application. Web app authors receiving this event <em title="SHOULD" class="rfc2119">SHOULD</em> move focus to the first palette in the web application, or cycle focus between all available palettes.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+							<p class="ednote">Will possibly need an ARIA 1.1 or 2.0 role for palette. Note: palettes are sometimes referred to as non-modal dialogs or inspector windows, but not always, and the definition should not include "sometimes." If we can't come up with a less vague definition and common interaction that doesn't trample a native one (ex. Cmd+tilde on Mac), we may have to drop this event.</p>
+						</dd>
+
+						<dt id="toolbarfocusrequest">Toolbar Focus Request (<code class="event">toolbarfocusrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a "toolbar focus" request to the web application. Web app authors receiving this event <em title="SHOULD" class="rfc2119">SHOULD</em> move focus to the main toolbar in the web application, or cycle focus between all available toolbars.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+							</ul>
+						</dd>
+
+					</dl>
+				</section>
+				
+			</section>
+			<!-- :::::::::::::::::::: END UIFocusRequestEvent :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: UIManipulationRequestEvent :::::::::::::::::::: -->
+			<section property="bibo:hasPart" resource="#UIManipulationRequestEvent" typeof="bibo:Chapter" id="UIManipulationRequestEvent" class="normative">
+				<h3 resource="#h-uimanipulationrequestevent" id="h-uimanipulationrequestevent"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3 </span>Interface UIManipulationRequestEvent</span></h3>
+
+				<pre class="idl"><span class="idlInterface" id="idl-def-UIManipulationRequestEvent">[<span class="extAttr">Constructor(DOMString typeArg, optional UIManipulationRequestEventInit dictUIManipulationRequestEventInit)</span>]
+interface <span class="idlInterfaceID">UIManipulationRequestEvent</span> : <span class="idlSuperclass"><a class="idlType" href="#idl-def-UIRequestEvent"><code>UIRequestEvent</code></a></span> {
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">double?</span> <span class="idlAttrName"><a href="#widl-UIManipulationRequestEvent-originX">originX</a></span>;</span>
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">double?</span> <span class="idlAttrName"><a href="#widl-UIManipulationRequestEvent-originY">originY</a></span>;</span>
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">double</span>  <span class="idlAttrName"><a href="#widl-UIManipulationRequestEvent-deltaX">deltaX</a></span>;</span>
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">double</span>  <span class="idlAttrName"><a href="#widl-UIManipulationRequestEvent-deltaY">deltaY</a></span>;</span>
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">double</span>  <span class="idlAttrName"><a href="#widl-UIManipulationRequestEvent-scaleFactor">scaleFactor</a></span>;</span>
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">double</span>  <span class="idlAttrName"><a href="#widl-UIManipulationRequestEvent-rotation">rotation</a></span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#attributes-5" typeof="bibo:Chapter" id="attributes-5"><h4 resource="#h-attributes-5" id="h-attributes-5"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.1 </span>Attributes</span></h4><dl class="attributes"><dt id="widl-UIManipulationRequestEvent-deltaX"><code>deltaX</code> of type <span class="idlAttrType">double</span>, readonly   </dt><dd></dd><dt id="widl-UIManipulationRequestEvent-deltaY"><code>deltaY</code> of type <span class="idlAttrType">double</span>, readonly   </dt><dd></dd><dt id="widl-UIManipulationRequestEvent-originX"><code>originX</code> of type <span class="idlAttrType">double</span>, readonly   , nullable</dt><dd></dd><dt id="widl-UIManipulationRequestEvent-originY"><code>originY</code> of type <span class="idlAttrType">double</span>, readonly   , nullable</dt><dd></dd><dt id="widl-UIManipulationRequestEvent-rotation"><code>rotation</code> of type <span class="idlAttrType">double</span>, readonly   </dt><dd></dd><dt id="widl-UIManipulationRequestEvent-scaleFactor"><code>scaleFactor</code> of type <span class="idlAttrType">double</span>, readonly   </dt><dd></dd></dl></section>
+				
+				<section property="bibo:hasPart" resource="#UIManipulationRequestEventInit" typeof="bibo:Chapter" id="UIManipulationRequestEventInit">
+					<h4 resource="#h-uimanipulationrequesteventinit" id="h-uimanipulationrequesteventinit"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.2 </span>UIManipulationRequestEventInit</span></h4>
+					<pre class="idl"><span class="idlDictionary" id="idl-def-UIManipulationRequestEventInit">dictionary <span class="idlDictionaryID">UIManipulationRequestEventInit</span> : <span class="idlSuperclass"><a class="idlType" href="#idl-def-UIRequestEventInit"><code>UIRequestEventInit</code></a></span> {
+<span class="idlMember">    <span class="idlMemberType">boolean</span>      <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-bubbles">bubbles</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">boolean</span>      <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-cancelable">cancelable</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">WindowProxy?</span> <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-view">view</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">long</span>         <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-detail">detail</a></span> = <span class="idlMemberValue">0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">EventTarget</span>  <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-receiver">receiver</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double?</span>      <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-originX">originX</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double?</span>      <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-originY">originY</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double</span>       <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-deltaX">deltaX</a></span> = <span class="idlMemberValue">0.0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double</span>       <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-deltaY">deltaY</a></span> = <span class="idlMemberValue">0.0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double</span>       <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-scaleFactor">scaleFactor</a></span> = <span class="idlMemberValue">1.0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double</span>       <span class="idlMemberName"><a href="#widl-UIManipulationRequestEventInit-rotation">rotation</a></span> = <span class="idlMemberValue">0.0</span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#dictionary-uimanipulationrequesteventinit-members" typeof="bibo:Chapter" id="dictionary-uimanipulationrequesteventinit-members"><h5 resource="#h-dictionary-uimanipulationrequesteventinit-members" id="h-dictionary-uimanipulationrequesteventinit-members"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.2.1 </span>Dictionary <a href="#idl-def-UIManipulationRequestEventInit" class="idlType"><code>UIManipulationRequestEventInit</code></a> Members</span></h5><dl class="dictionary-members"><dt id="widl-UIManipulationRequestEventInit-bubbles"><code>bubbles</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIManipulationRequestEventInit-cancelable"><code>cancelable</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIManipulationRequestEventInit-deltaX"><code>deltaX</code> of type <span class="idlMemberType">double</span>, defaulting to <code>0.0</code></dt><dd>The cartesian X coordinate delta from the event origin, measured in CSS pixels.</dd><dt id="widl-UIManipulationRequestEventInit-deltaY"><code>deltaY</code> of type <span class="idlMemberType">double</span>, defaulting to <code>0.0</code></dt><dd>The cartesian Y coordinate delta from the event origin, measured in CSS pixels.</dd><dt id="widl-UIManipulationRequestEventInit-detail"><code>detail</code> of type <span class="idlMemberType">long</span>, defaulting to <code>0</code></dt><dd></dd><dt id="widl-UIManipulationRequestEventInit-originX"><code>originX</code> of type <span class="idlMemberType">double</span>, nullable, defaulting to <code>null</code></dt><dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the inside(?) left edge of element border box for the <a href="#def_request_event_receiver">receiver element</a>.</dd><dt id="widl-UIManipulationRequestEventInit-originY"><code>originY</code> of type <span class="idlMemberType">double</span>, nullable, defaulting to <code>null</code></dt><dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the inside(?) top edge of element border box for the <a href="#def_request_event_receiver">receiver element</a>.</dd><dt id="widl-UIManipulationRequestEventInit-receiver"><code>receiver</code> of type <span class="idlMemberType">EventTarget</span>, defaulting to <code>null</code></dt><dd></dd><dt id="widl-UIManipulationRequestEventInit-rotation"><code>rotation</code> of type <span class="idlMemberType">double</span>, defaulting to <code>0.0</code></dt><dd>Rotation value, in degrees from 0. Positive values indicate a counter-clockwise rotation. Negative values indicate a clockwise rotation.</dd><dt id="widl-UIManipulationRequestEventInit-scaleFactor"><code>scaleFactor</code> of type <span class="idlMemberType">double</span>, defaulting to <code>1.0</code></dt><dd>Scale factor, used in zoom manipulations, where 1.0 is the original scale factor. For example, a value of 2.0 or 3.0 indicates the element should enlarge to 2 or 3 times its original scale, respectively. A value of 0.5 indicates the element should decrease to one-half its original scale.</dd><dt id="widl-UIManipulationRequestEventInit-view"><code>view</code> of type <span class="idlMemberType">WindowProxy</span>, nullable, defaulting to <code>null</code></dt><dd></dd></dl></section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#UIManipulationRequestEvents" typeof="bibo:Chapter" id="UIManipulationRequestEvents">
+					<h4 resource="#h-uimanipulationrequestevents" id="h-uimanipulationrequestevents"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.3 </span>Discrete UIManipulationRequestEvent Types</span></h4>
+					<div class="note"><div id="h-note5" role="heading" aria-level="5" class="note-title"><span>Note</span></div><p class="">Move and Pan request events are functionally identical, but are specified individually to aid in authoring clarity when using similar concepts like 1) moving an object on a layout canvas, and 2) panning a continuous view like a map.</p></div>
+					<p>The <em>discrete</em> types of UIManipulationRequestEvents that can occur are:</p>
+					<dl>
+						<dt id="moverequest">Move Request (<code class="event">moverequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a move request to the web application with accompanying x/y delta values. This is used, for example, when moving an object to a new location on a layout canvas.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+						<dt id="panrequest">Pan Request (<code class="event">panrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a pan request to the web application with accompanying x/y delta values. This is used, for example, when changing the center point while panning a map or another custom image viewer.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+						<dt id="rotationrequest">Rotation Request (<code class="event">rotationrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a rotation request to the web application with accompanying origin x/y values and a rotation value in degrees.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>rotation</code></li>
+							</ul>
+							<div class="note"><div id="h-note6" role="heading" aria-level="5" class="note-title"><span>Note</span></div><div class="">
+								<p>In the case where a User Agent lacks a clear or relevant point of origin, user agents could send null values for <code>originX</code> and <code>originY</code>, or they could send x/y coordinates representing the center point of the event.receiver element.</p>
+								<p>For example, many photo manipulation applications allow users to change orientation, or rotating a photograph 90 degrees, by pressing a key combination like <kbd>Option+LeftArrow</kbd> or <kbd>Option+RightArrow</kbd>. Since this represents a keyboard only event that is unrelated to the mouse pointer location, it would be appropriate to send null values. In many cases, web applications may not require the origin x/y coordinates for rotation events even if non-null values exist.</p>
+							</div></div>
+						</dd>
+						<!-- zoom changes (e.g. maps or custom layout views) -->
+						<dt id="zoomrequest">Zoom Request (<code class="event">zoomrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a zoom request to the web application with accompanying origin x/y values and the zoom scale factor. This may be used, for example, with a map view or custom layout view.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>scaleFactor</code></li>
+							</ul>
+							<div class="note"><div id="h-note7" role="heading" aria-level="5" class="note-title"><span>Note</span></div><div class="">
+								<p>Web authors may use <code>originX</code> and <code>originY</code> in the way they deem most appropriate for the context of their application. In most cases, web applications receiving zoomrequest events will center the <abbr title="User Interface">UI</abbr> "zoom" on the originX/originY coordinates if they are provided. If origin coordinates are not provided, such as in the case of a keyboard-only zoom event, web authors will likely center the <abbr title="User Interface">UI</abbr> "zoom" in the middle of the receiving view.</p>
+							</div></div>
+						</dd>
+					</dl>
+				</section>
+
+                <p class="ednote">There may be a need for a combined, continuous manipulation events (e.g. Pan+Zoom simultaneously) in addition to the discrete events listed above, but the following specification ideas are incomplete. For example, we're currently missing a feature to associate related events, and a description of what "canceling" implies.</p>
+
+				<section property="bibo:hasPart" resource="#ContinuousUIManipulationRequestEvents" typeof="bibo:Chapter" id="ContinuousUIManipulationRequestEvents">
+					<h4 resource="#h-continuousuimanipulationrequestevents" id="h-continuousuimanipulationrequestevents"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.4 </span>Continuous UIManipulationRequestEvent Types</span></h4>
+					<p class="ednote">These continuous events may need an identifier per manipulation, for example, to associate a manipulationcancelrequest with the originating manipulationstartrequest that needs to be canceled.</p>
+					<p>The <em>continuous</em> types of UIManipulationRequestEvents that can occur are:</p>
+					<dl>
+						<dt id="manipulationstartrequest">Manipulation Start Request (<code class="event">manipulationstartrequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
+							</ul>
+						</dd>
+						<dt id="manipulationchangerequest">Manipulation Change Request (<code class="event">manipulationchangerequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
+							</ul>
+						</dd>
+						<dt id="manipulationendrequest">Manipulation End Request (<code class="event">manipulationendrequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
+							</ul>
+						</dd>
+						<dt id="manipulationcancelrequest">Manipulation Cancel Request (<code class="event">manipulationcancelrequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code>, <code>rotation</code>, <code>scaleFactor</code></li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
+				
+			</section>
+			<!-- :::::::::::::::::::: END UIManipulationRequestEvent :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: UIScrollRequestEvent :::::::::::::::::::: -->
+			<section property="bibo:hasPart" resource="#UIScrollRequestEvent" typeof="bibo:Chapter" id="UIScrollRequestEvent" class="normative">
+				<h3 resource="#h-uiscrollrequestevent" id="h-uiscrollrequestevent"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4 </span>Interface UIScrollRequestEvent</span></h3>
+				<pre class="idl"><span class="idlInterface" id="idl-def-UIScrollRequestEvent">[<span class="extAttr">Constructor(DOMString typeArg, optional UIScrollRequestEventInit dictUIScrollRequestEventInit)</span>]
+interface <span class="idlInterfaceID">UIScrollRequestEvent</span> : <span class="idlSuperclass"><a class="idlType" href="#idl-def-UIRequestEvent"><code>UIRequestEvent</code></a></span> {
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">double?</span>                 <span class="idlAttrName"><a href="#widl-UIScrollRequestEvent-deltaX">deltaX</a></span>;</span>
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType">double?</span>                 <span class="idlAttrName"><a href="#widl-UIScrollRequestEvent-deltaY">deltaY</a></span>;</span>
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType"><a class="idlType" href="#idl-def-ScrollRequestScrollType"><code>ScrollRequestScrollType</code></a></span> <span class="idlAttrName"><a href="#widl-UIScrollRequestEvent-scrollType">scrollType</a></span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#attributes-6" typeof="bibo:Chapter" id="attributes-6"><h4 resource="#h-attributes-6" id="h-attributes-6"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4.1 </span>Attributes</span></h4><dl class="attributes"><dt id="widl-UIScrollRequestEvent-deltaX"><code>deltaX</code> of type <span class="idlAttrType">double</span>, readonly   , nullable</dt><dd> </dd><dt id="widl-UIScrollRequestEvent-deltaY"><code>deltaY</code> of type <span class="idlAttrType">double</span>, readonly   , nullable</dt><dd> </dd><dt id="widl-UIScrollRequestEvent-scrollType"><code>scrollType</code> of type <span class="idlAttrType"><a class="idlType" href="#idl-def-ScrollRequestScrollType"><code>ScrollRequestScrollType</code></a></span>, readonly   </dt><dd></dd></dl></section>
+
+				<section property="bibo:hasPart" resource="#ScrollRequestScrollType" typeof="bibo:Chapter" id="ScrollRequestScrollType">
+					<h4 resource="#h-scrollrequestscrolltype" id="h-scrollrequestscrolltype"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4.2 </span>Enumeration ScrollRequestScrollType</span></h4>
+					<pre class="idl"><span class="idlEnum" id="idl-def-ScrollRequestScrollType">enum <span class="idlEnumID">ScrollRequestScrollType</span> {
+    "<a href="#idl-def-ScrollRequestScrollType.deltas" class="idlEnumItem">deltas</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.up" class="idlEnumItem">up</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.right" class="idlEnumItem">right</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.down" class="idlEnumItem">down</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.left" class="idlEnumItem">left</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.pageUp" class="idlEnumItem">pageUp</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.pageRight" class="idlEnumItem">pageRight</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.pageDown" class="idlEnumItem">pageDown</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.pageLeft" class="idlEnumItem">pageLeft</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.limitUp" class="idlEnumItem">limitUp</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.limitRight" class="idlEnumItem">limitRight</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.limitDown" class="idlEnumItem">limitDown</a>",
+    "<a href="#idl-def-ScrollRequestScrollType.limitLeft" class="idlEnumItem">limitLeft</a>"
+};</span></pre><table class="simple"><tbody><tr><th colspan="2">Enumeration description</th></tr><tr><td><code id="idl-def-ScrollRequestScrollType.deltas">deltas</code></td><td>Default value for scrollType indicating that scroll amount is provided as deltaX and deltaY in CSS pixels.</td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.up">up</code></td><td>Equivalent to the default behavior of the <kbd>UP</kbd> key in most native scroll views.</td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.right">right</code></td><td>Equivalent to the default behavior of the <kbd>RIGHT</kbd> key in most native scroll views.</td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.down">down</code></td><td>Equivalent to the default behavior of the <kbd>DOWN</kbd> key in most native scroll views.</td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.left">left</code></td><td>Equivalent to the default behavior of the <kbd>LEFT</kbd> key in most native scroll views.</td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.pageUp">pageUp</code></td><td>Equivalent to the default behavior of the <kbd>PAGEUP</kbd> key in most native scroll views.</td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.pageRight">pageRight</code></td><td></td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.pageDown">pageDown</code></td><td>Equivalent to the default behavior of the <kbd>PAGEDOWN</kbd> key in most native scroll views.</td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.pageLeft">pageLeft</code></td><td></td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.limitUp">limitUp</code></td><td>Equivalent to the default behavior of the <kbd>HOME</kbd> key in most native scroll views.</td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.limitRight">limitRight</code></td><td></td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.limitDown">limitDown</code></td><td>Equivalent to the default behavior of the <kbd>END</kbd> key in most native scroll views.</td></tr><tr><td><code id="idl-def-ScrollRequestScrollType.limitLeft">limitLeft</code></td><td></td></tr></tbody></table>
+				</section>
+
+				<section property="bibo:hasPart" resource="#UIScrollRequestEventInit" typeof="bibo:Chapter" id="UIScrollRequestEventInit">
+					<h4 resource="#h-uiscrollrequesteventinit" id="h-uiscrollrequesteventinit"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4.3 </span>UIScrollRequestEventInit</span></h4>
+					<pre class="idl"><span class="idlDictionary" id="idl-def-UIScrollRequestEventInit">dictionary <span class="idlDictionaryID">UIScrollRequestEventInit</span> : <span class="idlSuperclass"><a class="idlType" href="#idl-def-UIRequestEventInit"><code>UIRequestEventInit</code></a></span> {
+<span class="idlMember">    <span class="idlMemberType">boolean</span>                 <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-bubbles">bubbles</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">boolean</span>                 <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-cancelable">cancelable</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">WindowProxy?</span>            <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-view">view</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">long</span>                    <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-detail">detail</a></span> = <span class="idlMemberValue">0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">EventTarget</span>             <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-receiver">receiver</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double?</span>                 <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-originX">originX</a></span> = <span class="idlMemberValue">0.0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double?</span>                 <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-originY">originY</a></span> = <span class="idlMemberValue">0.0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double?</span>                 <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-deltaX">deltaX</a></span> = <span class="idlMemberValue">0.0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">double?</span>                 <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-deltaY">deltaY</a></span> = <span class="idlMemberValue">0.0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType"><a class="idlType" href="#idl-def-ScrollRequestScrollType"><code>ScrollRequestScrollType</code></a></span> <span class="idlMemberName"><a href="#widl-UIScrollRequestEventInit-scrollType">scrollType</a></span> = <span class="idlMemberValue">"deltas"</span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#dictionary-uiscrollrequesteventinit-members" typeof="bibo:Chapter" id="dictionary-uiscrollrequesteventinit-members"><h5 resource="#h-dictionary-uiscrollrequesteventinit-members" id="h-dictionary-uiscrollrequesteventinit-members"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4.3.1 </span>Dictionary <a href="#idl-def-UIScrollRequestEventInit" class="idlType"><code>UIScrollRequestEventInit</code></a> Members</span></h5><dl class="dictionary-members"><dt id="widl-UIScrollRequestEventInit-bubbles"><code>bubbles</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIScrollRequestEventInit-cancelable"><code>cancelable</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIScrollRequestEventInit-deltaX"><code>deltaX</code> of type <span class="idlMemberType">double</span>, nullable, defaulting to <code>0.0</code></dt><dd>The cartesian X coordinate delta from the event origin, measured in CSS pixels.</dd><dt id="widl-UIScrollRequestEventInit-deltaY"><code>deltaY</code> of type <span class="idlMemberType">double</span>, nullable, defaulting to <code>0.0</code></dt><dd>The cartesian Y coordinate delta from the event origin, measured in CSS pixels.</dd><dt id="widl-UIScrollRequestEventInit-detail"><code>detail</code> of type <span class="idlMemberType">long</span>, defaulting to <code>0</code></dt><dd></dd><dt id="widl-UIScrollRequestEventInit-originX"><code>originX</code> of type <span class="idlMemberType">double</span>, nullable, defaulting to <code>0.0</code></dt><dd>The cartesian X coordinate origin point (if one exists), measured in CSS pixels from the inside(?) left edge of element border box for the <a href="#def_request_event_receiver">receiver element</a>.</dd><dt id="widl-UIScrollRequestEventInit-originY"><code>originY</code> of type <span class="idlMemberType">double</span>, nullable, defaulting to <code>0.0</code></dt><dd>The cartesian Y coordinate origin point (if one exists), measured in CSS pixels from the inside(?) top edge of element border box for the <a href="#def_request_event_receiver">receiver element</a>.</dd><dt id="widl-UIScrollRequestEventInit-receiver"><code>receiver</code> of type <span class="idlMemberType">EventTarget</span>, defaulting to <code>null</code></dt><dd></dd><dt id="widl-UIScrollRequestEventInit-scrollType"><code>scrollType</code> of type <span class="idlMemberType"><a class="idlType" href="#idl-def-ScrollRequestScrollType"><code>ScrollRequestScrollType</code></a></span>, defaulting to <code>"deltas"</code></dt><dd></dd><dt id="widl-UIScrollRequestEventInit-view"><code>view</code> of type <span class="idlMemberType">WindowProxy</span>, nullable, defaulting to <code>null</code></dt><dd></dd></dl></section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#UIScrollRequestEvents" typeof="bibo:Chapter" id="UIScrollRequestEvents">
+					<h4 resource="#h-uiscrollrequestevents" id="h-uiscrollrequestevents"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4.4 </span>UIScrollRequestEvent Types</span></h4>
+					<p>The discrete type of UIScrollRequestEvent that can occur is:</p>
+					<dl>
+						<dt id="scrollrequest">Scroll Request (<code class="event">scrollrequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values or one of the other defined scrollType values. Authors <em title="SHOULD" class="rfc2119">SHOULD</em> only use this event and uiaction with custom scroll views that cannot be acheieved with native scroll views, because the hardware-accellerated scrolling of native views will always outperform these events.</p>
+							<p class="ednote">Need an example here and clarifying text to indicate UAs "must" either send a non-default scrollType, or non-default deltas, but not both.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>scrollType</code>, <code>deltaX</code>, and <code>deltaY</code></li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
+
+				<section property="bibo:hasPart" resource="#ContinuousUIScrollRequestEvents" typeof="bibo:Chapter" id="ContinuousUIScrollRequestEvents">
+					<h4 resource="#h-continuousuiscrollrequestevents" id="h-continuousuiscrollrequestevents"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4.5 </span>Continuous UIScrollRequestEvent Types</span></h4>
+					<p class="ednote">These continuous events may need an identifier per scroll, for example, to associate a scrollcancelrequest with the originating scrollstartrequest that needs to be canceled.</p>
+					<p>The <em>continuous</em> types of UIScrollRequestEvents that can occur are:</p>
+					<dl>
+						<dt id="scrollstartrequest">Scroll Start Request (<code class="event">scrollstartrequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+						<dt id="scrollmoverequest">Scroll Move Request (<code class="event">scrollmoverequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+						<dt id="scrollendrequest">Scroll End Request (<code class="event">scrollendrequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+						<dt id="scrollcancelrequest">Scroll Cancel Request (<code class="event">scrollcancelrequest</code>)</dt>
+						<dd>
+							<p class="todo">TBD</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>originX</code>, <code>originY</code>, <code>deltaX</code>, <code>deltaY</code></li>
+							</ul>
+						</dd>
+					</dl>
+				</section>
+
+			</section>
+			<!-- :::::::::::::::::::: END UIScrollRequestEvent :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: UIValueChangeRequestEvent :::::::::::::::::::: -->
+			<section property="bibo:hasPart" resource="#UIValueChangeRequestEvent" typeof="bibo:Chapter" id="UIValueChangeRequestEvent" class="normative">
+				<h3 resource="#h-uivaluechangerequestevent" id="h-uivaluechangerequestevent"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.5 </span>Interface UIValueChangeRequestEvent</span></h3>
+				<pre class="idl"><span class="idlInterface" id="idl-def-UIValueChangeRequestEvent">[<span class="extAttr">Constructor(DOMString typeArg, optional UIValueChangeRequestEventInit dictUIValueChangeRequestEventInit)</span>]
+interface <span class="idlInterfaceID">UIValueChangeRequestEvent</span> : <span class="idlSuperclass"><a class="idlType" href="#idl-def-UIRequestEvent"><code>UIRequestEvent</code></a></span> {
+<span class="idlAttribute">    readonly    attribute <span class="idlAttrType"><a class="idlType" href="#idl-def-ValueChangeRequestChangeType"><code>ValueChangeRequestChangeType</code></a></span> <span class="idlAttrName"><a href="#widl-UIValueChangeRequestEvent-changeType">changeType</a></span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#attributes-7" typeof="bibo:Chapter" id="attributes-7"><h4 resource="#h-attributes-7" id="h-attributes-7"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.5.1 </span>Attributes</span></h4><dl class="attributes"><dt id="widl-UIValueChangeRequestEvent-changeType"><code>changeType</code> of type <span class="idlAttrType"><a class="idlType" href="#idl-def-ValueChangeRequestChangeType"><code>ValueChangeRequestChangeType</code></a></span>, readonly   </dt><dd></dd></dl></section>
+
+				<section property="bibo:hasPart" resource="#ValueChangeRequestChangeType" typeof="bibo:Chapter" id="ValueChangeRequestChangeType">
+					<h4 resource="#h-valuechangerequestchangetype" id="h-valuechangerequestchangetype"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.5.2 </span>Enumeration ValueChangeRequestChangeType</span></h4>
+					<pre class="idl"><span class="idlEnum" id="idl-def-ValueChangeRequestChangeType">enum <span class="idlEnumID">ValueChangeRequestChangeType</span> {
+    "<a href="#idl-def-ValueChangeRequestChangeType.unknown" class="idlEnumItem">unknown</a>",
+    "<a href="#idl-def-ValueChangeRequestChangeType.increment" class="idlEnumItem">increment</a>",
+    "<a href="#idl-def-ValueChangeRequestChangeType.incrementSmall" class="idlEnumItem">incrementSmall</a>",
+    "<a href="#idl-def-ValueChangeRequestChangeType.incrementLarge" class="idlEnumItem">incrementLarge</a>",
+    "<a href="#idl-def-ValueChangeRequestChangeType.incrementMaximum" class="idlEnumItem">incrementMaximum</a>",
+    "<a href="#idl-def-ValueChangeRequestChangeType.decrement" class="idlEnumItem">decrement</a>",
+    "<a href="#idl-def-ValueChangeRequestChangeType.decrementSmall" class="idlEnumItem">decrementSmall</a>",
+    "<a href="#idl-def-ValueChangeRequestChangeType.decrementLarge" class="idlEnumItem">decrementLarge</a>",
+    "<a href="#idl-def-ValueChangeRequestChangeType.decrementMinimum" class="idlEnumItem">decrementMinimum</a>"
+};</span></pre><table class="simple"><tbody><tr><th colspan="2">Enumeration description</th></tr><tr><td><code id="idl-def-ValueChangeRequestChangeType.unknown">unknown</code></td><td></td></tr><tr><td><code id="idl-def-ValueChangeRequestChangeType.increment">increment</code></td><td>Equivalent to the default behavior of the <kbd>UP</kbd> key on most native sliders.</td></tr><tr><td><code id="idl-def-ValueChangeRequestChangeType.incrementSmall">incrementSmall</code></td><td>Equivalent to the behavior of <kbd>ALT+UP</kbd> or <kbd>OPTION+UP</kbd> on some native controls, indicating a finely tuned adjustment (e.g. +0.1% as opposed to +1%).</td></tr><tr><td><code id="idl-def-ValueChangeRequestChangeType.incrementLarge">incrementLarge</code></td><td>Equivalent to the default behavior of <kbd>PAGEUP</kbd> or <kbd>SHIFT+UP</kbd> on many native sliders.</td></tr><tr><td><code id="idl-def-ValueChangeRequestChangeType.incrementMaximum">incrementMaximum</code></td><td>Equivalent to the default behavior of the <kbd>END</kbd> key on most native sliders.</td></tr><tr><td><code id="idl-def-ValueChangeRequestChangeType.decrement">decrement</code></td><td>Equivalent to the default behavior of the <kbd>DOWN</kbd> key on most native sliders.</td></tr><tr><td><code id="idl-def-ValueChangeRequestChangeType.decrementSmall">decrementSmall</code></td><td>Equivalent to the behavior of <kbd>ALT+DOWN</kbd> or <kbd>OPTION+DOWN</kbd> on some native controls, indicating a finely tuned adjustment (e.g. -0.1% as opposed to -1%).</td></tr><tr><td><code id="idl-def-ValueChangeRequestChangeType.decrementLarge">decrementLarge</code></td><td>Equivalent to the default behavior of <kbd>PAGEDOWN</kbd> or <kbd>SHIFT+DOWN</kbd> on many native sliders.</td></tr><tr><td><code id="idl-def-ValueChangeRequestChangeType.decrementMinimum">decrementMinimum</code></td><td>Equivalent to the default behavior of the <kbd>HOME</kbd> key on most native sliders.</td></tr></tbody></table>
+				</section>
+				
+				<section property="bibo:hasPart" resource="#UIValueChangeRequestEventInit" typeof="bibo:Chapter" id="UIValueChangeRequestEventInit">
+					<h4 resource="#h-uivaluechangerequesteventinit" id="h-uivaluechangerequesteventinit"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.5.3 </span>UIValueChangeRequestEventInit</span></h4>
+					<pre class="idl"><span class="idlDictionary" id="idl-def-UIValueChangeRequestEventInit">dictionary <span class="idlDictionaryID">UIValueChangeRequestEventInit</span> : <span class="idlSuperclass"><a class="idlType" href="#idl-def-UIRequestEventInit"><code>UIRequestEventInit</code></a></span> {
+<span class="idlMember">    <span class="idlMemberType">boolean</span>                      <span class="idlMemberName"><a href="#widl-UIValueChangeRequestEventInit-bubbles">bubbles</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">boolean</span>                      <span class="idlMemberName"><a href="#widl-UIValueChangeRequestEventInit-cancelable">cancelable</a></span> = <span class="idlMemberValue">true</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">WindowProxy?</span>                 <span class="idlMemberName"><a href="#widl-UIValueChangeRequestEventInit-view">view</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">long</span>                         <span class="idlMemberName"><a href="#widl-UIValueChangeRequestEventInit-detail">detail</a></span> = <span class="idlMemberValue">0</span>;</span>
+<span class="idlMember">    <span class="idlMemberType">EventTarget</span>                  <span class="idlMemberName"><a href="#widl-UIValueChangeRequestEventInit-receiver">receiver</a></span> = <span class="idlMemberValue">null</span>;</span>
+<span class="idlMember">    <span class="idlMemberType"><a class="idlType" href="#idl-def-ValueChangeRequestChangeType"><code>ValueChangeRequestChangeType</code></a></span> <span class="idlMemberName"><a href="#widl-UIValueChangeRequestEventInit-changeType">changeType</a></span> = <span class="idlMemberValue">"UNKNOWN"</span>;</span>
+};</span></pre><section property="bibo:hasPart" resource="#dictionary-uivaluechangerequesteventinit-members" typeof="bibo:Chapter" id="dictionary-uivaluechangerequesteventinit-members"><h5 resource="#h-dictionary-uivaluechangerequesteventinit-members" id="h-dictionary-uivaluechangerequesteventinit-members"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.5.3.1 </span>Dictionary <a href="#idl-def-UIValueChangeRequestEventInit" class="idlType"><code>UIValueChangeRequestEventInit</code></a> Members</span></h5><dl class="dictionary-members"><dt id="widl-UIValueChangeRequestEventInit-bubbles"><code>bubbles</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIValueChangeRequestEventInit-cancelable"><code>cancelable</code> of type <span class="idlMemberType">boolean</span>, defaulting to <code>true</code></dt><dd></dd><dt id="widl-UIValueChangeRequestEventInit-changeType"><code>changeType</code> of type <span class="idlMemberType"><a class="idlType" href="#idl-def-ValueChangeRequestChangeType"><code>ValueChangeRequestChangeType</code></a></span>, defaulting to <code>"UNKNOWN"</code></dt><dd></dd><dt id="widl-UIValueChangeRequestEventInit-detail"><code>detail</code> of type <span class="idlMemberType">long</span>, defaulting to <code>0</code></dt><dd></dd><dt id="widl-UIValueChangeRequestEventInit-receiver"><code>receiver</code> of type <span class="idlMemberType">EventTarget</span>, defaulting to <code>null</code></dt><dd></dd><dt id="widl-UIValueChangeRequestEventInit-view"><code>view</code> of type <span class="idlMemberType">WindowProxy</span>, nullable, defaulting to <code>null</code></dt><dd></dd></dl></section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#UIValueChangeRequestEvents" typeof="bibo:Chapter" id="UIValueChangeRequestEvents">
+					<h4 resource="#h-uivaluechangerequestevents" id="h-uivaluechangerequestevents"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.5.4 </span>UIValueChangeRequestEvent Types</span></h4>
+					<p>The single type of UIValueChangeRequestEvent that can occur is:</p>
+					<dl>
+						<dt id="valuechangerequest">Value Change Request (<code class="event">valuechangerequest</code>)</dt>
+						<dd>
+							<p>Initiated when the user agent sends a value change request to the web application. Used on custom range controls like sliders, carousels, etc.</p>
+							<p>Web authors <em title="MUST" class="rfc2119">MUST</em> code applications to accept <em>all</em> values of the <code>changeType</code> attribute. For example, if there is no special behavior for <code>INCREMENT_SMALL</code> or <code>INCREMENT_LARGE</code>, web applications would behave as if they had received a basic <code>INCREMENT</code> change type.</p>
+							<ul>
+								<li>Bubbles: Yes</li>
+								<li>Cancelable: Yes</li>
+								<li>Context Info: <code>changeType</code></li>
+							</ul>
+							<div class="ex" title="Informative Example">
+								<p>Users, wanting to change the value of a custom range widget (e.g. sliders or carousels) in a web application, can indicate their intent a number of ways, including pressing various keys (<kbd>Up</kbd>, <kbd>Down</kbd>, <kbd>Left</kbd>, <kbd>Right</kbd>, <kbd>PageUp</kbd>, <kbd>PageDown</kbd>, <kbd>Home</kbd>, <kbd>End</kbd>) on most keyboard-controlled interfaces. User agents understanding this intent should initiate a <code>valuechangerequest</code> event. Web authors who have registered for this event, should process the event to determine whether to cancel the event. If the value change action is understood in the context of the web application, web authors should change the value of the associated widget by an amount determined via the <code>changeType</code> argument, and cancel the event using the event object's <code>preventDefault()</code> method.</p>
+							</div>
+						</dd>
+					</dl>
+				</section>
+			</section>
+			<!-- :::::::::::::::::::: END UIValueChangeRequestEvent :::::::::::::::::::: -->
+
+		</section>
+		<!-- :::::::::::::::::::: END UI Request Event Interfaces :::::::::::::::::::: -->
+
+		<!-- :::::::::::::::::::: DOM Feature Detection :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#feature-detection" typeof="bibo:Chapter" id="feature-detection" class="informative">
+			<!--OddPage--><h2 resource="#h-feature-detection" id="h-feature-detection"><span property="xhv:role" resource="xhv:heading"><span class="secno">6. </span>Feature Detection</span></h2><p><em>This section is non-normative.</em></p>
+			<p>Authors wishing to conditionally assign request event handlers based on whether the user agent supports these events can use standard objection detection for each event handler or property.</p>
+			<section property="bibo:hasPart" resource="#feature-detection-example-dismissrequest" typeof="bibo:Chapter" id="feature-detection-example-dismissrequest">
+				<h3 resource="#h-feature-detection-example-dismissrequest" id="h-feature-detection-example-dismissrequest"><span property="xhv:role" resource="xhv:heading"><span class="secno">6.1 </span>Conditionally Assigning a <abbr title="User Interface">UI</abbr> Request Event</span></h3>
+				<p>The following example conditionally assigns a "dismissrequest" event based on whether the user agent has support for the feature.</p>
+				<div class="example"><div class="example-title"><span>Example 6</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">typeof</span><span class="pln"> document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">ondismissrequest </span><span class="pun">!==</span><span class="pln"> </span><span class="str">"undefined"</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="com">// Okay to use "dismissrequest" event.</span><span class="pln">
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><span class="str">"dismissrequest"</span><span class="pun">,</span><span class="pln"> dismissHandler</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="com">// Otherwise catch the ESC key or another platform-specific equivalent event.</span><span class="pln">
+  document</span><span class="pun">.</span><span class="pln">body</span><span class="pun">.</span><span class="pln">addEventListener</span><span class="pun">(</span><span class="str">"keyup"</span><span class="pun">,</span><span class="pln"> keyHandler</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span></pre></div>
+			</section>
+			<p class="ednote">Note: need to double-check that the above code sample is really the best approach.</p>
+		</section>
+		<!-- :::::::::::::::::::: END DOM Feature Detection :::::::::::::::::::: -->
+
+		<!--
+		ReSpec: Use @data-transform to reuse a JavaScript content formatter, and @data-oninclude to transform external content before inclusion.
+		<script type="text/javascript">function xmp(r, content) { return content.replace(/</g, "&lt;").replace(/>/g, "&gt;"); } </script>
+		<pre data-transform="xmp">This markup is <b>escaped</b> like an <code>xmp</code>.</pre>
+		-->
+		<section property="bibo:hasPart" resource="#eventslist" typeof="bibo:Chapter" id="eventslist" class="appendix">
+			<!--OddPage--><h2 resource="#h-eventslist" id="h-eventslist"><span property="xhv:role" resource="xhv:heading"><span class="secno">A. </span>Events List (alphabetical)</span></h2>
+			<div><!-- Dynamically generates event list. --><ul><li><a href="#collapserequest">collapserequest</a>: Indicates the user desires to hide or collapse information in an expanded section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</li><li><a href="#deleterequest">deleterequest</a>: Indicates the user wants to initiate a "delete" action on the marked element or current view.</li><li><a href="#directionalfocusrequest">directionalfocusrequest</a>: Initiated when the user agent sends a "direction focus" request to the web application. Web authors <em title="SHOULD NOT" class="rfc2119">SHOULD NOT</em> use or register for directionalfocusrequest events when standard browser focus and blur events are sufficient. Using these events unnecessarily could result is reduced performance or an other negative user experience.</li><li><a href="#dismissrequest">dismissrequest</a>: Indicates the user desires "dismiss" the current view (e.g. canceling a dialog, or closing a popup menu).</li><li><a href="#expandrequest">expandrequest</a>: Indicates the user desires to to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</li><li><a href="#linearfocusrequest">linearfocusrequest</a>: Initiated when the user agent sends a "linear focus" request to the web application. Web authors <em title="SHOULD NOT" class="rfc2119">SHOULD NOT</em> use or register for linearfocusrequest events when standard browser focus and blur events are sufficient. This event type is only necessary on specialized control types such as data grids where the logical "next" or "previous" element may not be focusable or even in the <abbr title="Document Object Model">DOM</abbr> until requested. Using these events unnecessarily could result is reduced performance or an other negative user experience.</li><li><a href="#manipulationcancelrequest">manipulationcancelrequest</a>: TBD</li><li><a href="#manipulationchangerequest">manipulationchangerequest</a>: TBD</li><li><a href="#manipulationendrequest">manipulationendrequest</a>: TBD</li><li><a href="#manipulationstartrequest">manipulationstartrequest</a>: TBD</li><li><a href="#medianextrequest">medianextrequest</a>: Initiated when the user agent sends a request to the web application to skip media to the next track boundary.</li><li><a href="#mediapauserequest">mediapauserequest</a>: Initiated when the user agent sends a request to the web application to pause media playback.</li><li><a href="#mediapreviousrequest">mediapreviousrequest</a>: Initiated when the user agent sends a request to the web application to skip media to the previous track boundary.</li><li><a href="#mediastartrequest">mediastartrequest</a>: Initiated when the user agent sends a request to the web application to start media playback.</li><li><a href="#mediastoprequest">mediastoprequest</a>: Initiated when the user agent sends a request to the web application to stop media playback.</li><li><a href="#mediatogglerequest">mediatogglerequest</a>: Initiated when the user agent sends a request to the web application to toggle the play/pause state of media playback.</li><li><a href="#moverequest">moverequest</a>: Initiated when the user agent sends a move request to the web application with accompanying x/y delta values. This is used, for example, when moving an object to a new location on a layout canvas.</li><li><a href="#palettefocusrequest">palettefocusrequest</a>: Initiated when the user agent sends a "palette focus" request to the web application. Web app authors receiving this event <em title="SHOULD" class="rfc2119">SHOULD</em> move focus to the first palette in the web application, or cycle focus between all available palettes.</li><li><a href="#panrequest">panrequest</a>: Initiated when the user agent sends a pan request to the web application with accompanying x/y delta values. This is used, for example, when changing the center point while panning a map or another custom image viewer.</li><li><a href="#redorequest">redorequest</a>: Indicates the user desires to "redo" the previously "undone" action.</li><li><a href="#rotationrequest">rotationrequest</a>: Initiated when the user agent sends a rotation request to the web application with accompanying origin x/y values and a rotation value in degrees.</li><li><a href="#scrollcancelrequest">scrollcancelrequest</a>: TBD</li><li><a href="#scrollendrequest">scrollendrequest</a>: TBD</li><li><a href="#scrollmoverequest">scrollmoverequest</a>: TBD</li><li><a href="#scrollrequest">scrollrequest</a>: Initiated when the user agent sends a scroll request to the web application with accompanying x/y delta values or one of the other defined scrollType values. Authors <em title="SHOULD" class="rfc2119">SHOULD</em> only use this event and uiaction with custom scroll views that cannot be acheieved with native scroll views, because the hardware-accellerated scrolling of native views will always outperform these events.</li><li><a href="#scrollstartrequest">scrollstartrequest</a>: TBD</li><li><a href="#toolbarfocusrequest">toolbarfocusrequest</a>: Initiated when the user agent sends a "toolbar focus" request to the web application. Web app authors receiving this event <em title="SHOULD" class="rfc2119">SHOULD</em> move focus to the main toolbar in the web application, or cycle focus between all available toolbars.</li><li><a href="#undorequest">undorequest</a>: Indicates the user desires to "undo" the previous action.</li><li><a href="#valuechangerequest">valuechangerequest</a>: Initiated when the user agent sends a value change request to the web application. Used on custom range controls like sliders, carousels, etc.</li><li><a href="#zoomrequest">zoomrequest</a>: Initiated when the user agent sends a zoom request to the web application with accompanying origin x/y values and the zoom scale factor. This may be used, for example, with a map view or custom layout view.</li></ul></div>
+		</section>
+		<section property="bibo:hasPart" resource="#changelog" typeof="bibo:Chapter" id="changelog" class="appendix">
+			<!--OddPage--><h2 resource="#h-changelog" id="h-changelog"><span property="xhv:role" resource="xhv:heading"><span class="secno">B. </span>Substantive, normative changes since the <a href="http://www.w3.org/TR/2013/WD-indie-ui-events-20130730/#changelog">last public working draft</a></span></h2>
+			<ul>
+				<li>18-Aug-2013: Enum constants formerly defined in <a href="#UIScrollRequestEvent">UIScrollRequestEvent</a>, <a href="#UIValueChangeRequestEvent">UIValueChangeRequestEvent</a>, and <a href="#UIFocusRequestEvent">UIFocusRequestEvent</a> have been changed to WebIDL enumeration identifier strings. (<a href="https://www.w3.org/WAI/IndieUI/track/actions/64">ACTION-64</a>)</li>
+				<li>18-Aug-2013: Event initializer dictionaries (<a href="#UIRequestEventInit">UIRequestEventInit</a>, <a href="#UIFocusRequestEventInit">UIFocusRequestEventInit</a>) were missing inheritance declarations in the IDL.</li>
+				<li>22-Aug-2013: <a href="#feature-detection">Feature detection section</a> recommends direct object detection now rather than using DOMImplementation.hasFeature().</li>
+				<li>5-Mar-2014: Added continuous events for <a href="#ContinuousUIManipulationRequestEvents">Manipulation Requests (zoom, pan, move, rotate)</a> as well as for <a href="#ContinuousUIScrollRequestEvents">Scroll Requests</a>.</li>
+				<li>15-May-2014: New <a href="#triggers"><abbr title="User Interface">UI</abbr> Triggers</a> section.</li>
+				<li>16-May-2014: New <a href="#manipulators"><abbr title="User Interface">UI</abbr> Manipulators</a> section (partial).</li>
+			</ul>
+		</section>
+		<section property="bibo:hasPart" resource="#terms" typeof="bibo:Chapter" id="terms" class="appendix"><!--OddPage--><h2 resource="#h-terms" id="h-terms"><span property="xhv:role" resource="xhv:heading"><span class="secno">C. </span>Glossary</span></h2>
+<dl>
+	
+	<dt id="def_activated">Activated</dt>
+	<dd>
+		<p class="placeholder">TBD: define as click or relevant keypress like Enter/Return, and spacebar in some scenarios.</p>
+	</dd>
+
+	<dt id="def_assistive_technology">Assistive Technology</dt>
+	<dd>
+		<p class="placeholder">TBD</p>
+	</dd>
+
+	<dt id="def_default_behavior">Default Behavior</dt>
+	<dd>
+		<p class="placeholder">TBD</p>
+	</dd>
+	
+	<dt id="def_marked_element">Marked Element(s)</dt>
+	<dd>
+		<p class="placeholder">TBD. At Risk. Will be defined in conjunction with markrequest, which is covered by ACTION-25, and not yet in the spec.</p>
+	</dd>
+	
+	<dt id="def_point_of_regard">Point-of-Regard</dt>
+	<dd>
+		<p>UIRequestEvents initiate from the element representing the point-of-regard, and are referenced in the Event object's <code>target</code> property.</p>
+		<p>For mainstream user agents, the point-of-regard will likely be the element under a pointer (e.g. mouse cursor) or, in the case of keyboard events, the currently focused element (e.g. document.activeElement). Assistive technologies or other alternative inputs may determine another element to be the subject of the user's attention, and initiate events from this new point-of-regard.</p>
+		<p class="ednote">Still looking for a better term than point-of-regard.</p>
+	</dd>
+	
+	<dt id="def_reflected_attribute">Reflected Attribute</dt>
+	<dd>
+		<p>Attributes whose <abbr title="Document Object Model">DOM</abbr> property and content attribute values remain in sync. Identical to <a href="http://dev.w3.org/html5/spec-preview/common-dom-interfaces.html#reflect" class="todo">reflected attributes in <abbr title="Hypertext Markup Language">HTML</abbr></a>.</p>
+	</dd>
+	
+	<dt id="def_request_event_receiver">Request Event Receiver</dt>
+	<dd>
+		<p>The closest <abbr title="Document Object Model">DOM</abbr> ancestor to the user's <a href="#def_point_of_regard">point-of-regard</a> that declares the current event type via the <code>uiactions</code> content attribute or <code>uiactions</code> <abbr title="Document Object Model">DOM</abbr> attribute. The Request Event Receiver is referenced in the Event object's <code>receiver</code> property.</p>
+		<p><abbr title="User Interface">UI</abbr> Request Events are not initiated by the user agent unless the following are true:</p>
+		<ol>
+			<li>The user's point of regard is on the current or descendant node of an element that declares the event receiver via <code>@uiactions</code></li>
+			<li>The event receiver node (or any ancestor node of the receiver) also registered as the event listener via <code>element.addEventListener()</code></li>
+		</ol>
+		<p class="ednote">Some of this definition will need to be massaged and move into the normative sections above defining @uiactions.</p>
+	</dd>
+	
+	<dt id="def_user_agent">User Agent</dt>
+	<dd>
+		<p class="placeholder">TBD</p>
+	</dd>
+	
+</dl></section>
+		<section property="bibo:hasPart" resource="#acknowledgements" typeof="bibo:Chapter" id="acknowledgements" class="appendix"><!--OddPage--><h2 resource="#h-acknowledgements" id="h-acknowledgements"><span property="xhv:role" resource="xhv:heading"><span class="secno">D. </span>Acknowledgements</span></h2>
+<section property="bibo:hasPart" resource="#GroupMembership" typeof="bibo:Chapter" id="GroupMembership">
+	<h3 resource="#h-groupmembership" id="h-groupmembership"><span property="xhv:role" resource="xhv:heading"><span class="secno">D.1 </span>Active IndieUI Members</span></h3>
+	<p>At the time of publishing, the following individuals were active, participating members of the IndieUI Working Group.</p>
+	<ul>
+		<li>Michael Cooper, Staff Contact, <abbr title="World Wide Web Consortium">W3C</abbr> Staff</li>
+		<li>James Craig, Apple Inc.</li>
+		<li>Katie Haritos-Shea, Invited Expert</li>
+		<li>Andy Heath, Invited Expert</li>
+		<li>Takeshi Kurosawa, Mitsue-Links Co., Ltd.</li>
+		<li>Dominic Mazzoni, Google, Inc.</li>
+		<li>Edward O'Connor, Apple Inc.</li>
+		<li>Janina Sajka, Chair, Invited Expert</li>
+		<li>Joseph Scheuhammer, Invited Expert</li>
+		<li>Richard Schwerdtfeger, IBM Corporation</li>
+		<li>Jason White, Invited Expert</li>
+	</ul>
+</section>
+<section property="bibo:hasPart" resource="#Contributors" typeof="bibo:Chapter" id="Contributors">
+	<h3 resource="#h-contributors" id="h-contributors"><span property="xhv:role" resource="xhv:heading"><span class="secno">D.2 </span>Contributors</span></h3>
+	<p>The following individual(s) were previously active members of the working group or otherwise significant contributors.</p>
+	<p>Tab Atkins, Jesse Bunch, Chris Fleizach, Lachlan Hunt, Bradley Meck, Sangwhan Moon, Ryosuke Niwa, Rich Simpson.</p>
+</section>
+<!-- todo: Add link to original proposal by James/Chris at http://lists.w3.org/Archives/Public/www-dom/2010JulSep/att-0106/UserInterfaceIndependence.html -->
+<section property="bibo:hasPart" resource="#ack-funders" typeof="bibo:Chapter" id="ack-funders">
+	<h3 resource="#h-ack-funders" id="h-ack-funders"><span property="xhv:role" resource="xhv:heading"><span class="secno">D.3 </span>Enabling funders</span></h3>
+	<p>This publication has been funded in part with Federal funds from the U.S. Department of Education, National Institute on Disability, Independent Living, and Rehabilitation Research (NIDILRR) under contract number ED-OSE-10-C-0067. The content of this publication does not necessarily reflect the views or policies of the U.S. Department of Education, nor does mention of trade names, commercial products, or organizations imply endorsement by the U.S. Government.</p>
+</section></section>
+		
+	
+
+</body></html>

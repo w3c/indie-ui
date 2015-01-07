@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en-us" typeof="bibo:Document " prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head><meta property="dc:language" content="en" lang="">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>IndieUI: User Context 1.0</title>
+		<style>/* --- EXAMPLES --- */
+div.example-title {
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.example-title span {
+    text-transform: uppercase;   
+}
+aside.example, div.example, div.illegal-example {
+    padding: 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+div.illegal-example { color: red }
+div.illegal-example p { color: black }
+aside.example, div.example {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+    border-color: #e0cb52;
+    background: #fcfaee;    
+}
+
+aside.example div.example {
+    border-left-width: .1em;
+    border-color: #999;
+    background: #fff;
+}
+aside.example div.example div.example-title {
+    color: #999;
+}
+</style><style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title , div.warning-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title { color: #2b2; }
+div.warning-title { color: #f22; }
+div.issue-title span, div.note-title span, div.warning-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue, div.warning {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .issue > p:first-child, .warning > p:first-child { margin-top: 0 }
+.issue, .note, .warning {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note , div.warning {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.issue, span.warning { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+.warning {
+    border-color: #f11;
+    border-right-width: .2em;
+    border-top-width: .2em;
+    border-bottom-width: .2em;
+    border-style: solid;
+    background: #fbe9e9;
+}
+
+.warning-title:before{
+    content: "⚠"; /*U+26A0 WARNING SIGN*/
+    font-size: 3em;
+    float: left;
+    height: 100%;
+    padding-right: .3em;
+    vertical-align: top;
+    margin-top: -0.5em;
+}
+</style><style>/* HIGHLIGHTS */
+code.prettyprint {
+    color:  inherit;
+}
+
+/* this from google-code-prettify */
+.pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
+</style><style>/* --- WEB IDL --- */
+pre.idl {
+    border-top: 1px solid #90b8de;
+    border-bottom: 1px solid #90b8de;
+    padding:    1em;
+    line-height:    120%;
+}
+
+pre.idl::before {
+    content:    "WebIDL";
+    display:    block;
+    width:      150px;
+    background: #90b8de;
+    color:  #fff;
+    font-family:    initial;
+    padding:    3px;
+    font-weight:    bold;
+    margin: -1em 0 1em -1em;
+}
+
+.idlType {
+    color:  #ff4500;
+    font-weight:    bold;
+    text-decoration:    none;
+}
+
+/*.idlModule*/
+/*.idlModuleID*/
+/*.idlInterface*/
+.idlInterfaceID, .idlDictionaryID, .idlCallbackID, .idlEnumID {
+    font-weight:    bold;
+    color:  #005a9c;
+}
+a.idlEnumItem {
+    color:  #000;
+    border-bottom:  1px dotted #ccc;
+    text-decoration: none;
+}
+
+.idlSuperclass {
+    font-style: italic;
+    color:  #005a9c;
+}
+
+/*.idlAttribute*/
+.idlAttrType, .idlFieldType, .idlMemberType {
+    color:  #005a9c;
+}
+.idlAttrName, .idlFieldName, .idlMemberName {
+    color:  #ff4500;
+}
+.idlAttrName a, .idlFieldName a, .idlMemberName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlMethod*/
+.idlMethType, .idlCallbackType {
+    color:  #005a9c;
+}
+.idlMethName {
+    color:  #ff4500;
+}
+.idlMethName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlCtor*/
+.idlCtorName {
+    color:  #ff4500;
+}
+.idlCtorName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlParam*/
+.idlParamType {
+    color:  #005a9c;
+}
+.idlParamName, .idlDefaultValue {
+    font-style: italic;
+}
+
+.extAttr {
+    color:  #666;
+}
+
+/*.idlSectionComment*/
+.idlSectionComment {
+    color: gray;
+}
+
+/*.idlConst*/
+.idlConstType {
+    color:  #005a9c;
+}
+.idlConstName {
+    color:  #ff4500;
+}
+.idlConstName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlException*/
+.idlExceptionID {
+    font-weight:    bold;
+    color:  #c00;
+}
+
+.idlTypedefID, .idlTypedefType {
+    color:  #005a9c;
+}
+
+.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {
+    color:  #c00;
+    font-weight:    normal;
+}
+
+.excName a {
+    font-family:    monospace;
+}
+
+.idlRaises a.idlType, .excName a.idlType {
+    border-bottom:  1px dotted #c00;
+}
+
+.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {
+    width:  45px;
+    text-align: center;
+}
+.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }
+.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }
+
+.idlImplements a {
+    font-weight:    bold;
+}
+
+dl.attributes, dl.methods, dl.constants, dl.constructors, dl.fields, dl.dictionary-members {
+    margin-left:    2em;
+}
+
+.attributes dt, .methods dt, .constants dt, .constructors dt, .fields dt, .dictionary-members dt {
+    font-weight:    normal;
+}
+
+.attributes dt code, .methods dt code, .constants dt code, .constructors dt code, .fields dt code, .dictionary-members dt code {
+    font-weight:    bold;
+    color:  #000;
+    font-family:    monospace;
+}
+
+.attributes dt code, .fields dt code, .dictionary-members dt code {
+    background:  #ffffd2;
+}
+
+.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {
+    color:  #005a9c;
+    background:  transparent;
+    font-family:    inherit;
+    font-weight:    normal;
+    font-style: italic;
+}
+
+.methods dt code {
+    background:  #d9e6f8;
+}
+
+.constants dt code {
+    background:  #ddffd2;
+}
+
+.constructors dt code {
+    background:  #cfc;
+}
+
+.attributes dd, .methods dd, .constants dd, .constructors dd, .fields dd, .dictionary-members dd {
+    margin-bottom:  1em;
+}
+
+table.parameters, table.exceptions {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    margin: 0.5em 0;
+    width:  100%;
+}
+table.parameters { border-bottom:  1px solid #90b8de; }
+table.exceptions { border-bottom:  1px solid #deb890; }
+
+.parameters th, .exceptions th {
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+    font-family:    initial;
+    font-weight:    normal;
+    text-shadow:    #666 1px 1px 0;
+}
+.parameters th { background: #90b8de; }
+.exceptions th { background: #deb890; }
+
+.parameters td, .exceptions td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.parameters tr:first-child td, .exceptions tr:first-child td {
+    border-top: none;
+}
+
+.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+    width:  100px;
+}
+
+.parameters td.prmType {
+    width:  120px;
+}
+
+table.exceptions table {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    width:  100%;
+}
+</style><link href="./css/screen.css" rel="stylesheet" type="text/css">
+		
+		
+		
+		
+		<!-- 
+      === NOTA BENE ===
+      For the three scripts below, if your spec resides on dev.w3 you can check them
+      out in the same tree and use relative links so that they'll work offline,
+     -->
+		
+		
+		
+	<style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #C83500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><link href="https://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet"><!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]--></head>
+	<body id="respecDocument" role="document" class="h-entry"><div id="respecHeader" role="contentinfo" class="head">
+  <p>
+      
+        
+            <a href="http://www.w3.org/"><img src="https://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a>
+        
+      
+  </p>
+  <h1 class="title p-name" id="title" property="dcterms:title">IndieUI: User Context 1.0</h1>
+  
+    <h2 property="bibo:subtitle" id="subtitle">Contextual Information for User Interface Independence</h2>
+  
+  <h2 id="w3c-editor-s-draft-07-january-2015"><abbr title="World Wide Web Consortium">W3C</abbr> Editor's Draft <time property="dcterms:issued" class="dt-published" datetime="2015-01-07">07 January 2015</time></h2>
+  <dl>
+    
+      <dt>This version:</dt>
+      <dd><a class="u-url" href="https://w3c.github.io/indie-ui/indie-ui-context.html">https://w3c.github.io/indie-ui/indie-ui-context.html</a></dd>
+      <dt>Latest published version:</dt>
+      <dd><a href="http://www.w3.org/TR/indie-ui-context/">http://www.w3.org/TR/indie-ui-context/</a></dd>
+    
+    
+      <dt>Latest editor's draft:</dt>
+      <dd><a href="https://w3c.github.io/indie-ui/indie-ui-context.html">https://w3c.github.io/indie-ui/indie-ui-context.html</a></dd>
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    <dt>Editors:</dt>
+    <dd class="p-author h-card vcard" property="bibo:editor" resource="_:editor0"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">James Craig</span>, <a property="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.apple.com/">Apple Inc.</a></span>
+<span property="rdf:rest" resource="_:editor1"></span>
+</dd>
+<dd class="p-author h-card vcard" resource="_:editor1"><span property="rdf:first" typeof="foaf:Person"><span property="foaf:name" class="p-name fn">Michael Cooper</span>, <a property="foaf:workplaceHomepage" class="p-org org h-org h-card" href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a></span>
+<span property="rdf:rest" resource="rdf:nil"></span>
+</dd>
+
+    
+    
+  </dl>
+  
+  
+  
+  
+    
+      <p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> ©
+        2015
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 
+        
+        All Rights Reserved.
+        
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        
+          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+        
+        rules apply.
+      </p>
+    
+  
+  <hr>
+</div>
+		
+		<section property="dc:abstract" class="introductory" id="abstract"><h2 resource="#h-abstract" id="h-abstract"><span property="xhv:role" resource="xhv:heading">Abstract</span></h2>
+			<p>IndieUI: User Context defines a set of preferences that users can choose to expose to web applications, and an API for user agents to access the preferences and listen for changes. Users can set preferences for features such as screen and font size, color, and typographical preferences. Users with disabilities can provide information about assistive technologies in use, indicate that the display is in an accessibility mode, and indicate whether and what kind of subtitles and audio descriptions they need. Web applications can use this information to optimize the presentation without a requirement to target a specific device, operating system, or locale. While customizations based on these properties benefit users, the information could also be used to make assumptions about users or compromise anonymity. Therefore, the specification includes user agent requirements to allow users to opt out and choose not to expose information on a category basis to preserve privacy.</p>
+			<p>See the <a href="#intro">introduction</a> for background and usage examples. Also see the <a href="http://www.w3.org/WAI/intro/indieui">IndieUI Overview</a>.</p>
+		</section><section id="sotd" class="introductory"><h2 resource="#h-sotd" id="h-sotd"><span property="xhv:role" resource="xhv:heading">Status of This Document</span></h2>
+  
+    
+      
+        <p>
+          <em>This section describes the status of this document at the time of its publication.
+          Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the
+          latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
+          http://www.w3.org/TR/.</em>
+        </p>
+        
+        
+		
+        
+        <p>
+          This document was published by the <a href="http://www.w3.org/WAI/IndieUI/">Independent User Interface (Indie UI) Working Group</a> as an Editor's Draft.
+          
+          
+            If you wish to make comments regarding this document, please send them to 
+            <a href="mailto:public-indie-ui-comments@w3.org">public-indie-ui-comments@w3.org</a> 
+            (<a href="mailto:public-indie-ui-comments-request@w3.org?subject=subscribe">subscribe</a>,
+            <a href="http://lists.w3.org/Archives/Public/public-indie-ui-comments/">archives</a>).
+          
+          
+          
+          
+          
+            
+            All comments are welcome.
+            
+          
+        </p>
+        
+        
+        
+          <p>
+            Publication as an Editor's Draft does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr>
+            Membership. This is a draft document and may be updated, replaced or obsoleted by other
+            documents at any time. It is inappropriate to cite this document as other than work in
+            progress.
+          </p>
+        
+        
+        
+        <p>
+          
+            This document was produced by a group operating under the 
+            <a id="sotd_patent" property="w3p:patentRules" href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent
+            Policy</a>.
+          
+          
+          
+            
+              <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="http://www.w3.org/2004/01/pp-impl/54953/status" rel="disclosure">public list of any patent
+              disclosures</a> 
+            
+            made in connection with the deliverables of the group; that page also includes
+            instructions for disclosing a patent. An individual who has actual knowledge of a patent
+            which the individual believes contains
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+            Claim(s)</a> must disclose the information in accordance with
+            <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+            6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.
+          
+          
+        </p>
+        
+          <p>This document is governed by the <a id="w3c_process_revision" href="http://www.w3.org/2014/Process-20140801/">1 August 2014 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+          </p>
+        
+        
+      
+    
+  
+</section><section id="toc"><h2 resource="#h-toc" id="h-toc" class="introductory"><span property="xhv:role" resource="xhv:heading">Table of Contents</span></h2><ul id="respecContents" role="directory" class="toc"><li class="tocline"><a class="tocxref" href="#intro"><span class="secno">1. </span>Introduction</a></li><li class="tocline"><a class="tocxref" href="#UserSetting"><span class="secno">2. </span>Extension to the Window Interface</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#methods"><span class="secno">2.1 </span>Methods</a></li></ul></li><li class="tocline"><a class="tocxref" href="#UserSettingListener"><span class="secno">3. </span>UserSettingListener Callback Interface</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#methods-1"><span class="secno">3.1 </span>Methods</a></li></ul></li><li class="tocline"><a class="tocxref" href="#privacy-model"><span class="secno">4. </span>Privacy Model</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#RestrictionCategory"><span class="secno">4.1 </span>Restriction Categories</a></li><li class="tocline"><a class="tocxref" href="#example-restriction-ui"><span class="secno">4.2 </span>Example Restriction UI</a></li><li class="tocline"><a class="tocxref" href="#RequirementsForUserSetting"><span class="secno">4.3 </span>User Agent Requirements for Restricted User Setting</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#example-prompt-with-justification-dialog"><span class="secno">4.3.1 </span>Example "Prompt with Justification" Dialog</a></li><li class="tocline"><a class="tocxref" href="#example-restricted-call-to-window.usersetting"><span class="secno">4.3.2 </span>Example restricted call to <code>window.userSetting()</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#RequirementsForMediaQueries"><span class="secno">4.4 </span>User Agent Requirements for Restricted Media Queries</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#example-restricted-call-to-window.matchmedia"><span class="secno">4.4.1 </span>Example restricted call to <code>window.matchMedia()</code></a></li><li class="tocline"><a class="tocxref" href="#example-restricted-use-of-media-block-in-css"><span class="secno">4.4.2 </span>Example restricted use of <code>@media</code> block in CSS</a></li></ul></li></ul></li><li class="tocline"><a class="tocxref" href="#Settings"><span class="secno">5. </span>Settings Keys and Related Media Feature counterparts</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#userColors"><span class="secno">5.1 </span>User Color Settings</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#user-color"><span class="secno">5.1.1 </span>Key: <code>user-color</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-user-color"><span class="secno">5.1.1.1 </span>Associated Media Feature: <code>user-color</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#user-background-color"><span class="secno">5.1.2 </span>Key: <code>user-background-color</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-user-background-color"><span class="secno">5.1.2.1 </span>Associated Media Feature: <code>user-background-color</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#inverted-colors"><span class="secno">5.1.3 </span>Key: <code>inverted-colors</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-inverted-colors"><span class="secno">5.1.3.1 </span>Associated Media Feature: <code>inverted-colors</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#user-contrast"><span class="secno">5.1.4 </span>Key: <code>user-contrast</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-user-contrast"><span class="secno">5.1.4.1 </span>Associated Media Feature: <code>user-contrast</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#monochrome"><span class="secno">5.1.5 </span>Key: <code>monochrome</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-monochrome"><span class="secno">5.1.5.1 </span>Associated Media Feature: <code>monochrome</code></a></li></ul></li></ul></li><li class="tocline"><a class="tocxref" href="#userFonts"><span class="secno">5.2 </span>User Type/Font Settings</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#user-font-size"><span class="secno">5.2.1 </span>Key: <code>user-font-size</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-user-font-size"><span class="secno">5.2.1.1 </span>Associated Media Feature: <code>user-font-size</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#user-minimum-font-size"><span class="secno">5.2.2 </span>Key: <code>user-minimum-font-size</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-user-minimum-font-size"><span class="secno">5.2.2.1 </span>Associated Media Feature: <code>user-minimum-font-size</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#user-line-height"><span class="secno">5.2.3 </span>Key: <code>user-line-height</code></a></li><li class="tocline"><a class="tocxref" href="#user-letter-spacing"><span class="secno">5.2.4 </span>Key: <code>user-letter-spacing</code></a></li><li class="tocline"><a class="tocxref" href="#user-word-spacing"><span class="secno">5.2.5 </span>Key: <code>user-word-spacing</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#userMediaSettings"><span class="secno">5.3 </span>User Media Settings</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#subtitles"><span class="secno">5.3.1 </span>Key: <code>subtitles</code></a></li><li class="tocline"><a class="tocxref" href="#subtitle-languages"><span class="secno">5.3.2 </span>Key: <code>subtitle-languages</code></a></li><li class="tocline"><a class="tocxref" href="#subtitle-type"><span class="secno">5.3.3 </span>Key: <code>subtitle-type</code></a></li><li class="tocline"><a class="tocxref" href="#user-subtitle-color"><span class="secno">5.3.4 </span>Key: <code>user-subtitle-color</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-user-subtitle-color"><span class="secno">5.3.4.1 </span>Associated Media Feature: <code>user-subtitle-color</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#user-subtitle-background-color"><span class="secno">5.3.5 </span>Key: <code>user-subtitle-background-color</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-user-subtitle-background-color"><span class="secno">5.3.5.1 </span>Associated Media Feature: <code>user-subtitle-background-color</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#audio-description"><span class="secno">5.3.6 </span>Key: <code>audio-description</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#userScreenReaderSettings"><span class="secno">5.4 </span>Screen Reader Settings</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#screenreader"><span class="secno">5.4.1 </span>Key: <code>screenreader</code></a><ul class="toc"><li class="tocline"><a class="tocxref" href="#media-feature-screenreader"><span class="secno">5.4.1.1 </span>Associated Media Feature: <code>screenreader</code></a></li></ul></li><li class="tocline"><a class="tocxref" href="#screenreader-typing-echo"><span class="secno">5.4.2 </span>Key: <code>screenreader-typing-echo</code></a></li></ul></li></ul></li><li class="tocline"><a class="tocxref" href="#settingskeyslist"><span class="secno">A. </span>Settings Keys List (alphabetical)</a></li><li class="tocline"><a class="tocxref" href="#mediafeatureslist"><span class="secno">B. </span>Media Features List (alphabetical)</a></li><li class="tocline"><a class="tocxref" href="#changelog"><span class="secno">C. </span>Substantive, normative changes since the <span class="formerLink">last public working draft</span></a></li><li class="tocline"><a class="tocxref" href="#acknowledgements"><span class="secno">D. </span>Acknowledgements</a><ul class="toc"><li class="tocline"><a class="tocxref" href="#GroupMembership"><span class="secno">D.1 </span>Active IndieUI Members</a></li><li class="tocline"><a class="tocxref" href="#Contributors"><span class="secno">D.2 </span>Contributors</a></li><li class="tocline"><a class="tocxref" href="#ack-funders"><span class="secno">D.3 </span>Enabling funders</a></li></ul></li></ul></section>
+
+		
+		
+		<!-- :::::::::::::::::::: INTRO :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#intro" typeof="bibo:Chapter" id="intro" class="informative">
+			<!--OddPage--><h2 resource="#h-intro" id="h-intro"><span property="xhv:role" resource="xhv:heading"><span class="secno">1. </span>Introduction</span></h2><p><em>This section is non-normative.</em></p>
+			<p>The primary goal of IndieUI User Context is to provide authorized web applications access to information about a user's relevant settings and preferences, to provide the best possible experience to all users. Some complex web applications can provide a much better experience if given access to information such as a user's preferred color, font, screen, and even *restricted* assistive technology settings such as a preference to render captions, or whether a screen reader is active. General web pages developed using best practices may never need access to restricted user settings, but complex web applications can utilize this information to enhance the performance and user interface.</p>
+			<p>There are privacy implications to providing any user-specific information to a third-party such as a web site, so a critical part of this specification defines how user agents and web browsers must prevent unauthorized access to user information, including methods to prevent access from parties interested in abusive uses such as "fingerprinting" by marketers. The IndieUI Working Group members believe we've provided a reasonable level of privacy with an API that prevents web sites from being able to detect a difference between a default setting and non-default setting that is not shared with the requesting site.</p>
+			<p>This section defines feature keys for user settings for use with the UserSetting interface. Some keys can also be accessed as Media Features using syntax defined in the CSS Media Queries specification. User Agents <em title="SHOULD" class="rfc2119">SHOULD</em> implement an access control mechanism that allows users to restrict access to senesitive information requested via the <code>userSetting()</code> and <code>matchMedia()</code> method of the Window interface, or from the @media selector in CSS.
+
+			The specification below defines feature keys for user settings that can be requested through a new "userSetting" extension to the Window interface. Some keys can also be accessed as new "Media Features" to detect user settings, using existing syntax defined in the CSS Media Queries specification. Because this approach relies so heavily on features that overlap with work maintained by the CSS Working Group and Web Applications Working Group, it is possible that portions or all of this specification may move under the purview these other groups. At a minimum, the IndieUI Working Group requests guidance and a collaborative working relationship with CSS and WebApps.</p>
+			<p class="todo">
+				Todo: Move these to the refs section and link them here: <br>
+				http://www.w3.org/TR/css3-mediaqueries/
+			</p>
+		</section>
+		<!-- :::::::::::::::::::: END INTRO :::::::::::::::::::: -->
+
+		<!-- :::::::::::::::::::: Window interface :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#UserSetting" typeof="bibo:Chapter" id="UserSetting">
+			<!--OddPage--><h2 resource="#h-usersetting" id="h-usersetting"><span property="xhv:role" resource="xhv:heading"><span class="secno">2. </span>Extension to the Window Interface</span></h2>
+
+			<p class="ednote">Need to note why we could not use the standard <code>addEventListener</code> here. It would have either required a new event for every key (onUserFontSizeChanged, etc) or it would have not allowed authors to scope the preferences they were interested in (onUserSettingChange), and therefore prompted excessive callbacks, user prompts, etc.</p>
+			<p class="ednote">Description TBD (esp re: privacy and fingerprinting, and prompt access for certain parameters on a per-domain basis, similar to location sharing).</p>
+
+			<div class="note"><div id="h-note1" role="heading" aria-level="3" class="note-title"><span>Note</span></div><p class="">The UserSetting interface extends the Window object rather than the Navigator object because return values can be unique to each window. For example, a user might share a particular setting with only a few trusted domains.</p></div>
+
+			<pre class="idl"><span class="idlInterface" id="idl-def-Window">partial interface <span class="idlInterfaceID">Window</span> {
+<span class="idlMethod">    <span class="idlMethType">DOMstring?</span> <span class="idlMethName"><a href="#widl-Window-userSetting-DOMstring-DOMString-key">userSetting</a></span> (<span class="idlParam"><span class="idlParamType">DOMString</span> <span class="idlParamName">key</span></span>);</span>
+<span class="idlMethod">    <span class="idlMethType">void</span>       <span class="idlMethName"><a href="#widl-Window-addUserSettingListener-void-DOMString-key-UserSettingListener-callback">addUserSettingListener</a></span> (<span class="idlParam"><span class="idlParamType">DOMString</span> <span class="idlParamName">key</span></span>, <span class="idlParam"><span class="idlParamType"><a class="idlType" href="#idl-def-UserSettingListener"><code>UserSettingListener</code></a></span> <span class="idlParamName">callback</span></span>);</span>
+<span class="idlMethod">    <span class="idlMethType">void</span>       <span class="idlMethName"><a href="#widl-Window-removeUserSettingListener-void-DOMString-key-UserSettingListener-callback">removeUserSettingListener</a></span> (<span class="idlParam"><span class="idlParamType">DOMString</span> <span class="idlParamName">key</span></span>, <span class="idlParam"><span class="idlParamType"><a class="idlType" href="#idl-def-UserSettingListener"><code>UserSettingListener</code></a></span> <span class="idlParamName">callback</span></span>);</span>
+};</span></pre><section property="bibo:hasPart" resource="#methods" typeof="bibo:Chapter" id="methods"><h3 resource="#h-methods" id="h-methods"><span property="xhv:role" resource="xhv:heading"><span class="secno">2.1 </span>Methods</span></h3><dl class="methods"><dt id="widl-Window-addUserSettingListener-void-DOMString-key-UserSettingListener-callback"><code>addUserSettingListener</code></dt><dd>
+					
+				<table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">key</td><td class="prmType"><code>DOMString</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc"></td></tr><tr><td class="prmName">callback</td><td class="prmType"><code><a class="idlType" href="#idl-def-UserSettingListener"><code>UserSettingListener</code></a></code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc"></td></tr></tbody></table><div><em>Return type: </em><code>void</code></div></dd><dt id="widl-Window-removeUserSettingListener-void-DOMString-key-UserSettingListener-callback"><code>removeUserSettingListener</code></dt><dd>
+					
+				<table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">key</td><td class="prmType"><code>DOMString</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc"></td></tr><tr><td class="prmName">callback</td><td class="prmType"><code><a class="idlType" href="#idl-def-UserSettingListener"><code>UserSettingListener</code></a></code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc"></td></tr></tbody></table><div><em>Return type: </em><code>void</code></div></dd><dt id="widl-Window-userSetting-DOMstring-DOMString-key"><code>userSetting</code></dt><dd>
+					<div class="example"><div class="example-title"><span>Example 1</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">// example of settings keys defined within the IndieUI User Context specification.</span><span class="pln">
+window</span><span class="pun">.</span><span class="pln">userSetting</span><span class="pun">(</span><span class="str">'user-font-size'</span><span class="pun">);</span><span class="pln"> </span><span class="com">// returns computed value in CSS pixels, e.g. '16px'</span><span class="pln">
+window</span><span class="pun">.</span><span class="pln">userSetting</span><span class="pun">(</span><span class="str">'subtitles'</span><span class="pun">);</span><span class="pln"> </span><span class="com">// e.g. returns 'display' if the user wants to see subtitles/captions; otherwise returns 'none'</span><span class="pln">
+
+</span><span class="com">// example of taxonomy- or vendor-prefixed settings proposals, intended for standardization.</span><span class="pln">
+window</span><span class="pun">.</span><span class="pln">userSetting</span><span class="pun">(</span><span class="str">'-webkit-foo'</span><span class="pun">);</span><span class="pln">
+window</span><span class="pun">.</span><span class="pln">userSetting</span><span class="pun">(</span><span class="str">'-moz-foo'</span><span class="pun">);</span></pre></div>
+					
+				<table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">key</td><td class="prmType"><code>DOMString</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc">Identifying key for the preference value to be returned. User Agents <em title="MAY" class="rfc2119">MAY</em> support prefixed keys for vendor-proposed or implementation-specific settings, or another external taxonomy.</td></tr></tbody></table><div><em>Return type: </em><code>DOMstring</code>, nullable</div></dd></dl></section>
+			<div class="note"><div id="h-note2" role="heading" aria-level="3" class="note-title"><span>Note</span></div><p class="">Standard vendor prefixes (<code>ie</code>, <code>moz</code>, <code>o</code>, <code>webkit</code>) are reserved. Any additional implementation, host language, or external taxonomy identifiers may be defined in a supplemental working group document.</p></div>
+
+		</section>
+		<!-- :::::::::::::::::::: END Window Interface :::::::::::::::::::: -->
+
+		<!-- :::::::::::::::::::: UserSettingListener :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#UserSettingListener" typeof="bibo:Chapter" id="UserSettingListener">
+			<!--OddPage--><h2 resource="#h-usersettinglistener" id="h-usersettinglistener"><span property="xhv:role" resource="xhv:heading"><span class="secno">3. </span>UserSettingListener Callback Interface</span></h2>
+			<pre class="idl"><span class="idlInterface" id="idl-def-UserSettingListener">callback interface <span class="idlInterfaceID">UserSettingListener</span> {
+<span class="idlMethod">    <span class="idlMethType">void</span> <span class="idlMethName"><a href="#widl-UserSettingListener-handleUserSettingChanged-void-DOMString-key">handleUserSettingChanged</a></span> (<span class="idlParam"><span class="idlParamType">DOMString</span> <span class="idlParamName">key</span></span>);</span>
+};</span></pre><section property="bibo:hasPart" resource="#methods-1" typeof="bibo:Chapter" id="methods-1"><h3 resource="#h-methods-1" id="h-methods-1"><span property="xhv:role" resource="xhv:heading"><span class="secno">3.1 </span>Methods</span></h3><dl class="methods"><dt id="widl-UserSettingListener-handleUserSettingChanged-void-DOMString-key"><code>handleUserSettingChanged</code></dt><dd>
+					
+				<table class="parameters"><tbody><tr><th>Parameter</th><th>Type</th><th>Nullable</th><th>Optional</th><th>Description</th></tr><tr><td class="prmName">key</td><td class="prmType"><code>DOMString</code></td><td class="prmNullFalse"><span role="img" aria-label="False">✘</span></td><td class="prmOptFalse"><span role="img" aria-label="False">✘</span></td><td class="prmDesc">Key name for the requested user setting. E.g. 'user-font-size' or 'subtitles'</td></tr></tbody></table><div><em>Return type: </em><code>void</code></div></dd></dl></section>
+
+		</section>
+		<!-- :::::::::::::::::::: END UserSettingListener :::::::::::::::::::: -->
+
+		<!-- :::::::::::::::::::: Privacy Model :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#privacy-model" typeof="bibo:Chapter" id="privacy-model">
+			<!--OddPage--><h2 resource="#h-privacy-model" id="h-privacy-model"><span property="xhv:role" resource="xhv:heading"><span class="secno">4. </span>Privacy Model</span></h2>
+
+			<p class="todo">Todo: Further explain how the privacy model works: when user prompted, window.userSetting() or window.matchMedia() return the default value or null immediately, and only provide the updated match ansynchronously through handleUserSettingChanged() and matchMedia().addEventListener, or on subsequent requests to matchMedia().matches (e.g. on page reload) so there is never any detectable difference between "No" and "You don't need to know." A restricted @media block never prompts unless both the @media block and an included selector matches.</p>
+			<p class="todo">Todo: Document the way justification string may be defined by a meta element in the document head, such as:<br><code style="" class="highlight prettyprint prettyprinted"><span class="tag">&lt;meta</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"userMediaSettings"</span><span class="pln"> </span><span class="atn">content</span><span class="pun">=</span><span class="atv">"Used to enable captions and display them in your preferred font size and color."</span><span class="tag">&gt;</span></code></p>
+		
+			<section property="bibo:hasPart" resource="#RestrictionCategory" typeof="bibo:Chapter" id="RestrictionCategory">
+				<h3 resource="#h-restrictioncategory" id="h-restrictioncategory"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.1 </span>Restriction Categories</span></h3>
+				<pre class="idl"><span class="idlEnum" id="idl-def-RestrictionCategory">enum <span class="idlEnumID">RestrictionCategory</span> {
+    "<a href="#idl-def-RestrictionCategory.none" class="idlEnumItem">none</a>",
+    "<a href="#idl-def-RestrictionCategory.userColors" class="idlEnumItem">userColors</a>",
+    "<a href="#idl-def-RestrictionCategory.userFonts" class="idlEnumItem">userFonts</a>",
+    "<a href="#idl-def-RestrictionCategory.userMediaSettings" class="idlEnumItem">userMediaSettings</a>",
+    "<a href="#idl-def-RestrictionCategory.userScreenReaderSettings" class="idlEnumItem">userScreenReaderSettings</a>"
+};</span></pre><table class="simple"><tbody><tr><th colspan="2">Enumeration description</th></tr><tr><td><code id="idl-def-RestrictionCategory.none">none</code></td><td>No category defined (default value).</td></tr><tr><td><code id="idl-def-RestrictionCategory.userColors">userColors</code></td><td>User settings related to color preferences. No default restriction.</td></tr><tr><td><code id="idl-def-RestrictionCategory.userFonts">userFonts</code></td><td>User settings related to type and font preferences. No default restriction.</td></tr><tr><td><code id="idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</code></td><td>User settings related to media alternatives such as captions/subtitles, audio description, etc. Default suggested restriction is to prompt the user for permission.</td></tr><tr><td><code id="idl-def-RestrictionCategory.userScreenReaderSettings">userScreenReaderSettings</code></td><td>User settings related to screen readers. Default restriction is to prompt the user with a justification provided by the requesting web site author.</td></tr></tbody></table>
+			</section>
+
+			<section property="bibo:hasPart" resource="#example-restriction-ui" typeof="bibo:Chapter" id="example-restriction-ui" class="informative">
+				<h3 resource="#h-example-restriction-ui" id="h-example-restriction-ui"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.2 </span>Example Restriction UI</span></h3><p><em>This section is non-normative.</em></p>
+				<p>In the following example, the web author attempts to query two restricted user settings using two different techniques. For the sake of the example, assume the user's setting do match the specified queries.</p>
+				<div class="example"><div class="example-title"><span>Example 2</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">// Query matches if screen reader is enabled and user's privacy settings allow the match.</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> mediaQueryList </span><span class="pun">=</span><span class="pln"> window</span><span class="pun">.</span><span class="pln">matchMedia</span><span class="pun">(</span><span class="str">'screen and (screenreader)'</span><span class="pun">);</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> mediaMatch </span><span class="pun">=</span><span class="pln"> mediaQueryList</span><span class="pun">.</span><span class="pln">matches</span><span class="pun">;</span><span class="pln">
+
+</span><span class="com">// The following is equivalent to the previous MQ approach, but uses the window.userSetting().</span><span class="pln">
+</span><span class="com">// window.userSetting will likely be the preferred interface for accessibing these settings </span><span class="pln">
+</span><span class="com">// through JavaScript, but the matchMedia syntax can be more terse for complex queries.</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> setting </span><span class="pun">=</span><span class="pln"> window</span><span class="pun">.</span><span class="pln">userSetting</span><span class="pun">(</span><span class="str">'screenreader'</span><span class="pun">);</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> settingMatch </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="pln">setting </span><span class="pun">===</span><span class="pln"> </span><span class="str">'active'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">?</span><span class="pln"> </span><span class="kwd">true</span><span class="pln"> </span><span class="pun">:</span><span class="pln"> </span><span class="kwd">false</span><span class="pun">;</span><span class="pln">
+
+</span><span class="com">// Note: in conforming implementations, these boolean values will either both be true, or both be false.</span><span class="pln">
+</span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">mediaMatch </span><span class="pun">||</span><span class="pln"> settingMatch</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    console</span><span class="pun">.</span><span class="pln">log</span><span class="pun">(</span><span class="str">'A screen reader is active and the user prefers audio descriptions.'</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    console</span><span class="pun">.</span><span class="pln">log</span><span class="pun">(</span><span class="str">'The settings do not match, or the user has chosen to not share that information.'</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span></pre></div>
+				<p>Depending on the user's privacy settings and implementation details of the user agent, there are a number of outcomes, according to the following, normative requirements.</p>
+			</section>
+			<section property="bibo:hasPart" resource="#RequirementsForUserSetting" typeof="bibo:Chapter" id="RequirementsForUserSetting">
+				<h3 resource="#h-requirementsforusersetting" id="h-requirementsforusersetting"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.3 </span>User Agent Requirements for Restricted User Setting</span></h3>
+				<p>To avoid privacy concerns, User Agents <em title="MUST" class="rfc2119">MUST</em> <em>immediately</em> return the default value for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can handle a user setting change callback, or make a subsequent request to the <code>userSetting()</code> method of the Window object.</p>
+				<ul>
+					<li>If the user has previously allowed access for this site to access the requested settings, or if the user has allowed all sites to access requested settings without restriction, the User Agent <em title="MUST" class="rfc2119">MUST</em> return the correct value.</li>
+					<li>If the user has a general 'prompt' restriction enabled for the requested setting, the User Agent <em title="MUST" class="rfc2119">MUST</em> return the default, incorrect value, and the user agent <em title="SHOULD" class="rfc2119">SHOULD</em> prompt the user with a generic dialog similar to that for location sharing.</li>
+					<li>If the user requires a 'prompt with justification' restriction for the requested settings, the User Agent <em title="MUST" class="rfc2119">MUST</em> return the default, incorrect value, and the user agent <em title="SHOULD" class="rfc2119">SHOULD</em> prompt the user with a dialog that includes the author-provided justification string. If no author-provided justification string is defined, User Agents <em title="MUST NOT" class="rfc2119">MUST NOT</em> prompt the user, and <em title="MUST" class="rfc2119">MUST</em> return the default, incorrect value for any subsequent requests.</li>
+					<li>If the user has disallowed access for this setting to the site or all sites, the User Agent <em title="MUST" class="rfc2119">MUST</em> always return the default, incorrect value.</li>
+				</ul>
+				<section property="bibo:hasPart" resource="#example-prompt-with-justification-dialog" typeof="bibo:Chapter" id="example-prompt-with-justification-dialog" class="informative">
+					<h4 resource="#h-example-prompt-with-justification-dialog" id="h-example-prompt-with-justification-dialog"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.3.1 </span>Example "Prompt with Justification" Dialog</span></h4><p><em>This section is non-normative.</em></p>
+					<p>In the following example dialog mockup, the web author has requested <code>subtitles</code> and/or <code>subtitle-languages</code> settings. The author has also provided a justification string for the <code>userMediaSettings</code> category using the following markup.</p>
+					<div class="example"><div class="example-title"><span>Example 3</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="tag">&lt;meta</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"userMediaSettings"</span><span class="pln"> </span><span class="atn">content</span><span class="pun">=</span><span class="atv">"Example Site uses your media settings to automatically enable captions or subtitles in your preferred language."</span><span class="tag">&gt;</span></pre></div>
+					<p>A user agent may render the prompt a number of ways, such as a non-blocking notification or a modal dialog.</p>
+					<figure id="fig-example-dialog-prompting-user-to-confirm-or-deny-access-to-media-player-settings.-in-the-example-graphic-the-author-provided-justification-string-is-not-shown-in-the-trusted-user-interface-by-default.x">
+						<figcaption>Fig. <span class="figno">1</span> <span class="fig-title">Example dialog prompting user to confirm or deny access to media player settings. In the example graphic, the author-provided justification string is not shown in the "trusted" user interface by default.</span></figcaption>
+						<svg viewBox="144 230 310 170" width="310pt" height="170pt">
+							<g stroke="none" stroke-opacity="1" stroke-dasharray="none" fill="none" fill-opacity="1">
+								<title>Example dialog displaying site URL, details of the settings requested, an author-provided justification string (hidden by default), and buttons labeled Allow and Deny.</title>
+								<g role="dialog" aria-labelledby="heading_id">
+									<rect aria-hidden="true" x="155.88672" y="237.66406" width="287.0625" height="146.38281" fill="white"></rect>
+									<rect aria-hidden="true" x="155.88672" y="237.66406" width="287.0625" height="146.38281" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"></rect>
+									<g role="heading" aria-level="1" id="heading_id">
+										<rect aria-hidden="true" x="155.91406" y="237.60938" width="287.03516" height="47.789062" fill="#dad7dd"></rect>
+										<rect aria-hidden="true" x="155.91406" y="237.60938" width="287.03516" height="47.789062" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"></rect>
+										<text transform="translate(184.71875 248.91406)" fill="black" role="text">
+											<tspan font-family="Helvetica" font-size="12" font-weight="bold" x="0" y="11" textLength="196.671875">The site https://www.example.com</tspan>
+											<tspan font-family="Helvetica" font-size="12" font-weight="bold" x="0" y="25" textLength="189.375">wants to use your media settings</tspan>
+										</text>
+									</g>
+									<g role="checkbox" id="showdetails" aria-checked="false" aria-label="Show details" tabindex="0">
+										<path d="M 187.12498 314.4722 L 187.12498 308.24466 L 195.77635 311.15186 Z" fill="black"></path>
+										<path d="M 187.12498 314.4722 L 187.12498 308.24466 L 195.77635 311.15186 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"></path>
+										<text transform="translate(202.71875 303.91406)" fill="black">
+											<tspan font-family="Helvetica" font-size="12" font-weight="500" x="0" y="11" textLength="68.039062">Show details</tspan>
+										</text>
+									</g>
+									<g role="button" id="deny" aria-label="Deny" tabindex="0">
+										<path d="M 309 335 L 345 335 C 349.97055 335 354 339.02945 354 344 L 354 351.53906 C 354 356.50961 349.97055 360.53906 345 360.53906 L 309 360.53906 C 304.02945 360.53906 300 356.50961 300 351.53906 C 300 351.53906 300 351.53906 300 351.53906 L 300 344 C 300 339.02945 304.02945 335 309 335 Z" fill="#d9d9d9"></path>
+										<path d="M 309 335 L 345 335 C 349.97055 335 354 339.02945 354 344 L 354 351.53906 C 354 356.50961 349.97055 360.53906 345 360.53906 L 309 360.53906 C 304.02945 360.53906 300 356.50961 300 351.53906 C 300 351.53906 300 351.53906 300 351.53906 L 300 344 C 300 339.02945 304.02945 335 309 335 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"></path>
+										<text transform="translate(305 340.76953)" fill="black">
+											<tspan font-family="Helvetica" font-size="12" font-weight="500" x="7.993164" y="11" textLength="28.013672">Deny</tspan>
+										</text>
+									</g>
+									<g role="button" id="allow" aria-label="Allow" tabindex="0">
+										<path d="M 372 335 L 408 335 C 412.97055 335 417 339.02945 417 344 L 417 351.53906 C 417 356.50961 412.97055 360.53906 408 360.53906 L 372 360.53906 C 367.02945 360.53906 363 356.50961 363 351.53906 C 363 351.53906 363 351.53906 363 351.53906 L 363 344 C 363 339.02945 367.02945 335 372 335 Z" fill="#81bbff"></path>
+										<path d="M 372 335 L 408 335 C 412.97055 335 417 339.02945 417 344 L 417 351.53906 C 417 356.50961 412.97055 360.53906 408 360.53906 L 372 360.53906 C 367.02945 360.53906 363 356.50961 363 351.53906 C 363 351.53906 363 351.53906 363 351.53906 L 363 344 C 363 339.02945 367.02945 335 372 335 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"></path>
+										<text transform="translate(368 340.76953)" fill="black">
+											<tspan font-family="Helvetica" font-size="12" font-weight="500" x="7.6621094" y="11" textLength="28.675781">Allow</tspan>
+										</text>
+									</g>
+								</g>
+							</g>
+						</svg>
+					</figure>
+				</section>
+				<section property="bibo:hasPart" resource="#example-restricted-call-to-window.usersetting" typeof="bibo:Chapter" id="example-restricted-call-to-window.usersetting" class="informative">
+					<h4 resource="#h-example-restricted-call-to-window.usersetting" id="h-example-restricted-call-to-window.usersetting"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.3.2 </span>Example restricted call to <code>window.userSetting()</code></span></h4><p><em>This section is non-normative.</em></p>
+					<p>The following example illustrates the code path that is executed when a user with a preference for audio descriptions visits a web page that uses window.userSetting() to automatically enable the secondary audio track at load time.</p>
+					<div class="example"><div class="example-title"><span>Example 4</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">// Author defines a function to handle changes of the audioDescription setting.</span><span class="pln">
+</span><span class="kwd">function</span><span class="pln"> handleAudioDescriptionChanged</span><span class="pun">(</span><span class="pln">key</span><span class="pun">,</span><span class="pln"> value</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">key </span><span class="pun">===</span><span class="pln"> </span><span class="str">'audio-description'</span><span class="pln"> </span><span class="pun">&amp;&amp;</span><span class="pln"> value </span><span class="pun">!===</span><span class="pln"> </span><span class="str">'none'</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">// User has shared that audio descriptions should be presented.</span><span class="pln">
+        </span><span class="com">// Enable the "descriptive audio" track in the video. </span><span class="pln">
+    </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">// Set to default. Audio descriptions are off, </span><span class="pln">
+        </span><span class="com">// or the user has chosen to not share this setting.</span><span class="pln">
+        </span><span class="com">// Authors should still provide a way to enable the</span><span class="pln">
+        </span><span class="com">// audio description track in the video player interface.</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="com">/*
+When the author first attempts to check the setting, the user agent will 
+determine that this is a restricted setting, and immediately return the default 
+value or null, so the first call to this method on the initial page load will 
+never result in audio descriptions being enabled.
+
+Note: The immediate return is critical to prevent blocking threads, as well as
+eliminating potential abuse by fingerprinting scripts attempting to determine 
+uniqueness using execution time of the synchronous call to window.userSetting().
+*/</span><span class="pln">
+
+</span><span class="com">// get the setting value</span><span class="pln">
+</span><span class="kwd">var</span><span class="pln"> audioDescriptionSetting </span><span class="pun">=</span><span class="pln"> window</span><span class="pun">.</span><span class="pln">userSetting</span><span class="pun">(</span><span class="str">'audio-description'</span><span class="pun">);</span><span class="pln">
+
+</span><span class="com">// and explicitly call the handler the first time, because there is no callback yet</span><span class="pln">
+handleAudioDescriptionChanged</span><span class="pun">(</span><span class="str">'audio-description'</span><span class="pun">,</span><span class="pln"> audioDescriptionSetting</span><span class="pun">);</span><span class="pln">
+
+</span><span class="com">/*
+Even though the setting returns the default value immediately, the user will be 
+prompted to decide whether or not to share their media alternative settings with 
+the requesting web site. 
+
+The web author can register for a change listener on this setting, and the handler 
+will be called asynchronously once the user agrees to share their media settings.
+*/</span><span class="pln">
+window</span><span class="pun">.</span><span class="pln">addSettingListener</span><span class="pun">(</span><span class="str">'audio-description'</span><span class="pun">,</span><span class="pln"> handleAudioDescriptionChanged</span><span class="pun">);</span><span class="pln">
+
+</span><span class="com">// Note: Subsequent page loads should not cause the user to be prompted again.</span></pre></div>
+				</section>
+			</section>
+
+			<section property="bibo:hasPart" resource="#RequirementsForMediaQueries" typeof="bibo:Chapter" id="RequirementsForMediaQueries">
+				<h3 resource="#h-requirementsformediaqueries" id="h-requirementsformediaqueries"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.4 </span>User Agent Requirements for Restricted Media Queries</span></h3>
+				<p>To avoid privacy concerns, User Agents <em title="MUST" class="rfc2119">MUST</em> <em>immediately</em> match the default value of the media query for any restricted features that will result in a user prompt. If and when the user chooses to share settings from the relevant category with the requesting page, the web page author can receive a mediaQueryListChanged event, and make a subsequent request of the <code>matches</code> property of the MediaQueryList.</p>
+
+				<section property="bibo:hasPart" resource="#example-restricted-call-to-window.matchmedia" typeof="bibo:Chapter" id="example-restricted-call-to-window.matchmedia" class="informative">
+					<h4 resource="#h-example-restricted-call-to-window.matchmedia" id="h-example-restricted-call-to-window.matchmedia"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.4.1 </span>Example restricted call to <code>window.matchMedia()</code></span></h4><p><em>This section is non-normative.</em></p>
+					<p class="todo">Todo: Add code example.</p>
+				</section>
+
+				<section property="bibo:hasPart" resource="#example-restricted-use-of-media-block-in-css" typeof="bibo:Chapter" id="example-restricted-use-of-media-block-in-css" class="informative">
+					<h4 resource="#h-example-restricted-use-of-media-block-in-css" id="h-example-restricted-use-of-media-block-in-css"><span property="xhv:role" resource="xhv:heading"><span class="secno">4.4.2 </span>Example restricted use of <code>@media</code> block in CSS</span></h4><p><em>This section is non-normative.</em></p>
+					<p class="todo">Todo: Add code example.</p>
+				</section>
+
+			</section>
+
+		</section>
+		<!-- :::::::::::::::::::: END Privacy Model :::::::::::::::::::: -->
+
+		<!-- :::::::::::::::::::: Settings and Media Features :::::::::::::::::::: -->
+		<section property="bibo:hasPart" resource="#Settings" typeof="bibo:Chapter" id="Settings">
+			<!--OddPage--><h2 resource="#h-settings" id="h-settings"><span property="xhv:role" resource="xhv:heading"><span class="secno">5. </span>Settings Keys and Related Media Feature counterparts</span></h2>
+			<p>This section defines feature keys for user settings for use with the UserSetting interface. Some keys can also be accessed as Media Features using syntax defined in the CSS Media Queries specification. User Agents <em title="SHOULD" class="rfc2119">SHOULD</em> implement an access control mechanism that allows users to restrict access to senesitive information requested via the <code>userSetting()</code> method and <code>matchMedia()</code> method of the Window interface, or from the @media selector in CSS. <span class="todo">Todo: link these the the relevant portions of the access control extension.</span></p>
+			<p>The features are grouped by restriction categories (e.g. type settings, media settings, etc.) that define related media features and recommended default restriction levels.</p>
+
+			<p class="ednote">Need a setting for whether full keyboard access is enabled (e.g. related to Safari "focus all controls" setting, or any touch screen device without a keyboard or Tab-like capability)</p>
+
+			<!-- :::::::::::::::::::: userColors :::::::::::::::::::: -->
+			<section property="bibo:hasPart" resource="#userColors" typeof="bibo:Chapter" id="userColors" class="restriction-category">
+				<h3 resource="#h-usercolors" id="h-usercolors"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1 </span>User Color Settings</span></h3>
+
+				<dl class="properties">
+					<dt>Restriction Category (IDL)</dt>
+					<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+					<dt>Suggested User Agent Restriction</dt>
+					<dd>none</dd>
+				</dl>
+
+				<div class="note"><div id="h-note3" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">Color settings are not be restricted by default from the requesting page, primarily because a site can figure out most of this information using some creative CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users. The display inversion feature is not currently detectable, but does not represent a major concern for privacy or fingerprinting since it is unlikely that most individuals will have this setting enabled all the time.</p></div>
+
+				<section property="bibo:hasPart" resource="#user-color" typeof="bibo:Chapter" id="user-color">
+					<h4 resource="#h-user-color" id="h-user-color" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.1 </span>Key: <code>user-color</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>String values matching the associated media feature values.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-user-color" typeof="bibo:Chapter" id="media-feature-user-color">
+						<h5 resource="#h-media-feature-user-color" id="h-media-feature-user-color" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.1.1 </span>Associated Media Feature: <code>user-color</code></span></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;HSLA Color&gt;</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+
+							<dt>Accepts hue/saturation/luminosity/alpha suffixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+							
+						</dl>
+						<div class="note"><div id="h-note4" role="heading" aria-level="6" class="note-title"><span>Note</span></div><p class="">See <a href="#user-background-color"><code>user-background-color</code></a> and <a href="#user-subtitle-background-color"><code>user-subtitle-background-color</code></a> for examples of how the color media queries might be used with HSLA suffixes.</p></div>
+					</section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#user-background-color" typeof="bibo:Chapter" id="user-background-color">
+					<h4 resource="#h-user-background-color" id="h-user-background-color" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.2 </span>Key: <code>user-background-color</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>String values matching the associated media feature values.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-user-background-color" typeof="bibo:Chapter" id="media-feature-user-background-color">
+						<h5 resource="#h-media-feature-user-background-color" id="h-media-feature-user-background-color" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.2.1 </span>Associated Media Feature: <code>user-background-color</code></span></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;HSLA Color&gt;</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+							
+							<dt>Accepts hue/saturation/luminosity/alpha suffixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+							
+						</dl>
+						<div class="ex" title="Informative">
+							<p>In this example, the user-defined color and background color are defined through a user style sheet or other means, so override the site theme to respect the user's colors.</p>
+							<div class="example"><div class="example-title"><span>Example 5</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">color</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">and</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    main </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">/* Syntax for the user-setting variables to be specified in one of the CSS 4 modules. */</span><span class="pln">
+        color</span><span class="pun">:</span><span class="pln"> user</span><span class="pun">-</span><span class="pln">setting</span><span class="pun">(</span><span class="pln">color</span><span class="pun">);</span><span class="pln">
+        background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">:</span><span class="pln"> user</span><span class="pun">-</span><span class="pln">setting</span><span class="pun">(</span><span class="pln">background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre></div> 
+						</div>
+						<div class="ex" title="Informative">
+							<p>In this example, the user-defined background color is dark (luminosity less than 40%), so the author adjusts the site logo element to use an image that looks better on darker background colors.</p>
+							<div class="example"><div class="example-title"><span>Example 6</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">/* Use default logo that looks good on lighter background colors. */</span><span class="pln">
+</span><span class="pun">.</span><span class="pln">logo </span><span class="pun">{</span><span class="pln"> background</span><span class="pun">-</span><span class="pln">image</span><span class="pun">:</span><span class="pln"> url</span><span class="pun">(./</span><span class="pln">img</span><span class="pun">/</span><span class="pln">logo_light</span><span class="pun">.</span><span class="pln">png</span><span class="pun">);}</span><span class="pln">
+
+</span><span class="com">/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */</span><span class="pln">
+</span><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">-</span><span class="pln">luminosity </span><span class="pun">&lt;</span><span class="pln"> </span><span class="lit">40</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="com">/* User background color is dark; use logo variant that looks better on dark colors. */</span><span class="pln">
+    </span><span class="pun">.</span><span class="pln">logo </span><span class="pun">{</span><span class="pln"> background</span><span class="pun">-</span><span class="pln">image</span><span class="pun">:</span><span class="pln"> url</span><span class="pun">(./</span><span class="pln">img</span><span class="pun">/</span><span class="pln">logo_dark</span><span class="pun">.</span><span class="pln">png</span><span class="pun">);</span><span class="pln"> </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre></div> 
+						</div>
+						<div class="ex" title="Informative">
+							<p>In this example, the user-defined background color matches a warm palette (hue is not between 100 and 280; a.k.a. not green, blue, or blue-violet), so the author could adjust the rest of the site theme to be complementary.</p>
+							<div class="example"><div class="example-title"><span>Example 7</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */</span><span class="pln">
+</span><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">-</span><span class="pln">hue </span><span class="pun">&lt;</span><span class="pln"> </span><span class="lit">100</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">or</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">-</span><span class="pln">hue </span><span class="pun">&gt;</span><span class="pln"> </span><span class="lit">280</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="com">/* User background color palette is red-violet, red, orange, or yellow. */</span><span class="pln">
+    </span><span class="com">/* This is example is admittedly contrived, and exists mainly to show possibilities. */</span><span class="pln">
+</span><span class="pun">}</span></pre></div> 
+						</div>
+					</section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#inverted-colors" typeof="bibo:Chapter" id="inverted-colors">
+					<h4 resource="#h-inverted-colors" id="h-inverted-colors" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.3 </span>Key: <code>inverted-colors</code></span></h4>
+					<p>Web authors <em title="SHOULD NOT" class="rfc2119">SHOULD NOT</em> re-invert foreground and background colors based on this setting, but <em title="MAY" class="rfc2119">MAY</em> choose to double-invert some content, such as photographs.</p>
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Boolean indicating whether the display colors are currently inverted by the operating system or user agent.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-inverted-colors" typeof="bibo:Chapter" id="media-feature-inverted-colors">
+						<h5 resource="#h-media-feature-inverted-colors" id="h-media-feature-inverted-colors" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.3.1 </span>Associated Media Feature: <code>inverted-colors</code></span></h5>
+
+						<div class="note"><div id="h-note5" role="heading" aria-level="6" class="note-title"><span>Note</span></div><p class="">The <code>inverted-colors</code> media feature has being defined in <a href="http://dev.w3.org/csswg/mediaqueries-4/">CSS Media Queries Level 4</a>. Once that spec has reached <abbr title="World Wide Web Consortium">W3C</abbr> Recommendation status, the remainder of this section will be removed in favor of referencing the CSS specification directly.</p></div>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd><code>inverted</code> | [<code>none</code>]</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+							
+						</dl>
+
+						<div class="ex" title="Informative">
+							<p>In this example, the hardware display rendering is inverted, so the web app could <em>double-invert</em> foreground image and video content, which usually looks strange while inverted. This would leave text foreground color, all background colors, and background styles inverted to adhere to user setting.</p>
+							<div class="example"><div class="example-title"><span>Example 8</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">inverted</span><span class="pun">-</span><span class="pln">colors</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    img</span><span class="pun">,</span><span class="pln"> video </span><span class="pun">{</span><span class="pln">
+        filter</span><span class="pun">:</span><span class="pln"> invert</span><span class="pun">(</span><span class="lit">100</span><span class="pun">%);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre></div> 
+							<figure id="fig-everything-in-the-first-screen-shot-including-the-user-profile-image-is-inverted-so-skin-tones-are-unnatural.-a-web-application-could-choose-to-double-invert-content-images-as-is-done-in-the-second-screen-shot.x">
+								<img src="./img/uc-inverted.png" alt="Screen shot of Twitter mobile web site displayed on iOS with screen colors inverted." height="320" width="181">
+								<img src="./img/uc-double-inverted.png" alt="Mock up of previous screen shot with user profile images double-inverted, to achieve a more natural rendering and skin color." height="320" width="181">
+								<figcaption>Fig. <span class="figno">2</span> <span class="fig-title">Everything in the first screen shot, including the user profile image, is inverted so skin tones are unnatural. A web application could choose to double-invert content images, as is done in the second screen shot.</span></figcaption>
+							</figure>
+						</div>
+						<div class="ex" title="Informative">
+							<p>In this example, the hardware display rendering is inverted, so the web app could hide elements styles that resemble "shadows" of physical light, which by default look like white glows while inverted. This media query allows authors to disable settings that don't make sense when the physical display pixels are inverted.</p>
+							<div class="example"><div class="example-title"><span>Example 9</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">inverted</span><span class="pun">-</span><span class="pln">colors</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="pun">.</span><span class="pln">page </span><span class="pun">{</span><span class="pln">
+        box</span><span class="pun">-</span><span class="pln">shadow</span><span class="pun">:</span><span class="pln"> none</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">.</span><span class="pln">pagecurl </span><span class="pun">{</span><span class="pln">
+        background</span><span class="pun">-</span><span class="pln">image</span><span class="pun">:</span><span class="pln"> none</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre></div> 
+						</div>
+
+						<div class="note"><div id="h-note6" role="heading" aria-level="6" class="note-title"><span>Note</span></div><p class="">Note: Privacy and fingerprinting concerns related to this media feature are minimal, since it is unlikely that most individuals will have this setting enabled all the time. For example, due to personal preference or situational context, some individuals use this as a manual quick toggle to temporarily view text content in a light-on-dark color scheme as opposed to a dark-on-light default.</p></div>
+
+						<div class="relatedconcepts">
+							<h5 id="concepts-related-to-inverted-colors">Concepts related to inverted-colors</h5>
+							<ul>
+								<li>
+									Apple UIKit API for detecting color inversion on iOS<br>
+									<code class="ex">
+										// From &lt;UIKit/UIAccessibility.h&gt;<br>
+										// Returns whether the system preference for invert colors is enabled.<br>
+										UIKIT_EXTERN BOOL <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKitFunctionReference/Reference/reference.html#//apple_ref/c/func/UIAccessibilityIsInvertColorsEnabled">UIAccessibilityIsInvertColorsEnabled()</a> NS_AVAILABLE_IOS(6_0);<br>
+										UIKIT_EXTERN NSString *const <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIAccessibility_Protocol/Introduction/Introduction.html#//apple_ref/c/data/UIAccessibilityInvertColorsStatusDidChangeNotification">UIAccessibilityInvertColorsStatusDidChangeNotification</a> NS_AVAILABLE_IOS(6_0);<br>
+									</code>
+								</li>
+
+								<li>Mac OS X and other platforms have similar features to invert display colors. <span class="todo">Todo: list them here.</span></li>
+								
+							</ul>
+						</div>
+					</section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#user-contrast" typeof="bibo:Chapter" id="user-contrast">
+					<h4 resource="#h-user-contrast" id="h-user-contrast" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.4 </span>Key: <code>user-contrast</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Floating point number value between -1.0 and 1.0, representing the software contrast setting of the user's operating system. A value of 0.0 represents no contrast modification to the display (normal), and 1.0 represents the highest possible contrast modification (could be used to Microsoft's "high contrast" mode). A negative number (uncommon) represents a lower-than-average contrast. User Agents <em title="SHOULD NOT" class="rfc2119">SHOULD NOT</em> use a positive value to represent hardware display contrast, as this value is reserved for assistive contrast modes. User Agents <em title="MAY" class="rfc2119">MAY</em> use a negative value to represent lower-than-average contrast in a hardware display.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-user-contrast" typeof="bibo:Chapter" id="media-feature-user-contrast">
+						<h5 resource="#h-media-feature-user-contrast" id="h-media-feature-user-contrast" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.4.1 </span>Associated Media Feature: <code>user-contrast</code></span></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;Number&gt; between -1.0 and 1.0</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+							
+						</dl>
+
+						<div class="ex" title="Informative">
+							<p>This example illustrates how Microsoft's implementation-specific <a href="http://msdn.microsoft.com/en-us/library/windows/apps/hh465764.aspx"><code>-ms-high-contrast</code></a> proposal can be replaced by three media features that are not implementation-specific.</p> 
+							<p class="ednote">Currently Microsoft does not impose any restrictions on the <code>-ms-high-contrast</code> media feature, but it's possible the <code>user-contrast</code> setting may end up in a restricted category if it's determined to expose the user to privacy or fingerprinting implications.</p>
+
+							<div class="example"><div class="example-title"><span>Example 10</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">/*
+adjusting to cover both the Microsoft proposal as well 
+as other platforms that have a slider value for color variants 
+*/</span><span class="pln">
+
+</span><span class="com">/* -ms-high-contrast: active; would be equivalent to: */</span><span class="pln">
+</span><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">contrast</span><span class="pun">:</span><span class="pln"> </span><span class="lit">1</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{}</span><span class="pln">
+
+</span><span class="com">/* a variant query of the same media feature would match both Microsoft's */</span><span class="pln">
+</span><span class="com">/* binary setting and other platform's variable contrast settings */</span><span class="pln">
+</span><span class="com">/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */</span><span class="pln">
+</span><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">contrast </span><span class="pun">&gt;</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{}</span><span class="pln">
+
+</span><span class="com">/* -ms-high-contrast: black-on-white; would be equivalent to: */</span><span class="pln">
+</span><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">contrast</span><span class="pun">:</span><span class="pln"> </span><span class="lit">1</span><span class="pun">)</span><span class="pln">
+       </span><span class="kwd">and</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">color</span><span class="pun">:</span><span class="pln"> black</span><span class="pun">)</span><span class="pln">
+       </span><span class="kwd">and</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">:</span><span class="pln"> white</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{}</span><span class="pln">
+
+</span><span class="com">/* -ms-high-contrast: white-on-black; would be equivalent to: */</span><span class="pln">
+</span><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">contrast</span><span class="pun">:</span><span class="pln"> </span><span class="lit">1</span><span class="pun">)</span><span class="pln"> 
+       </span><span class="kwd">and</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">color</span><span class="pun">:</span><span class="pln"> white</span><span class="pun">)</span><span class="pln"> 
+       </span><span class="kwd">and</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">:</span><span class="pln"> black</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{}</span><span class="pln">
+
+</span><span class="com">/* -ms-high-contrast: white-on-black; could also be written to use the HSLA color suffixes: */</span><span class="pln">
+</span><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">contrast</span><span class="pun">:</span><span class="pln"> </span><span class="lit">1</span><span class="pun">)</span><span class="pln"> 
+       </span><span class="kwd">and</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">color</span><span class="pun">-</span><span class="pln">luminosity</span><span class="pun">:</span><span class="pln"> </span><span class="lit">100</span><span class="pun">)</span><span class="pln"> 
+       </span><span class="kwd">and</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">-</span><span class="pln">luminosity</span><span class="pun">:</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{}</span><span class="pln">
+
+</span><span class="com">/* -ms-high-contrast: none; would be equivalent to the default value: */</span><span class="pln">
+</span><span class="com">/* No media query is required here b/c it's already the default value. */</span><span class="pln">
+</span><span class="com">/* @media (user-contrast: 0) {} */</span></pre></div>
+						</div>
+
+						<div class="note"><div id="h-note7" role="heading" aria-level="6" class="note-title"><span>Note</span></div><p class="">Microsoft's current implementation of "high contrast" would only ever return <code>0.0</code> or <code>1.0</code>, but other platforms support variable contrast increases that would result in a intermediary value like <code>0.42</code>, or <code>0.7</code>, which could be matched using the CSS3 min/max prefixes, or the CSS4 greater-than/less-than syntax.</p></div>
+					</section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#monochrome" typeof="bibo:Chapter" id="monochrome">
+					<h4 resource="#h-monochrome" id="h-monochrome" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.5 </span>Key: <code>monochrome</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Integer representing number of bits per pixel in a monochrome frame buffer. If the device is not a monochrome device, the output device value will be 0.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userColors">userColors</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-monochrome" typeof="bibo:Chapter" id="media-feature-monochrome">
+						<h5 resource="#h-media-feature-monochrome" id="h-media-feature-monochrome" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.1.5.1 </span>Associated Media Feature: <code>monochrome</code></span></h5>
+						<p>The <a href="http://www.w3.org/TR/css3-mediaqueries/#monochrome"><code>monochrome</code> media feature</a> is defined in CSS3.</p>
+					</section>
+				</section>
+
+			</section>
+			<!-- :::::::::::::::::::: END userColors :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: userFonts :::::::::::::::::::: -->
+			<section property="bibo:hasPart" resource="#userFonts" typeof="bibo:Chapter" id="userFonts" class="restriction-category">
+				<h3 resource="#h-userfonts" id="h-userfonts"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2 </span>User Type/Font Settings</span></h3>
+
+				<dl class="properties">
+					<dt>Restriction Category (IDL)</dt>
+					<dd><a href="#idl-def-RestrictionCategory.userFonts">userFonts</a></dd>
+					<dt>Suggested User Agent Restriction</dt>
+					<dd>none</dd>
+				</dl>
+
+				<div class="note"><div id="h-note8" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">Type settings are not restricted by default from the requesting page, because a site can figure out all of this information by creatively using CSS and JavaScript. These keys are therefore primarily intended as convenience accessors so that web authors can more easily provide adaptive interfaces that work well for all users.</p></div>
+
+				<section property="bibo:hasPart" resource="#user-font-size" typeof="bibo:Chapter" id="user-font-size">
+					<h4 resource="#h-user-font-size" id="h-user-font-size" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.1 </span>Key: <code>user-font-size</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Number representing the user's current default font size of root element, prior to applying page styles. User Agents <em title="MUST" class="rfc2119">MUST</em> return the value translated to CSS pixels, e.g. 14, not '14px' or '1.4em'</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userFonts">userFonts</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-user-font-size" typeof="bibo:Chapter" id="media-feature-user-font-size">
+						<h5 resource="#h-media-feature-user-font-size" id="h-media-feature-user-font-size" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.1.1 </span>Associated Media Feature: <code>user-font-size</code></span></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;number&gt;</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd><a href="#idl-def-RestrictionCategory.userFonts">userFonts</a></dd>
+							
+						</dl>
+
+						<div class="example"><div class="example-title"><span>Example 11</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">/* Default layout uses 2 columns */</span><span class="pln">
+main </span><span class="pun">{</span><span class="pln">
+    columns</span><span class="pun">:</span><span class="pln"> </span><span class="lit">2</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="com">/* But if the user's default font size (from browser text zoom setting or... */</span><span class="pln">
+</span><span class="com">/* user style sheet...) is larger than 32px, drop the columns. */</span><span class="pln">
+</span><span class="com">/* Note: the CSS3 syntax is (min-user-font-size: 32) */</span><span class="pln">
+</span><span class="com">/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */</span><span class="pln">
+</span><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">font</span><span class="pun">-</span><span class="pln">size </span><span class="pun">&gt;</span><span class="pln"> </span><span class="lit">32</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> 
+    main </span><span class="pun">{</span><span class="pln">
+        columns</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">auto</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre></div>
+
+					</section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#user-minimum-font-size" typeof="bibo:Chapter" id="user-minimum-font-size">
+					<h4 resource="#h-user-minimum-font-size" id="h-user-minimum-font-size" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.2 </span>Key: <code>user-minimum-font-size</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Number representing the user's minimum allowed font size. User Agents <em title="MUST" class="rfc2119">MUST</em> return the value translated to CSS pixels, e.g. 9, not '9px' or '0.9em'</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userFonts">userFonts</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-user-minimum-font-size" typeof="bibo:Chapter" id="media-feature-user-minimum-font-size">
+						<h5 resource="#h-media-feature-user-minimum-font-size" id="h-media-feature-user-minimum-font-size" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.2.1 </span>Associated Media Feature: <code>user-minimum-font-size</code></span></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;number&gt;</dd>
+							
+							<dt>Applies to</dt>
+							<dd>visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd><a href="#idl-def-RestrictionCategory.userFonts">userFonts</a></dd>
+							
+						</dl>
+
+					</section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#user-line-height" typeof="bibo:Chapter" id="user-line-height">
+					<h4 resource="#h-user-line-height" id="h-user-line-height" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.3 </span>Key: <code>user-line-height</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>Number as a unitless multiplier; equivalent to unitless 'Number' value for CSS 'line-height' property. e.g. 1.2, not '1.2em' or '12px' </dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userFonts">userFonts</a></dd>
+						
+					</dl>
+				</section>
+
+				<section property="bibo:hasPart" resource="#user-letter-spacing" typeof="bibo:Chapter" id="user-letter-spacing">
+					<h4 resource="#h-user-letter-spacing" id="h-user-letter-spacing" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.4 </span>Key: <code>user-letter-spacing</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>Unit TBD; this should probably also be a calculated CSS pixel value equivalent to default or user value for CSS 'letter-spacing' property.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userFonts">userFonts</a></dd>
+						
+					</dl>
+
+				</section>
+
+				<section property="bibo:hasPart" resource="#user-word-spacing" typeof="bibo:Chapter" id="user-word-spacing">
+					<h4 resource="#h-user-word-spacing" id="h-user-word-spacing" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.2.5 </span>Key: <code>user-word-spacing</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>Unit TBD; this should probably also be a calculated CSS pixel value equivalent to default or user value for CSS 'word-spacing' property.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userFonts">userFonts</a></dd>
+						
+					</dl>
+
+				</section>
+
+				<div class="note"><div id="h-note9" role="heading" aria-level="4" class="note-title"><span>Note</span></div><p class="">In addition to font-size, which is commonly adjusted by mainstream users, line-height, letter-spacing, and word-spacing can be especially important for users with cognitive impairments such as dyslexia and <abbr title="Autism Spectrum Disorder">ASD</abbr>, so it's important to respect a user's default settings.</p></div>
+
+			</section>
+			<!-- :::::::::::::::::::: END userFonts :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: userMediaSettings :::::::::::::::::::: -->
+			<section property="bibo:hasPart" resource="#userMediaSettings" typeof="bibo:Chapter" id="userMediaSettings" class="restriction-category">
+				<h3 resource="#h-usermediasettings" id="h-usermediasettings"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3 </span>User Media Settings</span></h3>
+
+				<dl class="properties">
+					<dt>Restriction Category (IDL)</dt>
+					<dd><a href="#idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</a></dd>
+					<dt>Suggested User Agent Restriction</dt>
+					<dd>prompt</dd>
+				</dl>
+
+				<section property="bibo:hasPart" resource="#subtitles" typeof="bibo:Chapter" id="subtitles">
+					<h4 resource="#h-subtitles" id="h-subtitles" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.1 </span>Key: <code>subtitles</code></span></h4>
+					<p>Web authors using a native video player <em title="SHOULD" class="rfc2119">SHOULD</em> allow subtitles to be displayed natively. Web authors using a custom subtitle view <em title="SHOULD" class="rfc2119">SHOULD</em> display the custom-rendered subtitles based on this setting.</p>
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>Boolean value indicating whether subtitles or captions are displayed (true) or not displayed (false) in native video players.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</a></dd>
+						
+					</dl>
+					
+				</section>
+
+				<section property="bibo:hasPart" resource="#subtitle-languages" typeof="bibo:Chapter" id="subtitle-languages">
+					<h4 resource="#h-subtitle-languages" id="h-subtitle-languages" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.2 </span>Key: <code>subtitle-languages</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>DOMString of languages in order of preference. Users Agents <em title="MUST" class="rfc2119">MUST</em> format the string as a space-separated list of ISO-639 language codes, that may be optionally hyphenated to include ISO-3166 country codes.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</a></dd>
+						
+					</dl>
+					<div class="note"><div id="h-note10" role="heading" aria-level="5" class="note-title"><span>Note</span></div><p class="">For example, a native Mexican Spanish speaker living in the United States may have a language preference of "es-mx es en-us en" indicating a preference order for Mexican Spanish, any Spanish, US English, and finally any English dialect.</p></div>
+				</section>
+
+				<section property="bibo:hasPart" resource="#subtitle-type" typeof="bibo:Chapter" id="subtitle-type">
+					<h4 resource="#h-subtitle-type" id="h-subtitle-type" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.3 </span>Key: <code>subtitle-type</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>DOMString of type of subtitles or captions in order of preference. Users Agents <em title="MUST" class="rfc2119">MUST</em> format the string as a space-separated list of the following tokens: <code>sdh</code>, <code>cc</code>, or <code>standard</code></dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</a></dd>
+						
+					</dl>
+					<p class="ednote">Necessary to match preference for subtitles for the deaf and hard of hearing (SDH) over default dialogue-only subtitles, but the preference for closed captions (CC) versus SDH may not be necessary. SDH appears to be generally preferred over CC when available, and a preference for SDH could indicate an implicit preference for CC over dialogue-only subtitles when CC is available but SDH is not.</p>
+				</section>
+
+				<section property="bibo:hasPart" resource="#user-subtitle-color" typeof="bibo:Chapter" id="user-subtitle-color">
+					<h4 resource="#h-user-subtitle-color" id="h-user-subtitle-color" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.4 </span>Key: <code>user-subtitle-color</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>String values matching the associated media feature values.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-user-subtitle-color" typeof="bibo:Chapter" id="media-feature-user-subtitle-color">
+						<h5 resource="#h-media-feature-user-subtitle-color" id="h-media-feature-user-subtitle-color" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.4.1 </span>Associated Media Feature: <code>user-subtitle-color</code></span></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;HSLA Color&gt; | [<code>none</code>]</dd>
+							
+							<dt>Applies to</dt>
+							<dd>continuous, visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+
+							<dt>Accepts hue/saturation/luminosity/alpha suffixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd><a href="#idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</a></dd>
+							
+						</dl>
+						<div class="note"><div id="h-note11" role="heading" aria-level="6" class="note-title"><span>Note</span></div><p class="">See <a href="#user-background-color"><code>user-background-color</code></a> and <a href="#user-subtitle-background-color"><code>user-subtitle-background-color</code></a> for examples of how the color media queries might be used with HSLA suffixes.</p></div>
+					</section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#user-subtitle-background-color" typeof="bibo:Chapter" id="user-subtitle-background-color">
+					<h4 resource="#h-user-subtitle-background-color" id="h-user-subtitle-background-color" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.5 </span>Key: <code>user-subtitle-background-color</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>String values matching the associated media feature values.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-user-subtitle-background-color" typeof="bibo:Chapter" id="media-feature-user-subtitle-background-color">
+						<h5 resource="#h-media-feature-user-subtitle-background-color" id="h-media-feature-user-subtitle-background-color" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.5.1 </span>Associated Media Feature: <code>user-subtitle-background-color</code></span></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd>&lt;HSLA Color&gt; | [<code>none</code>]</dd>
+							
+							<dt>Applies to</dt>
+							<dd>continuous, visual media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+							
+							<dt>Accepts hue/saturation/luminosity/alpha suffixes</dt>
+							<dd>Yes</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd><a href="#idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</a></dd>
+							
+						</dl>
+						<div class="ex" title="Informative">
+							<p>In this example, the user-defined subtitle background color is not sufficiently opaque to to prevent the video noise from making the captions difficult to read, so add a text shadow.</p>
+							<div class="example"><div class="example-title"><span>Example 12</span></div><pre style="" class="example highlight prettyprint prettyprinted"><span class="com">/* Note: this example uses the greater-than/less-than syntax likely to be adopted by CSS4. */</span><span class="pln">
+</span><span class="lit">@media</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">subtitle</span><span class="pun">-</span><span class="pln">background</span><span class="pun">-</span><span class="pln">color</span><span class="pun">-</span><span class="pln">alpha </span><span class="pun">&lt;</span><span class="pln"> </span><span class="lit">20</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">and</span><span class="pln"> </span><span class="pun">(</span><span class="pln">user</span><span class="pun">-</span><span class="pln">subtitle</span><span class="pun">-</span><span class="pln">color</span><span class="pun">-</span><span class="pln">luminosity </span><span class="pun">&gt;</span><span class="pln"> </span><span class="lit">50</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="pun">.</span><span class="pln">customRenderedCaptions </span><span class="pun">{</span><span class="pln">
+    	text</span><span class="pun">-</span><span class="pln">shadow</span><span class="pun">:</span><span class="pln"> </span><span class="lit">1px</span><span class="pln"> </span><span class="lit">1px</span><span class="pln"> </span><span class="lit">2px</span><span class="pln"> black</span><span class="pun">;</span><span class="pln"> 
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></pre></div> 
+						</div>
+						<div class="note"><div id="h-note12" role="heading" aria-level="6" class="note-title"><span>Note</span></div><p class="">See <a href="#user-background-color"><code>user-background-color</code></a> and <a href="#user-subtitle-background-color"><code>user-subtitle-background-color</code></a> for examples of how the color media queries might be used with HSLA suffixes.</p></div>
+					</section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#audio-description" typeof="bibo:Chapter" id="audio-description">
+					<h4 resource="#h-audio-description" id="h-audio-description" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.3.6 </span>Key: <code>audio-description</code></span></h4>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd><code>display</code> | [<code>none</code>]</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userMediaSettings">userMediaSettings</a></dd>
+						
+					</dl>
+
+					<p>Returns a user's preference to be presented with an alternate or supplemental audio track describing the information presented visually.</p>
+					<div class="note"><div id="h-note13" role="heading" aria-level="5" class="note-title"><span>Note</span></div><p class="">Audio descriptions are also sometimes referred to as "descriptive audio" tracks.</p></div>
+					<p class="ednote">Need a more appropriate true value than "display"; possibly "prefer", "selected", etc.</p>
+				
+				</section>
+
+				<!-- todo: work these in when possible -->
+				<!--
+				<dt class="key" id="transcript-userMediaSettings">boolean? transcript = null</dt>
+				<dd>Matches a user's preference to be presented with a transcript if available. Web authors MAY provide concatenated subtitles in static form, if no other transcript exists.
+					<p class="ednote">There is some concern within the working group regarding this preference because no known operating system or user agent currently includes a way for a user to set this preference. The IndieUI working group is actively seeking comment on the perceived necessity or feasibility of this preference. It may be that this is already covered by <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html">WCAG 2.0 SC 1.2.1</a> which indicates sites should offer transcripts when available.</p>
+				</dd>
+				
+				<dt class="key" id="signLanguage-userMediaSettings">boolean? signLanguage = null</dt>
+				<dd>Matches a user's preference to be presented with a video of sign language if available.
+				<p class="ednote">Do we need a language order preference for type of sign? ASL, etc? Worried this feature will be at-risk due to lack of available signed alternatives.</p>
+				</dd>
+				-->
+
+			</section>
+			<!-- :::::::::::::::::::: END userMediaSettings :::::::::::::::::::: -->
+
+			<!-- :::::::::::::::::::: userScreenReaderSettings :::::::::::::::::::: -->
+			<section property="bibo:hasPart" resource="#userScreenReaderSettings" typeof="bibo:Chapter" id="userScreenReaderSettings" class="restriction-category">
+				<h3 resource="#h-userscreenreadersettings" id="h-userscreenreadersettings"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4 </span>Screen Reader Settings</span></h3>
+
+				<dl class="properties">
+					<dt>Restriction Category (IDL)</dt>
+					<dd><a href="#idl-def-RestrictionCategory.userScreenReaderSettings">userScreenReaderSettings</a></dd>
+					<dt>Suggested User Agent Restriction</dt>
+					<dd>prompt with author-provided justification</dd>
+				</dl>
+
+				<p>User Agents <em title="MUST NOT" class="rfc2119">MUST NOT</em> implement high security features like <code>screenreader</code> settings until the user <a href="#privacy-model">privacy model</a> is implemented. User Agents <em title="MUST" class="rfc2119">MUST</em> allow users to control sharing of prompted settings on a per-domain basis.</p>
+
+				<p>Web authors <em title="SHOULD NOT" class="rfc2119">SHOULD NOT</em> request any keys in this category unless the knowledge is essential to the operation of the web application, and web authors <em title="MUST" class="rfc2119">MUST</em> provide a justification for the request as defined in @@ section.</p>
+
+				<div class="ednote">
+					<h3 id="editorial-note-on-user-privacy">Editorial Note on User Privacy</h3>
+					<p>Due to community feedback related to privacy, this feature may be marked as at-risk or removed. The working group acknowledges its usefulness in complex web applications such as enterprise document-editing suites, but also acknowledges the fact that its utility may be easily misunderstood or potentially misused.</p>
+					<p>For example, the typing echo or other verbosity settings would be useful today, for sites such as Google Docs and iWork for iCloud. These applications use custom display views that are not able to be made accessible through conventional means, so speech output is controlled via live region announcements. The web application does not otherwise have access to user settings such as typing echo, so without access to this feature, the web application could not mimic the user's preferred output.</p>
+					<p>One potential misuse is for user metrics or tracking. Even with the <a href="http://www.marcozehe.de/2014/02/27/why-screen-reader-detection-on-the-web-is-a-bad-thing/#comment-1701">best of intentions</a>, this is a potentially harmful misuse of the API. There are currently very strict user <a href="#privacy-model">privacy model</a> requirements to implement this feature in a reasonably safe and secure way, but if the working group is not comfortable in the implementation's ability to sufficiently prevent this type of misuse, we will remove the feature.</p> 
+				</div>
+
+				<section property="bibo:hasPart" resource="#screenreader" typeof="bibo:Chapter" id="screenreader">
+					<h4 resource="#h-screenreader" id="h-screenreader" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4.1 </span>Key: <code>screenreader</code></span></h4>
+					<p>Returns whether a screen reader is currently active or not (none).</p>
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>Yes</dd>
+						
+						<dt>Returns</dt>
+						<dd>Token value indicating whether or not a screen reader is currently active or in use (<code>active</code>), or <code>none</code> otherwise.</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userScreenReaderSettings">userScreenReaderSettings</a></dd>
+						
+					</dl>
+
+					<section property="bibo:hasPart" resource="#media-feature-screenreader" typeof="bibo:Chapter" id="media-feature-screenreader">
+						<h5 resource="#h-media-feature-screenreader" id="h-media-feature-screenreader" class="media-feature"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4.1.1 </span>Associated Media Feature: <code>screenreader</code></span></h5>
+						<dl class="properties">
+							
+							<dt>Value</dt>
+							<dd><code>active</code> | [<code>none</code>]</dd>
+							
+							<dt>Applies to</dt>
+							<dd>interactive media</dd>
+							
+							<dt>Accepts min/max prefixes</dt>
+							<dd>No</dd>
+							
+							<dt>Restriction Category (IDL)</dt>
+							<dd><a href="#idl-def-RestrictionCategory.userScreenReaderSettings">userScreenReaderSettings</a></dd>
+							
+						</dl>
+						
+					</section>
+				</section>
+
+				<section property="bibo:hasPart" resource="#screenreader-typing-echo" typeof="bibo:Chapter" id="screenreader-typing-echo">
+					<h4 resource="#h-screenreader-typing-echo" id="h-screenreader-typing-echo" class="settings-key"><span property="xhv:role" resource="xhv:heading"><span class="secno">5.4.2 </span>Key: <code>screenreader-typing-echo</code></span></h4>
+					<p>Returns a value indicating whether typing in text fields causes a screen reader echos whole words, characters, both, or none.</p>
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd><code>words</code> | <code>characters</code> | <code>both</code> | [<code>none</code>]</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd><a href="#idl-def-RestrictionCategory.userScreenReaderSettings">userScreenReaderSettings</a></dd>
+						
+					</dl>
+
+				</section>
+
+				<!-- need to consider these a bit more
+				<section id="screenreader-words-per-minute">
+					<h4 class="settings-key">Key: <code>screenreader-words-per-minute</code></h4>
+					<p>Returns a number indicating the approximate words-per-minute rate of a screen reader user's text-to-speech settings.</p>
+
+					<dl class="properties">
+						
+						<dt>Has Associated Media Feature</dt>
+						<dd>No</dd>
+						
+						<dt>Returns</dt>
+						<dd>&lt;number&gt; | [<code>null</code>]</dd>
+						
+						<dt>Restriction Category (IDL)</dt>
+						<dd data-transform="linkRestrictionCategory">userScreenReaderSettings</dd>
+						
+					</dl>
+
+				</section>
+				-->
+
+			</section>
+			<!-- :::::::::::::::::::: END userScreenReaderSettings :::::::::::::::::::: -->
+
+			<p class="todo">Todo: Probably need additional categories for screen magnifiers (active/none, scale factor), switch control software (active/none), and the more general "api-compatible" key which could be used for automation scripts in addition to real assistive technology.</p>
+
+		</section>
+		<!-- :::::::::::::::::::: END Media Features :::::::::::::::::::: -->
+
+		<!--
+		ReSpec example: Use @data-transform to reuse a content transformer, and @data-oninclude to transform external content prior to inclusion.
+		<script type="text/javascript">function xmp(r, content) { return content.replace(/</g,'&lt;').replace(/>/g,'&gt;'); } </script>
+		<pre data-transform='xmp'>This markup is <b>escaped</b> like an <code>xmp</code>.</pre>
+		-->
+		<section property="bibo:hasPart" resource="#settingskeyslist" typeof="bibo:Chapter" id="settingskeyslist" class="appendix">
+			<!--OddPage--><h2 resource="#h-settingskeyslist" id="h-settingskeyslist"><span property="xhv:role" resource="xhv:heading"><span class="secno">A. </span>Settings Keys List (alphabetical)</span></h2>
+			<div><!-- dynamically generates settings keys list --><ul><li><code><a href="#audio-description">audio-description</a></code></li><li><code><a href="#inverted-colors">inverted-colors</a></code></li><li><code><a href="#monochrome">monochrome</a></code></li><li><code><a href="#screenreader">screenreader</a></code></li><li><code><a href="#screenreader-typing-echo">screenreader-typing-echo</a></code></li><li><code><a href="#subtitle-languages">subtitle-languages</a></code></li><li><code><a href="#subtitle-type">subtitle-type</a></code></li><li><code><a href="#subtitles">subtitles</a></code></li><li><code><a href="#user-background-color">user-background-color</a></code></li><li><code><a href="#user-color">user-color</a></code></li><li><code><a href="#user-contrast">user-contrast</a></code></li><li><code><a href="#user-font-size">user-font-size</a></code></li><li><code><a href="#user-letter-spacing">user-letter-spacing</a></code></li><li><code><a href="#user-line-height">user-line-height</a></code></li><li><code><a href="#user-minimum-font-size">user-minimum-font-size</a></code></li><li><code><a href="#user-subtitle-background-color">user-subtitle-background-color</a></code></li><li><code><a href="#user-subtitle-color">user-subtitle-color</a></code></li><li><code><a href="#user-word-spacing">user-word-spacing</a></code></li></ul></div>
+		</section>
+
+		<section property="bibo:hasPart" resource="#mediafeatureslist" typeof="bibo:Chapter" id="mediafeatureslist" class="appendix">
+			<!--OddPage--><h2 resource="#h-mediafeatureslist" id="h-mediafeatureslist"><span property="xhv:role" resource="xhv:heading"><span class="secno">B. </span>Media Features List (alphabetical)</span></h2>
+			<div><!-- dynamically generates media feature list --><ul><li><code><a href="#media-feature-inverted-colors">inverted-colors</a></code></li><li><code><a href="#media-feature-monochrome">monochrome</a></code></li><li><code><a href="#media-feature-screenreader">screenreader</a></code></li><li><code><a href="#media-feature-user-background-color">user-background-color</a></code></li><li><code><a href="#media-feature-user-color">user-color</a></code></li><li><code><a href="#media-feature-user-contrast">user-contrast</a></code></li><li><code><a href="#media-feature-user-font-size">user-font-size</a></code></li><li><code><a href="#media-feature-user-minimum-font-size">user-minimum-font-size</a></code></li><li><code><a href="#media-feature-user-subtitle-background-color">user-subtitle-background-color</a></code></li><li><code><a href="#media-feature-user-subtitle-color">user-subtitle-color</a></code></li></ul></div>
+		</section>
+		
+		<section property="bibo:hasPart" resource="#changelog" typeof="bibo:Chapter" id="changelog" class="appendix">
+			<!--OddPage--><h2 resource="#h-changelog" id="h-changelog"><span property="xhv:role" resource="xhv:heading"><span class="secno">C. </span>Substantive, normative changes since the <a href="http://www.w3.org/TR/2014/WD-indie-ui-context-20140626/#changelog">last public working draft</a></span></h2>
+			<ul>
+				<li>2014-09-24: Changed colors-inverted to inverted-colors to match its adoption into CSS4.</li>
+			</ul>
+		</section>
+		
+		<!-- Todo: Glossary currently includes all terms in Events Module and User Context Module. -->
+		<!-- Need to remove the ones that are not used in the current document. -->
+		<!-- Commented for now 
+		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
+		-->
+
+		<section property="bibo:hasPart" resource="#acknowledgements" typeof="bibo:Chapter" id="acknowledgements" class="appendix"><!--OddPage--><h2 resource="#h-acknowledgements" id="h-acknowledgements"><span property="xhv:role" resource="xhv:heading"><span class="secno">D. </span>Acknowledgements</span></h2>
+<section property="bibo:hasPart" resource="#GroupMembership" typeof="bibo:Chapter" id="GroupMembership">
+	<h3 resource="#h-groupmembership" id="h-groupmembership"><span property="xhv:role" resource="xhv:heading"><span class="secno">D.1 </span>Active IndieUI Members</span></h3>
+	<p>At the time of publishing, the following individuals were active, participating members of the IndieUI Working Group.</p>
+	<ul>
+		<li>Michael Cooper, Staff Contact, <abbr title="World Wide Web Consortium">W3C</abbr> Staff</li>
+		<li>James Craig, Apple Inc.</li>
+		<li>Katie Haritos-Shea, Invited Expert</li>
+		<li>Andy Heath, Invited Expert</li>
+		<li>Takeshi Kurosawa, Mitsue-Links Co., Ltd.</li>
+		<li>Dominic Mazzoni, Google, Inc.</li>
+		<li>Edward O'Connor, Apple Inc.</li>
+		<li>Janina Sajka, Chair, Invited Expert</li>
+		<li>Joseph Scheuhammer, Invited Expert</li>
+		<li>Richard Schwerdtfeger, IBM Corporation</li>
+		<li>Jason White, Invited Expert</li>
+	</ul>
+</section>
+<section property="bibo:hasPart" resource="#Contributors" typeof="bibo:Chapter" id="Contributors">
+	<h3 resource="#h-contributors" id="h-contributors"><span property="xhv:role" resource="xhv:heading"><span class="secno">D.2 </span>Contributors</span></h3>
+	<p>The following individual(s) were previously active members of the working group or otherwise significant contributors.</p>
+	<p>Tab Atkins, Jesse Bunch, Chris Fleizach, Lachlan Hunt, Bradley Meck, Sangwhan Moon, Ryosuke Niwa, Rich Simpson.</p>
+</section>
+<!-- todo: Add link to original proposal by James/Chris at http://lists.w3.org/Archives/Public/www-dom/2010JulSep/att-0106/UserInterfaceIndependence.html -->
+<section property="bibo:hasPart" resource="#ack-funders" typeof="bibo:Chapter" id="ack-funders">
+	<h3 resource="#h-ack-funders" id="h-ack-funders"><span property="xhv:role" resource="xhv:heading"><span class="secno">D.3 </span>Enabling funders</span></h3>
+	<p>This publication has been funded in part with Federal funds from the U.S. Department of Education, National Institute on Disability, Independent Living, and Rehabilitation Research (NIDILRR) under contract number ED-OSE-10-C-0067. The content of this publication does not necessarily reflect the views or policies of the U.S. Department of Education, nor does mention of trade names, commercial products, or organizations imply endorsement by the U.S. Government.</p>
+</section></section>
+		
+	
+
+</body></html>
