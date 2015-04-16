@@ -472,30 +472,6 @@ partial interface UIEvent {
 					<h4>UIRequestEvent Types</h4>
 					<p>The different types of UIRequestEvents that can occur are:</p>
 					<dl>
-						<dt id="undorequest">Undo Request (<code class="event">undorequest</code>)</dt>
-						<dd>
-							<p>Indicates the user desires to "undo" the previous action.</p>
-							<p class="ednote">May be superseded by the <a href="https://dvcs.w3.org/hg/undomanager/raw-file/tip/undomanager.html">UndoManager</a> interface.</p>
-							<ul>
-								<li>Bubbles: Yes</li>
-								<li>Cancelable: Yes</li>
-							</ul>
-							<div class="ex" title="Informative Example">
-								<p>Users, wanting to "undo" a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Z</kbd> on Windows or Linux, <kbd>Command+Z</kbd> on Mac OS X, and even by shaking some accelerometer- or gyroscope-enabled mobile devices.</p>
-							</div>
-						</dd>
-						<dt id="redorequest">Redo Request (<code class="event">redorequest</code>)</dt>
-						<dd>
-							<p>Indicates the user desires to "redo" the previously "undone" action.</p>
-							<p class="ednote">May be superseded by the <a href="https://dvcs.w3.org/hg/undomanager/raw-file/tip/undomanager.html">UndoManager</a> interface.</p>
-							<ul>
-								<li>Bubbles: Yes</li>
-								<li>Cancelable: Yes</li>
-							</ul>
-							<div class="ex" title="Informative Example">
-								<p>Users, wanting to "redo" a discrete action in a web application, can indicate their intent a number of ways, including pressing <kbd>Control+Shift+Z</kbd> on Windows or Linux, <kbd>Command+Shift+Z</kbd> on Mac OS X.</p>
-							</div>
-						</dd>
 						<dt id="expandrequest">Expand Request (<code class="event">expandrequest</code>)</dt>
 						<dd>
 							<p>Indicates the user desires to to reveal information in a collapsed section (e.g. a disclosure widget) or branch node in a hierarchy (e.g., a tree view).</p>
