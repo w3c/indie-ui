@@ -117,6 +117,8 @@
 				<p>For example, a web page author may script a custom interface to look like a slider (e.g. one styled to look like an <abbr title="Hypertext Markup Language">HTML</abbr> "range" input) and behave like a slider when using standard mouse-based input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
 				<p>It would be simpler to listen for a normalized request to "zoom in" on the current view, whereby the web application could determine the new scale factor and update its custom view accordingly. Whether through continuous physical events like a scroll wheel or discrete physical events like the keyboard shortcuts, a user could indicate his intent to "zoom in" and the web application author would only need to listen for a single type of event: <code>zoomrequest</code>.</p>
 				<p>IndieUI Events defines a way for web authors to register for these <em>request events</em> on a leaf node element or on a ancestor element acting as an event delegate. Authors also declaritively define which actions or behaviors a view responds to, and when it is appropriate for browsers to initiate these events.</p>
+				<p class="note">In order to greatly reduce scope and achievability for a 1.0 release, the IndieUI working group agreed to remove continuous events such as the <code>zoomrequest</code> event listed in the intro.</p>
+				<p class="ednote">Editorial note: Need to rewrite the intro to use an example that is in scope for 1.0.</p>
 			</section>
 			
 			<section id="intro-goals" class="informative">
@@ -175,41 +177,6 @@
 					</pre>
 				</section>
 				
-				<section id="intro-example-valuechangerequest">
-					<h4>Changing the Value of a Custom Slider</h4>
-					<p>The following example uses a "valuechangerequest" event to modify the value of a custom ARIA slider.</p>
-					<p class="ednote">This example was cut. It needs to be rewritten once we add support for composite widgets with @uimanipulator (so the slider thumb can update the value via pointer-based events). See <a href="https://www.w3.org/WAI/IndieUI/track/actions/79">ACTION-79</a>.</p>
-					<pre class="example highlight" hidden="hidden">
-						&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;
-						&lt;canvas <strong>uiactions="valuechange"</strong> id="slider" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="42"&gt;&lt;/canvas&gt;
-						
-						&lt;script type="text/javascript"&gt;
-						  
-						  // Register the event at initialization.
-						  // <strong>Option #2:</strong> Using event delegation on any node (such as the body) that is higher in the DOM than the receiver element...
-						  <strong>document.body.addEventListener("valuechangerequest", valueChangeHandler);</strong>
-						
-						  // At some point during runtime, the handler will be called.
-						  function valueChangeHandler(e) {
-						    
-						    // Find the event receiver element.
-						    var slider = e.receiver;
-						    
-						    // Grab context info from the Event object.
-						    var changeType = <strong>e.changeType</strong>;
-						    
-						    // Update the model and display.
-						    myApp.requestValueChangeForElement(changeType, slider);
-						
-						    // Cancel the event.
-						    e.stopPropagation(); // Stop the event from bubbling.
-						    <strong>e.preventDefault();</strong> // Let the UA/AT know the event was intercepted successfully.
-						
-						  }
-						&lt;/script&gt;
-					</pre>
-				</section>
-				
 			</section>
 			
 			<section id="intro-backwards-compatibility" class="informative">
@@ -240,13 +207,9 @@
 				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>uiactions</code> content attribute in the <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
 				<h4>All uiactions token values</h4>
 				<div data-transform="listActions"><!-- dynamically generates list of all actions --></div>
-				<p class="ednote">We could probably combine the "manipulation*" event types into a single "manipulation" action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events. Ditto for the other continuous event sets like scroll*.</p>
 				<pre class="example highlight">
 					&lt;!-- Body element is event listener for all events, but event receiver only for "delete" actions. --&gt;
 					&lt;body <strong>uiactions="delete"</strong>&gt;
-					
-					  &lt;!-- Element container for custom "mapview" is the event receiver for "pan" and "zoom" actions. --&gt;
-					  &lt;div id="mapview" <strong>uiactions="pan zoom"</strong>&gt; ... &lt;/div&gt;
 					
 					  &lt;!-- This Dialog is the event receiver for "dismiss" actions initiated on any lower-level event target. --&gt;
 					  &lt;dialog <strong>uiactions="dismiss"</strong>&gt; ... &lt;/dialog&gt;
@@ -257,12 +220,10 @@
 					  // Registered all of these on the body as an example of event delegation to help illustrate the difference between event...
 					  // ...target (document.activeElement or other point-of-regard), receiver (element with defined actions), and listener (body).
 					  document.body.addEventListener(<strong>"dismissrequest"</strong>, handleDismiss);
-					  document.body.addEventListener(<strong>"panrequest"</strong>, handlePan);
 					  document.body.addEventListener(<strong>"deleterequest"</strong>, handleDelete);
-					  document.body.addEventListener(<strong>"zoomrequest"</strong>, handleZoom);
 					&lt;/script&gt;
 				</pre>
-				<p class="note">In the previous example, the "deleterequest" event may be fired any time the user's point-of-regard was inside the document, presumably when the user initiateded their platform's physical event to initiate a deletion, such as pressing the <kbd>DELETE</kbd> key. However, the "dismissrequest" would only be fired when the user's point-of-regard was inside the dialog. Likewise, the "panrequest" and "zoomrequest" would only be fired when the user's <a href="#def_point_of_regard">point-of-regard</a> was inside the map view.</p>
+				<p class="note">In the previous example, the "deleterequest" event may be fired any time the user's point-of-regard was inside the document, presumably when the user initiateded their platform's physical event to initiate a deletion, such as pressing the <kbd>DELETE</kbd> key. However, the "dismissrequest" would only be fired when the user's point-of-regard was inside the dialog.</p>
 			</section>
 
 		</section>
@@ -376,39 +337,6 @@
 
 		</section>
 		<!-- :::::::::::::::::::: End UI Triggers :::::::::::::::::::: -->
-
-		<!-- :::::::::::::::::::: UI Manipulator :::::::::::::::::::: -->
-		<section id="manipulators" class="normative">
-			<h2><abbr title="User Interface">UI</abbr> Manipulators</h2>
-			<p class="ednote">This section is woefilly incomplete. This is to cover pointer-based manipulation of sub-view elements, like the slider "thumb" inside a slider. Deltas and other details will be included in the request event object.</p>
-
-			<p class="ednote">We may need to extend UIRequestEvent to be a superset of MouseEvent, KeyEvent, FocusEvent, etc. so that we can include all the additional values in the event object.</p>
-
-			<p>A user interface manipulator is ... TBD.</p>
-			<p>In order to define a manipulator element, authors MUST set the value of the <a href="#uimanipulator-attribute">manipulator</a> attribute as a single token value corresponding to an action defined on the current or an ancestor node. User agents MUST NOT initiate a request Event from a manipulator element unless the corresponding action is defined on the current element or an ancester element using the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a> or <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
-			
-			<section id="uimanipulator-attribute">
-				<h2>The <code>uimanipulator</code> IDL Attribute</h2>
-				<p>The <code>uimanipulator</code> attribute of each instance of the <code>Element</code> interface MUST return a DOMString <a href="#def_reflected_attribute">reflecting</a> the <a href="#uimanipulator-content-attribute"><code>uimanipulator</code> content attribute</a>.</p>
-				<dl title="partial interface Element" class="idl">
-					<dt>attribute DOMString uimanipulator</dt><dd>TBD</dd>
-				</dl>
-			</section>
-			
-			<section id="uimanipulator-content-attribute">
-				<h3>The <code>uimanipulator</code> Content Attribute</h3>
-				<p>TBD</p>
-				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>uimanipulator</code> content attribute in the <a href="#uimanipulator-attribute"><code>uimanipulator</code> IDL attribute</a>.</p>
-				<h4>All <code>uimanipulator</code> token values</h4>
-				<div data-transform="listManipulatorActions"><!-- dynamically generates list of UIManipulationRequestEvent, UIScrollRequestEvent, UIValueChangeRequestEvent actions --></div>
-
-				<p class="ednote">We could probably combine the "manipulation*" event types into a single "manipulation" action value. I don't foresee a case where an author would want to receive some, but not all of them, and even if that case exists, the author could just not listen for those specific events. Ditto for the other continuous event sets like scroll*.</p>
-				
-			</section>
-
-		</section>
-		<!-- :::::::::::::::::::: End UI Manipulator :::::::::::::::::::: -->
-
 		
 		<!-- :::::::::::::::::::: UI Request Event Interfaces :::::::::::::::::::: -->
 		<section id="RequestEvents" class="normative">
@@ -581,7 +509,6 @@ partial interface UIEvent {
 					}
 				</pre>
 			</section>
-			<p class="ednote">Note: need to double-check that the above code sample is really the best approach.</p>
 		</section>
 		<!-- :::::::::::::::::::: END DOM Feature Detection :::::::::::::::::::: -->
 
@@ -603,10 +530,10 @@ partial interface UIEvent {
 				<li>5-Mar-2014: Added continuous events for <a href="#ContinuousUIManipulationRequestEvents">Manipulation Requests (zoom, pan, move, rotate)</a> as well as for <a href="#ContinuousUIScrollRequestEvents">Scroll Requests</a>.</li>
 				<li>15-May-2014: New <a href="#triggers">UI Triggers</a> section.</li>
 				<li>16-May-2014: New <a href="#manipulators">UI Manipulators</a> section (partial).</li>
+				<li>15-April-2015: Based on discussion in the Working Group call today, we've gutted much of the spec to greatly reduce scope for a 1.0 heartbeat draft. Removed all actions associated with continuous events, such as zoom, scroll, value change, etc. Removed UI Manipulators section because it's also associated with continuous events. Removed focus request events because they were somwhat abstract and confusing to authors. Basically the only features remaining are the simplest of the discrete events, such as dismiss, delete, and the media events (play, pause, etc.) Implementations were previously stalled due to complexities of continuous events, and the working group believes implementation is now readily achievable with this greatly reduced scope.</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
-		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>
-		
+		<section id="acknowledgements" class="appendix" data-include="./include/ack.html"></section>		
 	</body>
 </html>
