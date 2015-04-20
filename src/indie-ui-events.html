@@ -104,7 +104,9 @@
 			
 			<section id="intro-background">
 				<h3>Background</h3>
-				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware, and locales, and that those interactions can be further customized based on personal preference. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's preferred interface.</p>
+				<p>Scripting usable interfaces can be difficult, especially when one considers that user interface design patterns differ across software platforms, hardware devices, and locales, and that those interactions can be further customized based on personal preference. Individuals are accustomed to the way the interface works on their own system, and their preferred interface frequently differs from that of the web application author's preferred interface.</p>
+				<p class="note">In order to greatly reduce scope and achievability for a 1.0 release, the IndieUI working group agreed to remove continuous events such as the <code>zoomrequest</code> event listed in the intro.</p>
+				<p class="ednote">Editorial note: Need to rewrite the intro to use an example that is in scope for 1.0.</p>
 				<p>For example, web application authors, wishing to intercept a user's intent to "zoom in" on a custom image viewer or map view, need to "listen" for all of the following events:</p>
 				<ul>
 					<li><kbd>Control+PLUS</kbd> on Windows and Linux.</li>
@@ -114,11 +116,8 @@
 					<li>Additional gestures or speech commands on implementations that may not currently be detectable.</li>
 				</ul>
 				<p>In addition to the general user interface challenges, custom interfaces often don't take into account users who access web content via assistive technologies that use alternate forms of input such as screen readers, switch interfaces, or speech-based command and control interfaces.</p>
-				<p>For example, a web page author may script a custom interface to look like a slider (e.g. one styled to look like an <abbr title="Hypertext Markup Language">HTML</abbr> "range" input) and behave like a slider when using standard mouse-based input, but there is no standard way for the value of the slider to be controlled programmatically, so the control may not be usable without a mouse or other pointer-based input.</p>
 				<p>It would be simpler to listen for a normalized request to "zoom in" on the current view, whereby the web application could determine the new scale factor and update its custom view accordingly. Whether through continuous physical events like a scroll wheel or discrete physical events like the keyboard shortcuts, a user could indicate his intent to "zoom in" and the web application author would only need to listen for a single type of event: <code>zoomrequest</code>.</p>
 				<p>IndieUI Events defines a way for web authors to register for these <em>request events</em> on a leaf node element or on a ancestor element acting as an event delegate. Authors also declaritively define which actions or behaviors a view responds to, and when it is appropriate for browsers to initiate these events.</p>
-				<p class="note">In order to greatly reduce scope and achievability for a 1.0 release, the IndieUI working group agreed to remove continuous events such as the <code>zoomrequest</code> event listed in the intro.</p>
-				<p class="ednote">Editorial note: Need to rewrite the intro to use an example that is in scope for 1.0.</p>
 			</section>
 			
 			<section id="intro-goals" class="informative">
@@ -148,21 +147,21 @@
 						&lt;!-- Declare which IndieUI event(s) this element receives. --&gt;
 						&lt;dialog <strong>uiactions="dismiss"</strong> id="myDialog"&gt;
 						  &lt;!-- Include an optional click trigger for the dismiss action. --&gt;
-					  	  &lt;button <strong>uitrigger="dismiss"</strong>&gt; Cancel &lt;/button&gt;
+						  &lt;button <strong>uitrigger="dismiss"</strong>&gt; Cancel &lt;/button&gt;
 						  ... other dialog contents ...
 						&lt;/dialog&gt;
-						
+
 						&lt;script type="text/javascript"&gt;
-						  
+
 						  var myDialog = document.getElementById("myDialog");
-						  						
+
 						  // At some point during runtime, the handler will be called.
 						  // For example, if the user presses ESC key while focus is inside the dialog.
 						  function dismissHandler(e) {
-						  
+
 						    // Cancel and close the dialog. Don't forget to move focus before closing.
-						    closeDialog(<strong>e.receiver</strong>); // Event.receiver is a readonly property like Event.target 
-						    
+						    closeDialog(<strong>e.receiver</strong>); // Event.receiver is a readonly property like Event.target
+
 						    // Then cancel the event.
 						    e.stopPropagation(); // Stop the event from bubbling.
 						    <strong>e.preventDefault();</strong> // Let the UA/AT know the event was intercepted successfully.
@@ -190,14 +189,14 @@
 		<!-- :::::::::::::::::::: UI Actions :::::::::::::::::::: -->
 		<section id="actions" class="normative">
 			<h2><abbr title="User Interface">UI</abbr> Actions</h2>
-			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using <code>Element.addEventListener()</code> at this node or higher in the DOM. User agents SHOULD NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
+			<p>User interface actions are declared as enumerated token attribute values on an element. Each value corresponds to a specific <a href="#RequestEvents">UI Request Event</a>, and declares the web page author's ability to receive and handle each of the request events initiated by the user agent. In order to receive each request event, authors MUST also register for the event using <code>Element.addEventListener()</code> at this element or on an ancestor of the element with the corresponding action. User agents SHOULD NOT initiate a <a href="#RequestEvents">UI Request Event</a> when the user's <a href="#def_point_of_regard">point-of-regard</a> is not inside an element with the corresponding defined action.</p>
 			
 			<section id="uiactions-attribute">
 				<h2>The <code>uiactions</code> IDL Attribute</h2>
 				<p>The <code>uiactions</code> attribute of each instance of the <code>Element</code> interface MUST return a DOMTokenList <a href="#def_reflected_attribute">reflecting</a> the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>.</p>
 				<dl title="partial interface Element" class="idl">
 					<dt>readonly attribute DOMTokenList uiactions</dt>
-					<dd>A DOM element attribute whose DOMTokenList value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>. <p class="ednote">This attribute is readonly b/c DOMTokenList values are modified by methods (e.g. <code>el.uiactions.add("pan");</code>) rather than by string assignment (e.g. NOT <code>el.uiactions = "pan";</code>). Need to make sure this is clear for authors.</p></dd>
+					<dd>A DOM element attribute whose DOMTokenList value <a href="#def_reflected_attribute">reflects</a> the value of the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a>. <p class="ednote">This attribute is readonly b/c DOMTokenList values are modified by methods (e.g. <code>el.uiactions.add("dismiss");</code>) rather than by string assignment (e.g. NOT <code>el.uiactions = "dismiss";</code>). Need to make sure this is clear for authors.</p></dd>
 				</dl>
 			</section>
 			
@@ -232,7 +231,7 @@
 		<!-- :::::::::::::::::::: UI Triggers :::::::::::::::::::: -->
 		<section id="triggers" class="normative">
 			<h2><abbr title="User Interface">UI</abbr> Triggers</h2>
-			<p>A user interface trigger is an element whose <a href="#def_default_behavior">default behavior</a> is to initiate a <em>discrete</em> <a href="#UIRequestEvent">UIRequestEvent</a> for the current element or an ancestor element.</p>
+			<p>A user interface trigger is an element whose <a href="#def_default_behavior">default behavior</a> (a.k.a. "click" behavior) is to initiate a <em>discrete</em> <a href="#UIRequestEvent">UIRequestEvent</a> for the current element or an ancestor element. For example, a "close" or "back" button of a dialog would trigger a "dismiss" request, and a "move to trash" button would trigger a "delete" request.</p>
 			<p>In order to define a trigger element, authors MUST set the value of the <a href="#uitrigger-attribute">uitrigger</a> attribute as a single token value corresponding to an action defined on the current or an ancestor node. User agents MUST NOT initiate a request Event from a trigger element unless the corresponding action is defined on the current element or an ancester element using the <a href="#uiactions-content-attribute"><code>uiactions</code> content attribute</a> or <a href="#uiactions-attribute"><code>uiactions</code> IDL attribute</a>.</p>
 			<p>Web authors MUST ensure trigger elements have an appropriate accessible label, as rendered text or a text alternative. Web authors MUST ensure trigger elements use an appropriate implicit or explicit role (usually <a href="http://www.w3.org/TR/wai-aria/complete#button"><code>button</code></a>).</p>
 			<p>Web authors SHOULD ensure trigger elements are focusable. Web authors MAY forego making a trigger element focusable if the trigger provides redundant functionality already available through another physical interface. For example, a "delete" trigger may not need to be focusable if pressing the <kbd>Delete</kbd> key triggers the same request event.</p>
@@ -252,7 +251,6 @@
 				<p>User agents MUST <a href="#def_reflected_attribute">reflect</a> the <code>uitrigger</code> content attribute in the <a href="#uitrigger-attribute"><code>uitrigger</code> IDL attribute</a>.</p>
 				<h4>All <code>uitrigger</code> token values</h4>
 				<div data-transform="listTriggerActions"><!-- dynamically generates list of UIRequestEvent actions, not those that extend UIRequestEvent, such as UIFocusEvent. --></div>
-				<p class="note">The uitrigger tokens list is a subset of the entire uiactions tokens list. It only lists actions associated with discrete <a href="#UIRequestEvent">UIRequestEvent</a> types. It does not list actions associated with interfaces that extend UIRequestEvent, such as <a href="#UIManipulationRequestEvent">UIManipulationRequestEvent</a> or <a href="#UIScrollRequestEvent">UIScrollRequestEvent</a>, because those require additional parameters that cannot be determined by a simple click or activate event on the trigger element.</p>
 			</section>
 
 			<section id="triggers-example-dismissrequest">
@@ -342,9 +340,9 @@
 		<section id="RequestEvents" class="normative">
 			<h2><abbr title="User Interface">UI</abbr> Request Events</h2>
 			
-			<p class="ednote">There is purposefully no request event for activating the default action. Authors are encouraged to use a standard <code>click</code> event for default actions. Update: Eitan (Mozilla) requested <a href="https://www.w3.org/WAI/IndieUI/track/actions/53">ACTION-53</a>: activate request event to augment default action trigger when click handlers are inappropriate.</p>
+			<p class="ednote">There is purposefully no request event for activating the default action. Authors are encouraged to use a standard <code>click</code> event for default actions. Update: Eitan (Mozilla) requested <a href="https://www.w3.org/WAI/IndieUI/track/actions/53">ACTION-53</a>: activate request event to augment default action trigger when click handlers are inappropriate, giving the iOS "slide to unlock" feature as an example.</p>
 			<p class="ednote">Event fires on point-of-regard (<code>document.activeElement</code>, clicked element, or AT equivalent) if applicable, or otherwise <code>document.body</code>.</p>
-			<p class="ednote">Event order: These events should be asynchronous, but when used in conjunction with keyboard events, we need to define where each IndieUI event fires in the chain of <code>keydown</code>, <code>keyup</code>, and <code>keypress</code>. Probably also need an identifier to associate each event with other related physical events: e.g. This <code>dismissrequest</code> event is associated with the keyboard events <code>keydown</code>, <code>keyup</code>, and <code>keypress</code> of the <kbd>ESC</kbd> key.</p>
+			<p class="ednote">Event order: These events should be asynchronous, but when used in conjunction with keyboard events, we need to define where each IndieUI event fires in the chain of <code>keydown</code>, <code>keyup</code>, and <code>keypress</code>. Discrete request events trigger by the keyboard should probably follow "keydown" but precede "keyup". We may also need an identifier to associate each event with other related physical events: e.g. This <code>dismissrequest</code> event is associated with the keyboard events <code>keydown</code>, <code>keyup</code>, and <code>keypress</code> of the <kbd>ESC</kbd> key.</p>
 
 			<!-- :::::::::::::::::::: UIRequestEvent :::::::::::::::::::: -->
 			<section id="UIRequestEvent" class="normative">
@@ -429,7 +427,7 @@ partial interface UIEvent {
 						</dd>
 						<dt id="deleterequest">Delete Request (<code class="event">deleterequest</code>)</dt>
 						<dd>
-							<p>Indicates the user wants to initiate a "delete" action on the <a href="#def_marked_element">marked element</a> or current view.</p>
+							<p>Indicates the user wants to initiate a "delete" action on the current view.</p>
 							<ul>
 								<li>Bubbles: Yes</li>
 								<li>Cancelable: Yes</li>
@@ -459,7 +457,7 @@ partial interface UIEvent {
 								<li>Cancelable: Yes</li>
 							</ul>
 						</dd>
-						<dt id="mediatogglerequest">Toggle Media Playback Request (<code class="event">mediatogglerequest</code>)</dt>
+						<dt id="mediatogglerequest">Toggle Media Playback Request (<code class="event">mediaplaypauserequest</code>)</dt>
 						<dd>
 							<p>Initiated when the user agent sends a request to the web application to toggle the play/pause state of media playback.</p>
 							<ul>
@@ -530,7 +528,7 @@ partial interface UIEvent {
 				<li>5-Mar-2014: Added continuous events for <a href="#ContinuousUIManipulationRequestEvents">Manipulation Requests (zoom, pan, move, rotate)</a> as well as for <a href="#ContinuousUIScrollRequestEvents">Scroll Requests</a>.</li>
 				<li>15-May-2014: New <a href="#triggers">UI Triggers</a> section.</li>
 				<li>16-May-2014: New <a href="#manipulators">UI Manipulators</a> section (partial).</li>
-				<li>15-April-2015: Based on discussion in the Working Group call today, we've gutted much of the spec to greatly reduce scope for a 1.0 heartbeat draft. Removed all actions associated with continuous events, such as zoom, scroll, value change, etc. Removed UI Manipulators section because it's also associated with continuous events. Removed focus request events because they were somwhat abstract and confusing to authors. Basically the only features remaining are the simplest of the discrete events, such as dismiss, delete, and the media events (play, pause, etc.) Implementations were previously stalled due to complexities of continuous events, and the working group believes implementation is now readily achievable with this greatly reduced scope.</li>
+				<li>15-April-2015: Based on discussion in the Working Group call today, we've gutted much of the spec to greatly reduce scope for a 1.0 heartbeat draft. Removed all actions associated with continuous events, such as zoom, scroll, value change, etc. Removed UI Manipulators section because it's also associated with continuous events. Removed focus request events because they were somewhat abstract and confusing to authors. The primary remaining features are the simplest of the discrete events, such as dismiss, delete, and the media events (play, pause, etc.) Implementations were previously stalled due to complexities of continuous events, and the working group believes implementation is now readily achievable with this greatly reduced scope.</li>
 			</ul>
 		</section>
 		<section id="terms" class="appendix" data-include="./include/terms.html"></section>
