@@ -522,12 +522,12 @@ partial interface UIEvent {
 		<section id="changelog" class="appendix">
 			<h2>Substantive, normative changes since the <a href="http://www.w3.org/TR/2013/WD-indie-ui-events-20130730/#changelog">last public working draft</a></h2>
 			<ul>
-				<li><del>18-Aug-2013: Enum constants formerly defined in <a href="#UIScrollRequestEvent">UIScrollRequestEvent</a>, <a href="#UIValueChangeRequestEvent">UIValueChangeRequestEvent</a>, and <a href="#UIFocusRequestEvent">UIFocusRequestEvent</a> have been changed to WebIDL enumeration identifier strings. (<a href="https://www.w3.org/WAI/IndieUI/track/actions/64">ACTION-64</a>)</del></li>
-				<li>18-Aug-2013: Event initializer dictionaries (<a href="#UIRequestEventInit">UIRequestEventInit</a>, <del><a href="#UIFocusRequestEventInit">UIFocusRequestEventInit</a></del>) were missing inheritance declarations in the IDL.</li>
+				<li><del>18-Aug-2013: Enum constants formerly defined in UIScrollRequestEvent, UIValueChangeRequestEvent, and UIFocusRequestEvent have been changed to WebIDL enumeration identifier strings. (<a href="https://www.w3.org/WAI/IndieUI/track/actions/64">ACTION-64</a>)</del></li>
+				<li>18-Aug-2013: Event initializer dictionaries (<a href="#UIRequestEventInit">UIRequestEventInit</a>, <del>UIFocusRequestEventInit</del>) were missing inheritance declarations in the IDL.</li>
 				<li>22-Aug-2013: <a href="#feature-detection">Feature detection section</a> recommends direct object detection now rather than using DOMImplementation.hasFeature().</li>
-				<li><del>5-Mar-2014: Added continuous events for <a href="#ContinuousUIManipulationRequestEvents">Manipulation Requests (zoom, pan, move, rotate)</a> as well as for <a href="#ContinuousUIScrollRequestEvents">Scroll Requests</a>.</del></li>
+				<li><del>5-Mar-2014: Added continuous events for Manipulation Requests (zoom, pan, move, rotate) as well as for Scroll Requests.</del></li>
 				<li>15-May-2014: New <a href="#triggers">UI Triggers</a> section.</li>
-				<li><del>16-May-2014: New <a href="#manipulators">UI Manipulators</a> section (partial).</del></li>
+				<li><del>16-May-2014: New UI Manipulators section (partial).</del></li>
 				<li>15-April-2015: Based on discussion in the Working Group call today, we've gutted much of the spec to greatly reduce scope for a 1.0 heartbeat draft. Removed all actions associated with continuous events, such as zoom, scroll, value change, etc. Removed UI Manipulators section because it's also associated with continuous events. Removed focus request events because they were somewhat abstract and confusing to authors. The primary remaining features are the simplest of the discrete events, such as dismiss, delete, and the media events (play, pause, etc.) Implementations were previously stalled due to complexities of continuous events, and the working group believes implementation is now readily achievable with this greatly reduced scope.</li>
 			</ul>
 		</section>
