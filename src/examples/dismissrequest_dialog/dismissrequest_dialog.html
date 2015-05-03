@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IndieUI Dismiss Request Example</title>
+	<style type="text/css">
+	body, html {
+		font-size: 100%;
+		font-family: "helvetica neue", sans-serif;
+		margin: 0;
+		padding: 0;
+	}
+	main {
+		margin: 1em 1.5em;
+	}
+	#mask {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0,0,0,0.5);
+	}
+	#dialog {
+		border: solid 1px rgba(0,0,0,0.7);
+		position: fixed;
+		top: 3em;
+		left: 50%;
+		margin: 0 0 0 -25%;
+		width: 50%;
+		background-color: white;
+		box-shadow: 3px 3px 20px rgba(0,0,0,0.6);
+	}
+	#dialog h2 {
+		font-size: 1em;
+		margin: 0 0 0.5em;
+		padding: 0.5em 2em 0.6em;
+		color: white;
+		background-color: #666;
+		border: solid 1px rgba(255,255,255,0.4);
+	}
+	#dialog .contents {
+		margin: 1em 2em 1.5em;
+	}
+	li {
+		font-size: 90%;
+		margin: 0 0 0.5em;
+	}
+	[role="button"] {
+		appearance: button;
+		-webkit-appearance: button;
+	}
+	#console {
+		color: #900;
+	}
+	</style>
+	<script type="text/javascript">
+	
+	dialogIsShowing = false;
+
+	function $(id) {
+		return document.getElementById(id);
+	}
+	
+	function showDialog(e) {
+		$("mask").hidden = false;
+		$("dialog").hidden = false;
+		dialogIsShowing = true;
+		$("trigger").focus();
+
+		// in case @inert is ever supported...
+		$("main").setAttribute("inert", "true");
+		// we won't need to do this.
+		$("main").setAttribute("aria-hidden", "true");
+		$("launch").tabIndex = -1;
+
+	}
+
+	function hideDialog(e) {
+		// in case @inert is ever supported...
+		$("main").removeAttribute("inert");
+		// we won't need to do this.
+		$("main").removeAttribute("aria-hidden");
+		$("launch").tabIndex = 0;
+
+		$("launch").focus();
+		$("mask").hidden = true;
+		$("dialog").hidden = true;
+		dialogIsShowing = false;
+
+	}
+
+	function clickHide(e) {
+		appendStatus("Hiding dialog via standard 'click' event.");
+		hideDialog(e);
+	}
+
+	function handleDismissRequest(e) {
+		if (dialogIsShowing) {
+			appendStatus("Success! Hiding dialog via 'dismissrequest' event.");
+			hideDialog(e);
+			e.preventDefault(); // cancelling event so AT/UA can know this was handled.
+		} else {
+			appendStatus("Received 'dismissrequest' event, but dialog is not displayed. Passing event through without cancelling.");
+		}
+	}
+
+	function appendStatus(msg) {
+		$("console").innerHTML += msg + " " + new Date().getTime() + ".\n";
+	}
+
+	window.addEventListener("load", function() {
+		$("launch").addEventListener("click", showDialog);
+		$("continue").addEventListener("click", clickHide);
+
+		if (typeof document.body.ondismissrequest == "undefined") {
+			appendStatus("Your browser does not support <code>dismissrequest</code>.");
+		} else {
+			appendStatus("Your browser claims to support <code>dismissrequest</code>. Verify each expected physical event triggers a dismiss.");
+			document.body.addEventListener("dismissrequest", handleDismissRequest);
+		}
+	});
+
+	</script>
+</head>
+<body uiactions="dismiss">
+<main id="main">
+	<h1>IndieUI Dismiss Request Example</h1>
+	<p>Press the button to show the dialog, then use an modality-independent means to "cancel" or "dismiss" the dialog.</p>
+	<button id="launch">Show the Dialog</button>
+	<!-- Status messages will be appended. -->
+	<pre id="console" role="status"></pre>
+</main>
+
+<div id="mask" hidden></div>
+<div role="dialog" id="dialog" aria-labelledby="dh" hidden>
+	<h2 id="dh">Testing Dismiss Request</h2>
+	<div class="contents">
+		<p>You should be able to "dismiss" this dialog by all of the following means:</p>
+		<ul>
+			<li>On desktop systems, press the <kbd>ESC</kbd> key.</li>
+			<li>On desktop systems, <kbd>tab</kbd> to either "Dismiss dialog" button and press <kbd>Spacebar</kbd> (OS X) or <kbd>Enter</kbd> (Windows and maybe Linux?)...</li>
+			<li>On desktop systems, mouse-click on either "Dismiss dialog" button.</li>
+			<li>On touchscreen systems, tap on either "Dismiss dialog" button.</li>
+			<li>With VoiceOver on iOS, perform a two-finger scrub gesture Note: "scrub" should continue to activate the <code>history.back()</code> behavior if the dialog is not currently displayed, because this example script only captures the UIRequestEvent (via preventDefault) if the dialog is showing.</li>
+			<li>More...?</li>
+		</ul>
+		<button id="trigger" uitrigger="dismiss">Dismiss dialog</button><br>
+		<div role="button" tabindex="0" uitrigger="dismiss">This "clickable" div should also dismiss via click, tap, and keypresses, too.</div><br>
+		<button id="continue">Continue without dismissing (standard click event)</button>
+	</div>
+</div>
+
+</body>
+</html>
+
