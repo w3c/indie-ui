@@ -45,9 +45,31 @@
 		font-size: 90%;
 		margin: 0 0 0.5em;
 	}
-	[role="button"] {
-		appearance: button;
-		-webkit-appearance: button;
+	[uitrigger] {
+		display: inline-block;
+		font-weight: bold;
+		font-size: 0.8rem;
+		margin: 0.2em 0.5em;
+		padding: 0.3em 0.6em;
+		appearance: none;
+		color: #000;
+		background-color: #999;
+		border: outset 2px #999;
+		-webkit-user-select: none;
+		min-width: 6em;
+		text-align: center;
+	}
+	[uitrigger]:active {
+		padding: 0.4em 0.5em 0.2em 0.7em;
+		border-style: inset;
+	}
+	[uitrigger]:focus {
+		color: #fff;
+		background-color: #66c;
+		border-color: #66c;
+	}
+	#buttons {
+		margin: 1em 0;
 	}
 	#console {
 		color: #900;
@@ -138,14 +160,16 @@
 		<p>You should be able to "dismiss" this dialog by all of the following means:</p>
 		<ul>
 			<li>On desktop systems, press the <kbd>ESC</kbd> key.</li>
-			<li>On desktop systems, <kbd>tab</kbd> to either "Dismiss dialog" button and press <kbd>Spacebar</kbd> (OS X) or <kbd>Enter</kbd> (Windows and maybe Linux?)...</li>
+			<li>On desktop systems, <kbd>Tab</kbd> to either "Dismiss dialog" button and press <kbd>Spacebar</kbd> (OS X) or <kbd>Enter</kbd> (Windows and maybe Linux?)...</li>
 			<li>On desktop systems, mouse-click on either "Dismiss dialog" button.</li>
 			<li>On touchscreen systems, tap on either "Dismiss dialog" button.</li>
 			<li>With VoiceOver on iOS, perform a two-finger scrub gesture Note: "scrub" should continue to activate the <code>history.back()</code> behavior if the dialog is not currently displayed, because this example script only captures the UIRequestEvent (via preventDefault) if the dialog is showing.</li>
 			<li>More...?</li>
 		</ul>
-		<button id="trigger" uitrigger="dismiss">Dismiss dialog</button><br>
-		<div role="button" tabindex="0" uitrigger="dismiss">This "clickable" div should also dismiss via click, tap, and keypresses, too.</div><br>
+		<div id="buttons">
+			<button id="trigger" uitrigger="dismiss">Dismiss dialog</button>
+			<div role="button" tabindex="0" uitrigger="dismiss">Dismiss dialog</div>
+		</div>
 		<button id="continue">Continue without dismissing (standard click event)</button>
 	</div>
 </div>

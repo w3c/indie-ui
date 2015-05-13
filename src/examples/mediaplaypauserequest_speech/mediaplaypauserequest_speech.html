@@ -1,1 +1,140 @@
-placeholder
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IndieUI Media Play/Pause Request Example</title>
+	<style type="text/css">
+	body, html {
+		font-size: 100%;
+		font-family: "helvetica neue", sans-serif;
+		margin: 0;
+		padding: 0;
+	}
+	main {
+		margin: 1em 1.5em;
+	}
+	[uitrigger] {
+		display: inline-block;
+		font-weight: bold;
+		font-size: 0.8rem;
+		margin: 0.2em 0.5em;
+		padding: 0.3em 0.6em;
+		appearance: none;
+		color: #000;
+		background-color: #999;
+		border: outset 2px #999;
+		-webkit-user-select: none;
+		min-width: 6em;
+		text-align: center;
+	}
+	[uitrigger]:active {
+		padding: 0.4em 0.5em 0.2em 0.7em;
+		border-style: inset;
+	}
+	[uitrigger]:focus {
+		color: #fff;
+		background-color: #66c;
+		border-color: #66c;
+	}
+	#buttons {
+		margin: 1em 0;
+	}
+	#console {
+		color: #900;
+	}
+	</style>
+	<script type="text/javascript">
+	
+	utterance = new SpeechSynthesisUtterance("This is text-to-speech triggered by a modality-independant event. Attempt to pause the speech before this utterance finishes. There is one more sentence in the sample text. This is the last sentence.");
+	utterance.addEventListener("end", finishedPlayingMedia);
+
+	function $(id) {
+		return document.getElementById(id);
+	}
+
+	function changeButtonText(s) {
+		var els = document.getElementsByClassName('playbutton');
+		for (var i = 0, c = els.length; i < c; i++) {
+			var el = els[i];
+			el.innerText = s;
+		}
+	}
+
+	function toggleMedia(e) {
+		if (speechSynthesis.speaking && !speechSynthesis.paused) {
+			pauseMedia(e);
+		} else {
+			playMedia(e);
+		}
+	}
+
+	function playMedia(e) {
+		if (speechSynthesis.paused){
+			speechSynthesis.resume();
+		} else {
+			speechSynthesis.speak(utterance);
+		}
+		changeButtonText("Pause");
+	}
+
+	function pauseMedia(e) {
+		speechSynthesis.pause();
+		changeButtonText("Play");
+	}
+
+	function finishedPlayingMedia(e) {
+		changeButtonText("Play");
+	}
+	
+	function testWebSpeech(e) {
+		appendStatus("Triggering text-to-speech via standard 'click' event.");
+		speechSynthesis.speak(new SpeechSynthesisUtterance("This is a test."));
+	}
+
+	function handleDismissRequest(e) {
+		appendStatus("Success! Triggered 'mediaplaypauserequest' event.");
+		toggleMedia(e);
+		e.preventDefault(); // cancelling event so AT/UA can know this was handled.
+	}
+
+	function appendStatus(msg) {
+		$("console").innerHTML += msg + " " + new Date().getTime() + ".\n";
+	}
+
+	window.addEventListener("load", function() {
+
+		$("testwebspeech").addEventListener("click", testWebSpeech);
+
+		if (typeof document.body.onmediaplaypauserequest == "undefined") {
+			appendStatus("Your browser does not support <code>mediaplaypauserequest</code>.");
+		} else {
+			appendStatus("Your browser claims to support <code>mediaplaypauserequest</code>. Verify each expected physical event triggers a dismiss.");
+			document.body.addEventListener("mediaplaypauserequest", handleDismissRequest);
+		}
+	});
+
+	</script>
+</head>
+<body uiactions="mediaplaypause">
+<main id="main">
+	<h1>IndieUI Media Play/Pause Request Example (Text-to-Speech)</h1>
+	<p>You should be able to play and pause a text-to-speech sample using all of the following physical events (a.k.a. modality-specific events):</p>
+	<ul>
+		<li>Click either "Play" button with a mouse.</li>
+		<li>One touchscreen systems, tap either "Play" button.</li>
+		<li>On desktop systems, press the keyboard <kbd>play/pause</kbd> key.</li>
+		<li>On desktop systems, <kbd>Tab</kbd> to either "Play" button and press <kbd>Spacebar</kbd> (OS X) or <kbd>Enter</kbd> (Windows and maybe Linux?)...</li>
+		<li>On mobile systems, click the headphone remote once.</li>
+		<li>On OS X, click the headphone remote once. Note: Some other desktop systems may support this, too.</li>
+		<li>With VoiceOver on iOS, perform a two-finger double-tap gesture.</li>
+		<li>More...?</li>
+	</ul>
+	<div id="buttons">
+		<button uitrigger="mediaplaypause" class="playbutton">Play</button>
+		<div role="button" tabindex="0" uitrigger="mediaplaypause" class="playbutton">Play</div>
+	</div>
+	<pre id="console" role="status"></pre>
+	<button id="testwebspeech">Test Web Speech TTS (uses 'click' event)</button>
+</main>
+
+</body>
+</html>
